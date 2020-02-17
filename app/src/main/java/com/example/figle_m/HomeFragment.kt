@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.View.UserPresenter
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -16,6 +17,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
 
     val MSG_SHOW_USER_LIST : Int = 0
+    val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1
     val mHandler: Handler = Handler(this)
 
     lateinit var mUserPresenter: UserPresenter
@@ -41,8 +43,11 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     override fun handleMessage(msg: Message): Boolean {
         when (msg.what) {
             MSG_SHOW_USER_LIST -> {
-                Log.v(TAG, "result ::: " + msg.obj.toString())
+                Log.v(TAG, "MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
                 return true
+            }
+            MSG_SHOW_MATCH_DETAIL_LIST -> {
+                Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj.toString())
             }
             else -> {
                 return false
@@ -53,10 +58,26 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     @SuppressLint("SetTextI18n")
     override fun showUserList(userResponse: UserResponse?) {
+        if (userResponse == null) {
+            Log.d(TAG, "userResponse is null")
+            return
+        }
         val msg_show_user_list:Message = Message()
         msg_show_user_list.what = MSG_SHOW_USER_LIST
         msg_show_user_list.obj = userResponse
         mHandler.sendMessage(msg_show_user_list)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showMatchDetailList(matchDetailResponse: MatchDetailResponse?) {
+        if (matchDetailResponse == null) {
+            Log.d(TAG, "matchDetailResponse is null")
+            return
+        }
+        val msg_show_match_detail_list:Message = Message()
+        msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
+        msg_show_match_detail_list.obj = matchDetailResponse
+        mHandler.sendMessage(msg_show_match_detail_list)
     }
 
     override fun showLoading() {
@@ -91,7 +112,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
         btn_search.setOnClickListener(View.OnClickListener {
             Log.v(TAG,"clickSearchBtn")
-            mUserPresenter!!.getUserDataList(edit_search.text.toString())
+            mUserPresenter!!.getUserDatailList(edit_search.text.toString())
+            mUserPresenter!!.getMatchDetailList("5e48262ba9458a223fd64791")
         })
     }
 
@@ -104,7 +126,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 //            return
 //        }
 //        if (mUserPresenter == null) return
-//        mUserPresenter!!.getUserDataList(searchText)
+//        mUserPresenter!!.getUserDatailList(searchText)
 //    }
 //
 //    fun getSearchText(): String?{

@@ -16,10 +16,9 @@ class UserResponse {
     var level: String? = null
 
     override fun toString(): String {
-        Log.v(TAG,"accessId             : $accessId, " +
+        val string: String = "accessId             : $accessId, " +
                 "nickname             : $nickname, " +
                 "level                   : $level, "
-        )
-        return super.toString()
+        return string
     }
 }

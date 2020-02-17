@@ -1,6 +1,8 @@
 package com.example.figle_m.Data
 
+import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
+import org.koin.experimental.builder.getArguments
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -13,4 +15,10 @@ interface RetrofitService {
     fun requestUser(
         @Query("nickname") nickname: String
     ): Call<UserResponse>
+
+    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
+    @GET("v1.0/matches/5e48262ba9458a223fd64791}")
+    fun requestMatchDetail(
+        @Query("matchid") matchid: String
+    ): Call<MatchDetailResponse>
 }
