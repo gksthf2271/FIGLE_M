@@ -2,11 +2,14 @@ package com.example.figle_m.View
 
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.Response.UserMatchIdResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.UserContract
+import okhttp3.ResponseBody
+import org.json.JSONArray
+import java.util.*
 
 class UserPresenter: UserContract.Presenter{
-
     var  mUserView: UserContract.View? = null
 
     override fun getUserDatailList(nickname: String) {
@@ -28,6 +31,22 @@ class UserPresenter: UserContract.Presenter{
         }).start()
         mUserView?.hideLoading()
     }
+
+    override fun getMatchId(accessId: String, matchType: Int, offset: Int, limit: Int) {
+        mUserView?.showLoading()
+        var userMatchIdResponse: ResponseBody? = null
+        Thread(Runnable {
+            userMatchIdResponse = DataManager.getInstance().loadMatchId(
+                accessId,
+                matchType,
+                offset,
+                limit)
+            mUserView?.showMatchIdList(userMatchIdResponse)
+        }).start()
+        mUserView?.hideLoading()
+    }
+
+
 
     override fun takeView(view: UserContract.View) {
         mUserView = view

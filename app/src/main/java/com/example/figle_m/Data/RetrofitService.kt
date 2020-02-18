@@ -1,24 +1,43 @@
 package com.example.figle_m.Data
 
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.Response.UserMatchIdResponse
 import com.example.figle_m.Response.UserResponse
-import org.koin.experimental.builder.getArguments
+import okhttp3.ResponseBody
+import org.json.JSONArray
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Headers
+import retrofit2.http.Header
+import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.*
 
 interface RetrofitService {
 //    https://api.nexon.co.kr/fifaonline4/v1.0/users?nickname=아무거나다잘함
-    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
+//    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
     @GET("v1.0/users")
     fun requestUser(
+        @Header("Authorization") authorization: String,
         @Query("nickname") nickname: String
     ): Call<UserResponse>
 
-    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
-    @GET("v1.0/matches/5e48262ba9458a223fd64791}")
+
+
+//    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
+    @GET("v1.0/matches/{matchid}")
     fun requestMatchDetail(
-        @Query("matchid") matchid: String
+        @Header("Authorization") authorization: String,
+        @Path("matchid") matchid: String
     ): Call<MatchDetailResponse>
+
+
+    @GET("v1.0/users/{accessid}")
+    fun requestMatchId(
+        @Header("Authorization") authorization: String,
+        @Path("accessid") accessid: String,
+        @Query("matchtype") matchtype: Int,
+        @Query("offset") offset: Int?,
+        @Query("limit") limit: Int?
+    ): Call<ResponseBody>
 }
