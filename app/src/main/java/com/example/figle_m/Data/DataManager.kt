@@ -3,12 +3,11 @@ package com.example.figle_m.Data
 import android.content.Context
 import android.util.Log
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.Response.UserMatchIdResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
-import org.json.JSONArray
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class DataManager {
 
@@ -21,7 +20,7 @@ class DataManager {
     }
 
     enum class matchType(val matchType: Int) {
-        normalMatch( 50),
+        normalMatch(50),
         coachMatch(51)
     }
 
@@ -45,57 +44,64 @@ class DataManager {
             }
     }
 
-    fun loadUserData(nickName: String): UserResponse? {
-        var response: Response<UserResponse>? = null
-        var userResponse: UserResponse? = null
-        response = SearchUser.getService().requestUser(
-            authorization = mAuthorizationKey,
-            nickname = nickName
-        ).execute()
-        Log.v(TAG, "response(...) $response")
-        Log.v(TAG, "response(...) ${response!!.body().toString()}")
-        if (response != null && response!!.isSuccessful) {
-            userResponse = response!!.body()
-        }
-        return userResponse
+    fun loadUserData(nickName: String, onSuccess: (UserResponse?) -> Unit, onFailed: (String) -> Unit) {
+        SearchUser.getService().requestUser(authorization = mAuthorizationKey, nickname = nickName)
+            .enqueue(object : Callback<UserResponse> {
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    onFailed("Failed! " + t)
+                }
+
+                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                    Log.v(TAG, "response(...) $response")
+                    Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                    if (response != null && response!!.isSuccessful) {
+                        if (response.code() == 200) {
+                            onSuccess(response!!.body())
+                        } else {
+                            onFailed("Failed! errorcode : " + response.code())
+                        }
+                    }
+                }
+            })
     }
 
-    fun loadMatchDetail(matchId: String): MatchDetailResponse? {
-        var response: Response<MatchDetailResponse>? = null
-        var matchResponse: MatchDetailResponse? = null
-        response = SearchUser.getService().requestMatchDetail(
-            authorization = mAuthorizationKey,
-            matchid = matchId
-        ).execute()
-        Log.v(TAG, "response(...) $response")
-        Log.v(TAG, "response(...) ${response!!.body().toString()}")
-        if (response != null && response!!.isSuccessful) {
-            matchResponse = response!!.body()
-        }
-        return matchResponse
+    fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse?) -> Unit), onFailed: (String) -> Unit) {
+        SearchUser.getService().requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
+            .enqueue(object : Callback<MatchDetailResponse> {
+            override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
+                Log.d(TAG, "onFailure(...)" + t)
+                onFailed("Failed! " + t)
+            }
+
+            override fun onResponse(call: Call<MatchDetailResponse>, response: Response<MatchDetailResponse>) {
+                Log.v(TAG, "response(...) $response")
+                Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                if (response.code() == 200) {
+                    onSuccess(response!!.body())
+                } else {
+                    onFailed("Failed! errorcode : " + response.code())
+                }
+            }
+        })
     }
 
-    fun loadMatchId(
-        accessid: String,
-        matchtype: Int,
-        offset: Int?,
-        limit: Int?
-    ): ResponseBody? {
-        var response: Response<ResponseBody>? = null
-        var usermatchIdResponse: ResponseBody? = null
-        response = SearchUser.getService().requestMatchId(
-            authorization = mAuthorizationKey,
-            accessid = accessid,
-            matchtype = matchtype,
-            offset = offset,
-            limit = limit
-        ).execute()
-        Log.v(TAG, "response(...) $response")
-        Log.v(TAG, "response(...) ${response!!.body().toString()}")
-        if (response != null && response!!.isSuccessful) {
-            usermatchIdResponse = response!!.body()
-        }
-        return usermatchIdResponse
+    fun loadMatchId(accessid: String, matchtype: Int, offset: Int?, limit: Int?, onSuccess: (ResponseBody?) -> Unit, onFailed: (String) -> Unit) {
+        SearchUser.getService().requestMatchId(authorization = mAuthorizationKey, accessid = accessid, matchtype = matchtype, offset = offset, limit = limit)
+            .enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onFailed("Failed! " + t)
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.v(TAG, "loadMatchId onResponse(...) ::: ${response.code()}")
+                Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                if (response.code() == 200) {
+                    onSuccess(response!!.body())
+                } else {
+                    onFailed("Failed! errorcode : " + response.code())
+                }
+            }
+        })
     }
 
 }

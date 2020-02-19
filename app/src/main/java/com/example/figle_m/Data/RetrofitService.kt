@@ -1,17 +1,13 @@
 package com.example.figle_m.Data
 
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.Response.UserMatchIdResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
-import org.json.JSONArray
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.*
 
 interface RetrofitService {
 //    https://api.nexon.co.kr/fifaonline4/v1.0/users?nickname=아무거나다잘함
@@ -32,7 +28,7 @@ interface RetrofitService {
     ): Call<MatchDetailResponse>
 
 
-    @GET("v1.0/users/{accessid}")
+    @GET("v1.0/users/{accessid}/matches")
     fun requestMatchId(
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String,

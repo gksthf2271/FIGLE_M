@@ -12,14 +12,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.Response.UserMatchIdResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.View.UserPresenter
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.*
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
@@ -71,8 +67,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             }
             MSG_SHOW_MATCH_ID_LIST -> {
                 val responseBody: ResponseBody = msg.obj as ResponseBody
-                var jsonObject:JSONObject = JSONObject(responseBody.string())
-                Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + jsonObject)
+                var result: String = responseBody.string()
+                Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + result)
                 return true
             }
             else -> {
