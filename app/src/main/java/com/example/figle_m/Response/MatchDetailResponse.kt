@@ -1,6 +1,5 @@
 package com.example.figle_m.Response
 
-import android.util.Log
 import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.google.gson.annotations.SerializedName
 
@@ -17,13 +16,15 @@ class MatchDetailResponse {
     var matchType: Int? = null
 
     @SerializedName("matchInfo")
-    var matchInfo: List<MatchInfoDTO>? = null
+    var matchInfoList: List<MatchInfoDTO>? = null
 
     override fun toString(): String {
-        val string: String = "matchId             : $matchId \n" +
+        var string: String = "matchId             : $matchId \n" +
                 "matchDate           : $matchDate \n" +
-                "matchType           : $matchType \n" +
-                "matchInfo           : ${matchInfo.toString()} \n"
+                "matchType           : $matchType \n"
+        for (matchInfo in matchInfoList!!.iterator()){
+            string += matchInfo.toString()
+        }
         return string
     }
 }

@@ -67,8 +67,11 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             }
             MSG_SHOW_MATCH_ID_LIST -> {
                 val responseBody: ResponseBody = msg.obj as ResponseBody
-                var result: String = responseBody.string()
-                Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + result)
+                var result:String = responseBody.string()
+                val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
+
+                Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + stringList[0])
+                mUserPresenter!!.getMatchDetailList(stringList[0])
                 return true
             }
             else -> {
