@@ -3,7 +3,7 @@ package com.example.figle_m.Response
 import android.util.Log
 import com.google.gson.annotations.SerializedName
 
-class UserHighRankResponse {
+class UserHighRankResponse: BaseResponse {
     private val TAG : String = javaClass.name
 
     @SerializedName("matchType")

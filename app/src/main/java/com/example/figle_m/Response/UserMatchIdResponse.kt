@@ -2,7 +2,7 @@ package com.example.figle_m.Response
 
 import com.google.gson.annotations.SerializedName
 
-class UserMatchIdResponse {
+class UserMatchIdResponse: BaseResponse {
     private val TAG : String = javaClass.name
 
     @SerializedName("")

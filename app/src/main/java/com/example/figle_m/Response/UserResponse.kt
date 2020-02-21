@@ -1,9 +1,8 @@
 package com.example.figle_m.Response
 
-import android.util.Log
 import com.google.gson.annotations.SerializedName
 
-class UserResponse {
+class UserResponse: BaseResponse {
     private val TAG : String = javaClass.name
 
     @SerializedName("accessId")

@@ -3,7 +3,7 @@ package com.example.figle_m.Response
 import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.google.gson.annotations.SerializedName
 
-class MatchDetailResponse {
+class MatchDetailResponse: BaseResponse {
     private val TAG: String = javaClass.name
 
     @SerializedName("matchId")
