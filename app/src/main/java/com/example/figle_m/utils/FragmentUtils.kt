@@ -9,9 +9,9 @@ open class FragmentUtils{
 
     constructor()
 
-    open fun loadFragment(fragment: Fragment, container_id:Int, fragmentManager: FragmentManager) {
+    open fun loadFragment(fragment: Fragment, container_id:Int, fragmentManager: FragmentManager?) {
         val className: String = fragment.javaClass.name
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
         fragmentTransaction.replace(container_id, fragment, className)
         fragmentTransaction.commit()
     }

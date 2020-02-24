@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,6 +78,10 @@ class DataManager {
                 Log.v(TAG, "response(...) $response")
                 Log.v(TAG, "response(...) ${response!!.body().toString()}")
                 if (response.code() == 200) {
+                    var responseBody = response.body()!!
+                    responseBody.toString()
+                    var jsonObject = JSONObject()
+                    jsonObject.getJSONObject(responseBody.toString())
                     onSuccess(response!!.body())
                 } else {
                     onFailed("Failed! errorcode : " + response.code())

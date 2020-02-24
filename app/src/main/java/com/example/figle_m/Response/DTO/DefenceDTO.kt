@@ -2,6 +2,9 @@ package com.example.figle_m.Response.DTO
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName
+import android.system.Os.link
+
+
 
 class DefenceDTO {
     private val TAG: String = javaClass.name
@@ -19,11 +22,16 @@ class DefenceDTO {
     var tackleSuccess: Int? = null
 
     override fun toString(): String {
-        val string: String = "blockTry             : $blockTry \n" +
-                "blockSuccess         : $blockSuccess \n" +
-                "tackleTry            : $tackleTry \n" +
-                "tackleSuccess        : $tackleSuccess \n"
-        return string
+        val sb = StringBuilder()
+        sb.append("------------------------------------------------\n")
+        sb.append("------------------DefenceDTO--------------------\n")
+        sb.append(" blockTry                     : $blockTry\n")
+        sb.append(" blockSuccess                 : $blockSuccess\n")
+        sb.append(" tackleTry                    : $tackleTry\n")
+        sb.append(" tackleSuccess                : $tackleSuccess\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 
 }

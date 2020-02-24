@@ -19,7 +19,7 @@ class PlayerDTO {
     var status: StatusDTO? = null
 
     override fun toString(): String {
-        val string: String = "spId             : $spId \n" +
+        val string: String = "\nspId             : $spId \n" +
                         "spPosition       : $spPosition \n" +
                         "spGrade          : $spGrade \n " +
                         "status           : ${status.toString()} \n"

@@ -36,17 +36,23 @@ class StatusDTO {
     @SerializedName("spRating")
     var spRating: Float? = null
 
+
     override fun toString(): String {
-        val string: String = "shoot                : $shoot \n" +
-                        "effectiveShoot       : $effectiveShoot \n" +
-                        "assist               : $assist \n" +
-                        "goal                 : $goal \n" +
-                        "dribble              : $dribble \n" +
-                        "passTry              : $passTry \n" +
-                        "passSuccess          : $passSuccess \n" +
-                        "block                : $block \n" +
-                        "tackle               : $tackle \n" +
-                        "spRating             : $spRating \n"
-        return string
+        val sb = StringBuilder()
+        sb.append("------------------------------------------------\n")
+        sb.append("------------------StatusDTO--------------------\n")
+        sb.append(" shoot                     : $shoot\n")
+        sb.append(" effectiveShoot            : $effectiveShoot\n")
+        sb.append(" assist                    : $assist\n")
+        sb.append(" goal                      : $goal\n")
+        sb.append(" dribble                   : $dribble\n")
+        sb.append(" passTry                   : $passTry\n")
+        sb.append(" passSuccess               : $passSuccess\n")
+        sb.append(" block                     : $block\n")
+        sb.append(" tackle                    : $tackle\n")
+        sb.append(" spRating                  : $spRating\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }

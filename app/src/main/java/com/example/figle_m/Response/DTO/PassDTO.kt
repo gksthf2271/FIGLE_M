@@ -49,20 +49,25 @@ class PassDTO {
     var lobbedThroughPassSuccess: Int? = null
 
     override fun toString(): String {
-        val string: String = "passTry                     : $passTry \n" +
-                "passSuccess                : $passSuccess \n" +
-                "shortPassTry               : $shortPassTry \n" +
-                "shortPassSuccess           : $shortPassSuccess \n" +
-                "longPassTry                : $longPassTry \n" +
-                "longPassSuccess            : $longPassSuccess \n" +
-                "bouncingLobPassTry         : $bouncingLobPassTry \n" +
-                "bouncingLobPassSuccess     : $bouncingLobPassSuccess \n" +
-                "drivenGroundPassTry        : $drivenGroundPassTry \n" +
-                "drivenGroundPassSuccess    : $drivenGroundPassSuccess \n" +
-                "throughPassTry             : $throughPassTry \n" +
-                "throughPassSuccess         : $throughPassSuccess \n" +
-                "lobbedThroughPassTry       : $lobbedThroughPassTry \n" +
-                "lobbedThroughPassSuccess   : $lobbedThroughPassSuccess \n"
-        return string
+        val sb = StringBuilder()
+        sb.append("------------------------------------------------\n")
+        sb.append("------------------PassDTO--------------------\n")
+        sb.append(" passTry                    : $passTry\n")
+        sb.append(" passSuccess                : $passSuccess\n")
+        sb.append(" shortPassTry               : $shortPassTry\n")
+        sb.append(" shortPassSuccess           : $shortPassSuccess\n")
+        sb.append(" longPassTry                : $longPassTry\n")
+        sb.append(" longPassSuccess            : $longPassSuccess\n")
+        sb.append(" bouncingLobPassTry         : $bouncingLobPassTry\n")
+        sb.append(" bouncingLobPassSuccess     : $bouncingLobPassSuccess\n")
+        sb.append(" drivenGroundPassTry        : $drivenGroundPassTry\n")
+        sb.append(" drivenGroundPassSuccess    : $drivenGroundPassSuccess\n")
+        sb.append(" throughPassTry             : $throughPassTry\n")
+        sb.append(" throughPassSuccess         : $throughPassSuccess\n")
+        sb.append(" lobbedThroughPassTry       : $lobbedThroughPassTry\n")
+        sb.append(" lobbedThroughPassSuccess   : $lobbedThroughPassSuccess\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }

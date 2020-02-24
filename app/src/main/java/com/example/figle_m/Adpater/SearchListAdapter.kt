@@ -10,11 +10,11 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
 
-class SearchListAdapter(context: Context, matchList:MutableList<MatchDetailResponse>) : RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
+class SearchListAdapter(context: Context?, matchList:MutableList<MatchDetailResponse>?) : RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG:String = javaClass.name
 
-    val mContext: Context
-    val mMatchList:MutableList<MatchDetailResponse>
+    val mContext: Context?
+    val mMatchList:MutableList<MatchDetailResponse>?
     var mDataBinding: ItemSearchListBinding? = null
 
     init {
@@ -29,12 +29,12 @@ class SearchListAdapter(context: Context, matchList:MutableList<MatchDetailRespo
     }
 
     override fun getItemCount(): Int {
-        return mMatchList.size
+        return mMatchList.let { mMatchList!!.size }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         mDataBinding = DataBindingUtil.getBinding<ItemSearchListBinding>(holder.mItemView)
-        mMatchList[position].matchInfoList.let { return }
+        mMatchList!![position].matchInfoList.let { return }
         var user: String? = mMatchList[position].matchInfoList!![0].nickname
         user += " vs " + mMatchList[position].matchInfoList!![1].nickname
 

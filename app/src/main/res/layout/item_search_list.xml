@@ -68,9 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:chart_axis="y"
-            app:chart_backgroundColor="#FFFFFF"
             app:chart_barsColor="#3F51B5"
-            app:chart_barsRaidus="6dp"
             app:chart_spacing="20dp">
 
         </com.db.williamchart.view.HorizontalBarChartView>

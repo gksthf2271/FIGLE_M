@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.os.Parcelable
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -14,8 +15,13 @@ import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.View.UserPresenter
+import com.example.figle_m.utils.FragmentUtils
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
+import org.json.JSONObject
+import java.io.Serializable
+import java.io.StringReader
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
@@ -62,7 +68,12 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 return true
             }
             MSG_SHOW_MATCH_DETAIL_LIST -> {
-                Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj.toString())
+                Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj)
+                val searchListFragment = SearchListFragment()
+                val bundle = Bundle()
+                bundle.putString(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj.toString())
+                searchListFragment.arguments = bundle
+                FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
                 return true
             }
             MSG_SHOW_MATCH_ID_LIST -> {
@@ -99,7 +110,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             Log.d(TAG, "matchDetailResponse is null")
             return
         }
-        val msg_show_match_detail_list:Message = Message()
+        val msg_show_match_detail_list = Message()
         msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
         msg_show_match_detail_list.obj = matchDetailResponse
         mHandler.sendMessage(msg_show_match_detail_list)
@@ -111,7 +122,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             Log.d(TAG, "userMatchIdResponse is null")
             return
         }
-        val msg_show_match_id_list:Message = Message()
+        val msg_show_match_id_list = Message()
         msg_show_match_id_list.what = MSG_SHOW_MATCH_ID_LIST
         msg_show_match_id_list.obj = userMatchIdResponse
         mHandler.sendMessage(msg_show_match_id_list)

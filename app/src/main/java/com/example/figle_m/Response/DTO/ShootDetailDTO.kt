@@ -30,15 +30,21 @@ class ShootDetailDTO {
     @SerializedName("inPenalty")
     var inPenalty: Boolean? = null
 
+
     override fun toString(): String {
-        val string: String = "goalTime             : $goalTime \n" +
-                "x                    : $x \n" +
-                "y                    : $y \n" +
-                "type                 : $type \n" +
-                "result               : $result \n" +
-                "assist               : $assist \n" +
-                "hitPost              : $hitPost \n" +
-                "inPenalty            : $inPenalty \n"
-        return string
+        val sb = StringBuilder()
+        sb.append("------------------------------------------------\n")
+        sb.append("------------------ShootDetailDTO--------------------\n")
+        sb.append(" goalTime                     : $goalTime\n")
+        sb.append(" x                            : $x\n")
+        sb.append(" y                            : $y\n")
+        sb.append(" type                         : $type\n")
+        sb.append(" result                       : $result\n")
+        sb.append(" assist                       : $assist\n")
+        sb.append(" hitPost                      : $hitPost\n")
+        sb.append(" inPenalty                    : $inPenalty\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }

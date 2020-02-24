@@ -54,23 +54,29 @@ class ShootDTO {
     @SerializedName("goalPenaltyKick")
     var goalPenaltyKick: Int? = null
 
+
     override fun toString(): String {
-        val string: String = "shootTotal                     : $shootTotal \n" +
-                "effectiveShootTotal            : $effectiveShootTotal \n" +
-                "shootOutScore                  : $shootOutScore \n" +
-                "goalTotal                      : $goalTotal \n" +
-                "goalTotalDisplay               : $goalTotalDisplay \n" +
-                "ownGoal                        : $ownGoal \n" +
-                "shootHeading                   : $shootHeading \n" +
-                "goalHeading                    : $goalHeading \n" +
-                "shootFreekick                  : $shootFreekick \n" +
-                "goalFreekick                   : $goalFreekick \n" +
-                "shootInPenalty                 : $shootInPenalty \n" +
-                "goalInPenalty                  : $goalInPenalty \n" +
-                "shootOutPenalty                : $shootOutPenalty \n" +
-                "goalOutPenalty                 : $goalOutPenalty \n" +
-                "shootPenaltyKick               : $shootPenaltyKick \n" +
-                "goalPenaltyKick                : $goalPenaltyKick \n "
-        return string
+        val sb = StringBuilder()
+        sb.append("\n------------------------------------------------\n")
+        sb.append("------------------ShootDTO--------------------\n")
+        sb.append(" shootTotal                     : $shootTotal\n")
+        sb.append(" effectiveShootTotal            : $effectiveShootTotal\n")
+        sb.append(" shootOutScore                  : $shootOutScore\n")
+        sb.append(" goalTotal                      : $goalTotal\n")
+        sb.append(" goalTotalDisplay               : $goalTotalDisplay\n")
+        sb.append(" ownGoal                        : $ownGoal\n")
+        sb.append(" shootHeading                   : $shootHeading\n")
+        sb.append(" goalHeading                    : $goalHeading\n")
+        sb.append(" shootFreekick                  : $shootFreekick\n")
+        sb.append(" goalFreekick                   : $goalFreekick\n")
+        sb.append(" shootInPenalty                 : $shootInPenalty\n")
+        sb.append(" goalInPenalty                  : $goalInPenalty\n")
+        sb.append(" shootOutPenalty                : $shootOutPenalty\n")
+        sb.append(" goalOutPenalty                 : $goalOutPenalty\n")
+        sb.append(" shootPenaltyKick               : $shootPenaltyKick\n")
+        sb.append(" goalPenaltyKick                : $goalPenaltyKick\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }

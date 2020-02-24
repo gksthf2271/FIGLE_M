@@ -2,8 +2,9 @@ package com.example.figle_m.Response
 
 import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class MatchDetailResponse: BaseResponse {
+class MatchDetailResponse: BaseResponse, Serializable {
     private val TAG: String = javaClass.name
 
     @SerializedName("matchId")
@@ -18,13 +19,19 @@ class MatchDetailResponse: BaseResponse {
     @SerializedName("matchInfo")
     var matchInfoList: List<MatchInfoDTO>? = null
 
+
     override fun toString(): String {
-        var string: String = "matchId             : $matchId \n" +
-                "matchDate           : $matchDate \n" +
-                "matchType           : $matchType \n"
+        val sb = StringBuilder()
+        sb.append("------------------------------------------------\n")
+        sb.append("------------------MatchDetailResponse--------------------\n")
+        sb.append(" matchId                     : $matchId\n")
+        sb.append(" matchDate                   : $matchDate\n")
+        sb.append(" matchType                   : $matchType\n")
         for (matchInfo in matchInfoList!!.iterator()){
-            string += matchInfo.toString()
+            sb.append("${matchInfo.toString()}")
         }
-        return string
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }

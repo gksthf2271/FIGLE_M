@@ -40,18 +40,23 @@ class MatchDetailDTO {
     var possession: Int? = null
 
     override fun toString(): String {
-        val string: String = "seasonId             : $seasonId \n" +
-                "matchResult          : $matchResult \n" +
-                "matchEndType         : $matchEndType \n" +
-                "systemPause          : $systemPause \n" +
-                "foul                 : $foul \n" +
-                "injury               : $injury \n" +
-                "redCards             : $redCards \n" +
-                "yellowCards          : $yellowCards \n" +
-                "dribble              : $dribble \n" +
-                "cornerKick           : $cornerKick \n" +
-                "matchEndType         : $matchEndType \n" +
-                "possession           : $possession \n"
-        return string
+        val sb = StringBuilder()
+        sb.append("\n------------------------------------------------\n")
+        sb.append("------------------MatchDetailDTO--------------------\n")
+        sb.append(" seasonId                     : $seasonId\n")
+        sb.append(" matchResult                  : $matchResult\n")
+        sb.append(" matchEndType                 : $matchEndType\n")
+        sb.append(" systemPause                  : $systemPause\n")
+        sb.append(" foul                         : $foul\n")
+        sb.append(" injury                       : $injury\n")
+        sb.append(" redCards                     : $redCards\n")
+        sb.append(" yellowCards                  : $yellowCards\n")
+        sb.append(" dribble                      : $dribble\n")
+        sb.append(" cornerKick                   : $cornerKick\n")
+        sb.append(" matchEndType                 : $matchEndType\n")
+        sb.append(" possession                   : $possession\n")
+        sb.append("------------------------------------------------\n")
+
+        return sb.toString()
     }
 }
