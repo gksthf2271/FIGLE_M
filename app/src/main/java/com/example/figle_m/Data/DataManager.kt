@@ -78,10 +78,6 @@ class DataManager {
                 Log.v(TAG, "response(...) $response")
                 Log.v(TAG, "response(...) ${response!!.body().toString()}")
                 if (response.code() == 200) {
-                    var responseBody = response.body()!!
-                    responseBody.toString()
-                    var jsonObject = JSONObject()
-                    jsonObject.getJSONObject(responseBody.toString())
                     onSuccess(response!!.body())
                 } else {
                     onFailed("Failed! errorcode : " + response.code())

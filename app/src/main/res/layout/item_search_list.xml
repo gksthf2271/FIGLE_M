@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/diaryImg"
+            android:id="@+id/txt_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"

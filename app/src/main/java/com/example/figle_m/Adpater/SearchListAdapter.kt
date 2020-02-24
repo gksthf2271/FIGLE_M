@@ -4,27 +4,28 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
 
-class SearchListAdapter(context: Context?, matchList:MutableList<MatchDetailResponse>?) : RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
-    private val TAG:String = javaClass.name
+class SearchListAdapter(context: Context?, matchList: MutableList<MatchDetailResponse>?) :
+    RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
+    private val TAG: String = javaClass.name
 
     val mContext: Context?
-    val mMatchList:MutableList<MatchDetailResponse>?
-    var mDataBinding: ItemSearchListBinding? = null
-
+    val mMatchList: MutableList<MatchDetailResponse>?
+    var mItemSearchListBinding: ItemSearchListBinding? = null
     init {
         mContext = context
         mMatchList = matchList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_search_list, parent, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_search_list, parent, false)
         val viewHolder = ViewHolder(view, this)
+        mItemSearchListBinding = ItemSearchListBinding.bind(view)
         return viewHolder
     }
 
@@ -33,20 +34,26 @@ class SearchListAdapter(context: Context?, matchList:MutableList<MatchDetailResp
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        mDataBinding = DataBindingUtil.getBinding<ItemSearchListBinding>(holder.mItemView)
-        mMatchList!![position].matchInfoList.let { return }
-        var user: String? = mMatchList[position].matchInfoList!![0].nickname
-        user += " vs " + mMatchList[position].matchInfoList!![1].nickname
+        mMatchList!![position].matchInfo.let {
+            var score: String? = mMatchList[position].matchInfo!![0].shoot.goalTotal.toString()
+            score += " : " + mMatchList[position].matchInfo!![1].shoot.goalTotal.toString()
 
-        mDataBinding!!.txtResult.text = mMatchList[position].matchInfoList!![0].matchDetail!!.matchResult
-        mDataBinding!!.txtNickName.text = user
+            var user: String? = mMatchList[position].matchInfo!![0].nickname
+            user += " vs " + mMatchList[position].matchInfo!![1].nickname
+
+            mItemSearchListBinding!!.txtResult.text =
+                mMatchList[position].matchInfo!![0].matchDetail!!.matchResult
+            mItemSearchListBinding!!.txtNickName.text = user
+            mItemSearchListBinding!!.txtScore.text = score
+        }
 //        mDataBinding.txtNickName = mMatchList[position].matchInfoList[0].nickname
 //        holder.mItemView = mMatchList[position].matchInfoList[0].nickname
     }
 
-    open class ViewHolder(itemView: View, searchListAdapter: SearchListAdapter): RecyclerView.ViewHolder(itemView) {
+    open class ViewHolder(itemView: View, searchListAdapter: SearchListAdapter) :
+        RecyclerView.ViewHolder(itemView) {
         var mItemView: View
-        var mSearchListAdapter:SearchListAdapter
+        var mSearchListAdapter: SearchListAdapter
 
         init {
             mItemView = itemView

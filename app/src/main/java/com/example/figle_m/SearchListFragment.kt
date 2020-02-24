@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.Adpater.SearchListAdapter
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.View.UserPresenter
@@ -44,17 +46,20 @@ class SearchListFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v: View = inflater.inflate(R.layout.fragment_searchlist, container, false)
-        mDataBinding = DataBindingUtil.getBinding<FragmentSearchlistBinding>(v)
+        mDataBinding = DataBindingUtil.findBinding(v)
         return v
     }
 
     override fun onStart() {
         super.onStart()
         arguments.let {
-            JSONObject(arguments!!.getString(KEY_MATCH_DETAIL_LIST))
-//            mSearchResponseList = mutableListOf(JSONObject(arguments!!.getString(KEY_MATCH_DETAIL_LIST)))
+            mSearchResponseList = mutableListOf(arguments!!.get(KEY_MATCH_DETAIL_LIST) as MatchDetailResponse)
         }
-        mDataBinding!!.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchResponseList)
+        val recyclerView = view!!.findViewById<RecyclerView>(R.id.layout_recyclerview)
+        val mLayoutManager = LinearLayoutManager(context)
+        recyclerView.setLayoutManager(mLayoutManager)
+        recyclerView.adapter =  SearchListAdapter(context, mSearchResponseList)
+//        mDataBinding!!.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchResponseList)
     }
 
     override fun onResume() {

@@ -22,6 +22,7 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import java.io.Serializable
 import java.io.StringReader
+import java.util.ArrayList
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
@@ -71,7 +72,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj)
                 val searchListFragment = SearchListFragment()
                 val bundle = Bundle()
-                bundle.putString(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj.toString())
+                bundle.putParcelable(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj as Parcelable)
                 searchListFragment.arguments = bundle
                 FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
                 return true
@@ -80,7 +81,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 val responseBody: ResponseBody = msg.obj as ResponseBody
                 var result:String = responseBody.string()
                 val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
-
                 Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + stringList[0])
                 mUserPresenter!!.getMatchDetailList(stringList[0])
                 return true
