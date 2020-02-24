@@ -29,7 +29,7 @@ class UserPresenter: UserContract.Presenter{
                     mUserView?.hideLoading()
                     mUserView?.showMatchDetailList(it)
                 },{
-                    Log.v("getMatchDetailList", it)
+                    Log.v("getMatchDetailList!", it)
                     mUserView?.hideLoading()
                 })
         }).start()
