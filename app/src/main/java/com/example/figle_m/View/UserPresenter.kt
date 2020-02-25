@@ -21,10 +21,10 @@ class UserPresenter: UserContract.Presenter{
         }).start()
     }
 
-    override fun getMatchDetailList(matchId: String) {
+    override fun getMatchDetailList(matchIdList: List<String>) {
         mUserView?.showLoading()
         Thread(Runnable {
-            DataManager.getInstance().loadMatchDetail(matchId,
+            DataManager.getInstance().loadMatchDetail(matchIdList,
                 {
                     mUserView?.hideLoading()
                     mUserView?.showMatchDetailList(it)

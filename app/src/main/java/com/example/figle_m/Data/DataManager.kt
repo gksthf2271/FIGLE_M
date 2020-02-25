@@ -26,7 +26,7 @@ class DataManager {
     }
 
     val offset: Int = 0
-    val limit: Int = 20
+    val limit: Int = 10
 
     private val mAuthorizationKey: String =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4"
@@ -66,24 +66,32 @@ class DataManager {
             })
     }
 
-    fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse?) -> Unit), onFailed: (String) -> Unit) {
-        SearchUser.getService().requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
-            .enqueue(object : Callback<MatchDetailResponse> {
-            override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure(...)" + t)
-                onFailed("Failed! " + t)
-            }
+    fun loadMatchDetail(matchIdList: List<String>, onSuccess: ((List<MatchDetailResponse>) -> Unit), onFailed: (String) -> Unit) {
+        var matchDetailList : MutableList<MatchDetailResponse> = mutableListOf()
+        for (matchId in matchIdList) {
+            SearchUser.getService()
+                .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
+                .enqueue(object : Callback<MatchDetailResponse> {
+                    override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
+                        Log.d(TAG, "onFailure(...)" + t)
+                        onFailed("Failed! " + t)
+                    }
 
-            override fun onResponse(call: Call<MatchDetailResponse>, response: Response<MatchDetailResponse>) {
-                Log.v(TAG, "response(...) $response")
-                Log.v(TAG, "response(...) ${response!!.body().toString()}")
-                if (response.code() == 200) {
-                    onSuccess(response!!.body())
-                } else {
-                    onFailed("Failed! errorcode : " + response.code())
-                }
-            }
-        })
+                    override fun onResponse(
+                        call: Call<MatchDetailResponse>,
+                        response: Response<MatchDetailResponse>
+                    ) {
+                        Log.v(TAG, "response(...) $response")
+                        Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                        if (response.code() == 200) {
+                            matchDetailList.add(response!!.body()!!)
+                            if (matchDetailList.size == 10) {
+                                onSuccess(matchDetailList)
+                            }
+                        }
+                    }
+                })
+        }
     }
 
     fun loadMatchId(accessid: String, matchtype: Int, offset: Int?, limit: Int?, onSuccess: (ResponseBody?) -> Unit, onFailed: (String) -> Unit) {

@@ -17,7 +17,7 @@ class SearchListFragment : BaseFragment() {
 
     lateinit var mUserPresenter: UserPresenter
     var mDataBinding: FragmentSearchlistBinding? = null
-    var mSearchResponseList: MutableList<MatchDetailResponse>? = null
+    lateinit var mSearchResponseList: ArrayList<MatchDetailResponse>
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
@@ -50,7 +50,7 @@ class SearchListFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         arguments.let {
-            mSearchResponseList = mutableListOf(arguments!!.get(KEY_MATCH_DETAIL_LIST) as MatchDetailResponse)
+            mSearchResponseList = arguments!!.get(KEY_MATCH_DETAIL_LIST) as ArrayList<MatchDetailResponse>
         }
 
         context ?: return

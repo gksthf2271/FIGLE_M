@@ -16,13 +16,8 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.View.UserPresenter
 import com.example.figle_m.utils.FragmentUtils
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
-import org.json.JSONObject
-import java.io.Serializable
-import java.io.StringReader
-import java.util.ArrayList
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
@@ -72,7 +67,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj)
                 val searchListFragment = SearchListFragment()
                 val bundle = Bundle()
-                bundle.putParcelable(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj as Parcelable)
+                bundle.putParcelableArrayList(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj as ArrayList<Parcelable>)
                 searchListFragment.arguments = bundle
                 FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
                 return true
@@ -81,8 +76,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 val responseBody: ResponseBody = msg.obj as ResponseBody
                 var result:String = responseBody.string()
                 val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
-                Log.v(TAG, "MSG_SHOW_MATCH_ID_LIST result ::: " + stringList[0])
-                mUserPresenter!!.getMatchDetailList(stringList[0])
+
+                mUserPresenter!!.getMatchDetailList(stringList)
                 return true
             }
             else -> {
@@ -105,14 +100,14 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun showMatchDetailList(matchDetailResponse: MatchDetailResponse?) {
-        if (matchDetailResponse == null) {
-            Log.d(TAG, "matchDetailResponse is null")
+    override fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>) {
+        if (matchDetailResponseList.isEmpty()) {
+            Log.d(TAG, "matchDetailResponseList is empty")
             return
         }
         val msg_show_match_detail_list = Message()
         msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
-        msg_show_match_detail_list.obj = matchDetailResponse
+        msg_show_match_detail_list.obj = matchDetailResponseList
         mHandler.sendMessage(msg_show_match_detail_list)
     }
 
