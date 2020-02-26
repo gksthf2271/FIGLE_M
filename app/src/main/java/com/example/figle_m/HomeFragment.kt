@@ -59,7 +59,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                     userResponse.accessId!!,
                     DataManager.matchType.normalMatch.matchType,
                     DataManager.getInstance().offset,
-                    DataManager.getInstance().limit
+                    DataManager.getInstance().SEARCH_LIMIT
                 )
                 return true
             }

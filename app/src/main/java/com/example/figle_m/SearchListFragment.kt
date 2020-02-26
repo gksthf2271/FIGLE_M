@@ -1,6 +1,7 @@
 package com.example.figle_m
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,10 +48,14 @@ class SearchListFragment : BaseFragment() {
         return v
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         arguments.let {
-            mSearchResponseList = arguments!!.get(KEY_MATCH_DETAIL_LIST) as ArrayList<MatchDetailResponse>
+            mSearchResponseList = arrayListOf()
+            mSearchResponseList.addAll(arguments!!.get(KEY_MATCH_DETAIL_LIST) as ArrayList<MatchDetailResponse>)
+        }
+        for (response in mSearchResponseList) {
+            Log.v(TAG, "item ::: ${response}")
         }
 
         context ?: return
@@ -59,11 +64,8 @@ class SearchListFragment : BaseFragment() {
         val mLayoutManager = LinearLayoutManager(context)
         recyclerView.setLayoutManager(mLayoutManager)
         recyclerView.adapter =  SearchListAdapter(context!!, mSearchResponseList)
-//        mDataBinding!!.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchResponseList)
-    }
 
-    override fun onResume() {
-        super.onResume()
+        Log.v(TAG,"TEST, adpater total count ::: ${recyclerView.adapter!!.itemCount}")
     }
 
 }

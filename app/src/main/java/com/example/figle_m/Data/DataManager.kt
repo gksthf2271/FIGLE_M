@@ -26,7 +26,7 @@ class DataManager {
     }
 
     val offset: Int = 0
-    val limit: Int = 10
+    open val SEARCH_LIMIT: Int = 10
 
     private val mAuthorizationKey: String =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4"
@@ -53,8 +53,7 @@ class DataManager {
                 }
 
                 override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
-                    Log.v(TAG, "response(...) $response")
-                    Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                    Log.v(TAG, "loadUserData response(...) ${response.code()}")
                     if (response != null && response!!.isSuccessful) {
                         if (response.code() == 200) {
                             onSuccess(response!!.body())
@@ -81,11 +80,11 @@ class DataManager {
                         call: Call<MatchDetailResponse>,
                         response: Response<MatchDetailResponse>
                     ) {
-                        Log.v(TAG, "response(...) $response")
-                        Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                        Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
+//                        Log.v(TAG, "response(...) ${response!!.body().toString()}")
                         if (response.code() == 200) {
                             matchDetailList.add(response!!.body()!!)
-                            if (matchDetailList.size == 10) {
+                            if (matchDetailList.size == SEARCH_LIMIT) {
                                 onSuccess(matchDetailList)
                             }
                         }
@@ -103,7 +102,6 @@ class DataManager {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 Log.v(TAG, "loadMatchId onResponse(...) ::: ${response.code()}")
-                Log.v(TAG, "response(...) ${response!!.body().toString()}")
                 if (response.code() == 200) {
                     onSuccess(response!!.body())
                 } else {

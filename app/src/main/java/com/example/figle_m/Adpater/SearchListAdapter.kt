@@ -15,8 +15,8 @@ class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResp
     private val TAG: String = javaClass.name
 
     val mContext: Context
-    val mMatchList: MutableList<MatchDetailResponse>?
-    var mItemSearchListBinding: ItemSearchListBinding? = null
+    val mMatchList: List<MatchDetailResponse>?
+    lateinit var mItemSearchListBinding: ItemSearchListBinding
     init {
         mContext = context
         mMatchList = matchList
@@ -34,7 +34,6 @@ class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResp
         return mMatchList.let { mMatchList!!.size }
     }
 
-    @UseExperimental(ImplementsAlphaChart::class)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         mMatchList!![position].matchInfo.let {
             var score: String? = mMatchList[position].matchInfo!![0].shoot.goalTotal.toString()
@@ -50,38 +49,39 @@ class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResp
             mItemSearchListBinding!!.txtScore.text = score
 
             val res =
-                if ("승".equals(result))
-                    mContext.resources.getColor(R.color.search_list_win, null)
-                else
-                    mContext.resources.getColor(R.color.search_list_lose, null)
+                when (result) {
+                    "승" -> mContext.resources.getColor(R.color.search_list_win, null)
+                    "패" -> mContext.resources.getColor(R.color.search_list_lose, null)
+                    else -> mContext.resources.getColor(R.color.search_list_draw, null)
+                }
             mItemSearchListBinding!!.rootLayout.setBackgroundColor(res)
 
-            val horizontalBarSet = linkedMapOf(
-                "PORRO" to 10F,
-                "FUSCE" to 5F,
-                "EGET" to 3F
-            )
-
-            val donutSet = listOf(
-                20f,
-                80f
-            )
-
-            val animationDuration = 1000L
-
-            val HorizontalBarChartView = mItemSearchListBinding!!.chartResult
-            val DonutChartView = mItemSearchListBinding!!.chartPossession
-
-            HorizontalBarChartView.animation.duration = animationDuration
-            HorizontalBarChartView.animate(horizontalBarSet)
-
-
-            DonutChartView.donutColors = intArrayOf(
-                R.color.search_list_win,
-                R.color.search_list_lose
-            )
-            DonutChartView.animation.duration = animationDuration
-            DonutChartView.animate(donutSet)
+//            val horizontalBarSet = linkedMapOf(
+//                "PORRO" to 10F,
+//                "FUSCE" to 5F,
+//                "EGET" to 3F
+//            )
+//
+//            val donutSet = listOf(
+//                20f,
+//                80f
+//            )
+//
+//            val animationDuration = 1000L
+//
+//            var horizontalBarChartView = mItemSearchListBinding!!.chartResult
+//            var donutChartView = mItemSearchListBinding!!.chartPossession
+//
+//            horizontalBarChartView.animation.duration = animationDuration
+//            horizontalBarChartView.animate(horizontalBarSet)
+//
+//
+//            donutChartView.donutColors = intArrayOf(
+//                R.color.search_list_win,
+//                R.color.search_list_lose
+//            )
+//            donutChartView.animation.duration = animationDuration
+//            donutChartView.animate(donutSet)
         }
 //        mDataBinding.txtNickName = mMatchList[position].matchInfoList[0].nickname
 //        holder.mItemView = mMatchList[position].matchInfoList[0].nickname
