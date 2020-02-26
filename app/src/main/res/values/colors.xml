@@ -7,4 +7,5 @@
 
     <color name="search_list_win">#F02196F3</color>
     <color name="search_list_lose">#F0F3214B</color>
+    <color name="search_list_draw">#F0DFDFDF</color>
 </resources>
