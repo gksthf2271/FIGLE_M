@@ -1,4 +1,4 @@
-package com.example.figle_m
+package com.example.figle_m.SearchList
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.figle_m.Adpater.SearchListAdapter
+import com.example.figle_m.BaseFragment
+import com.example.figle_m.HomeFragment
+import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.View.UserPresenter
 import com.example.figle_m.databinding.FragmentSearchlistBinding
@@ -19,6 +21,7 @@ class SearchListFragment : BaseFragment() {
     lateinit var mUserPresenter: UserPresenter
     var mDataBinding: FragmentSearchlistBinding? = null
     lateinit var mSearchResponseList: ArrayList<MatchDetailResponse>
+    lateinit var mSearchString: String
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
@@ -32,7 +35,8 @@ class SearchListFragment : BaseFragment() {
         @JvmStatic
         fun getInstance(): SearchListFragment =
             instance ?: synchronized(this) {
-                instance ?: SearchListFragment().also {
+                instance
+                    ?: SearchListFragment().also {
                     instance = it
                 }
             }
@@ -53,6 +57,8 @@ class SearchListFragment : BaseFragment() {
         arguments.let {
             mSearchResponseList = arrayListOf()
             mSearchResponseList.addAll(arguments!!.get(KEY_MATCH_DETAIL_LIST) as ArrayList<MatchDetailResponse>)
+
+            mSearchString = arguments!!.getString(HomeFragment.getInstance().KEY_SEARCH_STRING)!!
         }
         for (response in mSearchResponseList) {
             Log.v(TAG, "item ::: ${response}")
@@ -61,9 +67,10 @@ class SearchListFragment : BaseFragment() {
         context ?: return
 
         val recyclerView = view!!.findViewById<RecyclerView>(R.id.layout_recyclerview)
-        val mLayoutManager = LinearLayoutManager(context)
-        recyclerView.setLayoutManager(mLayoutManager)
-        recyclerView.adapter =  SearchListAdapter(context!!, mSearchResponseList)
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView.addItemDecoration(SearchDecoration(10))
+        recyclerView.setLayoutManager(layoutManager)
+        recyclerView.adapter =  SearchListAdapter(context!!, mSearchString ,mSearchResponseList)
 
         Log.v(TAG,"TEST, adpater total count ::: ${recyclerView.adapter!!.itemCount}")
     }

@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
+import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.View.UserPresenter
 import com.example.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,8 +27,11 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1
     val MSG_SHOW_MATCH_ID_LIST : Int = 2
     val mHandler: Handler = Handler(this)
+    open val KEY_SEARCH_STRING: String = "SearchString"
 
     lateinit var mUserPresenter: UserPresenter
+
+    lateinit var mSearchString: String
 
     override fun initPresenter() {
         Log.v(TAG, "initPresenter(...)")
@@ -67,6 +71,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj)
                 val searchListFragment = SearchListFragment()
                 val bundle = Bundle()
+                bundle.putString(KEY_SEARCH_STRING, mSearchString)
                 bundle.putParcelableArrayList(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj as ArrayList<Parcelable>)
                 searchListFragment.arguments = bundle
                 FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
@@ -168,6 +173,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     }
 
     fun search(searchString: String) {
+        mSearchString = searchString
         mUserPresenter!!.getUserDatailList(searchString)
 //        mUserPresenter!!.getMatchDetailList("5e48262ba9458a223fd64791")
     }

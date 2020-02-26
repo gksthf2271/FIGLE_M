@@ -1,24 +1,25 @@
-package com.example.figle_m.Adpater
+package com.example.figle_m.SearchList
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.db.williamchart.view.ImplementsAlphaChart
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
 
-class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResponse>?) :
+class SearchListAdapter(context: Context, searchString: String, matchList: MutableList<MatchDetailResponse>?) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
 
+    val mSearchString: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
     lateinit var mItemSearchListBinding: ItemSearchListBinding
     init {
         mContext = context
+        mSearchString = searchString
         mMatchList = matchList
     }
 
@@ -36,13 +37,24 @@ class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResp
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         mMatchList!![position].matchInfo.let {
-            var score: String? = mMatchList[position].matchInfo!![0].shoot.goalTotal.toString()
-            score += " : " + mMatchList[position].matchInfo!![1].shoot.goalTotal.toString()
+            var opposingUserIndex = 1
+            var myIndex = 0
 
-            var user: String? = mMatchList[position].matchInfo!![0].nickname
-            user += " vs " + mMatchList[position].matchInfo!![1].nickname
+            if (mSearchString.equals(mMatchList[position].matchInfo!![0].nickname.toLowerCase())){
+                opposingUserIndex = 1
+                myIndex = 0
+            } else {
+                opposingUserIndex = 0
+                myIndex = 1
+            }
 
-            val result = mMatchList[position].matchInfo!![0].matchDetail!!.matchResult
+            var score: String? = mMatchList[position].matchInfo!![myIndex].shoot.goalTotal.toString()
+            score += " : " + mMatchList[position].matchInfo!![opposingUserIndex].shoot.goalTotal.toString()
+
+            var user: String? = mMatchList[position].matchInfo!![myIndex].nickname
+            user += " vs " + mMatchList[position].matchInfo!![opposingUserIndex].nickname
+
+            val result = mMatchList[position].matchInfo!![myIndex].matchDetail!!.matchResult
 
             mItemSearchListBinding!!.txtResult.text = result
             mItemSearchListBinding!!.txtNickName.text = user
@@ -56,35 +68,7 @@ class SearchListAdapter(context: Context, matchList: MutableList<MatchDetailResp
                 }
             mItemSearchListBinding!!.rootLayout.setBackgroundColor(res)
 
-//            val horizontalBarSet = linkedMapOf(
-//                "PORRO" to 10F,
-//                "FUSCE" to 5F,
-//                "EGET" to 3F
-//            )
-//
-//            val donutSet = listOf(
-//                20f,
-//                80f
-//            )
-//
-//            val animationDuration = 1000L
-//
-//            var horizontalBarChartView = mItemSearchListBinding!!.chartResult
-//            var donutChartView = mItemSearchListBinding!!.chartPossession
-//
-//            horizontalBarChartView.animation.duration = animationDuration
-//            horizontalBarChartView.animate(horizontalBarSet)
-//
-//
-//            donutChartView.donutColors = intArrayOf(
-//                R.color.search_list_win,
-//                R.color.search_list_lose
-//            )
-//            donutChartView.animation.duration = animationDuration
-//            donutChartView.animate(donutSet)
         }
-//        mDataBinding.txtNickName = mMatchList[position].matchInfoList[0].nickname
-//        holder.mItemView = mMatchList[position].matchInfoList[0].nickname
     }
 
     open class ViewHolder(itemView: View, searchListAdapter: SearchListAdapter) :

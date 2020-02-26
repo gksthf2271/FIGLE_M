@@ -1,7 +1,6 @@
-package com.example.figle_m
+package com.example.figle_m.SearchList
 
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.View.BasePresenter
 import com.example.figle_m.View.BaseView
 
