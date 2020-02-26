@@ -72,7 +72,6 @@ class SearchListFragment : BaseFragment() {
         recyclerView.setLayoutManager(layoutManager)
         recyclerView.adapter =  SearchListAdapter(context!!, mSearchString ,mSearchResponseList)
 
-        Log.v(TAG,"TEST, adpater total count ::: ${recyclerView.adapter!!.itemCount}")
+        Log.v(TAG,"SearchList total count ::: ${recyclerView.adapter!!.itemCount}")
     }
-
 }
