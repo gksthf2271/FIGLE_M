@@ -1,6 +1,7 @@
 package com.example.figle_m.SearchList
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
+import com.example.figle_m.utils.DateUtils
+import java.text.SimpleDateFormat
 
 class SearchListAdapter(context: Context, searchString: String, matchList: MutableList<MatchDetailResponse>?) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
@@ -32,7 +35,7 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
     }
 
     override fun getItemCount(): Int {
-        return mMatchList.let { mMatchList!!.size }
+        return mMatchList.let { mMatchList!!.size - 1 }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -48,20 +51,42 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
                 myIndex = 1
             }
 
-            var score: String? = mMatchList[position].matchInfo!![myIndex].shoot.goalTotal.toString()
-            score += " : " + mMatchList[position].matchInfo!![opposingUserIndex].shoot.goalTotal.toString()
+            val myMatchInfo = mMatchList[position].matchInfo!![myIndex]
+            val opposingUserMatchInfo = mMatchList[position].matchInfo!![opposingUserIndex]
+            var matchDate = mMatchList[position].matchDate
+            val date = DateUtils().getDate(matchDate)
 
-            var user: String? = mMatchList[position].matchInfo!![myIndex].nickname
-            user += " vs " + mMatchList[position].matchInfo!![opposingUserIndex].nickname
+            matchDate = DateUtils().formatTimeString(date)
 
-            val result = mMatchList[position].matchInfo!![myIndex].matchDetail!!.matchResult
+            mItemSearchListBinding!!.txtLeftNickName.text = myMatchInfo.nickname
+            mItemSearchListBinding!!.txtRightNickName.text = opposingUserMatchInfo.nickname
 
-            mItemSearchListBinding!!.txtResult.text = result
-            mItemSearchListBinding!!.txtNickName.text = user
-            mItemSearchListBinding!!.txtScore.text = score
+            mItemSearchListBinding!!.txtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
+            mItemSearchListBinding!!.txtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
+            mItemSearchListBinding!!.txtDate.text = matchDate
+
+            var myResult:String? = null
+            var opposingUserResult:String? = null
+
+            when (myMatchInfo.matchDetail!!.matchResult) {
+                "승" -> {
+                    myResult = "WIN"
+                    opposingUserResult = "LOSE"
+                }
+                "무" -> {
+                    myResult = "DRAW"
+                    opposingUserResult = "DRAW"
+                }
+                "패" -> {
+                    myResult = "LOSE"
+                    opposingUserResult = "WIN"
+                }
+            }
+            mItemSearchListBinding!!.txtLeftResult.text = myResult
+            mItemSearchListBinding!!.txtRightResult.text = opposingUserResult
 
             val res =
-                when (result) {
+                when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> mContext.resources.getColor(R.color.search_list_win, null)
                     "패" -> mContext.resources.getColor(R.color.search_list_lose, null)
                     else -> mContext.resources.getColor(R.color.search_list_draw, null)
