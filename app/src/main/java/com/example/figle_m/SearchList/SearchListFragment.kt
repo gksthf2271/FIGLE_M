@@ -61,7 +61,7 @@ class SearchListFragment : BaseFragment() {
             mSearchString = arguments!!.getString(HomeFragment.getInstance().KEY_SEARCH_STRING)!!
         }
         for (response in mSearchResponseList) {
-            Log.v(TAG, "item ::: ${response}")
+            Log.v(TAG, "item, matchId : ${response.matchId} , ::: ${response.matchInfo[0].nickname} vs ${response.matchInfo[1].nickname}")
         }
 
         context ?: return
