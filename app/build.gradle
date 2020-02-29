@@ -67,6 +67,9 @@ dependencies {
 //    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     kapt 'com.jakewharton:butterknife-compiler:10.0.0'
 
+    //Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.1'
+
     //WilliamChart
     implementation 'com.diogobernardino:williamchart:3.3.0'
 
