@@ -5,7 +5,6 @@ import android.util.Log
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,32 +64,29 @@ class DataManager {
             })
     }
 
-    fun loadMatchDetail(matchIdList: List<String>, onSuccess: ((List<MatchDetailResponse>) -> Unit), onFailed: (String) -> Unit) {
-        var matchDetailList : MutableList<MatchDetailResponse> = mutableListOf()
-        for (matchId in matchIdList) {
-            SearchUser.getService()
-                .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
-                .enqueue(object : Callback<MatchDetailResponse> {
-                    override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
-                        Log.d(TAG, "onFailure(...)" + t)
-                        onFailed("Failed! " + t)
-                    }
+    fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
+        Log.v(TAG,"matchId :: $matchId")
+        SearchUser.getService()
+            .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
+            .enqueue(object : Callback<MatchDetailResponse> {
+                override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
+                    Log.d(TAG, "onFailure(...)" + t)
+                    onFailed("Failed! " + t)
+                }
 
-                    override fun onResponse(
-                        call: Call<MatchDetailResponse>,
-                        response: Response<MatchDetailResponse>
-                    ) {
-                        Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
-//                        Log.v(TAG, "response(...) ${response!!.body().toString()}")
-                        if (response.code() == 200) {
-                            matchDetailList.add(response!!.body()!!)
-                            if (matchDetailList.size == SEARCH_LIMIT) {
-                                onSuccess(matchDetailList)
-                            }
-                        }
+                override fun onResponse(
+                    call: Call<MatchDetailResponse>,
+                    response: Response<MatchDetailResponse>
+                ) {
+//                    Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
+                    Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                    if (response.code() == 200) {
+                        onSuccess(response!!.body()!!)
+                    } else {
+                        onFailed(response.code().toString())
                     }
-                })
-        }
+                }
+            })
     }
 
     fun loadMatchId(accessid: String, matchtype: Int, offset: Int?, limit: Int?, onSuccess: (ResponseBody?) -> Unit, onFailed: (String) -> Unit) {
