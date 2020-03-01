@@ -65,13 +65,11 @@ class DataManager {
     }
 
     fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
-        Log.v(TAG,"matchId :: $matchId")
         SearchUser.getService()
             .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
             .enqueue(object : Callback<MatchDetailResponse> {
                 override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
-                    Log.d(TAG, "onFailure(...)" + t)
-                    onFailed("Failed! " + t)
+                    onFailed("Failed! : $matchId")
                 }
 
                 override fun onResponse(
