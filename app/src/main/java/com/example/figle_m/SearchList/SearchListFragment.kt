@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.BaseFragment
+import com.example.figle_m.Data.DataManager
 import com.example.figle_m.HomeFragment
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
@@ -64,6 +65,11 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     override fun onStart() {
         super.onStart()
         mSearchPresenter!!.takeView(this)
+        initData()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     override fun onDestroy() {
@@ -71,8 +77,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mSearchPresenter!!.dropView()
     }
 
-    override fun onResume() {
-        super.onResume()
+    fun initData() {
         arguments.let {
             mSearchResponseList = arrayListOf()
             mMatchIdList = mutableListOf()
@@ -97,6 +102,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         Log.v(TAG,"SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }
 
+
     override fun showLoading() {
     }
 
@@ -108,8 +114,11 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         Log.v(TAG,"showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
-            mRecyclerView.adapter!!.notifyItemInserted(mSearchResponseList.size - 1)
-            mRecyclerView.adapter!!.notifyDataSetChanged()
+            if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
+                mSearchResponseList.sortByDescending { it.matchDate }
+                mRecyclerView.adapter!!.notifyItemInserted(mSearchResponseList.size - 1)
+                mRecyclerView.adapter!!.notifyDataSetChanged()
+            }
         }
     }
 

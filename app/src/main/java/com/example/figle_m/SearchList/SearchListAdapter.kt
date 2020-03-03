@@ -39,6 +39,7 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.v(TAG,"onBindViewHolder, position : $position")
         mMatchList!![position].matchInfo.let {
             var opposingUserIndex = 1
             var myIndex = 0
@@ -54,9 +55,9 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
             val myMatchInfo = mMatchList[position].matchInfo!![myIndex]
             val opposingUserMatchInfo = mMatchList[position].matchInfo!![opposingUserIndex]
             var matchDate = mMatchList[position].matchDate
-            val date = DateUtils().getDate(matchDate)
+//            val date = DateUtils().getDate(matchDate)
 
-            matchDate = DateUtils().formatTimeString(date)
+            matchDate = DateUtils().formatTimeString(matchDate.toLong())
 
             mItemSearchListBinding!!.txtLeftNickName.text = myMatchInfo.nickname
             mItemSearchListBinding!!.txtRightNickName.text = opposingUserMatchInfo.nickname

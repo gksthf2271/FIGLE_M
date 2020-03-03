@@ -27,12 +27,6 @@ open class DateUtils {
             return (diffTime / TIME_MAXIMUM.ONE_HOUR.toLong()).toString() + "시간 전"
         }
         return (diffTime / TIME_MAXIMUM.ONE_DAY.toLong()).toString() + "일 전"
-
-//        if ((diffTime / TIME_MAXIMUM.ONE_MONTH.toLong()) < 12) {
-//            return (diffTime / TIME_MAXIMUM.ONE_MONTH.toLong()).toString() + "달 전"
-//        }
-
-//        return "아주 오래전"
     }
 
     open fun getDate(date: String): Long {

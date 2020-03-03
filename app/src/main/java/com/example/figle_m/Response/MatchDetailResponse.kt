@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class MatchDetailResponse(
     val matchId: String,
-    val matchDate: String,
+    var matchDate: String,
     val matchType: Int,
     val matchInfo: List<MatchInfoDTO>
 ) : Parcelable

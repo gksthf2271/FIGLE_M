@@ -3,6 +3,7 @@ package com.example.figle_m.SearchList
 import android.util.Log
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.utils.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -23,6 +24,7 @@ class SearchPresenter: SearchContract.Presenter {
             launch {
                 getMatchDetail(matchId, {
                         Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
+                        it.matchDate = DateUtils().getDate(it.matchDate).toString()
                         mSearchListView?.showSearchList(it)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
