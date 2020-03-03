@@ -12,13 +12,13 @@ interface UserContract {
         fun showLoading()
         fun hideLoading()
         fun showUserList(userResponse : UserResponse?)
-        fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>)
+//        fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>)
         fun showMatchIdList(matchDetailResponse: ResponseBody?)
     }
 
     interface Presenter : BasePresenter<View> {
         fun getUserDatailList(nickname: String)
-        fun getMatchDetailList(matchIdList: List<String>)
+//        fun getMatchDetailList(matchIdList: List<String>)
         fun getMatchId(accessId: String, matchType: Int, offset: Int, limit:Int)
     }
 }

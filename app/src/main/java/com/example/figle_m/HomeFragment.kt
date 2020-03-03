@@ -27,7 +27,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1
     val MSG_SHOW_MATCH_ID_LIST : Int = 2
     val mHandler: Handler = Handler(this)
-    open val KEY_SEARCH_STRING: String = "SearchString"
 
     lateinit var mUserPresenter: UserPresenter
 
@@ -67,22 +66,19 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 )
                 return true
             }
-            MSG_SHOW_MATCH_DETAIL_LIST -> {
-                Log.v(TAG, "MSG_SHOW_MATCH_DETAIL_LIST result ::: " + msg.obj)
-                val searchListFragment = SearchListFragment()
-                val bundle = Bundle()
-                bundle.putString(KEY_SEARCH_STRING, mSearchString)
-                bundle.putParcelableArrayList(SearchListFragment.getInstance().KEY_MATCH_DETAIL_LIST, msg.obj as ArrayList<Parcelable>)
-                searchListFragment.arguments = bundle
-                FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
-                return true
-            }
             MSG_SHOW_MATCH_ID_LIST -> {
                 val responseBody: ResponseBody = msg.obj as ResponseBody
                 var result:String = responseBody.string()
                 val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
 
-                mUserPresenter!!.getMatchDetailList(stringList)
+                val searchListFragment = SearchListFragment()
+                val bundle = Bundle()
+                bundle.putStringArray(SearchListFragment.getInstance().KEY_MATCH_ID_LIST,stringList.toTypedArray())
+                bundle.putString(SearchListFragment.getInstance().KEY_SEARCH_STRING, mSearchString)
+                searchListFragment.arguments = bundle
+                FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
+
+//                mUserPresenter!!.getMatchDetailList(stringList)
                 return true
             }
             else -> {
@@ -104,17 +100,17 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         mHandler.sendMessage(msg_show_user_list)
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>) {
-        if (matchDetailResponseList.isEmpty()) {
-            Log.d(TAG, "matchDetailResponseList is empty")
-            return
-        }
-        val msg_show_match_detail_list = Message()
-        msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
-        msg_show_match_detail_list.obj = matchDetailResponseList
-        mHandler.sendMessage(msg_show_match_detail_list)
-    }
+//    @SuppressLint("SetTextI18n")
+//    override fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>) {
+//        if (matchDetailResponseList.isEmpty()) {
+//            Log.d(TAG, "matchDetailResponseList is empty")
+//            return
+//        }
+//        val msg_show_match_detail_list = Message()
+//        msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
+//        msg_show_match_detail_list.obj = matchDetailResponseList
+//        mHandler.sendMessage(msg_show_match_detail_list)
+//    }
 
     @SuppressLint("SetTextI18n")
     override fun showMatchIdList(userMatchIdResponse: ResponseBody?) {
