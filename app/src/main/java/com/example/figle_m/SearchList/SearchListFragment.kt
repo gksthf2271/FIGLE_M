@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.example.figle_m.HomeFragment
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.View.UserPresenter
+import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.databinding.FragmentSearchlistBinding
 import java.util.*
 import java.util.concurrent.locks.Lock
@@ -22,16 +24,22 @@ import kotlin.collections.ArrayList
 class SearchListFragment : BaseFragment(), SearchContract.View {
     val TAG: String = javaClass.name
 
-    open val KEY_SEARCH_STRING: String = "SearchString"
+    open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
     open val KEY_MATCH_ID_LIST: String = "MatchIdList"
 
     lateinit var mSearchPresenter: SearchPresenter
     var mDataBinding: FragmentSearchlistBinding? = null
     lateinit var mSearchResponseList: ArrayList<MatchDetailResponse>
     lateinit var mMatchIdList: MutableList<String>
-    lateinit var mSearchString: String
+    lateinit var mSearchUserInfo: UserResponse
 
     lateinit var mRecyclerView: RecyclerView
+    lateinit var mEmptyView: TextView
+    lateinit var mNickNameView: TextView
+    lateinit var mLevelView: TextView
+    lateinit var mDivisionView: TextView
+    lateinit var mAchievementDateView: TextView
+
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
@@ -65,7 +73,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     override fun onStart() {
         super.onStart()
         mSearchPresenter!!.takeView(this)
-        initData()
+        initView()
+        initMyInfoData()
+        initListData()
     }
 
     override fun onResume() {
@@ -77,27 +87,41 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mSearchPresenter!!.dropView()
     }
 
-    fun initData() {
+    fun initView() {
+        mNickNameView = view!!.findViewById(R.id.txt_MyNickName)
+        mLevelView = view!!.findViewById(R.id.txt_Level)
+        mDivisionView = view!!.findViewById(R.id.txt_High_Rank)
+        mAchievementDateView = view!!.findViewById(R.id.txt_Achievement_Date)
+        mEmptyView = view!!.findViewById(R.id.txt_emptyView)
+        mRecyclerView = view!!.findViewById(R.id.layout_recyclerview)
+    }
+
+    fun initMyInfoData() {
+        arguments.let {
+            mSearchUserInfo = arguments!!.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
+        }
+        mNickNameView.text = mSearchUserInfo.nickname
+        mLevelView.text = mSearchUserInfo.level
+        mLevelView.text = mSearchUserInfo.level
+        mSearchPresenter.getUserHighRank(mSearchUserInfo.accessId)
+    }
+
+    fun initListData() {
         arguments.let {
             mSearchResponseList = arrayListOf()
             mMatchIdList = mutableListOf()
             mMatchIdList.addAll((arguments!!.get(KEY_MATCH_ID_LIST) as Array<String>).toList())
-
-            mSearchString = arguments!!.getString(KEY_SEARCH_STRING)!!
         }
 
         for (item in mMatchIdList) {
             Log.v(TAG, "item, matchId : ${item} ")
             mSearchPresenter.getMatchDetailList(item)
         }
-
         context ?: return
-
-        mRecyclerView = view!!.findViewById<RecyclerView>(R.id.layout_recyclerview)
         val layoutManager = LinearLayoutManager(context)
         mRecyclerView.addItemDecoration(SearchDecoration(10))
         mRecyclerView.setLayoutManager(layoutManager)
-        mRecyclerView.adapter =  SearchListAdapter(context!!, mSearchString ,mSearchResponseList)
+        mRecyclerView.adapter =  SearchListAdapter(context!!, mSearchUserInfo.nickname ,mSearchResponseList)
 
         Log.v(TAG,"SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }
@@ -111,6 +135,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     override fun showSearchList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
+        mEmptyView.visibility = View.GONE
         Log.v(TAG,"showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
@@ -123,5 +148,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     }
 
     override fun showError(error: String) {
+        if (SearchPresenter().ERROR_EMPTY.equals(error)) mEmptyView.visibility = View.VISIBLE
     }
 }

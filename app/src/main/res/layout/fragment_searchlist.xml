@@ -26,6 +26,89 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginRight="5dp"
+                android:padding="10dp"
+                app:layout_constraintWidth_percent="0.6"
+                app:layout_constraintHeight_percent="0.9"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+
+                <TextView
+                    android:id="@+id/txt_MyNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="30sp"
+                    android:textColor="@color/search_text_color"
+                    android:text="TESTTEST"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_Level_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="LV : "
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/search_text_color"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/txt_MyNickName"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_Level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/search_text_color"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintTop_toTopOf="@id/txt_Level_title"
+                    app:layout_constraintLeft_toRightOf="@id/txt_Level_title" />
+
+                <TextView
+                    android:id="@+id/txt_High_Rank_title"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="최고 등급 : "
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/search_text_color"
+                    app:layout_constraintTop_toBottomOf="@id/txt_Level"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_High_Rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/search_text_color"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintTop_toTopOf="@id/txt_High_Rank_title"
+                    app:layout_constraintLeft_toRightOf="@id/txt_High_Rank_title" />
+
+                <TextView
+                    android:id="@+id/txt_Achievement_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/search_text_color"
+                    app:layout_constraintTop_toBottomOf="@id/txt_High_Rank"
+                    app:layout_constraintLeft_toLeftOf="@id/txt_High_Rank_title"
+                    app:layout_constraintRight_toRightOf="@id/txt_High_Rank" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -38,5 +121,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_info" />
+
+        <TextView
+            android:id="@+id/txt_emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기록이 없습니다."
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/search_text_color"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@id/layout_recyclerview"
+            app:layout_constraintBottom_toBottomOf="@id/layout_recyclerview"
+            app:layout_constraintTop_toTopOf="@id/layout_recyclerview"
+            app:layout_constraintRight_toRightOf="@id/layout_recyclerview"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

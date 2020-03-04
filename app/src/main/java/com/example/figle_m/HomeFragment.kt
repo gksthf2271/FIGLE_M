@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.os.Parcelable
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import com.example.figle_m.Data.DataManager
-import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.View.UserPresenter
@@ -31,6 +29,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     lateinit var mUserPresenter: UserPresenter
 
     lateinit var mSearchString: String
+    lateinit var mUserResponse: UserResponse
 
     override fun initPresenter() {
         Log.v(TAG, "initPresenter(...)")
@@ -53,13 +52,13 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     override fun handleMessage(msg: Message): Boolean {
         when (msg.what) {
             MSG_SHOW_USER_LIST -> {
-                val userResponse: UserResponse = msg.obj as (UserResponse)
+                mUserResponse = msg.obj as (UserResponse)
                 Log.v(TAG, "MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
 
-                userResponse.accessId ?: return false
+                mUserResponse.accessId ?: return false
 
                 mUserPresenter!!.getMatchId(
-                    userResponse.accessId!!,
+                    mUserResponse.accessId!!,
                     DataManager.matchType.normalMatch.matchType,
                     DataManager.getInstance().offset,
                     DataManager.getInstance().SEARCH_LIMIT
@@ -74,11 +73,9 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 val searchListFragment = SearchListFragment()
                 val bundle = Bundle()
                 bundle.putStringArray(SearchListFragment.getInstance().KEY_MATCH_ID_LIST,stringList.toTypedArray())
-                bundle.putString(SearchListFragment.getInstance().KEY_SEARCH_STRING, mSearchString)
+                bundle.putParcelable(SearchListFragment.getInstance().KEY_SEARCH_USER_INFO, mUserResponse)
                 searchListFragment.arguments = bundle
                 FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager)
-
-//                mUserPresenter!!.getMatchDetailList(stringList)
                 return true
             }
             else -> {
@@ -99,18 +96,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         msg_show_user_list.obj = userResponse
         mHandler.sendMessage(msg_show_user_list)
     }
-
-//    @SuppressLint("SetTextI18n")
-//    override fun showMatchDetailList(matchDetailResponseList: List<MatchDetailResponse>) {
-//        if (matchDetailResponseList.isEmpty()) {
-//            Log.d(TAG, "matchDetailResponseList is empty")
-//            return
-//        }
-//        val msg_show_match_detail_list = Message()
-//        msg_show_match_detail_list.what = MSG_SHOW_MATCH_DETAIL_LIST
-//        msg_show_match_detail_list.obj = matchDetailResponseList
-//        mHandler.sendMessage(msg_show_match_detail_list)
-//    }
 
     @SuppressLint("SetTextI18n")
     override fun showMatchIdList(userMatchIdResponse: ResponseBody?) {
@@ -171,24 +156,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     fun search(searchString: String) {
         mSearchString = searchString
         mUserPresenter!!.getUserDatailList(searchString)
-//        mUserPresenter!!.getMatchDetailList("5e48262ba9458a223fd64791")
     }
-
-//    @OnClick(R.id.btn_search)
-//    fun clickSearchBtn(view: View) {
-//        Log.v(TAG,"clickSearchBtn")
-//        val searchText: String? = getSearchText()
-//        if (searchText == null) {
-//            Log.v(TAG,"searchText is null")
-//            return
-//        }
-//        if (mUserPresenter == null) return
-//        mUserPresenter!!.getUserDatailList(searchText)
-//    }
-//
-//    fun getSearchText(): String?{
-//        return edit_search.text.toString()
-//    }
 
     override fun onDestroy() {
         super.onDestroy()
