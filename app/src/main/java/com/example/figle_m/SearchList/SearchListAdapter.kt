@@ -5,12 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
 import com.example.figle_m.utils.DateUtils
-import java.text.SimpleDateFormat
 
 class SearchListAdapter(context: Context, searchString: String, matchList: MutableList<MatchDetailResponse>?) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
@@ -19,7 +20,6 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
     val mSearchString: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
-    lateinit var mItemSearchListBinding: ItemSearchListBinding
     init {
         mContext = context
         mSearchString = searchString
@@ -29,8 +29,7 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.item_search_list, parent, false)
-        val viewHolder = ViewHolder(view, this)
-        mItemSearchListBinding = ItemSearchListBinding.bind(view)
+        val viewHolder = ViewHolder(view)
         return viewHolder
     }
 
@@ -40,7 +39,7 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.v(TAG,"onBindViewHolder, position : $position")
-        mMatchList!![position].matchInfo.let {
+        this.mMatchList!!.get(position).matchInfo.let {
             var opposingUserIndex = 1
             var myIndex = 0
 
@@ -59,12 +58,12 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
 
             matchDate = DateUtils().formatTimeString(matchDate.toLong())
 
-            mItemSearchListBinding!!.txtLeftNickName.text = myMatchInfo.nickname
-            mItemSearchListBinding!!.txtRightNickName.text = opposingUserMatchInfo.nickname
+            holder.mTxtLeftNickName.text = myMatchInfo.nickname
+            holder.mTxtRightNickName.text = opposingUserMatchInfo.nickname
 
-            mItemSearchListBinding!!.txtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
-            mItemSearchListBinding!!.txtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
-            mItemSearchListBinding!!.txtDate.text = matchDate
+            holder.mTxtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
+            holder.mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
+            holder.mTxtDate.text = matchDate
 
             var myResult:String? = null
             var opposingUserResult:String? = null
@@ -83,8 +82,8 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
                     opposingUserResult = "WIN"
                 }
             }
-            mItemSearchListBinding!!.txtLeftResult.text = myResult
-            mItemSearchListBinding!!.txtRightResult.text = opposingUserResult
+            holder.mTxtLeftResult.text = myResult
+            holder.mTxtRightResult.text = opposingUserResult
 
             val res =
                 when (myMatchInfo.matchDetail!!.matchResult) {
@@ -92,19 +91,33 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
                     "패" -> mContext.resources.getColor(R.color.search_list_lose, null)
                     else -> mContext.resources.getColor(R.color.search_list_draw, null)
                 }
-            mItemSearchListBinding!!.rootLayout.setBackgroundColor(res)
+            holder.mRootLayout.setBackgroundColor(res)
 
         }
     }
 
-    open class ViewHolder(itemView: View, searchListAdapter: SearchListAdapter) :
+    open class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
+        var mRootLayout: ConstraintLayout
         var mItemView: View
-        var mSearchListAdapter: SearchListAdapter
+        var mTxtLeftNickName: TextView
+        var mTxtRightNickName: TextView
+        var mTxtLeftScore: TextView
+        var mTxtRightScore: TextView
+        var mTxtLeftResult: TextView
+        var mTxtRightResult: TextView
+        var mTxtDate: TextView
 
         init {
             mItemView = itemView
-            mSearchListAdapter = searchListAdapter
+            mRootLayout = mItemView.findViewById(R.id.root_layout)
+            mTxtRightNickName = mItemView.findViewById(R.id.txt_right_nickName)
+            mTxtLeftNickName = mItemView.findViewById(R.id.txt_left_nickName)
+            mTxtLeftScore = mItemView.findViewById(R.id.txt_left_score)
+            mTxtRightScore = mItemView.findViewById(R.id.txt_right_score)
+            mTxtLeftResult = mItemView.findViewById(R.id.txt_left_result)
+            mTxtRightResult = mItemView.findViewById(R.id.txt_right_result)
+            mTxtDate = mItemView.findViewById(R.id.txt_date)
         }
     }
 }
