@@ -11,18 +11,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.BaseFragment
 import com.example.figle_m.Data.DataManager
-import com.example.figle_m.HomeFragment
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.View.UserPresenter
+import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.databinding.FragmentSearchlistBinding
-import java.util.*
-import java.util.concurrent.locks.Lock
-import kotlin.collections.ArrayList
+import okhttp3.ResponseBody
+import org.json.JSONObject
 
 class SearchListFragment : BaseFragment(), SearchContract.View {
     val TAG: String = javaClass.name
+    val DEBUG: Boolean = false
 
     open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
     open val KEY_MATCH_ID_LIST: String = "MatchIdList"
@@ -114,7 +113,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
 
         for (item in mMatchIdList) {
-            Log.v(TAG, "item, matchId : ${item} ")
+            if(DEBUG) Log.v(TAG, "item, matchId : ${item} ")
             mSearchPresenter.getMatchDetailList(item)
         }
         context ?: return
@@ -136,7 +135,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     override fun showSearchList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         mEmptyView.visibility = View.GONE
-        Log.v(TAG,"showSearchList : ${searchResponse!!.matchId}")
+        if (DEBUG) Log.v(TAG,"showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
             if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
@@ -145,6 +144,15 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                 mRecyclerView.adapter!!.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun showHighRank(userHighRankResponse: ResponseBody) {
+//        var response = userHighRankResponse.string()
+        var response = JSONObject(userHighRankResponse.toString())
+//        val stringList:List<String> = response.removeSurrounding("[","]").replace("\"","").split(",")
+
+//        mDivisionView.text= userHighRankResponse.userHighRankResponseInternal.get(0).division.toString()
+//        mAchievementDateView.text= userHighRankResponse.userHighRankResponseInternal.get(0).achievementDate
     }
 
     override fun showError(error: String) {

@@ -1,6 +1,7 @@
 package com.example.figle_m.Data
 
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -33,4 +34,11 @@ interface RetrofitService {
         @Query("offset") offset: Int?,
         @Query("limit") limit: Int?
     ): Call<ResponseBody>
+
+    @GET("v1.0/users/{accessid}/maxdivision")
+    fun requestUserHighRank(
+        @Header("Authorization") authorization: String,
+        @Path("accessid") accessid: String
+    ): Call<ResponseBody>
+
 }

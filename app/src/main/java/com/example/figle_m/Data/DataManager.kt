@@ -3,6 +3,7 @@ package com.example.figle_m.Data
 import android.content.Context
 import android.util.Log
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -10,8 +11,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class DataManager {
-
     val TAG: String = javaClass.name
+    val DEBUG: Boolean = false
 
     var mContext: Context? = null
 
@@ -78,7 +79,7 @@ class DataManager {
                     response: Response<MatchDetailResponse>
                 ) {
 //                    Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
-                    Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                    if (DEBUG) Log.v(TAG, "response(...) ${response!!.body().toString()}")
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
@@ -104,6 +105,26 @@ class DataManager {
                 }
             }
         })
+    }
+
+    fun loadUserHighRank(accessId: String, onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
+        SearchUser.getService().requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    onFailed("Failed! " + t)
+                }
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (DEBUG) Log.v(TAG, "loadUserHighRank response(...) ${response.code()}")
+                    if (response != null && response!!.isSuccessful) {
+                        if (response.code() == SUCCESS_CODE) {
+                            onSuccess(response!!.body()!!)
+                        } else {
+                            onFailed("Failed! errorcode : " + response.code())
+                        }
+                    }
+                }
+            })
     }
 
 }

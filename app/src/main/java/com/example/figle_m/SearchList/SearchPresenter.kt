@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 
 class SearchPresenter: SearchContract.Presenter {
     val TAG:String = javaClass.name
+    val DEBUG:Boolean = false
     var  mSearchListView: SearchContract.View? = null
 
     open val ERROR_EMPTY = "EMPTY"
@@ -20,12 +21,27 @@ class SearchPresenter: SearchContract.Presenter {
         mSearchListView = null
     }
 
+    override fun getUserHighRank(accessId: String) {
+        mSearchListView?.showLoading()
+        runBlocking {
+            launch {
+                DataManager.getInstance().loadUserHighRank(accessId,
+                    {
+                        Log.v(TAG, "getUserHighRank Success! ${it}")
+                        mSearchListView?.showHighRank(it)
+                    }, {
+                        Log.v(TAG, "getUserHighRank Failed! $it")
+                    })
+            }
+        }
+    }
+
     override fun getMatchDetailList(matchId: String) {
         mSearchListView?.showLoading()
         runBlocking {
             launch {
                 getMatchDetail(matchId, {
-                        Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
+                        if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
                         it.matchDate = DateUtils().getDate(it.matchDate).toString()
                         mSearchListView?.showSearchList(it)
                 }, {
@@ -40,7 +56,7 @@ class SearchPresenter: SearchContract.Presenter {
     fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
         DataManager.getInstance().loadMatchDetail(matchId,
             {
-                Log.v(TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")
+                if (DEBUG) Log.v(TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")
                 onSuccess(it)
             }, {
                 Log.v(TAG,"getMatchDetail Failed! $it")
