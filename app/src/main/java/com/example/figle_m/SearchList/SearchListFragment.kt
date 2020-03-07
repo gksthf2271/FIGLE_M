@@ -16,6 +16,7 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.databinding.FragmentSearchlistBinding
+import com.example.figle_m.utils.DivisionEnum
 import okhttp3.ResponseBody
 import org.json.JSONObject
 
@@ -54,8 +55,8 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             instance ?: synchronized(this) {
                 instance
                     ?: SearchListFragment().also {
-                    instance = it
-                }
+                        instance = it
+                    }
             }
     }
 
@@ -113,16 +114,17 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
 
         for (item in mMatchIdList) {
-            if(DEBUG) Log.v(TAG, "item, matchId : ${item} ")
+            if (DEBUG) Log.v(TAG, "item, matchId : ${item} ")
             mSearchPresenter.getMatchDetailList(item)
         }
         context ?: return
         val layoutManager = LinearLayoutManager(context)
         mRecyclerView.addItemDecoration(SearchDecoration(10))
         mRecyclerView.setLayoutManager(layoutManager)
-        mRecyclerView.adapter =  SearchListAdapter(context!!, mSearchUserInfo.nickname ,mSearchResponseList)
+        mRecyclerView.adapter =
+            SearchListAdapter(context!!, mSearchUserInfo.nickname, mSearchResponseList)
 
-        Log.v(TAG,"SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
+        Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }
 
 
@@ -135,7 +137,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     override fun showSearchList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         mEmptyView.visibility = View.GONE
-        if (DEBUG) Log.v(TAG,"showSearchList : ${searchResponse!!.matchId}")
+        if (DEBUG) Log.v(TAG, "showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
             if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
@@ -146,14 +148,25 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
     }
 
-    override fun showHighRank(userHighRankResponse: ResponseBody) {
-//        var response = userHighRankResponse.string()
-        var response = JSONObject(userHighRankResponse.toString())
-//        val stringList:List<String> = response.removeSurrounding("[","]").replace("\"","").split(",")
+    override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
+        var normalMatchResponse: UserHighRankResponse? = null
+        var division:String? = null
+        for (item in userHighRankResponse) {
+            if (DataManager.matchType.normalMatch.matchType == item.matchType)
+                normalMatchResponse = item
+        }
 
-//        mDivisionView.text= userHighRankResponse.userHighRankResponseInternal.get(0).division.toString()
-//        mAchievementDateView.text= userHighRankResponse.userHighRankResponseInternal.get(0).achievementDate
+        normalMatchResponse ?: return
+
+        for (item in DivisionEnum.values()) {
+            if (item.divisionId.equals(normalMatchResponse.division))
+                division = item.divisionName
+        }
+
+        mDivisionView.text = division ?: "-"
+        mAchievementDateView.text = normalMatchResponse!!.achievementDate.replace("T", " / ")
     }
+
 
     override fun showError(error: String) {
         if (SearchPresenter().ERROR_EMPTY.equals(error)) mEmptyView.visibility = View.VISIBLE

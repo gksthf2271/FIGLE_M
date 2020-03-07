@@ -13,7 +13,7 @@ interface SearchContract: BaseView {
         fun showLoading()
         fun hideLoading()
         fun showSearchList(searchResponse : MatchDetailResponse?)
-        fun showHighRank(userHighRankResponse: ResponseBody)
+        fun showHighRank(userHighRankResponse: List<UserHighRankResponse>)
     }
 
     interface Presenter : BasePresenter<View> {

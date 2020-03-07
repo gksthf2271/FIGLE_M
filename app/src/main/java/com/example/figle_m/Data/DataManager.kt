@@ -107,14 +107,14 @@ class DataManager {
         })
     }
 
-    fun loadUserHighRank(accessId: String, onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
+    fun loadUserHighRank(accessId: String, onSuccess: (List<UserHighRankResponse>) -> Unit, onFailed: (String) -> Unit) {
         SearchUser.getService().requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            .enqueue(object : Callback<List<UserHighRankResponse>> {
+                override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
                     onFailed("Failed! " + t)
                 }
 
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                override fun onResponse(call: Call<List<UserHighRankResponse>>, response: Response<List<UserHighRankResponse>>) {
                     if (DEBUG) Log.v(TAG, "loadUserHighRank response(...) ${response.code()}")
                     if (response != null && response!!.isSuccessful) {
                         if (response.code() == SUCCESS_CODE) {

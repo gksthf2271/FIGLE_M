@@ -39,6 +39,6 @@ interface RetrofitService {
     fun requestUserHighRank(
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String
-    ): Call<ResponseBody>
+    ): Call<List<UserHighRankResponse>>
 
 }
