@@ -51,6 +51,10 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
                 myIndex = 1
             }
 
+            if (mMatchList[position].matchInfo.size <= myIndex) {
+                Log.v(TAG,"경기 계정이 단일 계정으로 이상 데이터!")
+                return
+            }
             val myMatchInfo = mMatchList[position].matchInfo!![myIndex]
             val opposingUserMatchInfo = mMatchList[position].matchInfo!![opposingUserIndex]
             var matchDate = mMatchList[position].matchDate
