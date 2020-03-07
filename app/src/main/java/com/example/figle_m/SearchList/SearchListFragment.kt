@@ -122,16 +122,18 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mRecyclerView.addItemDecoration(SearchDecoration(10))
         mRecyclerView.setLayoutManager(layoutManager)
         mRecyclerView.adapter =
-            SearchListAdapter(context!!, mSearchUserInfo.nickname, mSearchResponseList)
+            SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList)
 
         Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }
 
 
     override fun showLoading() {
+        Log.v(TAG,"showLoading(...)")
     }
 
     override fun hideLoading() {
+        Log.v(TAG,"hideLoading(...)")
     }
 
     override fun showSearchList(searchResponse: MatchDetailResponse?) {

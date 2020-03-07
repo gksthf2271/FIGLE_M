@@ -13,16 +13,16 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.databinding.ItemSearchListBinding
 import com.example.figle_m.utils.DateUtils
 
-class SearchListAdapter(context: Context, searchString: String, matchList: MutableList<MatchDetailResponse>?) :
+class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
 
-    val mSearchString: String
+    val mSearchAccessId: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
     init {
         mContext = context
-        mSearchString = searchString
+        mSearchAccessId = searchAccessId
         mMatchList = matchList
     }
 
@@ -43,7 +43,7 @@ class SearchListAdapter(context: Context, searchString: String, matchList: Mutab
             var opposingUserIndex = 1
             var myIndex = 0
 
-            if (mSearchString.equals(mMatchList[position].matchInfo!![0].nickname.toLowerCase())){
+            if (mSearchAccessId.equals(mMatchList[position].matchInfo!![0].accessId.toLowerCase())){
                 opposingUserIndex = 1
                 myIndex = 0
             } else {
