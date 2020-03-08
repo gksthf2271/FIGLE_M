@@ -11,6 +11,6 @@
     <color name="search_list_win">#BF2196F3</color>
     <color name="search_list_lose">#BFF3214B</color>
     <color name="search_list_draw">#F0DFDFDF</color>
-
+    <color name="search_list_header_background">#B3000000</color>
 
 </resources>

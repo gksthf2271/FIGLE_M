@@ -29,15 +29,16 @@ class SearchPresenter: SearchContract.Presenter {
                     {
                         Log.v(TAG, "getUserHighRank Success! ${it}")
                         mSearchListView?.showHighRank(it)
+                        mSearchListView?.hideLoading()
                     }, {
                         Log.v(TAG, "getUserHighRank Failed! $it")
+                        mSearchListView?.hideLoading()
                     })
             }
         }
     }
 
     override fun getMatchDetailList(matchId: String) {
-        mSearchListView?.showLoading()
         runBlocking {
             launch {
                 getMatchDetail(matchId, {
@@ -47,6 +48,7 @@ class SearchPresenter: SearchContract.Presenter {
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
                     mSearchListView?.showError(ERROR_EMPTY)
+                    mSearchListView?.hideLoading()
                 })
 
             }
