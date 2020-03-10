@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.R
+import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
@@ -39,6 +40,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     lateinit var mLevelView: TextView
     lateinit var mDivisionView: TextView
     lateinit var mAchievementDateView: TextView
+    lateinit var mRateTextView: TextView
 
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
@@ -94,6 +96,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mAchievementDateView = view!!.findViewById(R.id.txt_Achievement_Date)
         mEmptyView = view!!.findViewById(R.id.txt_emptyView)
         mRecyclerView = view!!.findViewById(R.id.layout_recyclerview)
+        mRateTextView = view!!.findViewById(R.id.txt_rate)
     }
 
     fun initMyInfoData() {
@@ -148,6 +151,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                 mRecyclerView.adapter!!.notifyDataSetChanged()
             }
         }
+        initRate()
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
@@ -167,6 +171,30 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
         mDivisionView.text = division ?: "-"
         mAchievementDateView.text = normalMatchResponse!!.achievementDate.replace("T", " / ")
+    }
+
+    fun initRate() {
+        var win = 0
+        var draw = 0
+        var lose = 0
+        if (DataManager().SEARCH_LIMIT == mRecyclerView.adapter!!.itemCount) {
+            for (item in mSearchResponseList) {
+                var myInfo : MatchInfoDTO? = null
+                if (mSearchUserInfo.accessId == item.matchInfo[0].accessId){
+                    myInfo = item.matchInfo[0]
+                } else {
+                    myInfo = item.matchInfo[1]
+                }
+                when(myInfo.matchDetail.matchResult){
+                    "승" -> win++
+                    "무" -> draw++
+                    "패" -> lose++
+                }
+            }
+            mRateTextView.text =
+                "최근 ${win+draw+lose} 경기 승:$win / 무:$draw / 패:$lose"
+            mRateTextView.visibility = View.VISIBLE
+        }
     }
 
 

@@ -24,48 +24,18 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
         mSearchAccessId = searchAccessId
         mMatchList = matchList
     }
-    var mWinCounter = 0
-    var mDrawCounter = 0
-    var mLoseCounter = 0
-    var mRateTriple:Triple<Int,Int,Int>? = null
-
-    private val TYPE_HEADER = 0
-    private val TYPE_ITEM = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var viewHolder:RecyclerView.ViewHolder? = null
-        if (viewType == TYPE_ITEM) {
-            val view: View =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_search_list, parent, false)
-            viewHolder = ViewHolder(view)
-        } else {
-            val view: View =
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.fragment_searchlist_header, parent, false)
-            viewHolder = HeaderViewHolder(view)
-        }
+        val view: View =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_search_list, parent, false)
+        viewHolder = ViewHolder(view)
         return viewHolder
     }
 
     override fun getItemCount(): Int {
         return mMatchList.let { mMatchList!!.size }
-    }
-
-    fun getRate(): Triple<Int,Int,Int> {
-        mRateTriple = Triple<Int,Int,Int>(mWinCounter,mDrawCounter,mLoseCounter)
-        return mRateTriple!!
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        when (position) {
-            0 -> {
-                return TYPE_HEADER
-            } else -> {
-                return TYPE_ITEM
-            }
-        }
-        return super.getItemViewType(position)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -74,8 +44,9 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
             this.mMatchList!!.get(position).matchInfo.let {
                 var opposingUserIndex = 1
                 var myIndex = 0
+                val matchInfo = mMatchList[position].matchInfo!!
 
-                if (mSearchAccessId.equals(mMatchList[position].matchInfo!![0].accessId.toLowerCase())) {
+                if (mSearchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
                     opposingUserIndex = 1
                     myIndex = 0
                 } else {
@@ -83,14 +54,13 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                     myIndex = 1
                 }
 
-                if (mMatchList[position].matchInfo.size <= myIndex) {
-                    Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터!")
+                if (matchInfo.size <= 1) {
+                    Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
                     return
                 }
-                val myMatchInfo = mMatchList[position].matchInfo!![myIndex]
-                val opposingUserMatchInfo = mMatchList[position].matchInfo!![opposingUserIndex]
+                val myMatchInfo = matchInfo[myIndex]
+                val opposingUserMatchInfo = matchInfo[opposingUserIndex]
                 var matchDate = mMatchList[position].matchDate
-//            val date = DateUtils().getDate(matchDate)
 
                 matchDate = DateUtils().formatTimeString(matchDate.toLong())
 
@@ -125,23 +95,16 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
                         res = mContext.resources.getColor(R.color.search_list_win, null)
-                        mWinCounter += 1
                     }
                     "패" -> {
                         res = mContext.resources.getColor(R.color.search_list_lose, null)
-                        mLoseCounter += 1
                     }
                     else -> {
                         res = mContext.resources.getColor(R.color.search_list_draw, null)
-                        mDrawCounter += 1
                     }
                 }
                 holder.mRootLayout.setBackgroundColor(res)
             }
-        } else {
-            val headerViewHolder: HeaderViewHolder = holder as HeaderViewHolder
-            headerViewHolder.mHeaderView.text =
-                "최근 ${mMatchList!!.size} 경기 승:$mWinCounter / 무:$mDrawCounter / 패:$mLoseCounter"
         }
     }
 
