@@ -177,7 +177,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         var win = 0
         var draw = 0
         var lose = 0
-        if (DataManager().SEARCH_LIMIT == mRecyclerView.adapter!!.itemCount) {
+//        if (DataManager().SEARCH_LIMIT == mRecyclerView.adapter!!.itemCount) {
             for (item in mSearchResponseList) {
                 var myInfo : MatchInfoDTO? = null
                 if (mSearchUserInfo.accessId == item.matchInfo[0].accessId){
@@ -194,7 +194,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             mRateTextView.text =
                 "최근 ${win+draw+lose} 경기 승:$win / 무:$draw / 패:$lose"
             mRateTextView.visibility = View.VISIBLE
-        }
+//        }
     }
 
 
