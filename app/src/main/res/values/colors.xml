@@ -7,6 +7,7 @@
     <color name="fragment_background">#95000000</color>
 
 
+    <color name="search_detail_vs">#1D1C1C</color>
     <color name="search_text_color">#FFFFFF</color>
     <color name="search_list_win">#BF2196F3</color>
     <color name="search_list_lose">#BFF3214B</color>
