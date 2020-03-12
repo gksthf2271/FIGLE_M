@@ -18,8 +18,7 @@ import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.databinding.FragmentSearchlistBinding
 import com.example.figle_m.utils.DivisionEnum
-import okhttp3.ResponseBody
-import org.json.JSONObject
+
 
 class SearchListFragment : BaseFragment(), SearchContract.View {
     val TAG: String = javaClass.name
@@ -125,7 +124,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mRecyclerView.addItemDecoration(SearchDecoration(10))
         mRecyclerView.setLayoutManager(layoutManager)
         mRecyclerView.adapter =
-            SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList)
+            SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList, {
+                Log.v(TAG,"ItemClick! ${it.matchInfo}")
+            })
 
         Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }

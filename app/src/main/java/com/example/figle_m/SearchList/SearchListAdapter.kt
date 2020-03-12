@@ -12,25 +12,26 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.utils.DateUtils
 
-class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
+    RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
 
     val mSearchAccessId: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
+
     init {
         mContext = context
         mSearchAccessId = searchAccessId
         mMatchList = matchList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder:RecyclerView.ViewHolder? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        var viewHolder: RecyclerView.ViewHolder? = null
         val view: View =
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_search_list, parent, false)
-        viewHolder = ViewHolder(view)
+        viewHolder = ViewHolder(view, itemClick)
         return viewHolder
     }
 
@@ -38,78 +39,14 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
         return mMatchList.let { mMatchList!!.size }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.v(TAG,"onBindViewHolder, position : $position")
-        if (holder is ViewHolder) {
-            this.mMatchList!!.get(position).matchInfo.let {
-                var opposingUserIndex = 1
-                var myIndex = 0
-                val matchInfo = mMatchList[position].matchInfo!!
-
-                if (mSearchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
-                    opposingUserIndex = 1
-                    myIndex = 0
-                } else {
-                    opposingUserIndex = 0
-                    myIndex = 1
-                }
-
-                if (matchInfo.size <= 1) {
-                    Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
-                    return
-                }
-                val myMatchInfo = matchInfo[myIndex]
-                val opposingUserMatchInfo = matchInfo[opposingUserIndex]
-                var matchDate = mMatchList[position].matchDate
-
-                matchDate = DateUtils().formatTimeString(matchDate.toLong())
-
-                holder.mTxtLeftNickName.text = myMatchInfo.nickname
-                holder.mTxtRightNickName.text = opposingUserMatchInfo.nickname
-
-                holder.mTxtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
-                holder.mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
-                holder.mTxtDate.text = matchDate
-
-                var myResult: String? = null
-                var opposingUserResult: String? = null
-
-                when (myMatchInfo.matchDetail!!.matchResult) {
-                    "승" -> {
-                        myResult = "WIN"
-                        opposingUserResult = "LOSE"
-                    }
-                    "무" -> {
-                        myResult = "DRAW"
-                        opposingUserResult = "DRAW"
-                    }
-                    "패" -> {
-                        myResult = "LOSE"
-                        opposingUserResult = "WIN"
-                    }
-                }
-                holder.mTxtLeftResult.text = myResult
-                holder.mTxtRightResult.text = opposingUserResult
-
-                var res = 0
-                when (myMatchInfo.matchDetail!!.matchResult) {
-                    "승" -> {
-                        res = mContext.resources.getColor(R.color.search_list_win, null)
-                    }
-                    "패" -> {
-                        res = mContext.resources.getColor(R.color.search_list_lose, null)
-                    }
-                    else -> {
-                        res = mContext.resources.getColor(R.color.search_list_draw, null)
-                    }
-                }
-                holder.mRootLayout.setBackgroundColor(res)
-            }
-        }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.v(TAG, "onBindViewHolder, position : $position")
+        holder.bind(mSearchAccessId, mMatchList!!.get(position), mContext)
     }
 
-    open class ViewHolder(itemView: View) :
+    inner class ViewHolder(itemView: View, itemClick: (MatchDetailResponse) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
+        val TAG: String = javaClass.name
         var mRootLayout: ConstraintLayout
         var mItemView: View
         var mTxtLeftNickName: TextView
@@ -131,14 +68,74 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
             mTxtRightResult = mItemView.findViewById(R.id.txt_right_result)
             mTxtDate = mItemView.findViewById(R.id.txt_date)
         }
-    }
 
-    class HeaderViewHolder(headerView: View): RecyclerView.ViewHolder(headerView) {
-        var mHeaderViewHolder : View
-        var mHeaderView: TextView
-        init {
-            mHeaderViewHolder = headerView
-            mHeaderView = headerView.findViewById(R.id.txt_header)
+
+        fun bind(searchAccessId: String, item: MatchDetailResponse, context: Context) {
+            item.matchInfo.let {
+                var opposingUserIndex = 1
+                var myIndex = 0
+                val matchInfo = item.matchInfo!!
+
+                if (searchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
+                    opposingUserIndex = 1
+                    myIndex = 0
+                } else {
+                    opposingUserIndex = 0
+                    myIndex = 1
+                }
+
+                if (matchInfo.size <= 1) {
+                    Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
+                    return
+                }
+                val myMatchInfo = matchInfo[myIndex]
+                val opposingUserMatchInfo = matchInfo[opposingUserIndex]
+                var matchDate = item.matchDate
+
+                matchDate = DateUtils().formatTimeString(matchDate.toLong())
+
+                mTxtLeftNickName.text = myMatchInfo.nickname
+                mTxtRightNickName.text = opposingUserMatchInfo.nickname
+
+                mTxtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
+                mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
+                mTxtDate.text = matchDate
+
+                var myResult: String? = null
+                var opposingUserResult: String? = null
+
+                when (myMatchInfo.matchDetail!!.matchResult) {
+                    "승" -> {
+                        myResult = "WIN"
+                        opposingUserResult = "LOSE"
+                    }
+                    "무" -> {
+                        myResult = "DRAW"
+                        opposingUserResult = "DRAW"
+                    }
+                    "패" -> {
+                        myResult = "LOSE"
+                        opposingUserResult = "WIN"
+                    }
+                }
+                mTxtLeftResult.text = myResult
+                mTxtRightResult.text = opposingUserResult
+
+                var res = 0
+                when (myMatchInfo.matchDetail!!.matchResult) {
+                    "승" -> {
+                        res = context.resources.getColor(R.color.search_list_win, null)
+                    }
+                    "패" -> {
+                        res = context.resources.getColor(R.color.search_list_lose, null)
+                    }
+                    else -> {
+                        res = context.resources.getColor(R.color.search_list_draw, null)
+                    }
+                }
+                mRootLayout.setBackgroundColor(res)
+                itemView.setOnClickListener { itemClick(item) }
+            }
         }
     }
 }
