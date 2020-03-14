@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="fragment_background">#95000000</color>
+    <color name="fragment_background">#B3000000</color>
 
 
     <color name="search_detail_vs">#1D1C1C</color>
@@ -14,5 +14,7 @@
     <color name="search_list_draw">#F0DFDFDF</color>
     <color name="search_list_header_background">#B3000000</color>
     <color name="search_detail_item_title_background">#000000</color>
+    <color name="search_detail_dialog_background">#CC000000</color>
+    <color name="search_detail_dialog_top_background">#4CAF50</color>
 
 </resources>

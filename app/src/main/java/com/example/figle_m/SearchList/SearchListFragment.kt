@@ -127,16 +127,17 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mRecyclerView.adapter =
             SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList, {
                 Log.v(TAG,"ItemClick! ${it.matchInfo}")
-                showDetail(it)
+                showDetail(mSearchUserInfo.accessId, it)
             })
 
         Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
     }
 
-    fun showDetail(matchDetailResponse: MatchDetailResponse) {
+    fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
         bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
+        bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
         searchDetailDialogFragment.arguments = bundle
         searchDetailDialogFragment.show(fragmentManager!!, SearchDetailDialogFragment().TAG_MATCH_DETAIL_DIALOG)
     }
@@ -188,24 +189,23 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         var win = 0
         var draw = 0
         var lose = 0
-//        if (DataManager().SEARCH_LIMIT == mRecyclerView.adapter!!.itemCount) {
-            for (item in mSearchResponseList) {
-                var myInfo : MatchInfoDTO? = null
-                if (mSearchUserInfo.accessId == item.matchInfo[0].accessId){
-                    myInfo = item.matchInfo[0]
-                } else {
-                    myInfo = item.matchInfo[1]
-                }
-                when(myInfo.matchDetail.matchResult){
-                    "승" -> win++
-                    "무" -> draw++
-                    "패" -> lose++
-                }
+        for (item in mSearchResponseList) {
+            var myInfo: MatchInfoDTO? = null
+            if (mSearchUserInfo.accessId == item.matchInfo[0].accessId) {
+                myInfo = item.matchInfo[0]
+            } else {
+                myInfo = item.matchInfo[1]
             }
-            mRateTextView.text =
-                "최근 ${win+draw+lose} 경기 승:$win / 무:$draw / 패:$lose"
-            mRateTextView.visibility = View.VISIBLE
-//        }
+            when (myInfo.matchDetail.matchResult) {
+                "승" -> win++
+                "무" -> draw++
+                "패" -> lose++
+            }
+        }
+        mRateTextView.text =
+            "최근 ${win + draw + lose} 경기 승:$win / 무:$draw / 패:$lose"
+        mRateTextView.visibility = View.VISIBLE
+
     }
 
 

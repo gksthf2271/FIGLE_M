@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class PassDTO(
     val passTry: Int,
-    val passSuccess: String,
+    val passSuccess: Int,
     val shortPassTry: Int,
     val shortPassSuccess: Int,
     val longPassTry: Int,

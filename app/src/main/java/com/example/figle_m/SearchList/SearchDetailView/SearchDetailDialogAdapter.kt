@@ -4,27 +4,32 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import android.view.LayoutInflater
-import com.example.figle_m.R
+import com.example.figle_m.Response.MatchDetailResponse
 
 class SearchDetailDialogAdapter() : PagerAdapter() {
 
     lateinit var mContext: Context
+    lateinit var mMatchDetailResponse: MatchDetailResponse
     var resId = 0
 
-    constructor(context: Context) : this() {
+    constructor(context: Context, matchDetailResponse: MatchDetailResponse) : this() {
         this.mContext = context
+        this.mMatchDetailResponse = matchDetailResponse
     }
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-        val inflater = LayoutInflater.from(mContext)
+        var view: View? = null
         when (position) {
-            0 -> resId = R.layout.fragment_search_detail
-            1 -> resId = R.layout.fragment_search_detail
+            0 -> {
+                view = SearchDetailDialogPageView(mContext)
+                (view as SearchDetailDialogPageView).updateMatchInfo(mMatchDetailResponse)
+            }
+            1 -> {
+                view = SearchDetailDialogPageView(mContext)
+            }
         }
-        val layout = inflater.inflate(resId, collection, false) as ViewGroup
-        collection.addView(layout)
-        return layout
+        collection.addView(view)
+        return view!!
     }
 
     override fun getCount(): Int {
