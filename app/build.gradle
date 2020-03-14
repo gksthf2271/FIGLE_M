@@ -47,7 +47,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation "com.android.databinding:compiler:3.0.1"
+//    implementation "com.android.databinding:compiler:3.0.1"
+    kapt "com.android.databinding:compiler:3.0.1"
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
