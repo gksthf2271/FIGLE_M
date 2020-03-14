@@ -16,6 +16,7 @@ import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
+import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.databinding.FragmentSearchlistBinding
 import com.example.figle_m.utils.DivisionEnum
 
@@ -126,9 +127,18 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mRecyclerView.adapter =
             SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList, {
                 Log.v(TAG,"ItemClick! ${it.matchInfo}")
+                showDetail(it)
             })
 
         Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
+    }
+
+    fun showDetail(matchDetailResponse: MatchDetailResponse) {
+        val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
+        val bundle = Bundle()
+        bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
+        searchDetailDialogFragment.arguments = bundle
+        searchDetailDialogFragment.show(fragmentManager!!, SearchDetailDialogFragment().TAG_MATCH_DETAIL_DIALOG)
     }
 
 
