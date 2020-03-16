@@ -60,7 +60,7 @@ class SearchDetailDialogPageView : ConstraintLayout {
 
         var passSuccessRate:Double = matchInfoPair.first.pass.passSuccess.toDouble() / matchInfoPair.first.pass.passTry.toDouble() * 100
         passView.setLeftText("${String.format("%.2f", passSuccessRate)}%\n${matchInfoPair.first.pass.passSuccess} / ${matchInfoPair.first.pass.passTry}")
-        passView.setTitleText("패스 성공률\n시도/성공")
+        passView.setTitleText("패스 성공률\n성공/시도")
         passSuccessRate = matchInfoPair.second.pass.passSuccess.toDouble() / matchInfoPair.second.pass.passTry.toDouble() * 100
         passView.setRightText("${String.format("%.2f", passSuccessRate)}%\n${matchInfoPair.second.pass.passSuccess} / ${matchInfoPair.second.pass.passTry}")
 
