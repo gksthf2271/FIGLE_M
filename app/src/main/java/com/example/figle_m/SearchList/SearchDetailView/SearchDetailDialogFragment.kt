@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
 import com.example.figle_m.R
@@ -56,12 +57,16 @@ class SearchDetailDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         var viewPager = view!!.findViewById<ViewPager>(R.id.viewPager)
+        val btnClose = view!!.findViewById<Button>(R.id.btn_close)
+        btnClose.setOnClickListener {
+            dismiss()
+        }
         arguments.let{
             mMatchDetail = arguments!!.getParcelable<MatchDetailResponse>(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
             viewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
+            viewPager.currentItem = 0
         }
-        Log.v(TAG,"TEST : ${mMatchDetail.matchInfo}")
     }
 
     fun resizeDialog(){
