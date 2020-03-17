@@ -85,13 +85,13 @@ class SearchDetailDialogTopView : ConstraintLayout {
         var res = 0
         when (myMatchInfo.matchDetail!!.matchResult) {
             "승" -> {
-                res = context.resources.getColor(R.color.search_list_win, null)
+                res = context.resources.getColor(R.color.search_detail_dialog_top_win, null)
             }
             "패" -> {
-                res = context.resources.getColor(R.color.search_list_lose, null)
+                res = context.resources.getColor(R.color.search_detail_dialog_top_lose, null)
             }
             else -> {
-                res = context.resources.getColor(R.color.search_list_draw, null)
+                res = context.resources.getColor(R.color.search_detail_dialog_top_draw, null)
             }
         }
         mRootLayout.setBackgroundColor(res)

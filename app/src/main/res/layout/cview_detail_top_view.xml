@@ -30,8 +30,8 @@
 
             <TextView
                 android:id="@+id/txt_left_score"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@color/fragment_background"
                 android:gravity="center"
                 android:singleLine="true"
@@ -54,7 +54,6 @@
                 android:text="JUMP"
                 android:textColor="@color/search_text_color"
                 android:textStyle="bold"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@id/txt_left_score"
                 app:layout_constraintRight_toRightOf="@id/txt_left_score"
                 app:layout_constraintTop_toBottomOf="@id/txt_left_score" />
@@ -89,8 +88,8 @@
 
             <TextView
                 android:id="@+id/txt_right_score"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@color/fragment_background"
                 android:gravity="center"
                 android:singleLine="true"

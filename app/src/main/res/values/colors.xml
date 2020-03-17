@@ -15,6 +15,10 @@
     <color name="search_list_header_background">#B3000000</color>
     <color name="search_detail_item_title_background">#000000</color>
     <color name="search_detail_dialog_background">#CC000000</color>
-    <color name="search_detail_dialog_top_background">#4CAF50</color>
+    <color name="search_detail_dialog_top_background">#FFFFFF</color>
+
+    <color name="search_detail_dialog_top_win">#2196F3</color>
+    <color name="search_detail_dialog_top_lose">#F3214B</color>
+    <color name="search_detail_dialog_top_draw">#DFDFDF</color>
 
 </resources>
