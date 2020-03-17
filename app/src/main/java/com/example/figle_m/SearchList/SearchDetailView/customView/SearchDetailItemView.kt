@@ -1,4 +1,4 @@
-package com.example.figle_m.SearchList.SearchDetailView
+package com.example.figle_m.SearchList.SearchDetailView.customView
 
 import android.content.Context
 import android.util.AttributeSet

@@ -1,4 +1,4 @@
-package com.example.figle_m.SearchList.SearchDetailView
+package com.example.figle_m.SearchList.SearchDetailView.customView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.db.williamchart.extensions.getDrawable
 import com.example.figle_m.R
 
-class SearchDetailItemCardView : ConstraintLayout {
+class SearchDetailItemRedOrYellowCardView : ConstraintLayout {
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {

@@ -1,4 +1,4 @@
-package com.example.figle_m.SearchList.SearchDetailView
+package com.example.figle_m.SearchList.SearchDetailView.customView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.utils.UserSortUtils
 
 class SearchDetailDialogPageView : ConstraintLayout {
@@ -32,7 +33,7 @@ class SearchDetailDialogPageView : ConstraintLayout {
         val possessionView = findViewById<SearchDetailItemView>(R.id.cview_item1)
         val foulView = findViewById<SearchDetailItemView>(R.id.cview_item2)
         val cornerKickView = findViewById<SearchDetailItemView>(R.id.cview_item3)
-        val cardView = findViewById<SearchDetailItemCardView>(R.id.cview_item4)
+        val cardView = findViewById<SearchDetailItemRedOrYellowCardView>(R.id.cview_item4)
         val passView = findViewById<SearchDetailItemView>(R.id.cview_item5)
         val goalView = findViewById<SearchDetailItemView>(R.id.cview_item6)
         val defenceView = findViewById<SearchDetailItemView>(R.id.cview_item7)

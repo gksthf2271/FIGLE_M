@@ -34,7 +34,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogTopView
+            <com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
                 android:id="@+id/topView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

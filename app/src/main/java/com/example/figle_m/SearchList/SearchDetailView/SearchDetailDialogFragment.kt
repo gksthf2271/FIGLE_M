@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
+import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.example.figle_m.utils.DisplayUtils
 
 class SearchDetailDialogFragment : DialogFragment() {
