@@ -157,11 +157,11 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         if (DEBUG) Log.v(TAG, "showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
-            if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
+//            if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
                 mSearchResponseList.sortByDescending { it.matchDate }
                 mRecyclerView.adapter!!.notifyItemInserted(mSearchResponseList.size - 1)
                 mRecyclerView.adapter!!.notifyDataSetChanged()
-            }
+//            }
         }
         initRate()
     }
