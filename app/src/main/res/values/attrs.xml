@@ -3,4 +3,8 @@
     <declare-styleable name="SearchDetailItemView">
         <attr name="searchDetailItemView" format="reference|integer" />
     </declare-styleable>
+
+    <declare-styleable name="SearchDetailDialogTopView">
+        <attr name="searchDetailDialogTopView" format="reference|integer" />
+    </declare-styleable>
 </resources>

@@ -56,6 +56,7 @@ class SearchDetailDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
+        var topView = view!!.findViewById<SearchDetailDialogTopView>(R.id.topView)
         var viewPager = view!!.findViewById<ViewPager>(R.id.viewPager)
         val btnClose = view!!.findViewById<Button>(R.id.btn_close)
         btnClose.setOnClickListener {
@@ -64,6 +65,7 @@ class SearchDetailDialogFragment : DialogFragment() {
         arguments.let{
             mMatchDetail = arguments!!.getParcelable<MatchDetailResponse>(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
+            topView.updateView(mSearchAccessId, mMatchDetail)
             viewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
             viewPager.currentItem = 0
         }
