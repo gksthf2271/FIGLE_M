@@ -47,7 +47,7 @@ class DataManager {
     }
 
     fun loadUserData(nickName: String, onSuccess: (UserResponse?) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getService().requestUser(authorization = mAuthorizationKey, nickname = nickName)
+        SearchUser.getApiService().requestUser(authorization = mAuthorizationKey, nickname = nickName)
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     onFailed("Failed! " + t)
@@ -67,7 +67,7 @@ class DataManager {
     }
 
     fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
-        SearchUser.getService()
+        SearchUser.getApiService()
             .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
             .enqueue(object : Callback<MatchDetailResponse> {
                 override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
@@ -90,7 +90,7 @@ class DataManager {
     }
 
     fun loadMatchId(accessid: String, matchtype: Int, offset: Int?, limit: Int?, onSuccess: (ResponseBody?) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getService().requestMatchId(authorization = mAuthorizationKey, accessid = accessid, matchtype = matchtype, offset = offset, limit = limit)
+        SearchUser.getApiService().requestMatchId(authorization = mAuthorizationKey, accessid = accessid, matchtype = matchtype, offset = offset, limit = limit)
             .enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 onFailed("Failed! " + t)
@@ -108,7 +108,7 @@ class DataManager {
     }
 
     fun loadUserHighRank(accessId: String, onSuccess: (List<UserHighRankResponse>) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getService().requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
+        SearchUser.getApiService().requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
             .enqueue(object : Callback<List<UserHighRankResponse>> {
                 override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
                     onFailed("Failed! " + t)
@@ -122,6 +122,29 @@ class DataManager {
                         } else {
                             onFailed("Failed! errorcode : " + response.code())
                         }
+                    }
+                }
+            })
+    }
+
+    fun loadPlayerImage(spid: Int, onSuccess: ((ResponseBody) -> Unit), onFailed: (String) -> Unit) {
+        SearchUser.getServiceImage()
+            .requestPlayerImage(authorization = mAuthorizationKey, spid = spid)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    onFailed("Failed! : $spid")
+                }
+
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+//                    Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
+                    if (DEBUG) Log.v(TAG, "response(...) ${response!!.body().toString()}")
+                    if (response.code() == SUCCESS_CODE) {
+                        onSuccess(response!!.body()!!)
+                    } else {
+                        onFailed(response.code().toString())
                     }
                 }
             })

@@ -14,6 +14,7 @@ import com.example.figle_m.utils.UserSortUtils
 class SearchDetailDialogGameResultView : ConstraintLayout {
     val TAG = javaClass.name
     var mView: View? = null
+    val isDebug = false
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -28,7 +29,7 @@ class SearchDetailDialogGameResultView : ConstraintLayout {
     }
 
     fun updateMatchInfo(matchInfo:MatchDetailResponse) {
-        Log.v(TAG,"updateMatchInfo(...) $matchInfo")
+        if(isDebug) Log.v(TAG,"updateMatchInfo(...) $matchInfo")
         val matchInfoPair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId,matchInfo)
         val possessionView = findViewById<SearchDetailItemView>(R.id.cview_item1)
         val foulView = findViewById<SearchDetailItemView>(R.id.cview_item2)
@@ -53,8 +54,8 @@ class SearchDetailDialogGameResultView : ConstraintLayout {
 //        cardView.setTitleText("카드")
 //        cardView.setRightText("R : ${matchInfoPair.second.matchDetail.redCards}, Y : ${matchInfoPair.second.matchDetail.yellowCards}")
 
-        Log.v(TAG,"TEST1, ${matchInfoPair.first.matchDetail.redCards}, ${matchInfoPair.first.matchDetail.yellowCards}")
-        Log.v(TAG,"TEST2, ${matchInfoPair.second.matchDetail.redCards}, ${matchInfoPair.second.matchDetail.yellowCards}")
+        if (isDebug) Log.v(TAG,"TEST1, ${matchInfoPair.first.matchDetail.redCards}, ${matchInfoPair.first.matchDetail.yellowCards}")
+        if (isDebug) Log.v(TAG,"TEST2, ${matchInfoPair.second.matchDetail.redCards}, ${matchInfoPair.second.matchDetail.yellowCards}")
         cardView.addLeftCard(matchInfoPair.first.matchDetail.redCards, matchInfoPair.first.matchDetail.yellowCards)
         cardView.setTitleText("카드")
         cardView.addRightCard(matchInfoPair.second.matchDetail.redCards, matchInfoPair.second.matchDetail.yellowCards)
