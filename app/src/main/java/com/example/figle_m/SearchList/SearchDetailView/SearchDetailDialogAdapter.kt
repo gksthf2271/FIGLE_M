@@ -5,7 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.example.figle_m.Response.MatchDetailResponse
-import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogPageView
+import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogGameResultView
+import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogPlayerInfoView
 
 class SearchDetailDialogAdapter() : PagerAdapter() {
 
@@ -23,16 +24,17 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
         when (position) {
             0 -> {
                 view =
-                    SearchDetailDialogPageView(
+                    SearchDetailDialogGameResultView(
                         mContext
                     )
-                (view as SearchDetailDialogPageView).updateMatchInfo(mMatchDetailResponse)
+                (view as SearchDetailDialogGameResultView).updateMatchInfo(mMatchDetailResponse)
             }
             1 -> {
                 view =
-                    SearchDetailDialogPageView(
+                    SearchDetailDialogPlayerInfoView(
                         mContext
                     )
+                (view as SearchDetailDialogPlayerInfoView).updatePlayerInfo(mMatchDetailResponse)
             }
         }
         collection.addView(view)

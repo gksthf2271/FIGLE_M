@@ -11,7 +11,7 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.utils.UserSortUtils
 
-class SearchDetailDialogPageView : ConstraintLayout {
+class SearchDetailDialogGameResultView : ConstraintLayout {
     val TAG = javaClass.name
     var mView: View? = null
 
