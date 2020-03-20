@@ -22,6 +22,7 @@
     <color name="search_detail_dialog_top_draw">#DFDFDF</color>
 
     <color name="search_detail_dialog_player_rating">#FF5722</color>
+    <color name="search_detail_dialog_player_circle">#EEEEEE</color>
 
     <color name="empty_background">#00FFFFFF</color>
 

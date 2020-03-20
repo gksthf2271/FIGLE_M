@@ -15,7 +15,7 @@ import com.example.figle_m.utils.DateUtils
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-
+    val isDebug = false
     val mSearchAccessId: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
@@ -40,7 +40,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.v(TAG, "onBindViewHolder, position : $position")
+        if(isDebug)Log.v(TAG, "onBindViewHolder, position : $position")
         holder.bind(mSearchAccessId, mMatchList!!.get(position), mContext)
     }
 

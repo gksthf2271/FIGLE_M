@@ -41,4 +41,15 @@ interface RetrofitService {
         @Path("accessid") accessid: String
     ): Call<List<UserHighRankResponse>>
 
+    @GET("live/externalAssets/common/players/p{spid}.png")
+    fun requestPlayerImage(
+        @Header("Authorization") authorization: String,
+        @Path("spid") spid: Int
+    ): Call<ResponseBody>
+
+    @GET("/latest/spid.json")
+    fun requestPlayerImage(
+        @Header("Authorization") authorization: String
+    ): Call<ResponseBody>
+
 }

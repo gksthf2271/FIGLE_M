@@ -11,7 +11,10 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDecoration
+import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailPlayerListAdapter
+import com.example.figle_m.SearchList.SearchListFragment
+import com.example.figle_m.utils.UserSortUtils
 
 class SearchDetailDialogPlayerInfoView : ConstraintLayout {
     constructor(context: Context) : this(context, null)
@@ -58,11 +61,18 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
     }
 
     fun initPlayerList(isLeftInfo: Boolean, matchInfo: MatchDetailResponse): List<PlayerDTO>{
+        var pair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId, matchInfo)
+
         var playerList = mutableListOf<PlayerDTO>()
         when (isLeftInfo) {
-            true -> playerList.addAll(matchInfo.matchInfo[0].player)
-            false -> playerList.addAll(matchInfo.matchInfo[1].player)
+            true -> {
+                playerList.addAll(pair.first.player)
+            }
+            false -> {
+                playerList.addAll(pair.second.player)
+            }
         }
+        playerList.sortByDescending { it.status.spRating }
         return playerList
     }
 }

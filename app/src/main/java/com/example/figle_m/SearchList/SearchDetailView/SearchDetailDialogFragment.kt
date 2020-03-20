@@ -14,8 +14,10 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.example.figle_m.utils.DisplayUtils
+import okhttp3.HttpUrl
+import okhttp3.ResponseBody
 
-class SearchDetailDialogFragment : DialogFragment() {
+class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
     val TAG = javaClass.name
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
@@ -24,6 +26,11 @@ class SearchDetailDialogFragment : DialogFragment() {
 
     lateinit var mMatchDetail: MatchDetailResponse
     lateinit var mSearchAccessId: String
+    lateinit var mSearchDetailPresenter: SearchDetailPresenter
+
+    lateinit var mTopView:SearchDetailDialogTopView
+    lateinit var mViewPager:ViewPager
+    lateinit var mBtnClose:Button
 
     companion object {
         @Volatile
@@ -57,18 +64,18 @@ class SearchDetailDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        var topView = view!!.findViewById<SearchDetailDialogTopView>(R.id.topView)
-        var viewPager = view!!.findViewById<ViewPager>(R.id.viewPager)
-        val btnClose = view!!.findViewById<Button>(R.id.btn_close)
-        btnClose.setOnClickListener {
+        mTopView = view!!.findViewById(R.id.topView)
+        mViewPager = view!!.findViewById(R.id.viewPager)
+        mBtnClose = view!!.findViewById(R.id.btn_close)
+        mBtnClose.setOnClickListener {
             dismiss()
         }
         arguments.let{
-            mMatchDetail = arguments!!.getParcelable<MatchDetailResponse>(KEY_MATCH_DETAIL_INFO)!!
+            mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
-            topView.updateView(mSearchAccessId, mMatchDetail)
-            viewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
-            viewPager.currentItem = 0
+            mTopView.updateView(mSearchAccessId, mMatchDetail)
+            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
+            mViewPager.currentItem = 0
         }
     }
 
@@ -85,5 +92,27 @@ class SearchDetailDialogFragment : DialogFragment() {
 
     fun setBackgroundColorDialog() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+    }
+
+    override fun showLoading() {
+        Log.v(TAG,"showLoading(...)")
+    }
+
+    override fun hideLoading() {
+        Log.v(TAG,"hideLoading(...)")
+    }
+
+    override fun showPlayerImage(url: HttpUrl) {
+//        arguments.let{
+//            mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
+//            mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
+//            mTopView.updateView(mSearchAccessId, mMatchDetail)
+//            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
+//            mViewPager.currentItem = 0
+//        }
+    }
+
+    override fun showError(error: String) {
+        Log.v(TAG,"showError(...) $error")
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
+import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,14 +47,22 @@ class DataManager {
             }
     }
 
-    fun loadUserData(nickName: String, onSuccess: (UserResponse?) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getApiService().requestUser(authorization = mAuthorizationKey, nickname = nickName)
+    fun loadUserData(
+        nickName: String,
+        onSuccess: (UserResponse?) -> Unit,
+        onFailed: (String) -> Unit
+    ) {
+        SearchUser.getApiService()
+            .requestUser(authorization = mAuthorizationKey, nickname = nickName)
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     onFailed("Failed! " + t)
                 }
 
-                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                override fun onResponse(
+                    call: Call<UserResponse>,
+                    response: Response<UserResponse>
+                ) {
                     Log.v(TAG, "loadUserData response(...) ${response.code()}")
                     if (response != null && response!!.isSuccessful) {
                         if (response.code() == SUCCESS_CODE) {
@@ -66,7 +75,11 @@ class DataManager {
             })
     }
 
-    fun loadMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
+    fun loadMatchDetail(
+        matchId: String,
+        onSuccess: ((MatchDetailResponse) -> Unit),
+        onFailed: (String) -> Unit
+    ) {
         SearchUser.getApiService()
             .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
             .enqueue(object : Callback<MatchDetailResponse> {
@@ -89,32 +102,56 @@ class DataManager {
             })
     }
 
-    fun loadMatchId(accessid: String, matchtype: Int, offset: Int?, limit: Int?, onSuccess: (ResponseBody?) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getApiService().requestMatchId(authorization = mAuthorizationKey, accessid = accessid, matchtype = matchtype, offset = offset, limit = limit)
+    fun loadMatchId(
+        accessid: String,
+        matchtype: Int,
+        offset: Int?,
+        limit: Int?,
+        onSuccess: (ResponseBody?) -> Unit,
+        onFailed: (String) -> Unit
+    ) {
+        SearchUser.getApiService().requestMatchId(
+            authorization = mAuthorizationKey,
+            accessid = accessid,
+            matchtype = matchtype,
+            offset = offset,
+            limit = limit
+        )
             .enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                onFailed("Failed! " + t)
-            }
-
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.v(TAG, "loadMatchId onResponse(...) ::: ${response.code()}")
-                if (response.code() == SUCCESS_CODE) {
-                    onSuccess(response!!.body())
-                } else {
-                    onFailed("Failed! errorcode : " + response.code())
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    onFailed("Failed! " + t)
                 }
-            }
-        })
+
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    Log.v(TAG, "loadMatchId onResponse(...) ::: ${response.code()}")
+                    if (response.code() == SUCCESS_CODE) {
+                        onSuccess(response!!.body())
+                    } else {
+                        onFailed("Failed! errorcode : " + response.code())
+                    }
+                }
+            })
     }
 
-    fun loadUserHighRank(accessId: String, onSuccess: (List<UserHighRankResponse>) -> Unit, onFailed: (String) -> Unit) {
-        SearchUser.getApiService().requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
+    fun loadUserHighRank(
+        accessId: String,
+        onSuccess: (List<UserHighRankResponse>) -> Unit,
+        onFailed: (String) -> Unit
+    ) {
+        SearchUser.getApiService()
+            .requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
             .enqueue(object : Callback<List<UserHighRankResponse>> {
                 override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
                     onFailed("Failed! " + t)
                 }
 
-                override fun onResponse(call: Call<List<UserHighRankResponse>>, response: Response<List<UserHighRankResponse>>) {
+                override fun onResponse(
+                    call: Call<List<UserHighRankResponse>>,
+                    response: Response<List<UserHighRankResponse>>
+                ) {
                     if (DEBUG) Log.v(TAG, "loadUserHighRank response(...) ${response.code()}")
                     if (response != null && response!!.isSuccessful) {
                         if (response.code() == SUCCESS_CODE) {
@@ -127,27 +164,15 @@ class DataManager {
             })
     }
 
-    fun loadPlayerImage(spid: Int, onSuccess: ((ResponseBody) -> Unit), onFailed: (String) -> Unit) {
-        SearchUser.getServiceImage()
+    fun loadPlayerImage(
+        spid: Int,
+        onSuccess: ((HttpUrl) -> Unit),
+        onFailed: (String) -> Unit
+    ) {
+        val call = SearchUser.getServiceImage()
             .requestPlayerImage(authorization = mAuthorizationKey, spid = spid)
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    onFailed("Failed! : $spid")
-                }
-
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-//                    Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
-                    if (DEBUG) Log.v(TAG, "response(...) ${response!!.body().toString()}")
-                    if (response.code() == SUCCESS_CODE) {
-                        onSuccess(response!!.body()!!)
-                    } else {
-                        onFailed(response.code().toString())
-                    }
-                }
-            })
+//        Log.v(TAG, "loadPlayerImage call : ${call.request()}")
+        onSuccess(call.request().url())
     }
 
 }
