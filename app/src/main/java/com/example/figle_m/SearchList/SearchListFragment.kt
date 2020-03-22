@@ -80,10 +80,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         initListData()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         mSearchPresenter!!.dropView()

@@ -175,4 +175,24 @@ class DataManager {
         onSuccess(call.request().url())
     }
 
+    fun loadPlayerName(onSuccess: ((ResponseBody) -> Unit),onFailed: (String) -> Unit){
+        val call = SearchUser.getPlayerNameApiService().requestPlayerName(authorization = mAuthorizationKey)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                onFailed("Failed! " + t)
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (DEBUG) Log.v(TAG, "loadPlayerName response(...) ${response.code()}")
+                if (response != null && response!!.isSuccessful) {
+                    if (response.code() == SUCCESS_CODE) {
+                        onSuccess(response!!.body()!!)
+                    } else {
+                        onFailed("loadPlayerName Failed! errorcode : " + response.code())
+                    }
+                }
+            }
+        })
+    }
+
 }

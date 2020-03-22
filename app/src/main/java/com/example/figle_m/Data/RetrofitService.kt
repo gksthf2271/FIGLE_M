@@ -47,8 +47,8 @@ interface RetrofitService {
         @Path("spid") spid: Int
     ): Call<ResponseBody>
 
-    @GET("/latest/spid.json")
-    fun requestPlayerImage(
+    @GET("latest/spid.json")
+    fun requestPlayerName(
         @Header("Authorization") authorization: String
     ): Call<ResponseBody>
 

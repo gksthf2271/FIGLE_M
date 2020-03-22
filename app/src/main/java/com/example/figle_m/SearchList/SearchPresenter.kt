@@ -6,6 +6,7 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.utils.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import okhttp3.ResponseBody
 
 class SearchPresenter: SearchContract.Presenter {
     val TAG:String = javaClass.name
@@ -64,5 +65,15 @@ class SearchPresenter: SearchContract.Presenter {
                 Log.v(TAG,"getMatchDetail Failed! $it")
                 onFailed(it)
             })
+    }
+
+    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
+        DataManager.getInstance().loadPlayerName({
+            if (DEBUG) Log.v(TAG,"getMatchDetail Success! $it")
+            onSuccess(it)
+        },{
+            Log.v(TAG,"getMatchDetail Failed! $it")
+            onFailed(it)
+        })
     }
 }

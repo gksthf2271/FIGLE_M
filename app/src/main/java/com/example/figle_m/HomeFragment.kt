@@ -32,7 +32,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     lateinit var mUserResponse: UserResponse
 
     override fun initPresenter() {
-        Log.v(TAG, "initPresenter(...)")
         mUserPresenter = UserPresenter()
     }
 
