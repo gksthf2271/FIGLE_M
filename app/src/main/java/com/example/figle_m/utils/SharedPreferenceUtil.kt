@@ -16,7 +16,7 @@ open class SharedPreferenceUtil{
         val settings: SharedPreferences = context.getSharedPreferences(prefName, MODE_PRIVATE)
         val editor: SharedPreferences.Editor = settings.edit()
         editor.putString(key, value)
-        editor.commit()
+        editor.apply()
     }
 
     open fun removePref(context: Context, prefName: String, key: String, allRemove: Boolean) {
@@ -26,7 +26,7 @@ open class SharedPreferenceUtil{
             true -> editor.clear()        // 전부 삭제
             false -> editor.remove(key)    // 특정 데이터 삭제
         }
-        editor.commit()
+        editor.apply()
     }
 
     open fun getPref(context: Context, prefName: String, key: String) : String{

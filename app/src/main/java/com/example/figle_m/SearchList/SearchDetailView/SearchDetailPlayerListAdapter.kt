@@ -16,12 +16,15 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.figle_m.DB.PlayerDataBase
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.MainActivity
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.utils.PositionEnum
 import com.example.figle_m.utils.SharedPreferenceUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
@@ -76,8 +79,16 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         val TAG: String = javaClass.name
         fun bind(item: PlayerDTO, context: Context) {
             itemView.setOnClickListener { itemClick(item) }
-            val playerName = SharedPreferenceUtil().getPref(context, MainActivity().PREF_NAME,item.spId.toString())
-            mPlayerName.text = playerName
+//            val playerName = SharedPreferenceUtil().getPref(context, MainActivity().PREF_NAME,item.spId.toString())
+            val playerDB = PlayerDataBase.getInstance(context)
+            playerDB.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val player = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                    CoroutineScope(Dispatchers.Main).launch {
+                        mPlayerName.text = player.playerName
+                    }
+                }
+            }
             mRating.text = item.status.spRating.toString()
             for (positionItem in PositionEnum.values()) {
                 if (positionItem.spposition.equals(item.spPosition))
