@@ -2,10 +2,8 @@ package com.example.figle_m.SearchList
 
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
-import com.example.figle_m.UserContract
-import com.example.figle_m.View.BasePresenter
-import com.example.figle_m.View.BaseView
-import okhttp3.ResponseBody
+import com.example.figle_m.Base.BasePresenter
+import com.example.figle_m.Base.BaseView
 
 interface SearchContract: BaseView {
 

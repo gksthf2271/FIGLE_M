@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.figle_m.Base.BaseActivity
+import com.example.figle_m.Home.HomeFragment
 import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.utils.FragmentUtils
 import okhttp3.ResponseBody

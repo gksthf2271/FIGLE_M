@@ -1,4 +1,4 @@
-package com.example.figle_m
+package com.example.figle_m.Home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -10,10 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchListFragment
-import com.example.figle_m.View.UserPresenter
+import com.example.figle_m.R
 import com.example.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
@@ -42,7 +43,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         @JvmStatic
         fun getInstance(): HomeFragment =
             instance ?: synchronized(this) {
-                instance ?: HomeFragment().also {
+                instance
+                    ?: HomeFragment().also {
                     instance = it
                 }
             }
@@ -75,7 +77,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 bundle.putStringArray(SearchListFragment.getInstance().KEY_MATCH_ID_LIST,stringList.toTypedArray())
                 bundle.putParcelable(SearchListFragment.getInstance().KEY_SEARCH_USER_INFO, mUserResponse)
                 searchListFragment.arguments = bundle
-                FragmentUtils().loadFragment(searchListFragment, R.id.fragment_container, fragmentManager!!)
+                FragmentUtils().loadFragment(searchListFragment,
+                    R.id.fragment_container, fragmentManager!!)
                 return true
             }
             else -> {

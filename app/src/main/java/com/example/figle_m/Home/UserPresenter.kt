@@ -1,8 +1,7 @@
-package com.example.figle_m.View
+package com.example.figle_m.Home
 
 import android.util.Log
 import com.example.figle_m.Data.DataManager
-import com.example.figle_m.UserContract
 
 class UserPresenter: UserContract.Presenter{
     val TAG:String = javaClass.name

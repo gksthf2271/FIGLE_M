@@ -1,11 +1,10 @@
-package com.example.figle_m
+package com.example.figle_m.Base
 
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
-abstract class BaseActivity: AppCompatActivity() {
-    private val TAG:String = javaClass.name
-
+abstract class BaseFragment: Fragment(){
+    private val TAG: String = javaClass.name
     override fun onStart() {
         super.onStart()
         Log.v(TAG,"onStart(...)")

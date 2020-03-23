@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.figle_m.BaseFragment
+import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.MatchInfoDTO
