@@ -14,8 +14,9 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.example.figle_m.utils.DisplayUtils
+import kotlinx.android.synthetic.main.fragment_search_container.*
+import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 import okhttp3.HttpUrl
-import okhttp3.ResponseBody
 
 class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
     val TAG = javaClass.name
@@ -96,11 +97,20 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
 
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
+        avi_loading.visibility = View.VISIBLE
+        btn_close.visibility = View.GONE
+        group_root.visibility = View.GONE
+        avi_loading.show()
     }
 
     override fun hideLoading() {
         Log.v(TAG,"hideLoading(...)")
+        avi_loading.hide()
+        avi_loading.visibility = View.GONE
+        btn_close.visibility = View.VISIBLE
+        group_root.visibility = View.VISIBLE
     }
+
 
     override fun showPlayerImage(url: HttpUrl) {
 //        arguments.let{

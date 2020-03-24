@@ -19,6 +19,7 @@ import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.databinding.FragmentSearchlistBinding
 import com.example.figle_m.utils.DivisionEnum
+import kotlinx.android.synthetic.main.fragment_searchlist.*
 
 
 class SearchListFragment : BaseFragment(), SearchContract.View {
@@ -141,10 +142,21 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
+        avi_loading.visibility = View.VISIBLE
+        group_info.visibility = View.GONE
+        group_rate.visibility = View.GONE
+        layout_recyclerview.visibility = View.GONE
+        avi_loading.show()
     }
 
     override fun hideLoading() {
         Log.v(TAG,"hideLoading(...)")
+        avi_loading.hide()
+        avi_loading.visibility = View.GONE
+        group_info.visibility = View.VISIBLE
+        group_rate.visibility = View.VISIBLE
+        layout_recyclerview.visibility = View.VISIBLE
+        group_info.visibility = View.VISIBLE
     }
 
     override fun showSearchList(searchResponse: MatchDetailResponse?) {

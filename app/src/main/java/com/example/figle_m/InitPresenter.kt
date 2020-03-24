@@ -34,10 +34,12 @@ class InitPresenter : InitContract.Presenter {
                     {
                         Log.v(TAG, "getPlayerNameList Success! ${it}")
                         mPlayerNameList?.showMainActivity(it)
-                        mPlayerNameList?.hideLoading()
-                        updatePlayerListPref(context, it
+                        updatePlayerDB(context, it
                             , {
                                 Log.v(TAG, "pref save successful")
+                                CoroutineScope(Dispatchers.Main).launch {
+                                mPlayerNameList?.hideLoading()
+                                }
                             }
                         )
                     }, {
@@ -58,8 +60,8 @@ class InitPresenter : InitContract.Presenter {
         })
     }
 
-    fun updatePlayerListPref(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
-        Log.v(TAG, "updatePlayerListPref(...)")
+    fun updatePlayerDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
+        Log.v(TAG, "updatePlayerDB(...)")
         CoroutineScope(Dispatchers.IO).launch {
             var result: String = responseBody.string()
             val stringList: List<String> =
@@ -89,7 +91,7 @@ class InitPresenter : InitContract.Presenter {
                     val loIndex = index
                     val key = stringList[index]
                     val value = stringList[++index]
-                    Log.v(TAG, "updatePlayerListPref - index : $loIndex , key : $key , value : $value")
+                    Log.v(TAG, "updatePlayerDB - index : $loIndex , key : $key , value : $value")
                     playerDB!!.playerDao().insert(PlayerEntity(null,key,value))
                     index++
                 }

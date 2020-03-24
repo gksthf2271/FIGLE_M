@@ -22,6 +22,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         mDetailListView = view
     }
     override fun getPlayerImage(spid: Int) {
+        mDetailListView?.showLoading()
         runBlocking {
             launch {
                 getPlayerImage(spid, {

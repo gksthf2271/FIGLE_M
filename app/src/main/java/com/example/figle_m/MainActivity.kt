@@ -3,12 +3,14 @@ package com.example.figle_m
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.figle_m.Base.BaseActivity
 import com.example.figle_m.Home.HomeFragment
 import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.utils.FragmentUtils
+import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.ResponseBody
 
 class MainActivity : BaseActivity(), InitContract.View{
@@ -47,10 +49,16 @@ class MainActivity : BaseActivity(), InitContract.View{
 
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
+        avi_loading.visibility = View.VISIBLE
+        fragment_container.visibility = View.GONE
+        avi_loading.show()
     }
 
     override fun hideLoading() {
         Log.v(TAG,"hideLoading(...)")
+        avi_loading.hide()
+        avi_loading.visibility = View.GONE
+        fragment_container.visibility = View.VISIBLE
     }
 
     override fun showMainActivity(responseBody: ResponseBody) {
