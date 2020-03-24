@@ -79,5 +79,6 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:1.1.1"
     kaptTest "android.arch.persistence.room:testing:1.1.1"
 
-
+    //Loading Lib
+    implementation "com.wang.avi:library:2.1.3"
 }
