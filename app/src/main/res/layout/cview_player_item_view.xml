@@ -45,7 +45,7 @@
             android:text="10.0"
             android:layout_width="40dp"
             android:layout_height="24dp"
-            android:background="@drawable/rounded_player_rating"
+            android:background="@drawable/rounded_player"
             android:gravity="center"
             android:textStyle="bold"
             android:textColor="@color/search_text_color"

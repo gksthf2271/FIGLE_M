@@ -90,6 +90,11 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                 }
             }
             mRating.text = item.status.spRating.toString()
+            if (item.status.spRating >= 8) {
+                mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+            } else {
+                mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+            }
             for (positionItem in PositionEnum.values()) {
                 if (positionItem.spposition.equals(item.spPosition))
                     mPlayerPosition.text = positionItem.description

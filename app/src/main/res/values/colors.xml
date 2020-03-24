@@ -21,7 +21,8 @@
     <color name="search_detail_dialog_top_lose">#F3214B</color>
     <color name="search_detail_dialog_top_draw">#DFDFDF</color>
 
-    <color name="search_detail_dialog_player_rating">#FF5722</color>
+    <color name="search_detail_dialog_player_team_mvp">#FF5722</color>
+    <color name="search_detail_dialog_player">#9E9A9A</color>
     <color name="search_detail_dialog_player_circle">#EEEEEE</color>
 
     <color name="empty_background">#00FFFFFF</color>
