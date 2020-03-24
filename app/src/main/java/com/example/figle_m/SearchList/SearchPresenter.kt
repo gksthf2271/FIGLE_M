@@ -40,12 +40,14 @@ class SearchPresenter: SearchContract.Presenter {
     }
 
     override fun getMatchDetailList(matchId: String) {
+        mSearchListView?.showLoading()
         runBlocking {
             launch {
                 getMatchDetail(matchId, {
-                        if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
-                        it.matchDate = DateUtils().getDate(it.matchDate).toString()
-                        mSearchListView?.showSearchList(it)
+                    if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
+                    it.matchDate = DateUtils().getDate(it.matchDate).toString()
+                    mSearchListView?.showSearchList(it)
+                    mSearchListView?.hideLoading()
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
                     mSearchListView?.showError(ERROR_EMPTY)

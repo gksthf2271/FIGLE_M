@@ -150,19 +150,21 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     }
 
     override fun hideLoading() {
-        Log.v(TAG,"hideLoading(...)")
-        avi_loading.hide()
-        avi_loading.visibility = View.GONE
-        group_info.visibility = View.VISIBLE
-        group_rate.visibility = View.VISIBLE
-        layout_recyclerview.visibility = View.VISIBLE
-        group_info.visibility = View.VISIBLE
+        Log.v(TAG, "hideLoading(...) ${mMatchIdList.size} , ${mRecyclerView.adapter!!.itemCount}")
+        if (mMatchIdList.size <= mRecyclerView.adapter!!.itemCount) {
+            avi_loading.hide()
+            avi_loading.visibility = View.GONE
+            group_info.visibility = View.VISIBLE
+            group_rate.visibility = View.VISIBLE
+            layout_recyclerview.visibility = View.VISIBLE
+            group_info.visibility = View.VISIBLE
+        }
     }
 
     override fun showSearchList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         mEmptyView.visibility = View.GONE
-        if (DEBUG) Log.v(TAG, "showSearchList : ${searchResponse!!.matchId}")
+        Log.v(TAG, "showSearchList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mSearchResponseList.add(searchResponse!!)
 //            if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
