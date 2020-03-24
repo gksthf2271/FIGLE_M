@@ -149,9 +149,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         avi_loading.show()
     }
 
-    override fun hideLoading() {
+    override fun hideLoading(isError: Boolean) {
         Log.v(TAG, "hideLoading(...) ${mMatchIdList.size} , ${mRecyclerView.adapter!!.itemCount}")
-        if (mMatchIdList.size <= mRecyclerView.adapter!!.itemCount) {
+        if (mMatchIdList.size <= mRecyclerView.adapter!!.itemCount || isError) {
             avi_loading.hide()
             avi_loading.visibility = View.GONE
             group_info.visibility = View.VISIBLE
@@ -220,6 +220,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
 
     override fun showError(error: String) {
-        if (SearchPresenter().ERROR_EMPTY.equals(error)) mEmptyView.visibility = View.VISIBLE
+        if (SearchPresenter().ERROR_EMPTY.equals(error)) {
+            mEmptyView.visibility = View.VISIBLE
+            hideLoading(true)
+        }
     }
 }

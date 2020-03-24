@@ -9,7 +9,7 @@ interface SearchContract: BaseView {
 
     interface View : BaseView{
         fun showLoading()
-        fun hideLoading()
+        fun hideLoading(isError: Boolean)
         fun showSearchList(searchResponse : MatchDetailResponse?)
         fun showHighRank(userHighRankResponse: List<UserHighRankResponse>)
     }

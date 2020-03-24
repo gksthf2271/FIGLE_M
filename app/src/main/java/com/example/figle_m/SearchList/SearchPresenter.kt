@@ -30,10 +30,10 @@ class SearchPresenter: SearchContract.Presenter {
                     {
                         Log.v(TAG, "getUserHighRank Success! ${it}")
                         mSearchListView?.showHighRank(it)
-                        mSearchListView?.hideLoading()
+                        mSearchListView?.hideLoading(false)
                     }, {
                         Log.v(TAG, "getUserHighRank Failed! $it")
-                        mSearchListView?.hideLoading()
+                        mSearchListView?.hideLoading(true)
                     })
             }
         }
@@ -47,11 +47,11 @@ class SearchPresenter: SearchContract.Presenter {
                     if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
                     it.matchDate = DateUtils().getDate(it.matchDate).toString()
                     mSearchListView?.showSearchList(it)
-                    mSearchListView?.hideLoading()
+                    mSearchListView?.hideLoading(false)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
                     mSearchListView?.showError(ERROR_EMPTY)
-                    mSearchListView?.hideLoading()
+                    mSearchListView?.hideLoading(true)
                 })
 
             }
