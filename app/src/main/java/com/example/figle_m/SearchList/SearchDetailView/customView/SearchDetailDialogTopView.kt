@@ -1,13 +1,18 @@
 package com.example.figle_m.SearchList.SearchDetailView.customView
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.figle_m.R
+import com.example.figle_m.Response.DTO.MatchInfoDTO
+import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.Response.MatchDetailResponse
+import kotlinx.android.synthetic.main.cview_detail_top_view.view.*
 
 class SearchDetailDialogTopView : ConstraintLayout {
     val TAG = javaClass.name
@@ -24,6 +29,9 @@ class SearchDetailDialogTopView : ConstraintLayout {
     lateinit var mTxtRightScore: TextView
     lateinit var mTxtLeftResult: TextView
     lateinit var mTxtRightResult: TextView
+    lateinit var mSearchAccessId: String
+    var mBlockListMap: HashMap<Boolean, List<Int>> = hashMapOf()
+    var mAssistListMap: HashMap<Boolean, List<Int>> = hashMapOf()
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -37,7 +45,10 @@ class SearchDetailDialogTopView : ConstraintLayout {
         mTxtRightResult = findViewById(R.id.txt_right_result)
     }
 
-    fun updateView(searchAccessId: String, matchDetail: MatchDetailResponse) {
+    fun updateUserView(searchAccessId: String, matchDetail: MatchDetailResponse) {
+        group_result.visibility = View.VISIBLE
+        player_info_view.visibility = View.GONE
+        mSearchAccessId = searchAccessId
         val matchInfo = matchDetail.matchInfo!!
         var opposingUserIndex = 1
         var myIndex = 0
@@ -55,6 +66,8 @@ class SearchDetailDialogTopView : ConstraintLayout {
         }
         val myMatchInfo = matchInfo[myIndex]
         val opposingUserMatchInfo = matchInfo[opposingUserIndex]
+        setupData(myMatchInfo,true)
+        setupData(opposingUserMatchInfo,false)
 
         mTxtLeftNickName.text = myMatchInfo.nickname
         mTxtRightNickName.text = opposingUserMatchInfo.nickname
@@ -95,5 +108,26 @@ class SearchDetailDialogTopView : ConstraintLayout {
             }
         }
         mRootLayout.setBackgroundColor(res)
+    }
+
+    fun updatePlayerInfo(playerInfo: Pair<PlayerDTO, Boolean>) {
+        Log.v(TAG,"player : $playerInfo")
+        mRootLayout.background = resources.getDrawable(R.color.empty_background,null)
+        player_info_view.visibility = View.VISIBLE
+        group_result.visibility = View.GONE
+        mAssistListMap ?: return
+        mBlockListMap ?: return
+        player_info_view.updateView(playerInfo.first, mAssistListMap.get(playerInfo.second)!!.sorted(), mBlockListMap.get(playerInfo.second)!!.sorted())
+    }
+
+    fun setupData(matchInfo: MatchInfoDTO, isLeft:Boolean) {
+        var assistList = arrayListOf<Int>()
+        var blockList = arrayListOf<Int>()
+        for (player in matchInfo.player) {
+                assistList.add(player.status.assist)
+                blockList.add(player.status.block)
+        }
+        mAssistListMap.put(isLeft,assistList)
+        mBlockListMap.put(isLeft,blockList)
     }
 }

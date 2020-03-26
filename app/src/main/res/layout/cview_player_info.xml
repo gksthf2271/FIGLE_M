@@ -2,14 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/tools"
+    android:background="@color/fragment_background">
 
     <com.gao.jiefly.abilitychartlibrary.AbilityChatView
         android:id="@+id/chart_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintWidth_percent="0.7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:lineWidth="0.2dp"
+        custom:textColor="#ffffff"
+        custom:textSize="1sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

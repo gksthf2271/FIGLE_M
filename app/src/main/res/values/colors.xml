@@ -27,4 +27,9 @@
 
     <color name="empty_background">#00FFFFFF</color>
 
+    <color name="chart_cover">#FF3B00</color>
+    <color name="chart_line">#FFFFFF</color>
+    <color name="chart_polygon">#C0BEBE</color>
+    <color name="chart_background">#E6000000</color>
+
 </resources>

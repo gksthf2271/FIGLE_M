@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
+import butterknife.OnPageChange
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
@@ -74,8 +75,27 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         arguments.let{
             mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
-            mTopView.updateView(mSearchAccessId, mMatchDetail)
-            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
+            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail, {
+                group_topInfo.background = resources.getDrawable(R.color.fragment_background,null)
+                mTopView.updatePlayerInfo(it)
+            })
+            mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    when (position) {
+                        0 -> {
+                            mTopView.updateUserView(mSearchAccessId, mMatchDetail)
+                        }
+                    }
+                }
+                override fun onPageSelected(position: Int) {
+
+                }
+
+            })
             mViewPager.currentItem = 0
         }
     }
@@ -116,7 +136,7 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
 //        arguments.let{
 //            mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
 //            mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
-//            mTopView.updateView(mSearchAccessId, mMatchDetail)
+//            mTopView.updateUserView(mSearchAccessId, mMatchDetail)
 //            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
 //            mViewPager.currentItem = 0
 //        }

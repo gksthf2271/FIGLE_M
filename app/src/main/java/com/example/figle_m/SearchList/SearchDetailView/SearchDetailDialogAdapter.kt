@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogGameResultView
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogPlayerInfoView
@@ -12,11 +13,12 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
 
     lateinit var mContext: Context
     lateinit var mMatchDetailResponse: MatchDetailResponse
-    var resId = 0
+    lateinit var mItemClick: (Pair<PlayerDTO,Boolean>) -> Unit
 
-    constructor(context: Context, matchDetailResponse: MatchDetailResponse) : this() {
+    constructor(context: Context, matchDetailResponse: MatchDetailResponse, itemClick : (Pair<PlayerDTO,Boolean>) -> Unit) : this() {
         this.mContext = context
         this.mMatchDetailResponse = matchDetailResponse
+        this.mItemClick = itemClick
     }
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
@@ -24,17 +26,15 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
         when (position) {
             0 -> {
                 view =
-                    SearchDetailDialogGameResultView(
-                        mContext
-                    )
+                    SearchDetailDialogGameResultView(mContext)
                 (view as SearchDetailDialogGameResultView).updateMatchInfo(mMatchDetailResponse)
             }
             1 -> {
-                view =
-                    SearchDetailDialogPlayerInfoView(
-                        mContext
-                    )
-                (view as SearchDetailDialogPlayerInfoView).updatePlayerInfo(mMatchDetailResponse)
+                view = SearchDetailDialogPlayerInfoView(mContext)
+                view.updatePlayerInfo(mMatchDetailResponse,
+                    {
+                        mItemClick(it)
+                    })
             }
         }
         collection.addView(view)

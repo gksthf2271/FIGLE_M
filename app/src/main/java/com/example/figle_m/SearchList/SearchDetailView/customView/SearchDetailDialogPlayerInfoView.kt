@@ -40,7 +40,7 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         super.onFinishInflate()
     }
 
-    fun updatePlayerInfo(matchInfo: MatchDetailResponse) {
+    fun updatePlayerInfo(matchInfo: MatchDetailResponse, itemClick: (Pair<PlayerDTO,Boolean>) -> Unit) {
         Log.v(TAG,"updatePlayerInfo(...) $matchInfo")
 
         val leftLayoutManager = LinearLayoutManager(context)
@@ -49,6 +49,7 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         mLeftRecyclerView.adapter =
             SearchDetailPlayerListAdapter(context!!, initPlayerList(true, matchInfo), {
                 Log.v(TAG,"ItemClick! ${it}")
+                itemClick(Pair(it,true))
             })
 
         val rightLayoutManager = LinearLayoutManager(context)
@@ -57,6 +58,7 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         mRightRecyclerView.adapter =
             SearchDetailPlayerListAdapter(context!!, initPlayerList(false, matchInfo), {
                 Log.v(TAG,"ItemClick! ${it}")
+                itemClick(Pair(it,false))
             })
     }
 
