@@ -39,6 +39,14 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_goal"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            app:layout_constraintRight_toRightOf="@id/img_player_group"
+            app:layout_constraintLeft_toRightOf="@id/img_player_group"
+            app:layout_constraintTop_toTopOf="@id/img_player_group" />
+
 
         <TextView
             android:id="@+id/txt_rating"

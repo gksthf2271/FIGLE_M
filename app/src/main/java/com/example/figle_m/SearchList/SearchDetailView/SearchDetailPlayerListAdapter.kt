@@ -18,11 +18,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.figle_m.DB.PlayerDataBase
 import com.example.figle_m.Data.DataManager
-import com.example.figle_m.MainActivity
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.utils.PositionEnum
-import com.example.figle_m.utils.SharedPreferenceUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -108,6 +106,8 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     mRating.background = mContext.getDrawable(R.drawable.rounded_player)
                 }
             }
+
+            addGoalIcon(item.status.goal)
             for (positionItem in PositionEnum.values()) {
                 if (positionItem.spposition.equals(item.spPosition))
                     mPlayerPosition.text = positionItem.description
@@ -124,6 +124,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                 }
             }
         }
+
         fun updatePlayerImage(url: HttpUrl) {
             Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
             Glide.with(mPlayerImg.getContext())
@@ -153,6 +154,28 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     }
                 })
                 .into(mPlayerImg)
+        }
+
+        fun addGoalIcon(goalCount: Int) {
+            val rootView = mItemView.findViewById(R.id.layout_goal) as ConstraintLayout
+            val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            rootView.removeAllViews()
+            if (goalCount == 0) {
+                return
+            }
+            for(i in 1..goalCount) {
+                val imageView: ImageView = inflater.inflate(R.layout.cview_card,rootView,false) as ImageView
+                imageView.scaleType= ImageView.ScaleType.FIT_XY
+                imageView.background = mContext.getDrawable(R.mipmap.icon_ball)
+
+                var layoutParams= ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+                layoutParams.leftMargin = i * 20
+                layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
+                imageView.layoutParams = layoutParams
+                imageView.layoutParams.height = 50
+                imageView.layoutParams.width = 50
+                rootView.addView(imageView)
+            }
         }
     }
 }

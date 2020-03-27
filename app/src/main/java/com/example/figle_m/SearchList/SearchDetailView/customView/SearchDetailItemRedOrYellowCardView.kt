@@ -16,6 +16,7 @@ class SearchDetailItemRedOrYellowCardView : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         initView(context)
     }
+
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.cview_detail_card_info, this)
@@ -35,13 +36,13 @@ class SearchDetailItemRedOrYellowCardView : ConstraintLayout {
         }
         for(i in 1..redCount) {
             val imageView: ImageView = inflater.inflate(R.layout.cview_card,rootView,false) as ImageView
-            imageView.background = getDrawable(R.mipmap.red)
+            imageView.background = context.getDrawable(R.mipmap.red)
             rootView.addView(imageView)
         }
 
         for(i in 1..yellowCount) {
             val imageView: ImageView = inflater.inflate(R.layout.cview_card,rootView,false) as ImageView
-            imageView.background = getDrawable(R.mipmap.yellow)
+            imageView.background = context.getDrawable(R.mipmap.yellow)
             rootView.addView(imageView)
         }
     }
@@ -56,13 +57,13 @@ class SearchDetailItemRedOrYellowCardView : ConstraintLayout {
         }
         for(i in 1..redCount) {
             val imageView: ImageView = inflater.inflate(R.layout.cview_card,rootView,false) as ImageView
-            imageView.background = getDrawable(R.mipmap.red)
+            imageView.background = context.getDrawable(R.mipmap.red)
             rootView.addView(imageView)
         }
 
         for(i in 1..yellowCount) {
             val imageView: ImageView = inflater.inflate(R.layout.cview_card,rootView,false) as ImageView
-            imageView.background = getDrawable(R.mipmap.yellow)
+            imageView.background = context.getDrawable(R.mipmap.yellow)
             rootView.addView(imageView)
         }
     }
