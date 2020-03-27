@@ -8,15 +8,99 @@
 
     <com.gao.jiefly.abilitychartlibrary.AbilityChatView
         android:id="@+id/chart_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         custom:lineWidth="0.2dp"
         custom:textColor="#ffffff"
         custom:textSize="1sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.65"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/group_playerInfo"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_playerInfo"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintWidth_percent="0.35"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        ></com.gao.jiefly.abilitychartlibrary.AbilityChatView>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/txt_spRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_name"/>
+
+        <TextView
+            android:id="@+id/txt_goalRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_spRate"/>
+
+        <TextView
+            android:id="@+id/txt_assistRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_goalRate"/>
+
+        <TextView
+            android:id="@+id/txt_passRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_assistRate"/>
+
+        <TextView
+            android:id="@+id/txt_blockRate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_passRate"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

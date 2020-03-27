@@ -7,9 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.figle_m.DB.PlayerDataBase
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.PlayerDTO
 import kotlinx.android.synthetic.main.cview_player_info.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class PlayerInfoView : ConstraintLayout {
@@ -61,8 +65,27 @@ class PlayerInfoView : ConstraintLayout {
         } else {
             (player.status.assist.toDouble() / totalAssistCount.toDouble()) * 100
         }
-//        chart_view.setCoverColor(resources.getColor(R.color.chart_cover, null))
-        chart_view.setCoverColor(Color.GREEN)
+
+
+        val playerDB = PlayerDataBase.getInstance(context)
+        playerDB.let {
+            CoroutineScope(Dispatchers.IO).launch {
+                val player = playerDB!!.playerDao().getPlayer(player.spId.toString())
+                CoroutineScope(Dispatchers.Main).launch {
+                    txt_name.text = player.playerName
+                }
+            }
+        }
+
+        txt_spRate.text = "평점 : " + spRate.toString()
+        txt_goalRate.text = "유효슈팅 : " + String.format("%.2f",goalRate)
+        txt_assistRate.text = "도움 : " + String.format("%.2f",assistRate)
+        txt_passRate.text = "패스 : " + String.format("%.2f",passRate)
+        txt_blockRate.text = "수비 : " + String.format("%.2f",block)
+
+
+        chart_view.setCoverColor(resources.getColor(R.color.chart_cover, null))
+        chart_view.setCoverAlpha(180)
         chart_view.setLineColor(resources.getColor(R.color.chart_line, null))
         chart_view.setPolygonColor(resources.getColor(R.color.chart_polygon, null))
         chart_view.setTextSize(30)
