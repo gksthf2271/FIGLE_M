@@ -13,7 +13,6 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDecoration
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailPlayerListAdapter
-import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.utils.UserSortUtils
 
 class SearchDetailDialogPlayerInfoView : ConstraintLayout {
@@ -26,6 +25,8 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
     val TAG = javaClass.name
     lateinit var mLeftRecyclerView: RecyclerView
     lateinit var mRightRecyclerView: RecyclerView
+    var mMVPPlayer : PlayerDTO? = null
+
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -34,10 +35,6 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         mLeftRecyclerView = findViewById(R.id.recyclerview_left_palyer)
         mRightRecyclerView = findViewById(R.id.recyclerview_right_palyer)
 
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
     }
 
     fun updatePlayerInfo(matchInfo: MatchDetailResponse, itemClick: (Pair<PlayerDTO,Boolean>) -> Unit) {
@@ -60,21 +57,29 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
                 Log.v(TAG,"ItemClick! ${it}")
                 itemClick(Pair(it,false))
             })
+
+        (mRightRecyclerView.adapter as SearchDetailPlayerListAdapter).updateMvpPlayer(mMVPPlayer)
+        (mLeftRecyclerView.adapter as SearchDetailPlayerListAdapter).updateMvpPlayer(mMVPPlayer)
     }
 
     fun initPlayerList(isLeftInfo: Boolean, matchInfo: MatchDetailResponse): List<PlayerDTO>{
         var pair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId, matchInfo)
-
         var playerList = mutableListOf<PlayerDTO>()
         when (isLeftInfo) {
             true -> {
                 playerList.addAll(pair.first.player)
+                playerList.sortByDescending { it.status.spRating }
+                if (!playerList.isEmpty() && mMVPPlayer == null) mMVPPlayer = playerList[0]
             }
             false -> {
                 playerList.addAll(pair.second.player)
+                playerList.sortByDescending { it.status.spRating }
+                if (!playerList.isEmpty()
+                    && (mMVPPlayer == null || mMVPPlayer!!.status.spRating < playerList[0].status.spRating)) {
+                    mMVPPlayer = playerList[0]
+                }
             }
         }
-        playerList.sortByDescending { it.status.spRating }
         return playerList
     }
 }

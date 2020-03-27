@@ -35,6 +35,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     val isDebug = false
     val mContext: Context
     val mPlayerList: List<PlayerDTO>?
+    var mMvpPlayer: PlayerDTO? = null
 
     init {
         mContext = context
@@ -57,6 +58,10 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(isDebug) Log.v(TAG, "onBindViewHolder, position : $position")
         holder.bind(mPlayerList!!.get(position), mContext)
+    }
+
+    fun updateMvpPlayer(mvpPlayer: PlayerDTO?) {
+        mMvpPlayer = mvpPlayer
     }
 
     inner class ViewHolder(itemView: View, itemClick: (PlayerDTO) -> Unit) :
@@ -90,10 +95,18 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                 }
             }
             mRating.text = item.status.spRating.toString()
-            if (item.status.spRating >= 8) {
-                mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+            if (mMvpPlayer == null) {
+                if (item.status.spRating >= 8) {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+                } else {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                }
             } else {
-                mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                if (item == mMvpPlayer) {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+                } else {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                }
             }
             for (positionItem in PositionEnum.values()) {
                 if (positionItem.spposition.equals(item.spPosition))

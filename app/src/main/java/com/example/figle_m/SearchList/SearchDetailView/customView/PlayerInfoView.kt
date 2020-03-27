@@ -46,8 +46,11 @@ class PlayerInfoView : ConstraintLayout {
         val data: ArrayList<Double> = arrayListOf()
         chart_view.setCount(5)
 
-        val passRate =
+        val passRate = if (player.status.passSuccess == 0 || player.status.passTry == 0) {
+            0.0
+        } else {
             (player.status.passSuccess.toDouble() / player.status.passTry.toDouble()) * 100
+        }
         val goalRate = if (player.status.shoot == 0) {
             0.0
         } else {
@@ -78,10 +81,10 @@ class PlayerInfoView : ConstraintLayout {
         }
 
         txt_spRate.text = "평점 : " + spRate.toString()
-        txt_goalRate.text = "유효슈팅 : " + String.format("%.2f",goalRate)
-        txt_assistRate.text = "도움 : " + String.format("%.2f",assistRate)
-        txt_passRate.text = "패스 : " + String.format("%.2f",passRate)
-        txt_blockRate.text = "수비 : " + String.format("%.2f",block)
+        txt_goalRate.text = "유효슈팅(성공률) : " + String.format("%.1f",goalRate) + "%"
+        txt_assistRate.text = "도움(성공률) : " + String.format("%.1f",assistRate) + "%"
+        txt_passRate.text = "패스(성공률) : " + String.format("%.1f",passRate) + "%"
+        txt_blockRate.text = "블락 / 태클 : " + player.status.block + " / " + player.status.tackle
 
 
         chart_view.setCoverColor(resources.getColor(R.color.chart_cover, null))
