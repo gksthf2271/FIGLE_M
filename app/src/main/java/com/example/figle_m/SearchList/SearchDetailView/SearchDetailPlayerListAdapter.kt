@@ -21,6 +21,7 @@ import com.example.figle_m.Data.DataManager
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.PlayerDTO
 import com.example.figle_m.utils.PositionEnum
+import kotlinx.android.synthetic.main.cview_player_item_view.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,6 +71,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         var mRating: TextView
         var mPlayerName: TextView
         var mPlayerPosition: TextView
+        var mPlayerSpGrade: TextView
 
         init {
             mItemView = itemView
@@ -78,6 +80,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             mRating = mItemView.findViewById(R.id.txt_rating)
             mPlayerName = mItemView.findViewById(R.id.txt_player_name)
             mPlayerPosition = mItemView.findViewById(R.id.txt_player_position)
+            mPlayerSpGrade = mItemView.findViewById(R.id.txt_player_spGrade)
         }
         val TAG: String = javaClass.name
         fun bind(item: PlayerDTO, context: Context) {
@@ -104,6 +107,19 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
                 } else {
                     mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                }
+            }
+
+            mPlayerSpGrade.text = item.spGrade.toString()
+            when(item.spGrade) {
+                in 0..3 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
+                }
+                in 4..7 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
+                }
+                in 8..10 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
                 }
             }
 

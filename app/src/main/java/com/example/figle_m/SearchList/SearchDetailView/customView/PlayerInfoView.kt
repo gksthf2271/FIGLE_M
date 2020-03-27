@@ -1,11 +1,9 @@
 package com.example.figle_m.SearchList.SearchDetailView.customView
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.figle_m.DB.PlayerDataBase
 import com.example.figle_m.R
@@ -85,7 +83,6 @@ class PlayerInfoView : ConstraintLayout {
         txt_assistRate.text = "도움(성공률) : " + String.format("%.1f",assistRate) + "%"
         txt_passRate.text = "패스(성공률) : " + String.format("%.1f",passRate) + "%"
         txt_blockRate.text = "블락 / 태클 : " + player.status.block + " / " + player.status.tackle
-
 
         chart_view.setCoverColor(resources.getColor(R.color.chart_cover, null))
         chart_view.setCoverAlpha(180)

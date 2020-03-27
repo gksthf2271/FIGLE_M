@@ -32,4 +32,11 @@
     <color name="chart_polygon">#C0BEBE</color>
     <color name="chart_background">#E6000000</color>
 
+    <color name="player_grade_gold">#D3B321</color>
+    <color name="player_grade_silver">#E6A7A5A5</color>
+    <color name="player_grade_bronze">#E6693423</color>
+    <color name="player_grade_gold_startColor">#B89F22</color>
+    <color name="player_grade_silver_startColor">#E68F8F8F</color>
+    <color name="player_grade_bronze_startColor">#E6582D1D</color>
+
 </resources>
