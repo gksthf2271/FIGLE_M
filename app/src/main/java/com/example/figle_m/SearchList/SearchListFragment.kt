@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.Base.BaseFragment
@@ -136,7 +137,12 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
         bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
         searchDetailDialogFragment.arguments = bundle
-        searchDetailDialogFragment.show(fragmentManager!!, SearchDetailDialogFragment().TAG_MATCH_DETAIL_DIALOG)
+        if (!searchDetailDialogFragment.isAdded) {
+            searchDetailDialogFragment.show(
+                fragmentManager!!,
+                SearchDetailDialogFragment().TAG_MATCH_DETAIL_DIALOG
+            )
+        }
     }
 
 
