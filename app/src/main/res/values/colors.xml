@@ -39,6 +39,8 @@
     <color name="player_grade_silver_startColor">#E68F8F8F</color>
     <color name="player_grade_bronze_startColor">#E6582D1D</color>
 
+    <color name="loading_background">#242424</color>
+
     <color name="main_background">#2B2B2B</color>
 
 </resources>

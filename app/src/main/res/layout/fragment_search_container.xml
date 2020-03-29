@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/search_detail_dialog_top_background"
-            app:layout_constraintBottom_toTopOf="@+id/group_pager"
+            app:layout_constraintBottom_toTopOf="@+id/container_indicator"
             app:layout_constraintHeight_percent="0.3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -56,14 +56,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/search_detail_dialog_background"
+            app:layout_constraintHeight_percent="0.03"
+            app:layout_constraintBottom_toTopOf="@+id/group_pager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_topInfo"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/group_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.7"
-            app:layout_constraintTop_toBottomOf="@+id/group_topInfo">
+            app:layout_constraintHeight_percent="0.67"
+            app:layout_constraintTop_toBottomOf="@+id/container_indicator">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
