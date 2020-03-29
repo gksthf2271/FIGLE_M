@@ -5,6 +5,19 @@
     android:background="@color/fragment_background"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="FIGLE"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:gravity="center"
+        app:layout_goneMarginBottom="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/loading_view" />
+
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/loading_view"
         android:layout_width="wrap_content"
