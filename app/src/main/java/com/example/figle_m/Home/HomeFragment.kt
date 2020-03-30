@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -14,9 +16,9 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
+import com.example.figle_m.R
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchListFragment
-import com.example.figle_m.R
 import com.example.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
@@ -140,32 +142,53 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         initView()
     }
 
+    lateinit var mEditView :EditText
+    lateinit var mCloseBtn : Button
     fun initView() {
         if (mUserPresenter == null) return
         mUserPresenter!!.takeView(this)
-        val editView = edit_search.findViewById<EditText>(R.id.edit_view)
-        val closeBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
-        editView.imeOptions = IME_ACTION_SEARCH
+        mEditView = edit_search.findViewById<EditText>(R.id.edit_view)
+        mCloseBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
+        mEditView.imeOptions = IME_ACTION_SEARCH
 
-        editView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        mEditView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
-                search(editView.text.toString())
+                search(mEditView.text.toString())
              return@OnKeyListener true
             }
             false
         })
 
-        if (closeBtn.visibility == View.VISIBLE) {
-            closeBtn.setOnClickListener {
-                editView.text = null
-            }
-        }
-
+        mEditView.addTextChangedListener(textWatcher)
 
 //        btn_search.setOnClickListener(View.OnClickListener {
 //            Log.v(TAG,"clickSearchBtn")
-//            search(editView.text.toString())
+//            search(mEditView.text.toString())
 //        })
+    }
+
+    private val textWatcher = object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s == null || "".equals(s) || (s != null && s.isEmpty())) {
+                mCloseBtn.visibility = View.INVISIBLE
+            } else {
+                mCloseBtn.visibility = View.VISIBLE
+                mCloseBtn.setOnClickListener {
+                    mEditView.text = null
+                }
+            }
+        }
     }
 
     fun search(searchString: String) {
