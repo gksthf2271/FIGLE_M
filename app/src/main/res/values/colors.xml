@@ -6,6 +6,8 @@
 
     <color name="fragment_background">#B3000000</color>
 
+    <color name="search_text_color_black">#000000</color>
+
 
     <color name="search_detail_vs">#1D1C1C</color>
     <color name="search_text_color">#FFFFFF</color>

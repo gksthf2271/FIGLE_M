@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
+import android.widget.Button
+import android.widget.EditText
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Response.UserResponse
@@ -141,19 +143,29 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     fun initView() {
         if (mUserPresenter == null) return
         mUserPresenter!!.takeView(this)
-        edit_search.imeOptions = IME_ACTION_SEARCH
+        val editView = edit_search.findViewById<EditText>(R.id.edit_view)
+        val closeBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
+        editView.imeOptions = IME_ACTION_SEARCH
 
-        edit_search.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        editView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
-                search(edit_search.text.toString())
+                search(editView.text.toString())
              return@OnKeyListener true
             }
             false
         })
-        btn_search.setOnClickListener(View.OnClickListener {
-            Log.v(TAG,"clickSearchBtn")
-            search(edit_search.text.toString())
-        })
+
+        if (closeBtn.visibility == View.VISIBLE) {
+            closeBtn.setOnClickListener {
+                editView.text = null
+            }
+        }
+
+
+//        btn_search.setOnClickListener(View.OnClickListener {
+//            Log.v(TAG,"clickSearchBtn")
+//            search(editView.text.toString())
+//        })
     }
 
     fun search(searchString: String) {
