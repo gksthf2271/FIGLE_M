@@ -150,7 +150,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         Log.v(TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         group_info.visibility = View.GONE
-        group_rate.visibility = View.GONE
+//        group_rate.visibility = View.GONE
         layout_recyclerview.visibility = View.GONE
         avi_loading.show(false)
     }
@@ -161,7 +161,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             avi_loading.hide()
             avi_loading.visibility = View.GONE
             group_info.visibility = View.VISIBLE
-            group_rate.visibility = View.VISIBLE
+//            group_rate.visibility = View.VISIBLE
             layout_recyclerview.visibility = View.VISIBLE
             group_info.visibility = View.VISIBLE
         }

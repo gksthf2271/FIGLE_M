@@ -21,16 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/fragment_background"
-            app:layout_constraintHeight_percent="0.25"
+            app:layout_constraintHeight_percent="0.3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <com.example.figle_m.SearchList.SearchDetailView.customView.PieChartView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginLeft="5dp"
-                app:layout_constraintWidth_percent="0.35"
+                app:layout_constraintWidth_percent="0.45"
                 app:layout_constraintHeight_percent="0.9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
                 android:layout_height="0dp"
                 android:layout_marginRight="5dp"
                 android:padding="10dp"
-                app:layout_constraintWidth_percent="0.6"
+                app:layout_constraintWidth_percent="0.5"
                 app:layout_constraintHeight_percent="0.9"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -124,6 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/fragment_background"
+            android:visibility="gone"
             app:layout_constraintHeight_percent="0.08"
             app:layout_constraintTop_toBottomOf="@id/group_info"
             app:layout_constraintBottom_toTopOf="@id/layout_recyclerview" >
@@ -143,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/fragment_background"
-            app:layout_constraintHeight_percent="0.65"
+            app:layout_constraintHeight_percent="0.68"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
