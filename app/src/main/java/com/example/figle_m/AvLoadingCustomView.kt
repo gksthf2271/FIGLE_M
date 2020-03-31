@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.wang.avi.AVLoadingIndicatorView
+import kotlinx.android.synthetic.main.cview_loading_view.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,10 +27,16 @@ class AvLoadingCustomView: ConstraintLayout {
         view = inflater.inflate(R.layout.cview_loading_view, this)
     }
 
-    fun show() {
+    fun show(isStart: Boolean) {
         Log.v(TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToShow()
+        }
+
+        if (isStart) {
+            txt_data_based_on_nexon.visibility = View.VISIBLE
+        } else {
+            txt_data_based_on_nexon.visibility = View.INVISIBLE
         }
     }
 

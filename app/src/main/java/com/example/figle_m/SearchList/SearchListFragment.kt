@@ -152,7 +152,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         group_info.visibility = View.GONE
         group_rate.visibility = View.GONE
         layout_recyclerview.visibility = View.GONE
-        avi_loading.show()
+        avi_loading.show(false)
     }
 
     override fun hideLoading(isError: Boolean) {

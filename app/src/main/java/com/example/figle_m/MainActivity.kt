@@ -51,7 +51,7 @@ class MainActivity : BaseActivity(), InitContract.View{
         Log.v(TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         fragment_container.visibility = View.GONE
-        avi_loading.show()
+        avi_loading.show(true)
     }
 
     override fun hideLoading() {

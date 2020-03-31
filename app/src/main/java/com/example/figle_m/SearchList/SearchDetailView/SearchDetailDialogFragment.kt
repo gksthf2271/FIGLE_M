@@ -128,7 +128,7 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         avi_loading.visibility = View.VISIBLE
         btn_close.visibility = View.GONE
         group_root.visibility = View.GONE
-        avi_loading.show()
+        avi_loading.show(false)
     }
 
     override fun hideLoading() {
