@@ -84,4 +84,7 @@ dependencies {
 
     //Ability chart Lib
     implementation "com.gao.jiefly:abilitychartlibrary:1.0.1"
+
+    //ViewPager Indicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 }

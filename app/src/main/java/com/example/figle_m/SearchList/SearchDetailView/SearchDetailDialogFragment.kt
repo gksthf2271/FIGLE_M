@@ -15,6 +15,8 @@ import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.example.figle_m.utils.DisplayUtils
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 import okhttp3.HttpUrl
@@ -96,8 +98,14 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
                 }
 
             })
+            initIndicator()
             mViewPager.currentItem = 0
         }
+    }
+
+    fun initIndicator() {
+        val dotsIndicator = view!!.findViewById<WormDotsIndicator>(R.id.dots_indicator)
+        dotsIndicator.setViewPager(mViewPager)
     }
 
     fun resizeDialog(){

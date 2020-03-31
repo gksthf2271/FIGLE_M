@@ -80,7 +80,7 @@ class PlayerInfoView : ConstraintLayout {
 
         txt_spRate.text = "평점 : " + spRate.toString()
         txt_goalRate.text = "유효슈팅(성공률) : " + String.format("%.1f",goalRate) + "%"
-        txt_assistRate.text = "도움(성공률) : " + String.format("%.1f",assistRate) + "%"
+        txt_assistRate.text = "팀내 도움률 : " + String.format("%.1f",assistRate) + "%"
         txt_passRate.text = "패스(성공률) : " + String.format("%.1f",passRate) + "%"
         txt_blockRate.text = "블락 / 태클 : " + player.status.block + " / " + player.status.tackle
 
