@@ -53,7 +53,7 @@ class PieChartView : ConstraintLayout{
         mChartView.setDragDecelerationFrictionCoef(0.95f)
         mChartView.getDescription().setEnabled(false)
 
-        mChartView.setCenterText("FIGLE\n승률")
+        mChartView.setCenterText("최근 100전\n승률")
 
         mChartView.setDrawHoleEnabled(true)
         mChartView.setHoleColor(Color.WHITE)
