@@ -219,11 +219,11 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
 
         val pieEntryList = arrayListOf(
-            PieEntry(win.toFloat(), null,null,null),
-            PieEntry(draw.toFloat(), null,null,null),
-            PieEntry(lose.toFloat(), null,null,null)
+            PieEntry(win.toFloat(), "승 : $win",null,null),
+            PieEntry(draw.toFloat(), "무 : $draw",null,null),
+            PieEntry(lose.toFloat(), "패 : $lose",null,null)
         )
-        mCustomPieChartView.setData(pieEntryList)
+        mCustomPieChartView.setData(pieEntryList, win+draw+lose)
     }
 
 //    fun initRate() {

@@ -51,8 +51,6 @@ class PieChartView : ConstraintLayout{
         mChartView.setDragDecelerationFrictionCoef(0.95f)
         mChartView.getDescription().setEnabled(false)
 
-        mChartView.setCenterText("최근 100전\n승률")
-
         mChartView.setDrawHoleEnabled(true)
         mChartView.setHoleColor(Color.WHITE)
 
@@ -69,7 +67,7 @@ class PieChartView : ConstraintLayout{
         mChartView.setRotationEnabled(true)
         mChartView.setHighlightPerTapEnabled(true)
 
-        mChartView.setDrawEntryLabels(false)
+        mChartView.setDrawEntryLabels(true)
 
         mChartView.animateY(1400, Easing.EaseInOutQuad)
 
@@ -80,19 +78,11 @@ class PieChartView : ConstraintLayout{
         l.setDrawInside(false)
         l.setEnabled(false)
 
-        // entry label styling
         mChartView.setEntryLabelColor(Color.WHITE)
         mChartView.setEntryLabelTextSize(12f)
-
-//        val pieEntryList = arrayListOf<PieEntry>(
-//            PieEntry(50f, null,null,null),
-//            PieEntry(32f, null,null,null),
-//            PieEntry(18f, null,null,null)
-//        )
-//        setData(3, 60.toFloat(), pieEntryList)
     }
 
-    fun setData(pieEntryList : ArrayList<PieEntry>) {
+    fun setData(pieEntryList : ArrayList<PieEntry>, gameCount: Int) {
         val dataSet = PieDataSet(pieEntryList,"")
 
         dataSet.setDrawIcons(false)
@@ -117,6 +107,7 @@ class PieChartView : ConstraintLayout{
         mChartView.setData(data)
         mChartView.highlightValues(null)
 
+        mChartView.setCenterText("최근 ${gameCount}전\n승률")
         mChartView.invalidate()
     }
 
