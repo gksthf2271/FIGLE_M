@@ -54,6 +54,12 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mEditView ?: return
+        mEditView.text = null
+    }
+
     override fun handleMessage(msg: Message): Boolean {
         when (msg.what) {
             MSG_SHOW_USER_LIST -> {

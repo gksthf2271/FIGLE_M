@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.example.figle_m.SearchList.SearchDecoration
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailPlayerListAdapter
 import com.example.figle_m.utils.UserSortUtils
+import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 
 class SearchDetailDialogPlayerInfoView : ConstraintLayout {
     constructor(context: Context) : this(context, null)
@@ -39,12 +41,19 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
 
     fun updatePlayerInfo(matchInfo: MatchDetailResponse, itemClick: (Pair<PlayerDTO,Boolean>) -> Unit) {
         Log.v(TAG,"updatePlayerInfo(...) $matchInfo")
-
+        var playerList = listOf<PlayerDTO>()
         val leftLayoutManager = LinearLayoutManager(context)
         mLeftRecyclerView.addItemDecoration(SearchDecoration(10))
         mLeftRecyclerView.setLayoutManager(leftLayoutManager)
+
+        playerList = initPlayerList(true, matchInfo)
+        if (playerList.isEmpty() || playerList.size == 0) {
+            group_left_error.visibility = View.VISIBLE
+        } else {
+            group_left_error.visibility = View.INVISIBLE
+        }
         mLeftRecyclerView.adapter =
-            SearchDetailPlayerListAdapter(context!!, initPlayerList(true, matchInfo), {
+            SearchDetailPlayerListAdapter(context!!, playerList, {
                 Log.v(TAG,"ItemClick! ${it}")
                 itemClick(Pair(it,true))
             })
@@ -52,8 +61,14 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         val rightLayoutManager = LinearLayoutManager(context)
         mRightRecyclerView.addItemDecoration(SearchDecoration(10))
         mRightRecyclerView.setLayoutManager(rightLayoutManager)
+        playerList = initPlayerList(false, matchInfo)
+        if (playerList.isEmpty() || playerList.size == 0) {
+            group_right_error.visibility = View.VISIBLE
+        } else {
+            group_right_error.visibility = View.INVISIBLE
+        }
         mRightRecyclerView.adapter =
-            SearchDetailPlayerListAdapter(context!!, initPlayerList(false, matchInfo), {
+            SearchDetailPlayerListAdapter(context!!, playerList, {
                 Log.v(TAG,"ItemClick! ${it}")
                 itemClick(Pair(it,false))
             })

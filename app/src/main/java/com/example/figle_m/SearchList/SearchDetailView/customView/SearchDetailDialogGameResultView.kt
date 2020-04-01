@@ -61,18 +61,21 @@ class SearchDetailDialogGameResultView : ConstraintLayout {
         cardView.addRightCard(matchInfoPair.second.matchDetail.redCards, matchInfoPair.second.matchDetail.yellowCards)
 
         var passSuccessRate:Double = matchInfoPair.first.pass.passSuccess.toDouble() / matchInfoPair.first.pass.passTry.toDouble() * 100
+        if (passSuccessRate == null || passSuccessRate.isNaN()) passSuccessRate = 0.00
         passView.setLeftText("${String.format("%.2f", passSuccessRate)}%\n${matchInfoPair.first.pass.passSuccess} / ${matchInfoPair.first.pass.passTry}")
         passView.setTitleText("패스 성공률\n성공/시도")
         passSuccessRate = matchInfoPair.second.pass.passSuccess.toDouble() / matchInfoPair.second.pass.passTry.toDouble() * 100
         passView.setRightText("${String.format("%.2f", passSuccessRate)}%\n${matchInfoPair.second.pass.passSuccess} / ${matchInfoPair.second.pass.passTry}")
 
         var shootSuccessRate:Double = matchInfoPair.first.shoot.goalTotal.toDouble() / matchInfoPair.first.shoot.shootTotal.toDouble() * 100
+        if (shootSuccessRate == null || shootSuccessRate.isNaN()) shootSuccessRate = 0.00
         goalView.setLeftText("${String.format("%.2f",shootSuccessRate)}%\n${matchInfoPair.first.shoot.goalTotal} / ${matchInfoPair.first.shoot.effectiveShootTotal} / ${matchInfoPair.first.shoot.shootTotal}")
         goalView.setTitleText("슛 성공률\n성공/유효/시도")
         shootSuccessRate = matchInfoPair.second.shoot.goalTotal.toDouble() / matchInfoPair.second.shoot.shootTotal.toDouble() * 100
         goalView.setRightText("${String.format("%.2f", shootSuccessRate)}%\n${matchInfoPair.second.shoot.goalTotal} / ${matchInfoPair.second.shoot.effectiveShootTotal} / ${matchInfoPair.second.shoot.shootTotal}")
 
         var defenceSuccessRate:Double = matchInfoPair.first.defence.blockSuccess.toDouble() / matchInfoPair.first.defence.blockTry.toDouble() * 100
+        if (defenceSuccessRate == null || defenceSuccessRate.isNaN()) defenceSuccessRate = 0.00
         defenceView.setLeftText("${String.format("%.2f",defenceSuccessRate)}%\n${matchInfoPair.first.defence.blockSuccess} / ${matchInfoPair.first.defence.blockTry}")
         defenceView.setTitleText("수비(블락)\n성공/시도")
         defenceSuccessRate = matchInfoPair.second.defence.blockSuccess.toDouble() / matchInfoPair.second.defence.blockTry.toDouble() * 100

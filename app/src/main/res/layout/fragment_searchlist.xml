@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp">
 
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/abc_vector_test"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
     <com.example.figle_m.AvLoadingCustomView
         android:id="@+id/avi_loading"
         android:layout_width="match_parent"

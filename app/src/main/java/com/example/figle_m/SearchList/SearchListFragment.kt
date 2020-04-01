@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
+import com.example.figle_m.Home.HomeFragment
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.example.figle_m.Response.MatchDetailResponse
@@ -18,6 +19,7 @@ import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.SearchList.SearchDetailView.customView.PieChartView
 import com.example.figle_m.utils.DivisionEnum
+import com.example.figle_m.utils.FragmentUtils
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.fragment_searchlist.*
 
@@ -94,6 +96,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mRecyclerView = view!!.findViewById(R.id.layout_recyclerview)
         mRateTextView = view!!.findViewById(R.id.txt_rate)
         mCustomPieChartView = view!!.findViewById(R.id.cview_pie_chart)
+        btn_back.setOnClickListener {
+            FragmentUtils().loadFragment(HomeFragment.getInstance(),R.id.fragment_container, fragmentManager!!)
+        }
     }
 
     fun initMyInfoData() {
@@ -163,6 +168,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 //            group_rate.visibility = View.VISIBLE
             layout_recyclerview.visibility = View.VISIBLE
             group_info.visibility = View.VISIBLE
+            btn_back.visibility = View.VISIBLE
         }
     }
 

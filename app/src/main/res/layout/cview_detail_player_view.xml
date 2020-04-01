@@ -12,7 +12,7 @@
         android:background="@color/search_detail_dialog_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintWidth_percent="0.49"/>
+        app:layout_constraintWidth_percent="0.49" />
 
     <ImageView
         android:id="@+id/img_right_info"
@@ -21,25 +21,74 @@
         android:background="@color/search_detail_dialog_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.49"/>
+        app:layout_constraintWidth_percent="0.49" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_left_palyer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintWidth_percent="0.49"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintWidth_percent="0.49" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_right_palyer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintWidth_percent="0.49"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintWidth_percent="0.49" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_left_error"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/search_list_draw"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/recyclerview_left_palyer"
+        app:layout_constraintLeft_toLeftOf="@id/recyclerview_left_palyer"
+        app:layout_constraintRight_toRightOf="@id/recyclerview_left_palyer"
+        app:layout_constraintTop_toTopOf="@id/recyclerview_left_palyer"
+        app:layout_constraintWidth_percent="0.49">
+
+        <ImageView
+            android:id="@+id/img_left_empty"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/not_found"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_right_error"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@color/search_list_draw"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/recyclerview_right_palyer"
+        app:layout_constraintLeft_toLeftOf="@id/recyclerview_right_palyer"
+        app:layout_constraintRight_toRightOf="@id/recyclerview_right_palyer"
+        app:layout_constraintTop_toTopOf="@id/recyclerview_right_palyer"
+        app:layout_constraintWidth_percent="0.49">
+
+        <ImageView
+            android:id="@+id/img_right_empty"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/not_found"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/img_vs"
@@ -55,7 +104,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/img_left_info" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
