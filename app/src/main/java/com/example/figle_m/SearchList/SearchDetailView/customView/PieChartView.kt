@@ -14,8 +14,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
-import java.util.*
-import kotlin.collections.ArrayList
 
 class PieChartView : ConstraintLayout{
     val TAG = javaClass.name
@@ -86,15 +84,15 @@ class PieChartView : ConstraintLayout{
         mChartView.setEntryLabelColor(Color.WHITE)
         mChartView.setEntryLabelTextSize(12f)
 
-        val pieEntryList = arrayListOf<PieEntry>(
-            PieEntry(50f, null,null,null),
-            PieEntry(32f, null,null,null),
-            PieEntry(18f, null,null,null)
-        )
-        setData(3, 60.toFloat(), pieEntryList)
+//        val pieEntryList = arrayListOf<PieEntry>(
+//            PieEntry(50f, null,null,null),
+//            PieEntry(32f, null,null,null),
+//            PieEntry(18f, null,null,null)
+//        )
+//        setData(3, 60.toFloat(), pieEntryList)
     }
 
-    private fun setData(count: Int, range: Float, pieEntryList : ArrayList<PieEntry>) {
+    fun setData(pieEntryList : ArrayList<PieEntry>) {
         val dataSet = PieDataSet(pieEntryList,"")
 
         dataSet.setDrawIcons(false)

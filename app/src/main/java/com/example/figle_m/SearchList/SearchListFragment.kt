@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.Base.BaseFragment
@@ -18,8 +16,9 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
-import com.example.figle_m.databinding.FragmentSearchlistBinding
+import com.example.figle_m.SearchList.SearchDetailView.customView.PieChartView
 import com.example.figle_m.utils.DivisionEnum
+import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.fragment_searchlist.*
 
 
@@ -31,7 +30,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     open val KEY_MATCH_ID_LIST: String = "MatchIdList"
 
     lateinit var mSearchPresenter: SearchPresenter
-    var mDataBinding: FragmentSearchlistBinding? = null
     lateinit var mSearchResponseList: ArrayList<MatchDetailResponse>
     lateinit var mMatchIdList: MutableList<String>
     lateinit var mSearchUserInfo: UserResponse
@@ -43,6 +41,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     lateinit var mDivisionView: TextView
     lateinit var mAchievementDateView: TextView
     lateinit var mRateTextView: TextView
+    lateinit var mCustomPieChartView: PieChartView
 
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
@@ -70,7 +69,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         savedInstanceState: Bundle?
     ): View? {
         val v: View = inflater.inflate(R.layout.fragment_searchlist, container, false)
-        mDataBinding = DataBindingUtil.findBinding(v)
         return v
     }
 
@@ -95,6 +93,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mEmptyView = view!!.findViewById(R.id.txt_emptyView)
         mRecyclerView = view!!.findViewById(R.id.layout_recyclerview)
         mRateTextView = view!!.findViewById(R.id.txt_rate)
+        mCustomPieChartView = view!!.findViewById(R.id.cview_pie_chart)
     }
 
     fun initMyInfoData() {
@@ -218,11 +217,37 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                 "패" -> lose++
             }
         }
-        mRateTextView.text =
-            "최근 ${win + draw + lose} 경기 승:$win / 무:$draw / 패:$lose"
-        mRateTextView.visibility = View.VISIBLE
 
+        val pieEntryList = arrayListOf(
+            PieEntry(win.toFloat(), null,null,null),
+            PieEntry(draw.toFloat(), null,null,null),
+            PieEntry(lose.toFloat(), null,null,null)
+        )
+        mCustomPieChartView.setData(pieEntryList)
     }
+
+//    fun initRate() {
+//        var win = 0
+//        var draw = 0
+//        var lose = 0
+//        for (item in mSearchResponseList) {
+//            var myInfo: MatchInfoDTO? = null
+//            if (mSearchUserInfo.accessId == item.matchInfo[0].accessId) {
+//                myInfo = item.matchInfo[0]
+//            } else {
+//                myInfo = item.matchInfo[1]
+//            }
+//            when (myInfo.matchDetail.matchResult) {
+//                "승" -> win++
+//                "무" -> draw++
+//                "패" -> lose++
+//            }
+//        }
+//        mRateTextView.text =
+//            "최근 ${win + draw + lose} 경기 승:$win / 무:$draw / 패:$lose"
+//        mRateTextView.visibility = View.VISIBLE
+//
+//    }
 
 
     override fun showError(error: String) {
