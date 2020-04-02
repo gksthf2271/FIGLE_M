@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 
 class SearchPresenter: SearchContract.Presenter {
+
     val TAG:String = javaClass.name
     val DEBUG:Boolean = false
     var  mSearchListView: SearchContract.View? = null
@@ -22,6 +23,27 @@ class SearchPresenter: SearchContract.Presenter {
         mSearchListView = null
     }
 
+    override fun getMatchId(accessId: String, matchType: Int, offset: Int, limit: Int) {
+        mSearchListView?.showLoading()
+        Thread(Runnable {
+            DataManager.getInstance().loadMatchId(accessId, matchType, offset, limit,
+                {
+//                    mSearchListView?.hideLoading(false)
+                    when (matchType) {
+                        DataManager.matchType.normalMatch.matchType -> {
+                            mSearchListView?.showOfficialGameMatchIdList(it)
+                        }
+                        DataManager.matchType.coachMatch.matchType -> {
+                            mSearchListView?.showCoachModeMatchIdList(it)
+                        }
+                    }
+                }, {
+                    Log.v("getMatchId", it)
+                    mSearchListView?.hideLoading(true)
+                })
+        }).start()
+    }
+
     override fun getUserHighRank(accessId: String) {
         mSearchListView?.showLoading()
         runBlocking {
@@ -30,7 +52,7 @@ class SearchPresenter: SearchContract.Presenter {
                     {
                         Log.v(TAG, "getUserHighRank Success! ${it}")
                         mSearchListView?.showHighRank(it)
-                        mSearchListView?.hideLoading(false)
+//                        mSearchListView?.hideLoading(false)
                     }, {
                         Log.v(TAG, "getUserHighRank Failed! $it")
                         mSearchListView?.hideLoading(true)
@@ -39,15 +61,19 @@ class SearchPresenter: SearchContract.Presenter {
         }
     }
 
-    override fun getMatchDetailList(matchId: String) {
+    override fun getMatchDetailList(isOfficialGame: Boolean, matchId: String) {
         mSearchListView?.showLoading()
         runBlocking {
             launch {
                 getMatchDetail(matchId, {
                     if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
                     it.matchDate = DateUtils().getDate(it.matchDate).toString()
-                    mSearchListView?.showSearchList(it)
-                    mSearchListView?.hideLoading(false)
+                    if (isOfficialGame) {
+                        mSearchListView?.showOfficialGameList(it)
+                    } else {
+                        mSearchListView?.showCoachModeList(it)
+                    }
+//                    mSearchListView?.hideLoading(false)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
                     mSearchListView?.showError(ERROR_EMPTY)

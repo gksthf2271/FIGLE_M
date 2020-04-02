@@ -21,20 +21,6 @@ class UserPresenter: UserContract.Presenter{
         }).start()
     }
 
-    override fun getMatchId(accessId: String, matchType: Int, offset: Int, limit: Int) {
-        mUserView?.showLoading()
-        Thread(Runnable {
-                DataManager.getInstance().loadMatchId(accessId, matchType, offset, limit,
-                    {
-                        mUserView?.hideLoading()
-                        mUserView?.showMatchIdList(it)
-                    }, {
-                        Log.v("getMatchId", it)
-                        mUserView?.hideLoading()
-                    })
-        }).start()
-    }
-
     override fun takeView(view: UserContract.View) {
         mUserView = view
     }

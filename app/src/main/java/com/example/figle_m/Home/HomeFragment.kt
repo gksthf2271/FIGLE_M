@@ -67,30 +67,36 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 Log.v(TAG, "MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
 
                 mUserResponse.accessId ?: return false
-
-                mUserPresenter!!.getMatchId(
-                    mUserResponse.accessId!!,
-                    DataManager.matchType.normalMatch.matchType,
-                    DataManager.getInstance().offset,
-                    DataManager.getInstance().SEARCH_LIMIT
-                )
-                return true
-            }
-            MSG_SHOW_MATCH_ID_LIST -> {
                 fragmentManager ?: return false
-                val responseBody: ResponseBody = msg.obj as ResponseBody
-                var result:String = responseBody.string()
-                val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
 
                 val searchListFragment = SearchListFragment()
                 val bundle = Bundle()
-                bundle.putStringArray(SearchListFragment.getInstance().KEY_MATCH_ID_LIST,stringList.toTypedArray())
-                bundle.putParcelable(SearchListFragment.getInstance().KEY_SEARCH_USER_INFO, mUserResponse)
+                bundle.putParcelable(
+                    SearchListFragment.getInstance().KEY_SEARCH_USER_INFO,
+                    mUserResponse
+                )
                 searchListFragment.arguments = bundle
-                FragmentUtils().loadFragment(searchListFragment,
-                    R.id.fragment_container, fragmentManager!!)
+                FragmentUtils().loadFragment(
+                    searchListFragment,
+                    R.id.fragment_container, fragmentManager!!
+                )
                 return true
             }
+//            MSG_SHOW_MATCH_ID_LIST -> {
+//                fragmentManager ?: return false
+//                val responseBody: ResponseBody = msg.obj as ResponseBody
+//                var result:String = responseBody.string()
+//                val stringList:List<String> = result.removeSurrounding("[","]").replace("\"","").split(",")
+//
+//                val searchListFragment = SearchListFragment()
+//                val bundle = Bundle()
+//                bundle.putStringArray(SearchListFragment.getInstance().KEY_MATCH_ID_LIST,stringList.toTypedArray())
+//                bundle.putParcelable(SearchListFragment.getInstance().KEY_SEARCH_USER_INFO, mUserResponse)
+//                searchListFragment.arguments = bundle
+//                FragmentUtils().loadFragment(searchListFragment,
+//                    R.id.fragment_container, fragmentManager!!)
+//                return true
+//            }
             else -> {
                 return false
             }
@@ -108,18 +114,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         msg_show_user_list.what = MSG_SHOW_USER_LIST
         msg_show_user_list.obj = userResponse
         mHandler.sendMessage(msg_show_user_list)
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun showMatchIdList(userMatchIdResponse: ResponseBody?) {
-        if (userMatchIdResponse == null) {
-            Log.d(TAG, "userMatchIdResponse is null")
-            return
-        }
-        val msg_show_match_id_list = Message()
-        msg_show_match_id_list.what = MSG_SHOW_MATCH_ID_LIST
-        msg_show_match_id_list.obj = userMatchIdResponse
-        mHandler.sendMessage(msg_show_match_id_list)
     }
 
     override fun showLoading() {

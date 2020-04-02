@@ -11,11 +11,9 @@ interface UserContract {
         fun showLoading()
         fun hideLoading()
         fun showUserList(userResponse : UserResponse?)
-        fun showMatchIdList(matchDetailResponse: ResponseBody?)
     }
 
     interface Presenter : BasePresenter<View> {
         fun getUserDatailList(nickname: String)
-        fun getMatchId(accessId: String, matchType: Int, offset: Int, limit:Int)
     }
 }

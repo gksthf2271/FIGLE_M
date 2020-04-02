@@ -1,13 +1,12 @@
 package com.example.figle_m.SearchList
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Home.HomeFragment
@@ -18,10 +17,14 @@ import com.example.figle_m.Response.UserHighRankResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.example.figle_m.SearchList.SearchDetailView.customView.PieChartView
+import com.example.figle_m.SearchList.SearchListView.SearchListView
 import com.example.figle_m.utils.DivisionEnum
 import com.example.figle_m.utils.FragmentUtils
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.fragment_searchlist.*
+import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
+import kotlinx.android.synthetic.main.fragment_searchlist.viewPager
+import okhttp3.ResponseBody
 
 
 class SearchListFragment : BaseFragment(), SearchContract.View {
@@ -29,14 +32,19 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     val DEBUG: Boolean = false
 
     open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
-    open val KEY_MATCH_ID_LIST: String = "MatchIdList"
 
     lateinit var mSearchPresenter: SearchPresenter
-    lateinit var mSearchResponseList: ArrayList<MatchDetailResponse>
-    lateinit var mMatchIdList: MutableList<String>
+
+    lateinit var mOfficialGameMatchList: ArrayList<MatchDetailResponse>
+    lateinit var mCoachModeMatchList: ArrayList<MatchDetailResponse>
+
+    lateinit var mOfficialGameMatchIdList: List<String>
+    lateinit var mCoachModeMatchIdList: List<String>
     lateinit var mSearchUserInfo: UserResponse
 
-    lateinit var mRecyclerView: RecyclerView
+    lateinit var mOfficialGameView: SearchListView
+    lateinit var mCoachModeView: SearchListView
+
     lateinit var mEmptyView: TextView
     lateinit var mNickNameView: TextView
     lateinit var mLevelView: TextView
@@ -93,11 +101,14 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mDivisionView = view!!.findViewById(R.id.txt_High_Rank)
         mAchievementDateView = view!!.findViewById(R.id.txt_Achievement_Date)
         mEmptyView = view!!.findViewById(R.id.txt_emptyView)
-        mRecyclerView = view!!.findViewById(R.id.layout_recyclerview)
         mRateTextView = view!!.findViewById(R.id.txt_rate)
         mCustomPieChartView = view!!.findViewById(R.id.cview_pie_chart)
         btn_back.setOnClickListener {
-            FragmentUtils().loadFragment(HomeFragment.getInstance(),R.id.fragment_container, fragmentManager!!)
+            FragmentUtils().loadFragment(
+                HomeFragment.getInstance(),
+                R.id.fragment_container,
+                fragmentManager!!
+            )
         }
     }
 
@@ -112,27 +123,32 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     }
 
     fun initListData() {
-        arguments.let {
-            mSearchResponseList = arrayListOf()
-            mMatchIdList = mutableListOf()
-            mMatchIdList.addAll((arguments!!.get(KEY_MATCH_ID_LIST) as Array<String>).toList())
-        }
+        mOfficialGameMatchList = arrayListOf()
+        mCoachModeMatchList = arrayListOf()
 
-        for (item in mMatchIdList) {
-            if (DEBUG) Log.v(TAG, "item, matchId : ${item} ")
-            mSearchPresenter.getMatchDetailList(item)
-        }
-        context ?: return
-        val layoutManager = LinearLayoutManager(context)
-        mRecyclerView.addItemDecoration(SearchDecoration(10))
-        mRecyclerView.setLayoutManager(layoutManager)
-        mRecyclerView.adapter =
-            SearchListAdapter(context!!, mSearchUserInfo.accessId, mSearchResponseList, {
-                Log.v(TAG,"ItemClick! ${it.matchInfo}")
-                showDetail(mSearchUserInfo.accessId, it)
-            })
+        mCoachModeView = SearchListView(context!!)
+        viewPager.adapter =
+            SearchListPagerAdapter(context!!, mCoachModeView)
+        mCoachModeView.setSearchUserInfo(mSearchUserInfo)
 
-        Log.v(TAG, "SearchList total count ::: ${mRecyclerView.adapter!!.itemCount}")
+        mOfficialGameView = SearchListView(context!!)
+        viewPager.adapter =
+            SearchListPagerAdapter(context!!, mOfficialGameView)
+        mOfficialGameView.setSearchUserInfo(mSearchUserInfo)
+
+        mSearchPresenter!!.getMatchId(
+            mSearchUserInfo.accessId!!,
+            DataManager.matchType.normalMatch.matchType,
+            DataManager.getInstance().offset,
+            DataManager.getInstance().SEARCH_LIMIT
+        )
+
+        mSearchPresenter!!.getMatchId(
+            mSearchUserInfo.accessId!!,
+            DataManager.matchType.coachMatch.matchType,
+            DataManager.getInstance().offset,
+            DataManager.getInstance().SEARCH_LIMIT
+        )
     }
 
     fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
@@ -149,47 +165,108 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
     }
 
-
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        Log.v(TAG, "showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         group_info.visibility = View.GONE
 //        group_rate.visibility = View.GONE
-        layout_recyclerview.visibility = View.GONE
+        viewPager.visibility = View.GONE
         avi_loading.show(false)
     }
 
     override fun hideLoading(isError: Boolean) {
-        Log.v(TAG, "hideLoading(...) ${mMatchIdList.size} , ${mRecyclerView.adapter!!.itemCount}")
-        if (mMatchIdList.size <= mRecyclerView.adapter!!.itemCount || isError) {
+        Log.v(TAG, "hideLoading(...)")
             avi_loading.hide()
             avi_loading.visibility = View.GONE
             group_info.visibility = View.VISIBLE
 //            group_rate.visibility = View.VISIBLE
-            layout_recyclerview.visibility = View.VISIBLE
+            viewPager.visibility = View.VISIBLE
             group_info.visibility = View.VISIBLE
             btn_back.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showOfficialGameMatchIdList(userMatchIdResponse: ResponseBody?) {
+        if (userMatchIdResponse == null) {
+            Log.d(TAG, "userMatchIdResponse is null")
+            mEmptyView.visibility = View.VISIBLE
+            viewPager.visibility = View.INVISIBLE
+            return
+        }
+        var result: String = userMatchIdResponse.string()
+        mOfficialGameMatchIdList = arrayListOf()
+        mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
+
+        for (item in mOfficialGameMatchIdList) {
+            if (DEBUG) Log.v(TAG, "item, matchId : ${item} ")
+            mSearchPresenter.getMatchDetailList(true, item)
         }
     }
 
-    override fun showSearchList(searchResponse: MatchDetailResponse?) {
+    @SuppressLint("SetTextI18n")
+    override fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?) {
+        if (matchDetailResponse == null) {
+            Log.d(TAG, "userMatchIdResponse is null")
+            mEmptyView.visibility = View.VISIBLE
+            viewPager.visibility = View.INVISIBLE
+            return
+        }
+        var result: String = matchDetailResponse.string()
+        mCoachModeMatchIdList = arrayListOf()
+        mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
+
+        for (item in mCoachModeMatchIdList) {
+            if (true) Log.v(TAG, "coach item, matchId : ${item} ")
+            mSearchPresenter.getMatchDetailList(false, item)
+        }
+    }
+
+    override fun showOfficialGameList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         mEmptyView.visibility = View.GONE
-        Log.v(TAG, "showSearchList : ${searchResponse!!.matchId}")
+        Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
-            mSearchResponseList.add(searchResponse!!)
-//            if (mSearchResponseList.size == DataManager().SEARCH_LIMIT) {
-                mSearchResponseList.sortByDescending { it.matchDate }
-                mRecyclerView.adapter!!.notifyItemInserted(mSearchResponseList.size - 1)
-                mRecyclerView.adapter!!.notifyDataSetChanged()
-//            }
+            mOfficialGameMatchList.add(searchResponse!!)
+            mOfficialGameMatchList.sortByDescending { it.matchDate }
         }
-        initRate()
+        Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
+        if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
+            initRate()
+            updateOfficialGameList()
+        }
+    }
+
+    override fun showCoachModeList(searchResponse: MatchDetailResponse?) {
+        searchResponse ?: return
+        mEmptyView.visibility = View.GONE
+        Log.v(TAG, "showCoachModeList : ${searchResponse!!.matchId}")
+        synchronized("Lock") {
+            mCoachModeMatchList.add(searchResponse!!)
+            mCoachModeMatchList.sortByDescending { it.matchDate }
+        }
+        Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
+        if (mCoachModeMatchList.size == mCoachModeMatchList.size) {
+            initRate()
+            updateCoachModeList()
+        }
+    }
+
+    fun updateCoachModeList() {
+        mCoachModeView.updateView(mCoachModeMatchList, {
+            showDetail(mSearchUserInfo.accessId, it)
+        })
+    }
+
+    fun updateOfficialGameList() {
+        hideLoading(false)
+        mOfficialGameView.updateView(mOfficialGameMatchList, {
+            showDetail(mSearchUserInfo.accessId, it)
+        })
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
         var normalMatchResponse: UserHighRankResponse? = null
-        var division:String? = null
+        var division: String? = null
         for (item in userHighRankResponse) {
             if (DataManager.matchType.normalMatch.matchType == item.matchType)
                 normalMatchResponse = item
@@ -210,7 +287,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         var win = 0
         var draw = 0
         var lose = 0
-        for (item in mSearchResponseList) {
+        for (item in mOfficialGameMatchList) {
             var myInfo: MatchInfoDTO? = null
             if (mSearchUserInfo.accessId == item.matchInfo[0].accessId) {
                 myInfo = item.matchInfo[0]
@@ -225,36 +302,12 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
 
         val pieEntryList = arrayListOf(
-            PieEntry(win.toFloat(), "승 : $win",null,null),
-            PieEntry(draw.toFloat(), "무 : $draw",null,null),
-            PieEntry(lose.toFloat(), "패 : $lose",null,null)
+            PieEntry(win.toFloat(), "승 : $win", null, null),
+            PieEntry(draw.toFloat(), "무 : $draw", null, null),
+            PieEntry(lose.toFloat(), "패 : $lose", null, null)
         )
-        mCustomPieChartView.setData(pieEntryList, win+draw+lose)
+        mCustomPieChartView.setData(pieEntryList, win + draw + lose)
     }
-
-//    fun initRate() {
-//        var win = 0
-//        var draw = 0
-//        var lose = 0
-//        for (item in mSearchResponseList) {
-//            var myInfo: MatchInfoDTO? = null
-//            if (mSearchUserInfo.accessId == item.matchInfo[0].accessId) {
-//                myInfo = item.matchInfo[0]
-//            } else {
-//                myInfo = item.matchInfo[1]
-//            }
-//            when (myInfo.matchDetail.matchResult) {
-//                "승" -> win++
-//                "무" -> draw++
-//                "패" -> lose++
-//            }
-//        }
-//        mRateTextView.text =
-//            "최근 ${win + draw + lose} 경기 승:$win / 무:$draw / 패:$lose"
-//        mRateTextView.visibility = View.VISIBLE
-//
-//    }
-
 
     override fun showError(error: String) {
         if (SearchPresenter().ERROR_EMPTY.equals(error)) {
