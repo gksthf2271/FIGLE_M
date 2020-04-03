@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchDecoration
 import com.example.figle_m.SearchList.SearchListAdapter
+import kotlinx.android.synthetic.main.cview_search_list.view.*
 
 class SearchListView : ConstraintLayout {
     constructor(context: Context) : this(context, null)
@@ -28,6 +30,9 @@ class SearchListView : ConstraintLayout {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.cview_search_list, this)
         mRecyclerView = findViewById(R.id.layout_recyclerview)
+        val layoutManager = LinearLayoutManager(context)
+        mRecyclerView.addItemDecoration(SearchDecoration(10))
+        mRecyclerView.setLayoutManager(layoutManager)
     }
 
     fun setSearchUserInfo(searchUserInfo: UserResponse) {
@@ -36,13 +41,28 @@ class SearchListView : ConstraintLayout {
 
     fun updateView(matchDetailList: List<MatchDetailResponse>, itemClick: (MatchDetailResponse) -> Unit) {
         Log.v(TAG,"updateView : ${matchDetailList}")
-        val layoutManager = LinearLayoutManager(context)
-        mRecyclerView.addItemDecoration(SearchDecoration(10))
-        mRecyclerView.setLayoutManager(layoutManager)
+        if (matchDetailList.isEmpty()) {
+            showEmptyView()
+            return
+        } else {
+            hideEmptyView()
+        }
         mRecyclerView.adapter =
             SearchListAdapter(context!!, mSearchUserInfo.accessId, matchDetailList.toMutableList(), {
                 Log.v(TAG,"ItemClick! ${it.matchInfo}")
                 itemClick(it)
             })
+    }
+
+    fun showEmptyView() {
+        Log.v(TAG,"showEmptyView(...)")
+        mRecyclerView.visibility = View.GONE
+        txt_emptyView.visibility = View.VISIBLE
+    }
+
+    fun hideEmptyView() {
+        Log.v(TAG,"hideEmptyView(...)")
+        mRecyclerView.visibility = View.VISIBLE
+        txt_emptyView.visibility = View.GONE
     }
 }

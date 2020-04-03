@@ -1,27 +1,33 @@
 package com.example.figle_m.SearchList
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 
 class SearchListPagerAdapter() : PagerAdapter() {
+    private val TAG :String = javaClass.name
     lateinit var mContext : Context
-    lateinit var mView : View
+    lateinit var mFirstView : View
+    lateinit var mLastView : View
 
-    constructor(context: Context, view : View) : this() {
+    constructor(context: Context, firstView : View, lastView : View) : this() {
         this.mContext = context
-        this.mView = view
+        this.mFirstView = firstView
+        this.mLastView = lastView
     }
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         var view: View? = null
         when (position) {
             0 -> {
-                view = mView
+                view = mFirstView
+                Log.v(TAG,"TEST, mView 1 : ${mFirstView}")
             }
             1 -> {
-                view = mView
+                view = mLastView
+                Log.v(TAG,"TEST, mView 0 : ${mLastView}")
             }
         }
         collection.addView(view)

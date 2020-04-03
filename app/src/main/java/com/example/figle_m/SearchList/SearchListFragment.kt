@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Home.HomeFragment
@@ -22,8 +23,6 @@ import com.example.figle_m.utils.DivisionEnum
 import com.example.figle_m.utils.FragmentUtils
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.fragment_searchlist.*
-import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
-import kotlinx.android.synthetic.main.fragment_searchlist.viewPager
 import okhttp3.ResponseBody
 
 
@@ -45,7 +44,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     lateinit var mOfficialGameView: SearchListView
     lateinit var mCoachModeView: SearchListView
 
-    lateinit var mEmptyView: TextView
     lateinit var mNickNameView: TextView
     lateinit var mLevelView: TextView
     lateinit var mDivisionView: TextView
@@ -100,7 +98,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mLevelView = view!!.findViewById(R.id.txt_Level)
         mDivisionView = view!!.findViewById(R.id.txt_High_Rank)
         mAchievementDateView = view!!.findViewById(R.id.txt_Achievement_Date)
-        mEmptyView = view!!.findViewById(R.id.txt_emptyView)
         mRateTextView = view!!.findViewById(R.id.txt_rate)
         mCustomPieChartView = view!!.findViewById(R.id.cview_pie_chart)
         btn_back.setOnClickListener {
@@ -127,25 +124,43 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mCoachModeMatchList = arrayListOf()
 
         mCoachModeView = SearchListView(context!!)
-        viewPager.adapter =
-            SearchListPagerAdapter(context!!, mCoachModeView)
         mCoachModeView.setSearchUserInfo(mSearchUserInfo)
 
         mOfficialGameView = SearchListView(context!!)
-        viewPager.adapter =
-            SearchListPagerAdapter(context!!, mOfficialGameView)
         mOfficialGameView.setSearchUserInfo(mSearchUserInfo)
+        viewPager.adapter =
+            SearchListPagerAdapter(context!!, mOfficialGameView, mCoachModeView)
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                when (position) {
+                    0 -> {
+                        initRate(true)
+                    }
+                    1 -> {
+                        initRate(false)
+                    }
+                }
+            }
+            override fun onPageSelected(position: Int) {
+            }
+        })
+
+        viewPager.currentItem = 0
 
         mSearchPresenter!!.getMatchId(
             mSearchUserInfo.accessId!!,
-            DataManager.matchType.normalMatch.matchType,
+            DataManager.matchType.normalMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
 
         mSearchPresenter!!.getMatchId(
             mSearchUserInfo.accessId!!,
-            DataManager.matchType.coachMatch.matchType,
+            DataManager.matchType.coachMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
@@ -187,15 +202,16 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     @SuppressLint("SetTextI18n")
     override fun showOfficialGameMatchIdList(userMatchIdResponse: ResponseBody?) {
-        if (userMatchIdResponse == null) {
-            Log.d(TAG, "userMatchIdResponse is null")
-            mEmptyView.visibility = View.VISIBLE
-            viewPager.visibility = View.INVISIBLE
-            return
-        }
+        userMatchIdResponse ?: return
         var result: String = userMatchIdResponse.string()
         mOfficialGameMatchIdList = arrayListOf()
         mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
+
+        if (result == null || result.isEmpty() || "[]".equals(result)) {
+            Log.v(TAG,"TEST, officialGmae is null")
+            mOfficialGameView.showEmptyView()
+            return
+        }
 
         for (item in mOfficialGameMatchIdList) {
             if (DEBUG) Log.v(TAG, "item, matchId : ${item} ")
@@ -205,15 +221,16 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     @SuppressLint("SetTextI18n")
     override fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?) {
-        if (matchDetailResponse == null) {
-            Log.d(TAG, "userMatchIdResponse is null")
-            mEmptyView.visibility = View.VISIBLE
-            viewPager.visibility = View.INVISIBLE
-            return
-        }
+        matchDetailResponse ?: return
         var result: String = matchDetailResponse.string()
         mCoachModeMatchIdList = arrayListOf()
         mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
+
+        if (result == null || result.isEmpty() || "[]".equals(result)) {
+            Log.v(TAG,"TEST, coachList is null")
+            mCoachModeView.showEmptyView()
+            return
+        }
 
         for (item in mCoachModeMatchIdList) {
             if (true) Log.v(TAG, "coach item, matchId : ${item} ")
@@ -223,30 +240,29 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     override fun showOfficialGameList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
-        mEmptyView.visibility = View.GONE
         Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mOfficialGameMatchList.add(searchResponse!!)
             mOfficialGameMatchList.sortByDescending { it.matchDate }
         }
-        Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
+
+        if(DEBUG) Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
         if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
-            initRate()
+            initRate(true)
             updateOfficialGameList()
         }
     }
 
     override fun showCoachModeList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
-        mEmptyView.visibility = View.GONE
         Log.v(TAG, "showCoachModeList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mCoachModeMatchList.add(searchResponse!!)
             mCoachModeMatchList.sortByDescending { it.matchDate }
         }
-        Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
-        if (mCoachModeMatchList.size == mCoachModeMatchList.size) {
-            initRate()
+        if(DEBUG)  Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
+        if (mCoachModeMatchList.size == mCoachModeMatchIdList.size) {
+            initRate(false)
             updateCoachModeList()
         }
     }
@@ -283,17 +299,25 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mAchievementDateView.text = normalMatchResponse!!.achievementDate.replace("T", " / ")
     }
 
-    fun initRate() {
+    fun initRate(isOfficialGame: Boolean) {
         var win = 0
         var draw = 0
         var lose = 0
-        for (item in mOfficialGameMatchList) {
+        var arrayList = mutableListOf<MatchDetailResponse>()
+        if (isOfficialGame) {
+            arrayList = mOfficialGameMatchList
+        } else {
+            arrayList = mCoachModeMatchList
+        }
+
+        for (item in arrayList) {
             var myInfo: MatchInfoDTO? = null
             if (mSearchUserInfo.accessId == item.matchInfo[0].accessId) {
                 myInfo = item.matchInfo[0]
             } else {
                 myInfo = item.matchInfo[1]
             }
+            myInfo.matchDetail.matchResult ?: continue
             when (myInfo.matchDetail.matchResult) {
                 "승" -> win++
                 "무" -> draw++
@@ -311,7 +335,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     override fun showError(error: String) {
         if (SearchPresenter().ERROR_EMPTY.equals(error)) {
-            mEmptyView.visibility = View.VISIBLE
             hideLoading(true)
         }
     }

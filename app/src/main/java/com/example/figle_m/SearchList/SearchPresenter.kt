@@ -23,17 +23,17 @@ class SearchPresenter: SearchContract.Presenter {
         mSearchListView = null
     }
 
-    override fun getMatchId(accessId: String, matchType: Int, offset: Int, limit: Int) {
+    override fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit: Int) {
         mSearchListView?.showLoading()
         Thread(Runnable {
-            DataManager.getInstance().loadMatchId(accessId, matchType, offset, limit,
+            DataManager.getInstance().loadMatchId(accessId, matchType.matchType, offset, limit,
                 {
 //                    mSearchListView?.hideLoading(false)
-                    when (matchType) {
-                        DataManager.matchType.normalMatch.matchType -> {
+                    when (matchType.name) {
+                        DataManager.matchType.normalMatch.name -> {
                             mSearchListView?.showOfficialGameMatchIdList(it)
                         }
-                        DataManager.matchType.coachMatch.matchType -> {
+                        DataManager.matchType.coachMatch.name -> {
                             mSearchListView?.showCoachModeMatchIdList(it)
                         }
                     }

@@ -90,6 +90,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             playerDB.let {
                 CoroutineScope(Dispatchers.IO).launch {
                     val player = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                    player ?: return@launch
                     CoroutineScope(Dispatchers.Main).launch {
                         mPlayerName.text = player.playerName
                     }

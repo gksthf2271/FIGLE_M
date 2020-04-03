@@ -104,6 +104,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 var myResult: String? = null
                 var opposingUserResult: String? = null
 
+                myMatchInfo.matchDetail!!.matchResult ?: return
                 when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
                         myResult = "WIN"

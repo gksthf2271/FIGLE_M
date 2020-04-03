@@ -160,18 +160,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_rate" />
-
-    <TextView
-        android:id="@+id/txt_emptyView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="기록이 없습니다."
-        android:textColor="@color/search_text_color"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/viewPager"
-        app:layout_constraintLeft_toLeftOf="@id/viewPager"
-        app:layout_constraintRight_toRightOf="@id/viewPager"
-        app:layout_constraintTop_toTopOf="@id/viewPager" />
 </androidx.constraintlayout.widget.ConstraintLayout>
