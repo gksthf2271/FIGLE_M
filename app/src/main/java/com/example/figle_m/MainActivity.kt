@@ -2,8 +2,12 @@ package com.example.figle_m
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.figle_m.Base.BaseActivity
@@ -16,7 +20,8 @@ import okhttp3.ResponseBody
 class MainActivity : BaseActivity(), InitContract.View{
     val TAG: String = javaClass.name
     open val PREF_NAME = "playerNamePref"
-    lateinit var mInitPresenter: InitPresenter
+    private lateinit var mInitPresenter: InitPresenter
+    private lateinit var mPopupWindow: PopupWindow
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +41,16 @@ class MainActivity : BaseActivity(), InitContract.View{
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (getCurrentFragment() is SearchListFragment)
-                FragmentUtils().loadFragment(HomeFragment(),R.id.fragment_container, supportFragmentManager)
+            if (getCurrentFragment() is SearchListFragment) {
+                FragmentUtils().loadFragment(
+                    HomeFragment(),
+                    R.id.fragment_container,
+                    supportFragmentManager
+                )
+            }
+            if (getCurrentFragment() is HomeFragment) {
+                showFinishPopup()
+            }
             return false
         }
         return super.onKeyDown(keyCode, event)
@@ -74,5 +87,23 @@ class MainActivity : BaseActivity(), InitContract.View{
 
     override fun initPresenter() {
         mInitPresenter = InitPresenter()
+    }
+
+    private fun showFinishPopup() {
+        val popupView = layoutInflater.inflate(R.layout.activity_main_finish, null)
+        mPopupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        mPopupWindow.setFocusable(true)
+        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+
+        val cancel = popupView.findViewById(R.id.Cancel) as Button
+        cancel.setOnClickListener { mPopupWindow.dismiss() }
+
+        val ok = popupView.findViewById(R.id.Ok) as Button
+        ok.setOnClickListener { finish() }
     }
 }

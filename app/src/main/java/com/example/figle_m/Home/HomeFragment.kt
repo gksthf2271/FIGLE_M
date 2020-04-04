@@ -15,13 +15,11 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import android.widget.Button
 import android.widget.EditText
 import com.example.figle_m.Base.BaseFragment
-import com.example.figle_m.Data.DataManager
 import com.example.figle_m.R
 import com.example.figle_m.Response.UserResponse
 import com.example.figle_m.SearchList.SearchListFragment
 import com.example.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
-import okhttp3.ResponseBody
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.name
