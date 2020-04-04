@@ -1,6 +1,11 @@
 package com.example.figle_m
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
@@ -17,11 +22,14 @@ import com.example.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.ResponseBody
 
-class MainActivity : BaseActivity(), InitContract.View{
+class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.name
     open val PREF_NAME = "playerNamePref"
     private lateinit var mInitPresenter: InitPresenter
     private lateinit var mPopupWindow: PopupWindow
+
+    private val MSG_DISCONNECTED_NETWORK = 0
+    private val mHandler:Handler = Handler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +40,15 @@ class MainActivity : BaseActivity(), InitContract.View{
         super.onStart()
         mInitPresenter!!.takeView(this)
         mInitPresenter.getPlayerNameList(applicationContext)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!checkNetworkStatus()) {
+            showNetworkError()
+        } else {
+            txt_disconnected_network.visibility = View.INVISIBLE
+        }
     }
 
     override fun onDestroy() {
@@ -56,8 +73,29 @@ class MainActivity : BaseActivity(), InitContract.View{
         return super.onKeyDown(keyCode, event)
     }
 
+    override fun handleMessage(msg: Message): Boolean {
+        when(msg.what) {
+            MSG_DISCONNECTED_NETWORK -> {
+                finish()
+            }
+        }
+        return false
+    }
+
+    fun checkNetworkStatus(): Boolean {
+        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        return isConnected
+    }
+
     fun getCurrentFragment(): Fragment {
         return FragmentUtils().currentFragment(supportFragmentManager!!, R.id.fragment_container)!!
+    }
+
+    override fun showNetworkError() {
+        txt_disconnected_network.visibility = View.VISIBLE
+        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
     }
 
     override fun setProgressMax(max: Int) {

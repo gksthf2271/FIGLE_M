@@ -13,6 +13,8 @@ interface InitContract : BaseView {
         fun showMainActivity(responseBody: ResponseBody)
         fun updateProgress(progress: Int)
         fun setProgressMax(max: Int)
+
+        fun showNetworkError()
     }
 
     interface Presenter : BasePresenter<View> {

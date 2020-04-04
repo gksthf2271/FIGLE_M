@@ -43,7 +43,7 @@ class InitPresenter : InitContract.Presenter {
                             }
                         )
                     }, {
-                        Log.v(TAG, "getPlayerNameList Failed! $it")
+                        Log.v(TAG, "getPlayerNameList Failed! ${it}")
                         mInitContract?.hideLoading()
                     })
             }
