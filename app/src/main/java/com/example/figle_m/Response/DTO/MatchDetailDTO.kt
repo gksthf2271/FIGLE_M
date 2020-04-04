@@ -6,7 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class MatchDetailDTO (
     val seasonId: Int,
-    val matchResult: String,
+    var matchResult: String,
     val matchEndType: Int,
     val systemPause: Int,
     val foul: Int,

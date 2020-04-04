@@ -104,7 +104,22 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 var myResult: String? = null
                 var opposingUserResult: String? = null
 
-                myMatchInfo.matchDetail!!.matchResult ?: return
+                if (myMatchInfo.matchDetail!!.matchResult == null) {
+                    if ("승".equals(opposingUserMatchInfo.matchDetail.matchResult)) {
+                        myMatchInfo.matchDetail!!.matchResult = "패"
+                    } else {
+                        myMatchInfo.matchDetail!!.matchResult = "승"
+                    }
+                }
+
+                if (opposingUserMatchInfo.matchDetail!!.matchResult == null) {
+                    if ("승".equals(myMatchInfo.matchDetail.matchResult)) {
+                        opposingUserMatchInfo.matchDetail!!.matchResult = "패"
+                    } else {
+                        opposingUserMatchInfo.matchDetail!!.matchResult = "승"
+                    }
+                }
+
                 when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
                         myResult = "WIN"
