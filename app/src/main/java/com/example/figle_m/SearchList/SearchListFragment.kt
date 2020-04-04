@@ -208,7 +208,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
-            Log.v(TAG,"TEST, officialGmae is null")
+            Log.v(TAG,"officialGmae is null")
             mOfficialGameView.showEmptyView()
             return
         }
@@ -227,7 +227,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
-            Log.v(TAG,"TEST, coachList is null")
+            Log.v(TAG,"coachList is null")
             mCoachModeView.showEmptyView()
             return
         }

@@ -14,37 +14,37 @@ import okhttp3.ResponseBody
 class InitPresenter : InitContract.Presenter {
     val TAG: String = javaClass.name
     val isDebug: Boolean = false
-    var mPlayerNameList: InitContract.View? = null
+    var mInitContract: InitContract.View? = null
 
     open val ERROR_EMPTY = "EMPTY"
 
     override fun takeView(view: InitContract.View) {
-        mPlayerNameList = view
+        mInitContract = view
     }
 
     override fun dropView() {
-        mPlayerNameList = null
+        mInitContract = null
     }
 
     override fun getPlayerNameList(context: Context) {
-        mPlayerNameList?.showLoading()
+        mInitContract?.showLoading()
         runBlocking {
             launch {
                 getPlayerNameList(
                     {
                         Log.v(TAG, "getPlayerNameList Success! ${it}")
-                        mPlayerNameList?.showMainActivity(it)
+                        mInitContract?.showMainActivity(it)
                         updatePlayerDB(context, it
                             , {
                                 Log.v(TAG, "pref save successful")
                                 CoroutineScope(Dispatchers.Main).launch {
-                                mPlayerNameList?.hideLoading()
+                                mInitContract?.hideLoading()
                                 }
                             }
                         )
                     }, {
                         Log.v(TAG, "getPlayerNameList Failed! $it")
-                        mPlayerNameList?.hideLoading()
+                        mInitContract?.hideLoading()
                     })
             }
         }
@@ -71,7 +71,6 @@ class InitPresenter : InitContract.Presenter {
             var index = 0
             val playerDB = PlayerDataBase.getInstance(context)
             Log.v(TAG, "stringList size : ${stringList.size}")
-
             val playerList : ArrayList<PlayerEntity> = arrayListOf()
             for (item in 0..stringList.size - 1 step 2) {
                 val loIndex = index
@@ -84,6 +83,7 @@ class InitPresenter : InitContract.Presenter {
             val startTime = System.currentTimeMillis()
             val localPlayerList = playerDB!!.playerDao().getAll()
             if(playerList.size != localPlayerList.size) {
+                mInitContract!!.setProgressMax(stringList.size)
                 index = 0
                 Log.v(TAG,"------------------ update Player DB ------------------")
                 playerDB!!.playerDao().deleteAll()
@@ -93,9 +93,10 @@ class InitPresenter : InitContract.Presenter {
                     val value = stringList[++index]
                     Log.v(TAG, "updatePlayerDB - index : $loIndex , key : $key , value : $value")
                     playerDB!!.playerDao().insert(PlayerEntity(null,key,value))
+                    mInitContract!!.updateProgress(index)
                     index++
                 }
-
+                mInitContract!!.updateProgress(stringList.size)
                 Log.v(TAG,"------------------ EndTime : ${System.currentTimeMillis()-startTime} ------------------")
 
             } else {

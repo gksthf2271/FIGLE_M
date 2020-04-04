@@ -32,6 +32,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ProgressBar
+        android:id="@+id/progress_horizontal"
+        android:layout_width="300dp"
+        android:layout_height="12dp"
+        android:max="100"
+        android:progress="70"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/start_progressbar"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/loading_view"
+        app:layout_constraintBottom_toBottomOf="@id/loading_view"/>
+
+    <TextView
+        android:id="@+id/txt_progress"
+        android:text="데이터 수집 중입니다..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/search_text_color"
+        android:textSize="10dp"
+        android:layout_marginTop="5dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/progress_horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
     <TextView
         android:id="@+id/txt_data_based_on_nexon"
         android:text="Data based on NEXON DEVELOPERS"

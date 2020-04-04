@@ -60,6 +60,14 @@ class MainActivity : BaseActivity(), InitContract.View{
         return FragmentUtils().currentFragment(supportFragmentManager!!, R.id.fragment_container)!!
     }
 
+    override fun setProgressMax(max: Int) {
+        avi_loading.setProgressMax(max)
+    }
+
+    override fun updateProgress(progress: Int) {
+        avi_loading.updateProgress(progress)
+    }
+
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
