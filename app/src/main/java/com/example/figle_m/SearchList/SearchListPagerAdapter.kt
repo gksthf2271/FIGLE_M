@@ -23,11 +23,9 @@ class SearchListPagerAdapter() : PagerAdapter() {
         when (position) {
             0 -> {
                 view = mFirstView
-                Log.v(TAG,"TEST, mView 1 : ${mFirstView}")
             }
             1 -> {
                 view = mLastView
-                Log.v(TAG,"TEST, mView 0 : ${mLastView}")
             }
         }
         collection.addView(view)

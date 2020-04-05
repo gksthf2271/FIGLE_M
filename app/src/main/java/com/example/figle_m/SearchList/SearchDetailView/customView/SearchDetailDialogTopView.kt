@@ -45,9 +45,10 @@ class SearchDetailDialogTopView : ConstraintLayout {
         mTxtRightResult = findViewById(R.id.txt_right_result)
     }
 
-    fun updateUserView(searchAccessId: String, matchDetail: MatchDetailResponse) {
-        group_result.visibility = View.VISIBLE
+    fun updateUserView(isCoachMode: Boolean, searchAccessId: String, matchDetail: MatchDetailResponse) {
+        group_playerInfo.visibility = View.GONE
         player_info_view.visibility = View.GONE
+        group_result.visibility = View.VISIBLE
         mSearchAccessId = searchAccessId
         val matchInfo = matchDetail.matchInfo!!
         var opposingUserIndex = 1
@@ -63,6 +64,12 @@ class SearchDetailDialogTopView : ConstraintLayout {
         if (matchInfo.size <= 1) {
             Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
             return
+        }
+
+        if (isCoachMode) {
+            txt_play_mode.text = "감독모드"
+        } else {
+            txt_play_mode.text = "1 ON 1"
         }
         val myMatchInfo = matchInfo[myIndex]
         val opposingUserMatchInfo = matchInfo[opposingUserIndex]
@@ -114,6 +121,7 @@ class SearchDetailDialogTopView : ConstraintLayout {
         Log.v(TAG,"player : $playerInfo")
         mRootLayout.background = resources.getDrawable(R.color.empty_background,null)
         player_info_view.visibility = View.VISIBLE
+        group_playerInfo.visibility = View.VISIBLE
         group_result.visibility = View.GONE
         mAssistListMap ?: return
         mBlockListMap ?: return

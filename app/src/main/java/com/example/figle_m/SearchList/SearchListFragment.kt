@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.figle_m.Base.BaseFragment
 import com.example.figle_m.Data.DataManager
 import com.example.figle_m.Home.HomeFragment
+import com.example.figle_m.Lock.LockView
 import com.example.figle_m.R
 import com.example.figle_m.Response.DTO.MatchInfoDTO
 import com.example.figle_m.Response.MatchDetailResponse
@@ -123,14 +124,22 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mOfficialGameMatchList = arrayListOf()
         mCoachModeMatchList = arrayListOf()
 
+        //Todo: coach 테스트 완료 후 변경
         mCoachModeView = SearchListView(context!!)
         mCoachModeView.setSearchUserInfo(mSearchUserInfo)
+
+        var mCoachModeLockView = LockView(context!!)
+        mCoachModeLockView.updateImageView(R.drawable.lock)
+        mCoachModeLockView.updateTextView("감독모드\n추후 공개 예정입니다.")
 
         mOfficialGameView = SearchListView(context!!)
         mOfficialGameView.setSearchUserInfo(mSearchUserInfo)
         viewPager.adapter =
-            SearchListPagerAdapter(context!!, mOfficialGameView, mCoachModeView)
+            SearchListPagerAdapter(context!!, mOfficialGameView, mCoachModeLockView)
 
+        //////////////////////////////////////////////////////////////////////
+
+        //감독모드 추가 후 Page 별 Rate falg 설
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -138,16 +147,20 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 when (position) {
                     0 -> {
+                        txt_play_mode.text = "1 ON 1"
                         initRate(true)
                     }
                     1 -> {
-                        initRate(false)
+                        txt_play_mode.text = "감독모드"
+                        initRate(true)
                     }
                 }
             }
             override fun onPageSelected(position: Int) {
             }
         })
+
+        //////////////////////////////////////////////////////////////////////
 
         viewPager.currentItem = 0
 
@@ -169,6 +182,8 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
+        val isCoachMode = viewPager.currentItem == 1
+        bundle.putBoolean(searchDetailDialogFragment.KEY_IS_COACH_MOC, isCoachMode)
         bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
         bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
         searchDetailDialogFragment.arguments = bundle

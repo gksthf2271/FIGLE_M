@@ -135,7 +135,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                     }
                 }
                 mTxtLeftResult.text = myResult
-                mTxtRightResult.text = opposingUserResult
+//                mTxtRightResult.text = opposingUserResult
 
                 var res = 0
                 when (myMatchInfo.matchDetail!!.matchResult) {

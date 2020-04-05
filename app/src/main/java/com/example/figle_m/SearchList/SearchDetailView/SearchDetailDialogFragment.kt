@@ -10,12 +10,10 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
-import butterknife.OnPageChange
 import com.example.figle_m.R
 import com.example.figle_m.Response.MatchDetailResponse
 import com.example.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.example.figle_m.utils.DisplayUtils
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
@@ -26,6 +24,8 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
     open val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"
+    open val KEY_IS_COACH_MOC = "KEY_IS_COACH_MOC"
+
     open val TAG_MATCH_DETAIL_DIALOG = "TAG_MATCH_DETAIL_DIALOG"
 
     lateinit var mMatchDetail: MatchDetailResponse
@@ -75,6 +75,7 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
             dismiss()
         }
         arguments.let{
+            var isCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MOC)!!
             mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
             mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail, {
@@ -89,7 +90,7 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                     when (position) {
                         0 -> {
-                            mTopView.updateUserView(mSearchAccessId, mMatchDetail)
+                            mTopView.updateUserView(isCoachMode, mSearchAccessId, mMatchDetail)
                         }
                     }
                 }
