@@ -7,7 +7,7 @@
     android:background="@color/main_background"
     tools:context=".MainActivity">
 
-    <com.example.figle_m.AvLoadingCustomView
+    <com.khs.figle_m.AvLoadingCustomView
         android:id="@+id/avi_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
