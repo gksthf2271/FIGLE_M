@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    app:layoutDescription="@xml/scene_search_list">
 
     <Button
         android:id="@+id/btn_back"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/abc_vector_test"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/abc_vector_test"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.khs.figle_m.AvLoadingCustomView
         android:id="@+id/avi_loading"
@@ -26,11 +27,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/group_info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/fragment_background"
+        app:layoutDescription="@xml/scene_search_list"
         app:layout_constraintHeight_percent="0.3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -48,6 +50,7 @@
             app:layout_constraintWidth_percent="0.45" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sub_group_info"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginRight="5dp"
@@ -80,9 +83,8 @@
                 android:text="TESTTEST"
                 android:textColor="@color/search_text_color"
                 android:textSize="30sp"
-                app:layout_constraintTop_toBottomOf="@id/txt_play_mode"
                 app:layout_constraintLeft_toLeftOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/txt_play_mode" />
 
             <TextView
                 android:id="@+id/txt_Level_title"
@@ -139,8 +141,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_High_Rank" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_rate"
@@ -173,4 +174,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_rate" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_sub_MyNickName"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/fragment_background"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="sdfsdfasdf"
+        android:textColor="@color/search_text_color"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

@@ -46,6 +46,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     lateinit var mCoachModeView: SearchListView
 
     lateinit var mNickNameView: TextView
+    lateinit var mSubNickNameView: TextView
     lateinit var mLevelView: TextView
     lateinit var mDivisionView: TextView
     lateinit var mAchievementDateView: TextView
@@ -96,6 +97,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     fun initView() {
         mNickNameView = view!!.findViewById(R.id.txt_MyNickName)
+        mSubNickNameView = view!!.findViewById(R.id.txt_sub_MyNickName)
         mLevelView = view!!.findViewById(R.id.txt_Level)
         mDivisionView = view!!.findViewById(R.id.txt_High_Rank)
         mAchievementDateView = view!!.findViewById(R.id.txt_Achievement_Date)
@@ -115,6 +117,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             mSearchUserInfo = arguments!!.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
         }
         mNickNameView.text = mSearchUserInfo.nickname
+        mSubNickNameView.text = mSearchUserInfo.nickname
         mLevelView.text = mSearchUserInfo.level
         mLevelView.text = mSearchUserInfo.level
         mSearchPresenter.getUserHighRank(mSearchUserInfo.accessId)
