@@ -21,128 +21,16 @@
             app:layout_constraintHeight_percent="0.3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/cview_pie_chart"
-            android:layout_width="0dp"
+            android:id="@+id/txt_sub_MyNickName"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.45"/>
-
-        <Constraint
-            android:id="@+id/sub_group_info"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="5dp"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5"/>
-
-        <Constraint
-            android:id="@+id/txt_play_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="1 ON 1"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <Constraint
-            android:id="@+id/txt_Level_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="LV : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_MyNickName"
-            />
-
-        <Constraint
-            android:id="@+id/txt_Level_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="LV : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_MyNickName"
-            />
-
-        <Constraint
-            android:id="@+id/txt_Level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toRightOf="@id/txt_Level_title"
-            app:layout_constraintTop_toTopOf="@id/txt_Level_title"
-            />
-
-        <Constraint
-            android:id="@+id/txt_High_Rank_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="최고 등급 : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_Level" />
-
-        <Constraint
-            android:id="@+id/txt_High_Rank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toRightOf="@id/txt_High_Rank_title"
-            app:layout_constraintTop_toTopOf="@id/txt_High_Rank_title" />
-
-        <Constraint
-            android:id="@+id/txt_Achievement_Date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_High_Rank" />
-
-        <Constraint
-            android:id="@id/txt_MyNickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/group_info"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/group_info">
-
-            <CustomAttribute
-                app:attributeName="textSize"
-                app:customFloatValue="30" />
-        </Constraint>
+            android:background="@color/fragment_background"
+            android:gravity="center"
+            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintTop_toBottomOf="@id/group_info" />
 
         <Constraint
             android:id="@+id/viewPager"
@@ -161,159 +49,31 @@
             android:id="@id/group_info"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintHeight_percent="0.0001"
             app:layout_constraintLeft_toRightOf="@+id/btn_back"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/btn_back"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/cview_pie_chart"
-            android:layout_width="0dp"
+            android:id="@+id/txt_sub_MyNickName"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"
-            app:layout_constraintWidth_percent="0"/>
+            android:background="@color/fragment_background"
+            android:gravity="center"
+            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Constraint
-            android:id="@+id/sub_group_info"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="5dp"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.9"/>
-
-        <Constraint
-            android:id="@+id/txt_play_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="1 ON 1"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@+id/txt_Level_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="LV : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@+id/txt_Level_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:singleLine="true"
-            android:text="LV : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@+id/txt_Level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toRightOf="@id/txt_Level_title"
-            app:layout_constraintBottom_toTopOf="parent"
-            />
-
-        <Constraint
-            android:id="@+id/txt_High_Rank_title"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:text="최고 등급 : "
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent"/>
-
-        <Constraint
-            android:id="@+id/txt_High_Rank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toRightOf="@id/txt_High_Rank_title"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@+id/txt_Achievement_Date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textColor="@color/search_text_color"
-            android:textSize="15sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="parent" />
-
-        <Constraint
-            android:id="@id/txt_MyNickName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <CustomAttribute
-                app:attributeName="textSize"
-                app:customFloatValue="20" />
-        </Constraint>
-
-<!--        <Constraint-->
-<!--            android:id="@+id/txt_sub_MyNickName"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:singleLine="true"-->
-<!--            android:textColor="@color/search_text_color"-->
-<!--            android:text="sdfsdfasdf"-->
-<!--            android:background="@color/fragment_background"-->
-<!--            android:gravity="center"-->
-<!--            android:visibility="visible"-->
-<!--            app:layout_constraintHeight_percent="0.08"-->
-<!--            app:layout_constraintLeft_toLeftOf="@id/btn_back"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" >-->
-<!--            <CustomAttribute-->
-<!--                app:attributeName="textSize"-->
-<!--                app:customFloatValue="20" />-->
-<!--        </Constraint>-->
 
         <Constraint
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/fragment_background"
             android:layout_marginBottom="5dp"
+            android:background="@color/fragment_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.9"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
+            app:layout_constraintRight_toRightOf="parent" />
 
     </ConstraintSet>
 
