@@ -89,7 +89,7 @@
 
         <TextView
             android:id="@+id/txt_left_nickName"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:singleLine="true"
@@ -101,7 +101,7 @@
 
         <TextView
             android:id="@+id/txt_right_nickName"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:singleLine="true"
