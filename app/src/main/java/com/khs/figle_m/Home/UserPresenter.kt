@@ -2,6 +2,7 @@ package com.khs.figle_m.Home
 
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Response.UserResponse
 
 class UserPresenter: UserContract.Presenter{
     val TAG:String = javaClass.name
@@ -15,8 +16,11 @@ class UserPresenter: UserContract.Presenter{
                     mUserView?.hideLoading()
                     mUserView?.showUserList(it)
                 }, {
-                    Log.v("getUserDatailList", it)
+                    Log.v(TAG,"getUserDatailList $it")
                     mUserView?.hideLoading()
+                    if (404 == it || 400 == it) {
+                        mUserView?.showError("구단주명을 확인해주세요.")
+                    }
                 })
         }).start()
     }

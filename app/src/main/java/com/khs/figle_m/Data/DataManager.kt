@@ -50,13 +50,13 @@ class DataManager {
     fun loadUserData(
         nickName: String,
         onSuccess: (UserResponse?) -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
             .requestUser(authorization = mAuthorizationKey, nickname = nickName)
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    onFailed("Failed! " + t)
+                    onFailed(0)
                 }
 
                 override fun onResponse(
@@ -68,8 +68,10 @@ class DataManager {
                         if (response.code() == SUCCESS_CODE) {
                             onSuccess(response!!.body())
                         } else {
-                            onFailed("Failed! errorcode : " + response.code())
+                            onFailed(response.code())
                         }
+                    } else {
+                        onFailed(response.code())
                     }
                 }
             })

@@ -7,13 +7,9 @@ import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
-import android.widget.Button
-import android.widget.EditText
+import android.widget.*
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.UserResponse
@@ -123,7 +119,28 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     }
 
     override fun showError(error: String) {
-        Log.v(TAG,"showError(...)")
+        Log.v(TAG,"showError(...) : $error")
+        showFinishPopup(error)
+    }
+
+    private fun showFinishPopup(error: String) {
+        val popupView = layoutInflater.inflate(R.layout.activity_main_finish, null)
+        var mPopupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        mPopupWindow.setFocusable(true)
+        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+        val textView = popupView.findViewById<TextView>(R.id.txt_title)
+        textView.text = error
+
+        val cancel = popupView.findViewById(R.id.Cancel) as Button
+        cancel.visibility = View.GONE
+
+        val ok = popupView.findViewById(R.id.Ok) as Button
+        ok.setOnClickListener { mPopupWindow.dismiss() }
     }
 
     override fun onCreateView(
