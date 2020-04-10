@@ -95,7 +95,7 @@
                 android:singleLine="true"
                 android:text="TESTTEST"
                 android:textColor="@color/search_text_color"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_play_mode" />
 
