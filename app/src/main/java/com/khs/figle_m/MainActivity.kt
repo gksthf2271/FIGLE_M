@@ -31,15 +31,21 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     private val MSG_DISCONNECTED_NETWORK = 0
     private val mHandler:Handler = Handler(this)
 
+    private var isRestartApp = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        isRestartApp = false
     }
 
     override fun onStart() {
         super.onStart()
-        mInitPresenter!!.takeView(this)
-        mInitPresenter.getPlayerNameList(applicationContext)
+        Log.v(TAG,"is Restart app? $isRestartApp")
+        if (!isRestartApp) {
+            mInitPresenter.takeView(this)
+            mInitPresenter.getPlayerNameList(applicationContext)
+        }
     }
 
     override fun onResume() {
@@ -51,8 +57,15 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         }
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        Log.v(TAG,"onRestart(...)")
+        isRestartApp = true
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        Log.v(TAG,"onDestory(...)")
         mInitPresenter!!.dropView()
     }
 

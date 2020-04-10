@@ -66,6 +66,12 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         setBackgroundColorDialog()
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.v(TAG,"onPause(...)")
+        dismiss()
+    }
+
     override fun onStart() {
         super.onStart()
         mTopView = view!!.findViewById(R.id.topView)

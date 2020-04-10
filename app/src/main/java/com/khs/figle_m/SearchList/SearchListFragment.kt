@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
+import com.github.mikephil.charting.data.PieEntry
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
@@ -22,7 +23,6 @@ import com.khs.figle_m.SearchList.SearchDetailView.customView.PieChartView
 import com.khs.figle_m.SearchList.SearchListView.SearchListView
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils
-import com.github.mikephil.charting.data.PieEntry
 import kotlinx.android.synthetic.main.fragment_searchlist.*
 import okhttp3.ResponseBody
 
@@ -82,8 +82,8 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         return v
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         mSearchPresenter!!.takeView(this)
         initView()
         initMyInfoData()
