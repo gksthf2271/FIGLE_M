@@ -129,7 +129,7 @@
             android:gravity="center"
             android:text="10"
             app:layout_constraintBottom_toBottomOf="@id/group_3"
-            app:layout_constraintLeft_toRightOf="@id/txt_title_3"
+            app:layout_constraintLeft_toRightOf="@id/txt_title_4"
             app:layout_constraintTop_toTopOf="@id/group_3"
             app:layout_constraintWidth_percent="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
