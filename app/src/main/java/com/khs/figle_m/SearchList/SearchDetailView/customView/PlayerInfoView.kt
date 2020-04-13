@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import kotlinx.android.synthetic.main.cview_player_info.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 
 class PlayerInfoView : ConstraintLayout {
     val TAG = javaClass.name
+    lateinit  var mPlayerDTO :PlayerDTO
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -30,9 +32,14 @@ class PlayerInfoView : ConstraintLayout {
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.cview_player_info, this)
+
+        btn_detail.setOnClickListener {
+            SearchDetailDialogFragment.getInstance().showPlayerDetailFragment(mPlayerDTO)
+        }
     }
 
     fun updateView(player: PlayerDTO, assistList: List<Int>, teamBlockList: List<Int>) {
+        mPlayerDTO = player
         var totalAssistCount = 0
         var totalBlockCount = 0
         for (item in assistList) {

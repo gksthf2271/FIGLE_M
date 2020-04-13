@@ -100,6 +100,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_passRate"/>
 
+        <Button
+            android:id="@+id/btn_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:text="자세히 보기"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_blockRate"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

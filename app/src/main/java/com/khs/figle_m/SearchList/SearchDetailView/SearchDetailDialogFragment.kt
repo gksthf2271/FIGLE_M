@@ -10,11 +10,15 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
+import com.khs.figle_m.PlayerDetail.PlayerDetailFragment
 import com.khs.figle_m.R
+import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.DisplayUtils
+import com.khs.figle_m.utils.FragmentUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 import okhttp3.HttpUrl
@@ -159,5 +163,19 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
 
     override fun showError(error: String) {
         Log.v(TAG,"showError(...) $error")
+    }
+
+    fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
+        var playerDetailFragment = PlayerDetailFragment.getInstance()
+        val bundle: Bundle = Bundle()
+        bundle.putParcelable(PlayerDetailFragment().KEY_PLAYER_INFO,playerDTO)
+        playerDetailFragment.arguments = bundle
+//        if (!playerDetailFragment.isAdded) {
+//            playerDetailFragment.show(
+//                fragmentManager!!,
+//                PlayerDetailFragment().TAG_PLAYER_DETAIL_DIALOG
+//            )
+//        }
+        FragmentUtils().loadFragment(playerDetailFragment,R.id.fragment_container,fragmentManager!!)
     }
 }
