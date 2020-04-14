@@ -1,6 +1,5 @@
 package com.khs.figle_m.SearchList.SearchDetailView
 
-import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -11,14 +10,12 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
-import com.khs.figle_m.MainActivity
-import com.khs.figle_m.PlayerDetail.PlayerDetailActivity
+import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.DisplayUtils
-import com.khs.figle_m.utils.FragmentUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
@@ -166,9 +163,26 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         Log.v(TAG,"showError(...) $error")
     }
 
+    open val REQUEST = 1000
+
+//    fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
+//        dialog!!.hide()
+//        val intent = Intent(activity!!, PlayerDetailDialogFragment::class.java)
+//        intent.putExtra(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+//        activity!!.startActivityForResult(intent,REQUEST)
+//    }
+
     fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
-        val intent = Intent(activity!!, PlayerDetailActivity::class.java)
-        intent.putExtra(PlayerDetailActivity().KEY_PLAYER_INFO, playerDTO)
-        activity!!.startActivity(intent)
+        var playerDetailFragment = PlayerDetailDialogFragment.getInstance()
+        val bundle: Bundle = Bundle()
+        bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO,playerDTO)
+        playerDetailFragment.arguments = bundle
+        if (!playerDetailFragment.isAdded) {
+            playerDetailFragment.show(
+                fragmentManager!!,
+                PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
+            )
+        }
     }
+
 }

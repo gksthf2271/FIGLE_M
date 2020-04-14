@@ -1,20 +1,27 @@
 package com.khs.figle_m.PlayerDetail
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
+import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,11 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 
-class PlayerDetailActivity: BaseActivity() {
-    override fun initPresenter() {
-
-    }
-
+class PlayerDetailDialogFragment: DialogFragment() {
     val TAG: String = javaClass.name
     val DEBUG: Boolean = false
     open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
@@ -35,35 +38,60 @@ class PlayerDetailActivity: BaseActivity() {
 
     companion object {
         @Volatile
-        private var instance: PlayerDetailActivity? = null
+        private var instance: PlayerDetailDialogFragment? = null
 
         @JvmStatic
-        fun getInstance(): PlayerDetailActivity =
+        fun getInstance(): PlayerDetailDialogFragment =
             instance ?: synchronized(this) {
                 instance
-                    ?: PlayerDetailActivity().also {
+                    ?: PlayerDetailDialogFragment().also {
                         instance = it
                     }
             }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_player_detail)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val v: View = inflater.inflate(R.layout.fragment_player_detail, container, false)
+        return v
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resizeDialog()
+        setBackgroundColorDialog()
+    }
+
+    fun resizeDialog(){
+        context ?: return
+        val size = DisplayUtils().getDisplaySize(context!!)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceeHeight = size.y
+        params?.width = (deviceWidth * 0.9).toInt()
+        params?.height = (deviceeHeight * 0.9).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    fun setBackgroundColorDialog() {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     override fun onStart() {
         super.onStart()
         initData()
         btn_back.setOnClickListener {
-            finish()
+            dismiss()
         }
     }
 
     fun initData() {
         var playerDetailInfo: PlayerDTO? = null
-        intent.let {
-            playerDetailInfo = intent.getParcelableExtra(KEY_PLAYER_INFO) as PlayerDTO
+        arguments.let {
+            playerDetailInfo = arguments!!.get(KEY_PLAYER_INFO) as PlayerDTO
         }
 
         playerDetailInfo ?: return
@@ -101,17 +129,17 @@ class PlayerDetailActivity: BaseActivity() {
         txt_player_spGrade.text = playerDetailInfo!!.spGrade.toString()
         when(playerDetailInfo!!.spGrade) {
             in 0..3 -> {
-                txt_player_spGrade.background = applicationContext.getDrawable(R.drawable.player_grade_bronze)
+                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_bronze)
             }
             in 4..7 -> {
-                txt_player_spGrade.background = applicationContext.getDrawable(R.drawable.player_grade_silver)
+                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_silver)
             }
             in 8..10 -> {
-                txt_player_spGrade.background = applicationContext.getDrawable(R.drawable.player_grade_gold)
+                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_gold)
             }
         }
 
-        val playerDB = PlayerDataBase.getInstance(applicationContext)
+        val playerDB = PlayerDataBase.getInstance(context!!)
         playerDB.let {
             CoroutineScope(Dispatchers.IO).launch {
                 val player = playerDB!!.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
@@ -129,10 +157,10 @@ class PlayerDetailActivity: BaseActivity() {
     }
 
     fun updatePlayerImage(url: HttpUrl) {
-        val imgView = findViewById<ImageView>(R.id.img_player)
+        val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
         Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
-        Glide.with(applicationContext)
+        Glide.with(context!!)
             .load(Uri.parse(url.toString()))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)

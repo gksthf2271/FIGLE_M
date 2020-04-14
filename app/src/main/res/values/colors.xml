@@ -44,5 +44,6 @@
     <color name="loading_background">#242424</color>
 
     <color name="main_background">#2B2B2B</color>
+    <color name="text_color_highlight">#EB0328C2</color>
 
 </resources>

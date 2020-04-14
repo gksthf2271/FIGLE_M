@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/tools"
-    android:background="@color/fragment_background">
+    android:background="@color/search_list_header_background">
 
     <com.gao.jiefly.abilitychartlibrary.AbilityChatView
         android:id="@+id/chart_view"
@@ -100,12 +100,12 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_passRate"/>
 
-        <Button
+        <TextView
             android:id="@+id/btn_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="@color/search_text_color"
+            android:textSize="13sp"
+            android:textColor="@color/text_color_highlight"
             android:textStyle="bold"
             android:layout_marginTop="3dp"
             android:singleLine="true"

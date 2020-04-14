@@ -35,7 +35,7 @@
             android:textColor="@color/search_text_color"
             android:textSize="15sp"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             app:layout_constraintHeight_percent="0.20"
             app:layout_constraintLeft_toRightOf="@id/btn_back"
             app:layout_constraintTop_toTopOf="@id/btn_back"
