@@ -45,5 +45,6 @@
 
     <color name="main_background">#2B2B2B</color>
     <color name="text_color_highlight">#EB0328C2</color>
+    <color name="player_detail_dailog_background">#E6000000</color>
 
 </resources>

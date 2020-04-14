@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/tools"
-    android:background="@color/search_list_header_background">
+    android:background="@color/fragment_background">
 
     <com.gao.jiefly.abilitychartlibrary.AbilityChatView
         android:id="@+id/chart_view"

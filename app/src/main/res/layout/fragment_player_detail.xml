@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background">
+    android:background="@color/player_detail_dailog_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_player_top"
