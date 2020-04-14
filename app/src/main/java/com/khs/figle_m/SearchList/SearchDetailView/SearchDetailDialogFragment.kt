@@ -1,5 +1,6 @@
 package com.khs.figle_m.SearchList.SearchDetailView
 
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,8 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
-import com.khs.figle_m.PlayerDetail.PlayerDetailFragment
+import com.khs.figle_m.MainActivity
+import com.khs.figle_m.PlayerDetail.PlayerDetailActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
@@ -18,7 +20,6 @@ import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialog
 import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.FragmentUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 import okhttp3.HttpUrl
@@ -166,16 +167,8 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
     }
 
     fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
-        var playerDetailFragment = PlayerDetailFragment.getInstance()
-        val bundle: Bundle = Bundle()
-        bundle.putParcelable(PlayerDetailFragment().KEY_PLAYER_INFO,playerDTO)
-        playerDetailFragment.arguments = bundle
-//        if (!playerDetailFragment.isAdded) {
-//            playerDetailFragment.show(
-//                fragmentManager!!,
-//                PlayerDetailFragment().TAG_PLAYER_DETAIL_DIALOG
-//            )
-//        }
-        FragmentUtils().loadFragment(playerDetailFragment,R.id.fragment_container,fragmentManager!!)
+        val intent = Intent(activity!!, PlayerDetailActivity::class.java)
+        intent.putExtra(PlayerDetailActivity().KEY_PLAYER_INFO, playerDTO)
+        activity!!.startActivity(intent)
     }
 }
