@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="10dp"
-        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHeight_percent="0.35"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -64,10 +64,10 @@
             app:layout_constraintTop_toTopOf="@id/img_player"
             app:layout_constraintWidth_percent="0.5">
 
-            <TextView
-                android:id="@+id/txt_player_spGrade"
+            <ImageView
+                android:id="@+id/img_player_icon"
                 android:layout_width="25dp"
-                android:layout_height="15dp"
+                android:layout_height="20dp"
                 android:gravity="center"
                 android:textColor="@color/search_text_color"
                 android:textSize="12sp"
@@ -86,12 +86,38 @@
                 android:textColor="@color/search_text_color"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/txt_player_spGrade"
+                app:layout_constraintLeft_toRightOf="@id/img_player_icon"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/txt_player_spGrade_title"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:singleLine="true"
+                android:text="강화등급 : "
+                android:textColor="@color/search_text_color"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt_player_name" />
+
+            <TextView
+                android:id="@+id/txt_player_spGrade"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:textColor="@color/search_text_color"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/txt_player_spGrade_title"
+                app:layout_constraintTop_toTopOf="@id/txt_player_spGrade_title"
+                app:layout_constraintBottom_toBottomOf="@id/txt_player_spGrade_title"/>
+
+            <TextView
                 android:id="@+id/txt_player_rating_title"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:singleLine="true"
@@ -100,7 +126,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_player_name" />
+                app:layout_constraintTop_toBottomOf="@id/txt_player_spGrade" />
 
             <TextView
                 android:id="@+id/txt_player_rating"
@@ -113,11 +139,12 @@
                 android:textColor="@color/search_text_color"
                 android:textSize="15sp"
                 app:layout_constraintLeft_toRightOf="@id/txt_player_rating_title"
+                app:layout_constraintBottom_toBottomOf="@id/txt_player_rating_title"
                 app:layout_constraintTop_toTopOf="@id/txt_player_rating_title" />
 
             <TextView
                 android:id="@+id/txt_player_position_title"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
@@ -139,6 +166,7 @@
                 android:textColor="@color/search_text_color"
                 android:textSize="15sp"
                 app:layout_constraintLeft_toRightOf="@id/txt_player_position_title"
+                app:layout_constraintBottom_toBottomOf="@id/txt_player_position_title"
                 app:layout_constraintTop_toTopOf="@id/txt_player_position_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -148,7 +176,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintHeight_percent="0.65"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_player_top">

@@ -1,5 +1,6 @@
 package com.khs.figle_m.PlayerDetail
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -120,6 +121,8 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
             }
         }
 
+        updateIcon(context!!, playerDetailInfo!!)
+
         player_info_view1.setTitleList(listOf("슛","유효 슛","어시스트","득점"))
         player_info_view1.setDataList(
             listOf(
@@ -218,5 +221,48 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                 }
             })
             .into(imgView)
+    }
+
+    fun updateIcon(context: Context, item:PlayerDTO) {
+        val seasonDB = PlayerDataBase.getInstance(context)
+        seasonDB.let {
+            CoroutineScope(Dispatchers.IO).launch {
+                val seasonId = item.spId.toString().substring(0,3)
+                val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                seasonEntity.let {
+                    val url = seasonEntity.seasonImg
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Log.v(TAG,"TEST, saesonUrl : ${url}")
+                        Glide.with(context)
+                            .load(url)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any,
+                                    target: Target<Drawable>,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                    img_player_icon.visibility = View.GONE
+                                    return false
+                                }
+
+                                override fun onResourceReady(
+                                    resource: Drawable,
+                                    model: Any,
+                                    target: Target<Drawable>,
+                                    dataSource: DataSource,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    img_player_icon.visibility = View.VISIBLE
+                                    Log.d(TAG, "Season, onResourceReady(...) $url")
+                                    return false
+                                }
+                            })
+                            .into(img_player_icon)
+                    }
+                }
+            }
+        }
     }
 }

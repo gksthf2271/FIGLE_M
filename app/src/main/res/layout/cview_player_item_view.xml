@@ -39,6 +39,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toLeftOf="@id/img_player_group"
+            app:layout_constraintTop_toTopOf="@id/img_player_group"
+            app:layout_constraintBottom_toBottomOf="@id/layout_goal" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_goal"
             android:layout_width="50dp"

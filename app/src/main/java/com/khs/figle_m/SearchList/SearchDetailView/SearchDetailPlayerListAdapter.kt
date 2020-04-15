@@ -67,6 +67,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         var mItemView: View
         var mRootLayout: ConstraintLayout
         var mPlayerImg: ImageView
+        var mIcon: ImageView
         var mRating: TextView
         var mPlayerName: TextView
         var mPlayerPosition: TextView
@@ -75,6 +76,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         init {
             mItemView = itemView
             mRootLayout = mItemView.findViewById(R.id.group_player)
+            mIcon = mItemView.findViewById(R.id.img_icon)
             mPlayerImg = mItemView.findViewById(R.id.img_player)
             mRating = mItemView.findViewById(R.id.txt_rating)
             mPlayerName = mItemView.findViewById(R.id.txt_player_name)
@@ -95,6 +97,49 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     }
                 }
             }
+
+            val seasonDB = PlayerDataBase.getInstance(context)
+            seasonDB.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val seasonId = item.spId.toString().substring(0,3)
+                    val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                    if(isDebug) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
+                    seasonEntity.let {
+                        val url = seasonEntity.seasonImg
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Log.v(TAG,"TEST, saesonUrl : ${url}")
+                            Glide.with(context)
+                                .load(url)
+                                .listener(object : RequestListener<Drawable> {
+                                    override fun onLoadFailed(
+                                        e: GlideException?,
+                                        model: Any,
+                                        target: Target<Drawable>,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                        mIcon.visibility = View.GONE
+                                        return false
+                                    }
+
+                                    override fun onResourceReady(
+                                        resource: Drawable,
+                                        model: Any,
+                                        target: Target<Drawable>,
+                                        dataSource: DataSource,
+                                        isFirstResource: Boolean
+                                    ): Boolean {
+                                        mIcon.visibility = View.VISIBLE
+                                        Log.d(TAG, "Season, onResourceReady(...) $url")
+                                        return false
+                                    }
+                                })
+                                .into(mIcon)
+                        }
+                    }
+                }
+            }
+
             mRating.text = item.status.spRating.toString()
             if (mMvpPlayer == null) {
                 if (item.status.spRating >= 8) {
