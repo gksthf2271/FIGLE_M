@@ -29,7 +29,7 @@
 
     <color name="empty_background">#00FFFFFF</color>
 
-    <color name="chart_cover">#0AAC2E</color>
+    <color name="chart_cover">#001499</color>
     <color name="chart_line">#FFFFFF</color>
     <color name="chart_polygon">#C0BEBE</color>
     <color name="chart_background">#E6000000</color>
@@ -44,11 +44,11 @@
     <color name="loading_background">#242424</color>
 
     <color name="main_background">#2B2B2B</color>
-    <color name="text_color_highlight">#EB0328C2</color>
+    <color name="text_color_highlight">#EB012AD5</color>
     <color name="player_detail_dailog_background">#E6000000</color>
 
     <color name="forward_color">#BB0000</color>
-    <color name="defence_color">#13BB00</color>
+    <color name="defence_color">#11A500</color>
     <color name="midfielder_color">#003EBB</color>
     <color name="gk_color">#BBB800</color>
     <color name="sub_color">#C0C0C0</color>
