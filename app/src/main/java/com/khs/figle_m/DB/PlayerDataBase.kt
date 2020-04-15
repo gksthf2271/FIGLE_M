@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [PlayerEntity::class], version = 1)
+@Database(entities = [PlayerEntity::class,SeasonEntity::class], version = 2)
 abstract class PlayerDataBase: RoomDatabase() {
     abstract fun playerDao(): PlayerDao
+    abstract fun seasonDao(): SeasonDao
 
     companion object {
         private var INSTANCE: PlayerDataBase? = null
