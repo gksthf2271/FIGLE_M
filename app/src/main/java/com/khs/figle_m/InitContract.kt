@@ -19,5 +19,6 @@ interface InitContract : BaseView {
 
     interface Presenter : BasePresenter<View> {
         fun getPlayerNameList(context: Context)
+        fun getSeasonIdList(context: Context)
     }
 }

@@ -44,6 +44,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         Log.v(TAG,"is Restart app? $isRestartApp")
         if (!isRestartApp) {
             mInitPresenter.takeView(this)
+            mInitPresenter.getSeasonIdList(applicationContext)
             mInitPresenter.getPlayerNameList(applicationContext)
         }
     }

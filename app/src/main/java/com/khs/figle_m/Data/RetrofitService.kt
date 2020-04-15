@@ -53,6 +53,11 @@ interface RetrofitService {
         @Header("Authorization") authorization: String
     ): Call<ResponseBody>
 
+    @GET("latest/seasonid.json")
+    fun requestSeasonIdList(
+        @Header("Authorization") authorization: String
+    ): Call<ResponseBody>
+
     @GET("v1.0/rankers/status")
     fun requestRankerPlayerAverList(
         @Header("Authorization") authorization: String,
