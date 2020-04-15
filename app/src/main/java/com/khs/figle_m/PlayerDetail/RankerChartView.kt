@@ -5,8 +5,10 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -76,7 +78,8 @@ class RankerChartView : ConstraintLayout {
         rankerDataSet.setDrawHighlightIndicators(false)
         rankerDataSet.setDrawValues(true)
         rankerDataSet.setDrawFilled(true)
-        rankerDataSet.label = "Ranker"
+        rankerDataSet.setValueTextSize(11f)
+        rankerDataSet.setValueTextColor(Color.WHITE)
 
         playerDataSet.lineWidth = 2f
         playerDataSet.circleRadius = 4f
@@ -89,7 +92,8 @@ class RankerChartView : ConstraintLayout {
         playerDataSet.setDrawHighlightIndicators(false)
         playerDataSet.setDrawValues(true)
         playerDataSet.setDrawFilled(true)
-        playerDataSet.label = "Player"
+        playerDataSet.setValueTextSize(11f)
+        playerDataSet.setValueTextColor(Color.WHITE)
 
         val lineData = LineData(rankerDataSet, playerDataSet)
         lineData.setValueTextColor(resources.getColor(R.color.search_text_color,null))
@@ -101,8 +105,7 @@ class RankerChartView : ConstraintLayout {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
         xAxis.setTextColor(Color.WHITE)
         xAxis.enableGridDashedLine(8f, 24f, 0f)
-        xAxis.position.name
-        xAxis.setValueFormatter(CustomVlaueFormatter(listOf<String>("","슛","유효슛","어시","골","패스시도","패스성공","태클","블락")))
+        xAxis.setValueFormatter(CustomVlaueFormatter(listOf<String>("","슈팅","유효슈팅","어시스트","골","패스시도","패스성공","태클","블락")))
         xAxis.isEnabled = true
 
         val yLAxis = chart.getAxisLeft()
@@ -115,10 +118,17 @@ class RankerChartView : ConstraintLayout {
         val description = Description()
         description.setText("")
 
+        val legend = chart.getLegend() //레전드 설정 (차트 밑에 색과 라벨을 나타내는 설정)
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM //하단 왼쪽에 설정
+        legend.setTextColor(ContextCompat.getColor(context, R.color.search_text_color)) // 레전드 컬러 설정
+
+
         chart.setDoubleTapToZoomEnabled(false)
         chart.setDrawGridBackground(false)
         chart.setDescription(description)
-        chart.animateY(2000, Easing.EaseInCubic)
+        chart.description.isEnabled = false
+        chart.animateY(1500, Easing.EaseInCubic)
         chart.invalidate()
     }
 
