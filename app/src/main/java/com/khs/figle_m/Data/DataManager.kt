@@ -2,6 +2,7 @@ package com.khs.figle_m.Data
 
 import android.content.Context
 import android.util.Log
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
@@ -191,6 +192,33 @@ class DataManager {
                         onSuccess(response!!.body()!!)
                     } else {
                         onFailed("loadPlayerName Failed! errorcode : " + response.code())
+                    }
+                }
+            }
+        })
+    }
+
+    fun loadRankerPlayerAverData(matchType:Int, players:String, onSuccess: (List<RankerPlayerDTO>) -> Unit, onFailed: (String) -> Unit){
+        if(DEBUG) Log.v(TAG,"TEST, players : ${players}")
+        val call = SearchUser.getApiService()
+            .requestRankerPlayerAverList(authorization = mAuthorizationKey, matchType = matchType, players = players)
+        if(DEBUG) Log.v(TAG,"TEST, call : ${call.request()}")
+
+        call.enqueue(object : Callback<List<RankerPlayerDTO>> {
+            override fun onFailure(call: Call<List<RankerPlayerDTO>>, t: Throwable) {
+                onFailed("Failed! " + t)
+            }
+
+            override fun onResponse(
+                call: Call<List<RankerPlayerDTO>>,
+                response: Response<List<RankerPlayerDTO>>
+            ) {
+                if (DEBUG) Log.v(TAG, "loadRankerPlayerAverData response(...) ${response.code()}")
+                if (response != null && response!!.isSuccessful) {
+                    if (response.code() == SUCCESS_CODE) {
+                        onSuccess(response!!.body()!!)
+                    } else {
+                        onFailed("Failed! errorcode : " + response.code())
                     }
                 }
             }

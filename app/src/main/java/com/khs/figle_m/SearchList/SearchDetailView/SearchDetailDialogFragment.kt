@@ -10,9 +10,11 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
+import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.DisplayUtils
@@ -21,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 import okhttp3.HttpUrl
 
-class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
+class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.View {
     val TAG = javaClass.name
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
@@ -64,6 +66,7 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
 
     override fun onResume() {
         super.onResume()
+        mSearchDetailPresenter!!.takeView(this)
         resizeDialog()
         setBackgroundColorDialog()
     }
@@ -72,6 +75,15 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         super.onPause()
         Log.v(TAG,"onPause(...)")
         dismiss()
+    }
+
+    override fun initPresenter() {
+        mSearchDetailPresenter = SearchDetailPresenter()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSearchDetailPresenter!!.dropView()
     }
 
     override fun onStart() {
@@ -163,19 +175,18 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
         Log.v(TAG,"showError(...) $error")
     }
 
-    open val REQUEST = 1000
-
-//    fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
-//        dialog!!.hide()
-//        val intent = Intent(activity!!, PlayerDetailDialogFragment::class.java)
-//        intent.putExtra(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
-//        activity!!.startActivityForResult(intent,REQUEST)
-//    }
-
     fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
+        mSearchDetailPresenter.getRankerPlayerList(mMatchDetail.matchType, playerDTO)
+    }
+
+    override fun showPlayerDetailDialogFragment(
+        playerDTO: PlayerDTO,
+        rankerPlayerDTOList: List<RankerPlayerDTO>
+    ) {
         var playerDetailFragment = PlayerDetailDialogFragment.getInstance()
-        val bundle: Bundle = Bundle()
-        bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO,playerDTO)
+        val bundle = Bundle()
+        bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+        bundle.putParcelableArrayList(PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO, ArrayList(rankerPlayerDTOList))
         playerDetailFragment.arguments = bundle
         if (!playerDetailFragment.isAdded) {
             playerDetailFragment.show(
@@ -184,5 +195,4 @@ class SearchDetailDialogFragment : DialogFragment(), SearchDetailContract.View {
             )
         }
     }
-
 }

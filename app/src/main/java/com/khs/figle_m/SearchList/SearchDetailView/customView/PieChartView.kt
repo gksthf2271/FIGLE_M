@@ -106,7 +106,7 @@ class PieChartView : ConstraintLayout{
         data.setValueTextColor(Color.WHITE)
         mChartView.setData(data)
         mChartView.highlightValues(null)
-
+        mChartView.animateY(1000, Easing.EaseInCubic)
         mChartView.setCenterText("최근 ${gameCount}전\n승률")
         mChartView.invalidate()
     }

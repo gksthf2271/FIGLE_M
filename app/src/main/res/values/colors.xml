@@ -47,4 +47,15 @@
     <color name="text_color_highlight">#EB0328C2</color>
     <color name="player_detail_dailog_background">#E6000000</color>
 
+    <color name="forward_color">#BB0000</color>
+    <color name="defence_color">#13BB00</color>
+    <color name="midfielder_color">#003EBB</color>
+    <color name="gk_color">#BBB800</color>
+    <color name="sub_color">#C0C0C0</color>
+
+    <color name="chart_ranker_color">#FF5722</color>
+    <color name="chart_ranker_color_fill">#FF5746</color>
+    <color name="chart_player_color">#2196F3</color>
+    <color name="chart_player_color_fill">#4696F3</color>
+
 </resources>

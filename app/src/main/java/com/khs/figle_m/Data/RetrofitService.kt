@@ -1,5 +1,6 @@
 package com.khs.figle_m.Data
 
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
@@ -51,5 +52,12 @@ interface RetrofitService {
     fun requestPlayerName(
         @Header("Authorization") authorization: String
     ): Call<ResponseBody>
+
+    @GET("v1.0/rankers/status")
+    fun requestRankerPlayerAverList(
+        @Header("Authorization") authorization: String,
+        @Query("matchtype") matchType: Int,
+        @Query("players") players: String
+    ): Call<List<RankerPlayerDTO>>
 
 }

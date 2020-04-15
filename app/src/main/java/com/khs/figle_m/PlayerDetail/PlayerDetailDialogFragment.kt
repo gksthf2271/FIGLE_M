@@ -21,6 +21,7 @@ import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
@@ -30,11 +31,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 
-class PlayerDetailDialogFragment: DialogFragment() {
+class PlayerDetailDialogFragment: DialogBaseFragment() {
     val TAG: String = javaClass.name
     val DEBUG: Boolean = false
     open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
     open val KEY_PLAYER_INFO = "KEY_PLAYER_INFO"
+    open val KEY_RANKER_PLAYER_INFO = "KEY_RANKER_PLAYER_INFO"
 
     companion object {
         @Volatile
@@ -48,6 +50,10 @@ class PlayerDetailDialogFragment: DialogFragment() {
                         instance = it
                     }
             }
+    }
+
+    override fun initPresenter() {
+
     }
 
     override fun onCreateView(
@@ -90,11 +96,17 @@ class PlayerDetailDialogFragment: DialogFragment() {
 
     fun initData() {
         var playerDetailInfo: PlayerDTO? = null
+        var rankerPlayerInfo: List<RankerPlayerDTO>? = null
         arguments.let {
             playerDetailInfo = arguments!!.get(KEY_PLAYER_INFO) as PlayerDTO
+            rankerPlayerInfo = arguments!!.get(KEY_RANKER_PLAYER_INFO) as List<RankerPlayerDTO>
         }
 
         playerDetailInfo ?: return
+
+        if (rankerPlayerInfo !=null && !rankerPlayerInfo!!.isEmpty()) {
+            chart_ranker.setData(playerDetailInfo,rankerPlayerInfo!!.get(0))
+        }
 
         runBlocking {
             launch {
@@ -151,8 +163,27 @@ class PlayerDetailDialogFragment: DialogFragment() {
 
         txt_player_rating.text = playerDetailInfo!!.status.spRating.toString()
         for (positionItem in PositionEnum.values()) {
-            if (positionItem.spposition.equals(playerDetailInfo!!.spPosition))
+            if (positionItem.spposition.equals(playerDetailInfo!!.spPosition)) {
                 txt_player_position.text = positionItem.description
+
+                when(positionItem.spposition) {
+                    0 -> {
+                        txt_player_position.setTextColor(resources.getColor(R.color.gk_color,null))
+                    }
+                    in 1..8 -> {
+                        txt_player_position.setTextColor(resources.getColor(R.color.defence_color,null))
+                    }
+                    in 9..19 -> {
+                        txt_player_position.setTextColor(resources.getColor(R.color.midfielder_color,null))
+                    }
+                    in 20..27 -> {
+                        txt_player_position.setTextColor(resources.getColor(R.color.forward_color,null))
+                    }
+                    else -> {
+                        txt_player_position.setTextColor(resources.getColor(R.color.sub_color,null))
+                    }
+                }
+            }
         }
     }
 

@@ -95,13 +95,13 @@ class SearchPresenter: SearchContract.Presenter {
             })
     }
 
-    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
-        DataManager.getInstance().loadPlayerName({
-            if (DEBUG) Log.v(TAG,"getMatchDetail Success! $it")
-            onSuccess(it)
-        },{
-            Log.v(TAG,"getMatchDetail Failed! $it")
-            onFailed(it)
-        })
-    }
+//    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
+//        DataManager.getInstance().loadPlayerName({
+//            if (DEBUG) Log.v(TAG,"getMatchDetail Success! $it")
+//            onSuccess(it)
+//        },{
+//            Log.v(TAG,"getMatchDetail Failed! $it")
+//            onFailed(it)
+//        })
+//    }
 }
