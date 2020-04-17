@@ -79,7 +79,7 @@ dependencies {
     //WilliamChart
     implementation 'com.diogobernardino:williamchart:3.3.0'
 
-    //Room
+    //Room Lib
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
     kaptTest "android.arch.persistence.room:testing:1.1.1"
@@ -90,9 +90,12 @@ dependencies {
     //Ability chart Lib
     implementation "com.gao.jiefly:abilitychartlibrary:1.0.1"
 
-    //ViewPager Indicator
+    //ViewPager Indicator Lib
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 
-    //Pie Chart
+    //Pie Chart Lib
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //Jsoup Lib
+    implementation 'org.jsoup:jsoup:1.12.1'
 }
