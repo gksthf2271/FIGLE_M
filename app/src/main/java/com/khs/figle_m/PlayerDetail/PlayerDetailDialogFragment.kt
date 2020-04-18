@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
-import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -25,12 +24,15 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.utils.SeasonEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
+import org.jsoup.Jsoup
+
 
 class PlayerDetailDialogFragment: DialogBaseFragment() {
     val TAG: String = javaClass.name
@@ -38,6 +40,8 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
     open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
     open val KEY_PLAYER_INFO = "KEY_PLAYER_INFO"
     open val KEY_RANKER_PLAYER_INFO = "KEY_RANKER_PLAYER_INFO"
+
+    lateinit var mPlayerInfo : PlayerDTO
 
     companion object {
         @Volatile
@@ -104,6 +108,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
         }
 
         playerDetailInfo ?: return
+        mPlayerInfo = playerDetailInfo!!
 
         if (rankerPlayerInfo !=null && !rankerPlayerInfo!!.isEmpty()) {
             chart_ranker.setData(playerDetailInfo,rankerPlayerInfo!!.get(0))
@@ -193,9 +198,41 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
     fun updatePlayerImage(url: HttpUrl) {
         val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
-        Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
         Glide.with(context!!)
             .load(Uri.parse(url.toString()))
+            .placeholder(R.drawable.person_icon)
+            .error(R.drawable.person_icon)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                    getPlayerImg()
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    Log.d(TAG, "onResourceReady(...) $url")
+                    return false
+                }
+            })
+            .into(imgView)
+    }
+
+    fun updatePlayerImage(url: String) {
+        val imgView = view!!.findViewById<ImageView>(R.id.img_player)
+        imgView ?: return
+        Glide.with(context!!)
+            .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)
             .listener(object : RequestListener<Drawable> {
@@ -229,6 +266,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 val seasonId = item.spId.toString().substring(0,3)
                 val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                Log.v(TAG,"seasonEntity : ${seasonEntity.className}")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg
                     CoroutineScope(Dispatchers.Main).launch {
@@ -263,6 +301,57 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                     }
                 }
             }
+        }
+    }
+
+    fun getPlayerImg() {
+        val seasonId = mPlayerInfo.spId.toString().substring(0,3)
+        var seasonName:String? = null
+        for (item in SeasonEnum.values()) {
+            if (item.seasonId.toString().equals(seasonId))
+                seasonName = item.className
+        }
+        if (seasonName == null) {
+            Log.d(TAG,"seasonName is null")
+            return
+        }
+        try {
+            DataManager.getInstance().loadPlayerInfo(mPlayerInfo.spId, mPlayerInfo.spGrade, {
+                Log.v(TAG, "TEST ----------- \n $it")
+                val doc = Jsoup.parseBodyFragment(it.string())
+//                val body = doc.body()
+//                var birth: String = doc.body().getElementById("wrapper")
+//                    .getElementById("middle")
+//                    .getElementsByClass("datacenter").get(0)
+//                    .getElementsByClass("wrap").get(0)
+//                    .getElementsByClass("player_view").get(0)
+//                    .getElementsByClass("content data_detail").get(0)
+//                    .getElementsByClass("wrap").get(0)
+//                    .getElementsByClass("content_header").get(0)
+//                    .getElementsByClass("info_wrap").get(0)
+//                    .getElementsByClass("info_line info_etc").get(0)
+//                    .getElementsByClass("etc birth").get(0)
+//                    .childNodes().get(0).toString()
+
+
+                var imageUrl: String = doc.body().getElementById("wrapper")
+                    .getElementById("middle")
+                    .getElementsByClass("datacenter").get(0)
+                    .getElementsByClass("wrap").get(0)
+                    .getElementsByClass("player_view").get(0)
+                    .getElementsByClass("content data_detail").get(0)
+                    .getElementsByClass("wrap").get(0)
+                    .getElementsByClass("content_header").get(0)
+                    .getElementsByClass("thumb ${seasonName}").get(0)
+                    .getElementsByClass("img").get(0)
+                    .childNodes().get(0)
+                    .attributes().get("src")
+
+                Log.v(TAG,"imageUrl : $imageUrl")
+                updatePlayerImage(imageUrl)
+            })
+        } catch (e: IllegalStateException) {
+            Log.d(TAG,"Error : $e")
         }
     }
 }

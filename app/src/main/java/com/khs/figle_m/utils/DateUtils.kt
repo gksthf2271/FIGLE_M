@@ -34,4 +34,10 @@ open class DateUtils {
         val result = simpleDateFormat.parse(date.replace("T","-"))
         return result.time
     }
+
+    open fun getDateforImg(date: Long): String {
+        val simpleDateFormat = SimpleDateFormat("yyyyMMddHHmm")
+        val result = simpleDateFormat.format(date)
+        return result
+    }
 }

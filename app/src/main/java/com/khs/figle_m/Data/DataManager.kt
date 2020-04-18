@@ -245,4 +245,25 @@ class DataManager {
         })
     }
 
+    fun loadPlayerInfo(
+        spid: Int,
+        strong: Int,
+        onSuccess: (ResponseBody) -> Unit
+    ) {
+        val call = SearchUser.getCrawlingService()
+            .requestPlayerInfo(spId = spid, strong = strong)
+
+        Log.v(TAG,"TEST, Call : ${call.request()}")
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.v(TAG,"loadPlayerInfo onFailure(...) : $t")
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                onSuccess(response.body()!!)
+            }
+        })
+    }
+
 }
