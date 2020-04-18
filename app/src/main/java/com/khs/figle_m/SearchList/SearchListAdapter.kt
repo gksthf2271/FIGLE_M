@@ -97,8 +97,18 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 mTxtLeftNickName.text = myMatchInfo.nickname
                 mTxtRightNickName.text = opposingUserMatchInfo.nickname
 
-                mTxtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
-                mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
+                if (myMatchInfo.shoot.goalTotal == myMatchInfo.shoot.goalTotalDisplay) {
+                    mTxtLeftScore.text = myMatchInfo.shoot.goalTotal.toString()
+                } else {
+                    mTxtLeftScore.text = myMatchInfo.shoot.goalTotalDisplay.toString()
+                }
+
+                if (opposingUserMatchInfo.shoot.goalTotal == opposingUserMatchInfo.shoot.goalTotalDisplay) {
+                    mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotal.toString()
+                } else {
+                    mTxtRightScore.text = opposingUserMatchInfo.shoot.goalTotalDisplay.toString()
+                }
+
                 mTxtDate.text = matchDate
 
                 var myResult: String? = null
@@ -122,16 +132,24 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
 
                 when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
-                        myResult = "WIN"
-                        opposingUserResult = "LOSE"
+                        if (myMatchInfo.shoot.goalTotal == myMatchInfo.shoot.goalTotalDisplay) {
+                            myResult = "승"
+                        } else {
+                            myResult = "몰수승\n(${myMatchInfo.shoot.goalTotal} : ${opposingUserMatchInfo.shoot.goalTotal})"
+                        }
+                        opposingUserResult = "패"
                     }
                     "무" -> {
-                        myResult = "DRAW"
-                        opposingUserResult = "DRAW"
+                        myResult = "무"
+                        opposingUserResult = "무"
                     }
                     "패" -> {
-                        myResult = "LOSE"
-                        opposingUserResult = "WIN"
+                        if (opposingUserMatchInfo.shoot.goalTotal == opposingUserMatchInfo.shoot.goalTotalDisplay) {
+                            myResult = "패"
+                        } else {
+                            myResult = "몰수패\n(${myMatchInfo.shoot.goalTotal} : ${opposingUserMatchInfo.shoot.goalTotal})"
+                        }
+                        opposingUserResult = "승"
                     }
                 }
                 mTxtLeftResult.text = myResult
