@@ -20,6 +20,7 @@ import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,8 +55,9 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(isDebug) Log.v(TAG, "onBindViewHolder, position : $position")
-        holder.bind(mPlayerList!!.get(position), mContext)
+        /*if(isDebug) */Log.v(TAG, "onBindViewHolder, position : $position")
+
+        holder.bind(mContext, position)
     }
 
     fun updateMvpPlayer(mvpPlayer: PlayerDTO?) {
@@ -84,7 +86,8 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             mPlayerSpGrade = mItemView.findViewById(R.id.txt_player_spGrade)
         }
         val TAG: String = javaClass.name
-        fun bind(item: PlayerDTO, context: Context) {
+        fun bind(context: Context, position: Int) {
+            val item = mPlayerList!!.get(position)
             itemView.setOnClickListener { itemClick(item) }
 //            val playerName = SharedPreferenceUtil().getPref(context, MainActivity().PREF_NAME,item.spId.toString())
             val playerDB = PlayerDataBase.getInstance(context)
@@ -117,7 +120,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                                         target: Target<Drawable>,
                                         isFirstResource: Boolean
                                     ): Boolean {
-                                        Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                        if(isDebug) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
                                         mIcon.visibility = View.GONE
                                         return false
                                     }
@@ -130,7 +133,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                                         isFirstResource: Boolean
                                     ): Boolean {
                                         mIcon.visibility = View.VISIBLE
-                                        Log.d(TAG, "Season, onResourceReady(...) $url")
+                                        if(isDebug) Log.d(TAG, "Season, onResourceReady(...) $url")
                                         return false
                                     }
                                 })
@@ -176,7 +179,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             runBlocking {
                 launch {
                     DataManager.getInstance().loadPlayerImage(item.spId, {
-                        updatePlayerImage(it)
+                        updatePlayerImage(position, item, it)
 
                     }, {
                         Log.v(TAG,"load Failed : $it")
@@ -186,12 +189,13 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             }
         }
 
-        fun updatePlayerImage(url: HttpUrl) {
+        fun updatePlayerImage(position: Int, item:PlayerDTO, url: HttpUrl) {
             Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
             Glide.with(mPlayerImg.getContext())
                 .load(Uri.parse(url.toString()))
                 .placeholder(R.drawable.person_icon)
                 .error(R.drawable.person_icon)
+                .skipMemoryCache(false)
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,
@@ -199,7 +203,10 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                         target: Target<Drawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                        if (isDebug) Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                        CrawlingUtils().getPlayerImg(item, {
+                            CrawlingUtils().updatePlayerImage(mContext,  , it)
+                        })
                         return false
                     }
 
@@ -210,7 +217,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                         dataSource: DataSource,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.d(TAG, "onResourceReady(...) $url")
+                        if(isDebug) Log.d(TAG, "onResourceReady(...) $url")
                         return false
                     }
                 })

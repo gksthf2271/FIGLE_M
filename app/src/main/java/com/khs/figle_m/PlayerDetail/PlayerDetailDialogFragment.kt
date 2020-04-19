@@ -22,16 +22,15 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.PositionEnum
-import com.khs.figle_m.utils.SeasonEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
-import org.jsoup.Jsoup
 
 
 class PlayerDetailDialogFragment: DialogBaseFragment() {
@@ -117,7 +116,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
         runBlocking {
             launch {
                 DataManager.getInstance().loadPlayerImage(playerDetailInfo!!.spId, {
-                    updatePlayerImage(it)
+                    updatePlayerImage(playerDetailInfo!!, it)
 
                 }, {
                     Log.v(TAG,"load Failed : $it")
@@ -195,7 +194,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
         }
     }
 
-    fun updatePlayerImage(url: HttpUrl) {
+    fun updatePlayerImage(playerDTO: PlayerDTO, url: HttpUrl) {
         val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
         Glide.with(context!!)
@@ -210,39 +209,9 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                     isFirstResource: Boolean
                 ): Boolean {
                     Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
-                    getPlayerImg()
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    Log.d(TAG, "onResourceReady(...) $url")
-                    return false
-                }
-            })
-            .into(imgView)
-    }
-
-    fun updatePlayerImage(url: String) {
-        val imgView = view!!.findViewById<ImageView>(R.id.img_player)
-        imgView ?: return
-        Glide.with(context!!)
-            .load(Uri.parse(url))
-            .placeholder(R.drawable.person_icon)
-            .error(R.drawable.person_icon)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                    CrawlingUtils().getPlayerImg(playerDTO, {
+                        CrawlingUtils().updatePlayerImage(context!!, imgView, it)
+                    })
                     return false
                 }
 
@@ -301,57 +270,6 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                     }
                 }
             }
-        }
-    }
-
-    fun getPlayerImg() {
-        val seasonId = mPlayerInfo.spId.toString().substring(0,3)
-        var seasonName:String? = null
-        for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString().equals(seasonId))
-                seasonName = item.className
-        }
-        if (seasonName == null) {
-            Log.d(TAG,"seasonName is null")
-            return
-        }
-        try {
-            DataManager.getInstance().loadPlayerInfo(mPlayerInfo.spId, mPlayerInfo.spGrade, {
-                Log.v(TAG, "TEST ----------- \n $it")
-                val doc = Jsoup.parseBodyFragment(it.string())
-//                val body = doc.body()
-//                var birth: String = doc.body().getElementById("wrapper")
-//                    .getElementById("middle")
-//                    .getElementsByClass("datacenter").get(0)
-//                    .getElementsByClass("wrap").get(0)
-//                    .getElementsByClass("player_view").get(0)
-//                    .getElementsByClass("content data_detail").get(0)
-//                    .getElementsByClass("wrap").get(0)
-//                    .getElementsByClass("content_header").get(0)
-//                    .getElementsByClass("info_wrap").get(0)
-//                    .getElementsByClass("info_line info_etc").get(0)
-//                    .getElementsByClass("etc birth").get(0)
-//                    .childNodes().get(0).toString()
-
-
-                var imageUrl: String = doc.body().getElementById("wrapper")
-                    .getElementById("middle")
-                    .getElementsByClass("datacenter").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("player_view").get(0)
-                    .getElementsByClass("content data_detail").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("content_header").get(0)
-                    .getElementsByClass("thumb ${seasonName}").get(0)
-                    .getElementsByClass("img").get(0)
-                    .childNodes().get(0)
-                    .attributes().get("src")
-
-                Log.v(TAG,"imageUrl : $imageUrl")
-                updatePlayerImage(imageUrl)
-            })
-        } catch (e: IllegalStateException) {
-            Log.d(TAG,"Error : $e")
         }
     }
 }

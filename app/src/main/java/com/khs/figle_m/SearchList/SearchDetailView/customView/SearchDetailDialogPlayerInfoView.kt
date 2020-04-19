@@ -14,6 +14,7 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailPlayerListAdapter
+import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 
@@ -40,7 +41,7 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
     }
 
     fun updatePlayerInfo(matchInfo: MatchDetailResponse, itemClick: (Pair<PlayerDTO,Boolean>) -> Unit) {
-        Log.v(TAG,"updatePlayerInfo(...) $matchInfo")
+        Log.v(TAG, "updatePlayerInfo(...) $matchInfo")
         var playerList = listOf<PlayerDTO>()
         val leftLayoutManager = LinearLayoutManager(context)
         mLeftRecyclerView.addItemDecoration(SearchDecoration(10))
@@ -54,8 +55,8 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         }
         mLeftRecyclerView.adapter =
             SearchDetailPlayerListAdapter(context!!, playerList, {
-                Log.v(TAG,"ItemClick! ${it}")
-                itemClick(Pair(it,true))
+                Log.v(TAG, "ItemClick! ${it}")
+                itemClick(Pair(it, true))
             })
 
         val rightLayoutManager = LinearLayoutManager(context)
@@ -69,8 +70,8 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         }
         mRightRecyclerView.adapter =
             SearchDetailPlayerListAdapter(context!!, playerList, {
-                Log.v(TAG,"ItemClick! ${it}")
-                itemClick(Pair(it,false))
+                Log.v(TAG, "ItemClick! ${it}")
+                itemClick(Pair(it, false))
             })
 
         (mRightRecyclerView.adapter as SearchDetailPlayerListAdapter).updateMvpPlayer(mMVPPlayer)
