@@ -3,11 +3,12 @@ package com.khs.figle_m.SearchList.SearchDetailView
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.utils.SeasonEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import okhttp3.HttpUrl
 import org.json.JSONArray
 import org.json.JSONObject
+import org.jsoup.Jsoup
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
     val TAG:String = javaClass.name
@@ -23,19 +24,19 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     override fun takeView(view: SearchDetailContract.View) {
         mDetailListView = view
     }
-    override fun getPlayerImage(spid: Int) {
-        mDetailListView?.showLoading()
+    override fun getPlayerImage(accessId: String, playerDTO: PlayerDTO, size:Int) {
+        mDetailListView!!.showLoading()
         runBlocking {
             launch {
-                getPlayerImage(spid, {
+                getPlayerImage(playerDTO, {
                     if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: $it")
-                    mDetailListView?.showPlayerImage(spid, it)
+                    playerDTO.imageUrl = it
+                    mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mDetailListView?.showError(ERROR_EMPTY)
-                    mDetailListView?.hideLoading()
+                    mDetailListView!!.showError(ERROR_EMPTY)
+                    mDetailListView!!.hideLoading()
                 })
-
             }
         }
     }
@@ -43,7 +44,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     /*DummyData
     [{"id":101001183,"po":7}, {"id":214003647,"po":25},…]*/
     override fun getRankerPlayerList(matchType: Int, playerDTO: PlayerDTO) {
-        mDetailListView?.showLoading()
+        mDetailListView!!.showLoading()
         runBlocking {
             launch {
                 DataManager.getInstance().loadRankerPlayerAverData(matchType,
@@ -72,21 +73,38 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     }
 
     fun getPlayerImage(
-        spid: Int,
-        onSuccess: ((HttpUrl) -> Unit),
+        playerDTO: PlayerDTO,
+        onSuccess: ((String) -> Unit),
         onFailed: (String) -> Unit
     ) {
-        DataManager.getInstance().loadPlayerImage(spid,
-            {
-                if (DEBUG) Log.v(
-                    TAG,
-                    "getPlayerImage Success! $it"
-                )
-                onSuccess(it)
-            }, {
-                Log.v(TAG, "getPlayerImage Failed! $it")
-                onFailed(it)
-            })
+        val seasonId = playerDTO.spId.toString().substring(0, 3)
+        var seasonName: String? = null
+        for (item in SeasonEnum.values()) {
+            if (item.seasonId.toString().equals(seasonId))
+                seasonName = item.className
+        }
 
+        try {
+            DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+                Log.v(TAG, "TEST ----------- \n $it")
+                val doc = Jsoup.parseBodyFragment(it.string())
+                val imageUrl = doc.body().getElementById("wrapper")
+                    .getElementById("middle")
+                    .getElementsByClass("datacenter").get(0)
+                    .getElementsByClass("wrap").get(0)
+                    .getElementsByClass("player_view").get(0)
+                    .getElementsByClass("content data_detail").get(0)
+                    .getElementsByClass("wrap").get(0)
+                    .getElementsByClass("content_header").get(0)
+                    .getElementsByClass("thumb ${seasonName}").get(0)
+                    .getElementsByClass("img").get(0)
+                    .childNodes().get(0)
+                    .attributes().get("src")
+
+                onSuccess(imageUrl!!)
+            })
+        }catch (e : Exception) {
+            onFailed(e.toString())
+        }
     }
 }

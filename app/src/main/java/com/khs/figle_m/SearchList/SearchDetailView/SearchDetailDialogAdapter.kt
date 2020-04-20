@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogGameResultView
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogPlayerInfoView
+
 
 class SearchDetailDialogAdapter() : PagerAdapter() {
 
@@ -31,7 +33,10 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
             }
             1 -> {
                 view = SearchDetailDialogPlayerInfoView(mContext)
-                view.updatePlayerInfo(mMatchDetailResponse,
+                view.updatePlayerInfo(
+                    SearchDetailDialogFragment.getInstance().mSearchAccessId,
+                    SearchDetailDialogFragment.getInstance().mOpposingUserId,
+                    SearchDetailDialogFragment.getInstance().getPlayerImgMap(),
                     {
                         mItemClick(it)
                     })
@@ -47,5 +52,9 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
 
     override fun isViewFromObject(arg0: View, arg1: Any): Boolean {
         return arg0 === arg1
+    }
+
+    override fun destroyItem(collection: View, position: Int, view: Any) {
+        (collection as ViewPager).removeView(view as View)
     }
 }

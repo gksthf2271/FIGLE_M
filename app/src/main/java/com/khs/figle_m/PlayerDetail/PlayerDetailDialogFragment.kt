@@ -97,6 +97,11 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        dismiss()
+    }
+
     fun initData() {
         var playerDetailInfo: PlayerDTO? = null
         var rankerPlayerInfo: List<RankerPlayerDTO>? = null

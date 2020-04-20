@@ -87,7 +87,6 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         val TAG: String = javaClass.name
         fun bind(context: Context, position: Int) {
             val item = mPlayerList!!.get(position)
-            itemView.setOnClickListener { itemClick(item) }
 //            val playerName = SharedPreferenceUtil().getPref(context, MainActivity().PREF_NAME,item.spId.toString())
             val playerDB = PlayerDataBase.getInstance(context)
             playerDB.let {
@@ -136,7 +135,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     mPlayerPosition.text = positionItem.description
             }
 
-            runBlocking {
+/*            runBlocking {
                 launch {
                     mPlayerList.let {
                         val item = mPlayerList!!.get(position)
@@ -154,7 +153,9 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
 //                        })
                     }
                 }
-            }
+            }*/
+            updatePlayerImage(mPlayerImg, item, item.imageUrl!!, position)
+            itemView.setOnClickListener { itemClick(item) }
         }
 
         fun updateSeason(context: Context, item: PlayerDTO) {

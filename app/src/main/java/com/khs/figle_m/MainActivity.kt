@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
@@ -68,6 +69,11 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
         mInitPresenter!!.dropView()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        DialogFragment().dismiss()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

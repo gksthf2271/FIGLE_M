@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Response.customDTO.PlayerListDTO
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailPlayerListAdapter
-import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 
@@ -40,14 +40,25 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
 
     }
 
-    fun updatePlayerInfo(matchInfo: MatchDetailResponse, itemClick: (Pair<PlayerDTO,Boolean>) -> Unit) {
-        Log.v(TAG, "updatePlayerInfo(...) $matchInfo")
+    fun updatePlayerInfo(
+        searchUserAccessId: String,
+        opposingUserAccessId: String,
+        playerMap: HashMap<String, PlayerListDTO>,
+        itemClick: (Pair<PlayerDTO, Boolean>) -> Unit
+    ) {
+        Log.v(TAG, "updatePlayerInfo(...) $playerMap")
         var playerList = listOf<PlayerDTO>()
         val leftLayoutManager = LinearLayoutManager(context)
         mLeftRecyclerView.addItemDecoration(SearchDecoration(10))
         mLeftRecyclerView.setLayoutManager(leftLayoutManager)
-
-        playerList = initPlayerList(true, matchInfo)
+        playerList = initPlayerList(
+            true,
+            (playerMap.get(searchUserAccessId) ?: PlayerListDTO(
+                "",
+                listOf()
+            ) as PlayerListDTO).playerList
+        )
+//        playerList = initPlayerList(true, matchInfo)
         if (playerList.isEmpty() || playerList.size == 0) {
             group_left_error.visibility = View.VISIBLE
         } else {
@@ -62,7 +73,14 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
         val rightLayoutManager = LinearLayoutManager(context)
         mRightRecyclerView.addItemDecoration(SearchDecoration(10))
         mRightRecyclerView.setLayoutManager(rightLayoutManager)
-        playerList = initPlayerList(false, matchInfo)
+
+        playerList = initPlayerList(
+            false, (playerMap.get(opposingUserAccessId) ?: PlayerListDTO(
+                "",
+                listOf()
+            ) as PlayerListDTO).playerList
+        )
+//        playerList = initPlayerList(false, matchInfo)
         if (playerList.isEmpty() || playerList.size == 0) {
             group_right_error.visibility = View.VISIBLE
         } else {
@@ -89,6 +107,24 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
             }
             false -> {
                 playerList.addAll(pair.second.player)
+                playerList.sortByDescending { it.status.spRating }
+                if (!playerList.isEmpty()
+                    && (mMVPPlayer == null || mMVPPlayer!!.status.spRating < playerList[0].status.spRating)) {
+                    mMVPPlayer = playerList[0]
+                }
+            }
+        }
+        return playerList
+    }
+
+    fun initPlayerList(isLeftInfo: Boolean, listPlayer: List<PlayerDTO>): List<PlayerDTO> {
+        var playerList:ArrayList<PlayerDTO> = ArrayList(listPlayer)
+        when (isLeftInfo) {
+            true -> {
+                playerList.sortByDescending { it.status.spRating }
+                if (!playerList.isEmpty() && mMVPPlayer == null) mMVPPlayer = playerList[0]
+            }
+            false -> {
                 playerList.sortByDescending { it.status.spRating }
                 if (!playerList.isEmpty()
                     && (mMVPPlayer == null || mMVPPlayer!!.status.spRating < playerList[0].status.spRating)) {

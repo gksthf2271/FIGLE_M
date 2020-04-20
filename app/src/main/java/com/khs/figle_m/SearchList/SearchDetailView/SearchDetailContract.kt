@@ -10,12 +10,12 @@ interface SearchDetailContract :BaseView {
     interface View : BaseView{
         fun showLoading()
         fun hideLoading()
-        fun showPlayerImage(spId:Int, url: HttpUrl)
+        fun showPlayerImage(accessId:String, playerDTO: PlayerDTO, size: Int)
         fun showPlayerDetailDialogFragment(playerDTO: PlayerDTO, rankerPlayerDTOList: List<RankerPlayerDTO>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getPlayerImage(spid: Int)
+        fun getPlayerImage(accessId:String, playerDTO: PlayerDTO, size:Int)
         fun getRankerPlayerList(matchType: Int, playerDTO: PlayerDTO)
     }
 }

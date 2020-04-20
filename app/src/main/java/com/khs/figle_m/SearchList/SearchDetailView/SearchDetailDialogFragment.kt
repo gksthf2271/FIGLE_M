@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
-import androidx.fragment.app.DialogFragment
 import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
@@ -16,12 +15,12 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Response.customDTO.PlayerListDTO
 import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.DisplayUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
-import okhttp3.HttpUrl
 
 class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.View {
     val TAG = javaClass.name
@@ -34,11 +33,16 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
 
     lateinit var mMatchDetail: MatchDetailResponse
     lateinit var mSearchAccessId: String
+    lateinit var mOpposingUserId: String
     lateinit var mSearchDetailPresenter: SearchDetailPresenter
 
     lateinit var mTopView:SearchDetailDialogTopView
     lateinit var mViewPager:ViewPager
     lateinit var mBtnClose:Button
+
+    var mIsCoachMode: Boolean = false
+
+    lateinit var mPlayerImgMap : HashMap<String, PlayerListDTO>
 
     companion object {
         @Volatile
@@ -66,7 +70,6 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
 
     override fun onResume() {
         super.onResume()
-        mSearchDetailPresenter!!.takeView(this)
         resizeDialog()
         setBackgroundColorDialog()
     }
@@ -88,6 +91,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
 
     override fun onStart() {
         super.onStart()
+        mSearchDetailPresenter!!.takeView(this)
+        mPlayerImgMap = hashMapOf()
         mTopView = view!!.findViewById(R.id.topView)
         mViewPager = view!!.findViewById(R.id.viewPager)
         mBtnClose = view!!.findViewById(R.id.btn_close)
@@ -95,33 +100,44 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
             dismiss()
         }
         arguments.let{
-            var isCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MOC)!!
+            mIsCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MOC)!!
             mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
-            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail, {
-                group_topInfo.background = resources.getDrawable(R.color.fragment_background,null)
-                mTopView.updatePlayerInfo(it)
-            })
-            mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            when (mSearchAccessId){
+                mMatchDetail.matchInfo[0].accessId -> mOpposingUserId = mMatchDetail.matchInfo[1].accessId
+                mMatchDetail.matchInfo[1].accessId -> mOpposingUserId = mMatchDetail.matchInfo[0].accessId
+            }
 
-                override fun onPageScrollStateChanged(state: Int) {
-                }
+            for (matchInfo in mMatchDetail.matchInfo) {
+                getPlayerImageUrlList(matchInfo.accessId, matchInfo.player)
+            }
+        }
+    }
 
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                    when (position) {
-                        0 -> {
-                            mTopView.updateUserView(isCoachMode, mSearchAccessId, mMatchDetail)
-                        }
+    fun initView() {
+        mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail, {
+            group_topInfo.background = resources.getDrawable(R.color.fragment_background,null)
+            mTopView.updatePlayerInfo(it)
+        })
+        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                when (position) {
+                    0 -> {
+                        mTopView.updateUserView(mIsCoachMode, mSearchAccessId, mMatchDetail)
                     }
                 }
-                override fun onPageSelected(position: Int) {
+            }
+            override fun onPageSelected(position: Int) {
 
-                }
+            }
 
-            })
-            initIndicator()
-            mViewPager.currentItem = 0
-        }
+        })
+        initIndicator()
+        mViewPager.currentItem = 0
     }
 
     fun initIndicator() {
@@ -146,6 +162,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
 
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
+        if (avi_loading.isShown) return
         avi_loading.visibility = View.VISIBLE
         btn_close.visibility = View.GONE
         group_root.visibility = View.GONE
@@ -160,15 +177,28 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
         group_root.visibility = View.VISIBLE
     }
 
-    fun getPlayerImageUrlList(playerList: List<PlayerDTO>) : List<String> {
+    fun getPlayerImageUrlList(accessId:String, playerList: List<PlayerDTO>){
         for (player in playerList) {
-            mSearchDetailPresenter.getPlayerImage(player.spId)
+            mSearchDetailPresenter.getPlayerImage(accessId, player, playerList.size)
         }
-        return emptyList()
     }
 
-    override fun showPlayerImage(spId:Int, url: HttpUrl) {
+    override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
+        var playerListDTO =
+            mPlayerImgMap.get(accessId) ?: PlayerListDTO("", listOf()) as PlayerListDTO
 
+        var playerList:ArrayList<PlayerDTO>
+        playerListDTO.let {
+            playerList = ArrayList((playerListDTO).playerList) ?: arrayListOf()
+            playerList.add(playerDTO)
+        }
+        playerListDTO.playerList = playerList
+
+        mPlayerImgMap.put(accessId,playerListDTO)
+        if (size == (mPlayerImgMap.get(accessId) as PlayerListDTO).playerList.size)  {
+            hideLoading()
+            initView()
+        }
     }
 
     override fun showError(error: String) {
@@ -194,5 +224,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
                 PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
             )
         }
+    }
+
+    fun getPlayerImgMap(): HashMap<String,PlayerListDTO> {
+        return mPlayerImgMap
     }
 }
