@@ -29,7 +29,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
             launch {
                 getPlayerImage(spid, {
                     if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: $it")
-                    mDetailListView?.showPlayerImage(it)
+                    mDetailListView?.showPlayerImage(spid, it)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
                     mDetailListView?.showError(ERROR_EMPTY)

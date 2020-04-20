@@ -56,7 +56,6 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         /*if(isDebug) */Log.v(TAG, "onBindViewHolder, position : $position")
-
         holder.bind(mContext, position)
     }
 
@@ -101,6 +100,64 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                 }
             }
 
+            updateSeason(context, item)
+
+            mRating.text = item.status.spRating.toString()
+            if (mMvpPlayer == null) {
+                if (item.status.spRating >= 8) {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+                } else {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                }
+            } else {
+                if (item == mMvpPlayer) {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
+                } else {
+                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
+                }
+            }
+
+            mPlayerSpGrade.text = item.spGrade.toString()
+            when(item.spGrade) {
+                in 0..3 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
+                }
+                in 4..7 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
+                }
+                in 8..10 -> {
+                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
+                }
+            }
+
+            addGoalIcon(item.status.goal)
+            for (positionItem in PositionEnum.values()) {
+                if (positionItem.spposition.equals(item.spPosition))
+                    mPlayerPosition.text = positionItem.description
+            }
+
+            runBlocking {
+                launch {
+                    mPlayerList.let {
+                        val item = mPlayerList!!.get(position)
+                        CrawlingUtils().getPlayerImg(item,{
+                            updatePlayerImage(mPlayerImg, item, it, position)
+                        }, {
+                            Log.v(TAG,"Failed Loading...")
+                        })
+//                        DataManager.getInstance().loadPlayerImage(item.spId, {
+//                            mPlayerList!!.get(position).imageUrl = it.toString()
+//                            updatePlayerImage(mPlayerImg, item, it, position)
+//                        }, {
+//                            Log.v(TAG, "load Failed : $it")
+//                            mPlayerImg.setImageResource(R.drawable.ic_launcher_foreground)
+//                        })
+                    }
+                }
+            }
+        }
+
+        fun updateSeason(context: Context, item: PlayerDTO) {
             val seasonDB = PlayerDataBase.getInstance(context)
             seasonDB.let {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -142,86 +199,6 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     }
                 }
             }
-
-            mRating.text = item.status.spRating.toString()
-            if (mMvpPlayer == null) {
-                if (item.status.spRating >= 8) {
-                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
-                } else {
-                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
-                }
-            } else {
-                if (item == mMvpPlayer) {
-                    mRating.background = mContext.getDrawable(R.drawable.rounded_player_team_mvp)
-                } else {
-                    mRating.background = mContext.getDrawable(R.drawable.rounded_player)
-                }
-            }
-
-            mPlayerSpGrade.text = item.spGrade.toString()
-            when(item.spGrade) {
-                in 0..3 -> {
-                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
-                }
-                in 4..7 -> {
-                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
-                }
-                in 8..10 -> {
-                    mPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
-                }
-            }
-
-            addGoalIcon(item.status.goal)
-            for (positionItem in PositionEnum.values()) {
-                if (positionItem.spposition.equals(item.spPosition))
-                    mPlayerPosition.text = positionItem.description
-            }
-            runBlocking {
-                launch {
-                    DataManager.getInstance().loadPlayerImage(item.spId, {
-                        updatePlayerImage(position, item, it)
-
-                    }, {
-                        Log.v(TAG,"load Failed : $it")
-                        mPlayerImg.setImageResource(R.drawable.ic_launcher_foreground)
-                    })
-                }
-            }
-        }
-
-        fun updatePlayerImage(position: Int, item:PlayerDTO, url: HttpUrl) {
-            Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
-            Glide.with(mPlayerImg.getContext())
-                .load(Uri.parse(url.toString()))
-                .placeholder(R.drawable.person_icon)
-                .error(R.drawable.person_icon)
-                .skipMemoryCache(false)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any,
-                        target: Target<Drawable>,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        if (isDebug) Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
-                        CrawlingUtils().getPlayerImg(item, {
-                            CrawlingUtils().updatePlayerImage(mContext,  , it)
-                        })
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        model: Any,
-                        target: Target<Drawable>,
-                        dataSource: DataSource,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        if(isDebug) Log.d(TAG, "onResourceReady(...) $url")
-                        return false
-                    }
-                })
-                .into(mPlayerImg)
         }
 
         fun addGoalIcon(goalCount: Int) {
@@ -245,5 +222,52 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                 rootView.addView(imageView)
             }
         }
+    }
+
+    fun updatePlayerImage(playerimg: ImageView, item:PlayerDTO, url: String, position: Int) {
+        Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
+        Glide.with(playerimg.getContext())
+            .load(Uri.parse(url))
+            .placeholder(R.drawable.person_icon)
+            .error(R.drawable.person_icon)
+            .skipMemoryCache(false)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+//                    /*if (isDebug) */Log.d(TAG, "TEST, onLoadFailed(...) GlideException!!! position : $position, url : $playerimg")
+//                    /*if (isDebug) */Log.d(TAG, "TEST, item : $item")
+//                    mPlayerList.let {
+//                        if (mPlayerList!!.get(position).subImageUrl == null) {
+//                            CrawlingUtils().getPlayerImg(item, {
+//                                Log.d(TAG, "TEST, reload position : $position, url : $it")
+//                                CrawlingUtils().updatePlayerImage(mContext, playerimg, it)
+//                                mPlayerList!!.get(position).subImageUrl = it
+//                            }, {
+//                                Log.v(TAG, "Failed Crawling! : $it")
+//                                mPlayerList!!.get(position).subImageUrl = it
+//                            })
+//                        } else {
+//                            CrawlingUtils().updatePlayerImage(mContext, playerimg, mPlayerList!!.get(position).subImageUrl!!)
+//                        }
+//                    }
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if(isDebug) Log.d(TAG, "TEST, onResourceReady(...) position : $position, url : $url")
+                    return false
+                }
+            })
+            .into(playerimg)
     }
 }

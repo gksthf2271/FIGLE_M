@@ -160,15 +160,15 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
         group_root.visibility = View.VISIBLE
     }
 
+    fun getPlayerImageUrlList(playerList: List<PlayerDTO>) : List<String> {
+        for (player in playerList) {
+            mSearchDetailPresenter.getPlayerImage(player.spId)
+        }
+        return emptyList()
+    }
 
-    override fun showPlayerImage(url: HttpUrl) {
-//        arguments.let{
-//            mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
-//            mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
-//            mTopView.updateUserView(mSearchAccessId, mMatchDetail)
-//            mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail)
-//            mViewPager.currentItem = 0
-//        }
+    override fun showPlayerImage(spId:Int, url: HttpUrl) {
+
     }
 
     override fun showError(error: String) {

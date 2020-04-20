@@ -8,5 +8,7 @@ data class PlayerDTO (
     val spId: Int,
     val spPosition: Int,
     val spGrade: Int,
-    val status: StatusDTO
+    val status: StatusDTO,
+    var imageUrl: String?,       //custom
+    var subImageUrl: String?     //custom
 ) : Parcelable

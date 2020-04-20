@@ -10,7 +10,7 @@ interface SearchDetailContract :BaseView {
     interface View : BaseView{
         fun showLoading()
         fun hideLoading()
-        fun showPlayerImage(url : HttpUrl)
+        fun showPlayerImage(spId:Int, url: HttpUrl)
         fun showPlayerDetailDialogFragment(playerDTO: PlayerDTO, rankerPlayerDTOList: List<RankerPlayerDTO>)
     }
 

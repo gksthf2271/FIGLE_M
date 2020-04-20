@@ -18,19 +18,18 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.DisplayUtils
 import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.utils.SeasonEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import okhttp3.HttpUrl
 
 
 class PlayerDetailDialogFragment: DialogBaseFragment() {
@@ -113,15 +112,32 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
             chart_ranker.setData(playerDetailInfo,rankerPlayerInfo!!.get(0))
         }
 
+        val seasonId = playerDetailInfo!!.spId.toString().substring(0, 3)
+        var seasonName: String? = null
+        for (item in SeasonEnum.values()) {
+            if (item.seasonId.toString().equals(seasonId))
+                seasonName = item.className
+        }
+        if (seasonName == null) {
+            Log.d(TAG, "seasonName is null")
+            return
+        }
+
         runBlocking {
             launch {
-                DataManager.getInstance().loadPlayerImage(playerDetailInfo!!.spId, {
-                    updatePlayerImage(playerDetailInfo!!, it)
-
+                CrawlingUtils().getPlayerImg(playerDetailInfo!!,{
+                    updatePlayerImage(playerDetailInfo!!,it)
                 }, {
-                    Log.v(TAG,"load Failed : $it")
-                    img_player.setImageResource(R.drawable.ic_launcher_foreground)
+                    Log.v(TAG,"Failed Loading...")
                 })
+
+//                DataManager.getInstance().loadPlayerImage(playerDetailInfo!!.spId, {
+//                    updatePlayerImage(playerDetailInfo!!, it)
+//
+//                }, {
+//                    Log.v(TAG,"load Failed : $it")
+//                    img_player.setImageResource(R.drawable.ic_launcher_foreground)
+//                })
             }
         }
 
@@ -194,11 +210,11 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
         }
     }
 
-    fun updatePlayerImage(playerDTO: PlayerDTO, url: HttpUrl) {
+    fun updatePlayerImage(playerDTO: PlayerDTO, url: String) {
         val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
         Glide.with(context!!)
-            .load(Uri.parse(url.toString()))
+            .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)
             .listener(object : RequestListener<Drawable> {
@@ -211,6 +227,8 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                     Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
                     CrawlingUtils().getPlayerImg(playerDTO, {
                         CrawlingUtils().updatePlayerImage(context!!, imgView, it)
+                    }, {
+
                     })
                     return false
                 }

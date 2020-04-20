@@ -18,7 +18,7 @@ import org.jsoup.Jsoup
 class CrawlingUtils() {
     private val TAG = this.javaClass.name
 
-    fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit) {
+    fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (String?) -> Unit) {
         val seasonId = playerDTO.spId.toString().substring(0, 3)
         var seasonName: String? = null
         var imageUrl: String? = null
@@ -28,6 +28,7 @@ class CrawlingUtils() {
         }
         if (seasonName == null) {
             Log.d(TAG, "seasonName is null")
+            onFailed(null)
             return
         }
         try {
@@ -51,6 +52,7 @@ class CrawlingUtils() {
             })
         } catch (e: IllegalStateException) {
             Log.d(TAG, "Error : $e")
+            onFailed(null)
         }
     }
 
