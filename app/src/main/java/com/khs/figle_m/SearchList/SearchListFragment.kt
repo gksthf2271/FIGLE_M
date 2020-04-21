@@ -53,6 +53,8 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     lateinit var mRateTextView: TextView
     lateinit var mCustomPieChartView: PieChartView
 
+    lateinit var mSelectedMatchInfo:MatchDetailResponse
+
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
@@ -187,7 +189,8 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
         val isCoachMode = viewPager.currentItem == 1
-        bundle.putBoolean(searchDetailDialogFragment.KEY_IS_COACH_MOC, isCoachMode)
+        mSelectedMatchInfo = matchDetailResponse
+        bundle.putBoolean(searchDetailDialogFragment.KEY_IS_COACH_MODE, isCoachMode)
         bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
         bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
         searchDetailDialogFragment.arguments = bundle

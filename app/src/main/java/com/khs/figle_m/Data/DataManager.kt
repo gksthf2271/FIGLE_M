@@ -253,7 +253,7 @@ class DataManager {
         val call = SearchUser.getCrawlingService()
             .requestPlayerInfo(spId = spid, strong = strong)
 
-        Log.v(TAG,"TEST, Call : ${call.request()}")
+        if(DEBUG) Log.v(TAG,"TEST, Call : ${call.request()}")
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

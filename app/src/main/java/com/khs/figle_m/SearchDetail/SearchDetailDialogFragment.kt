@@ -16,6 +16,8 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.customDTO.PlayerListDTO
+import com.khs.figle_m.SearchList.SearchListFragment
+import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.DisplayUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
@@ -27,7 +29,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
     open val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"
-    open val KEY_IS_COACH_MOC = "KEY_IS_COACH_MOC"
+    open val KEY_IS_COACH_MODE = "KEY_IS_COACH_MODE"
 
     open val TAG_MATCH_DETAIL_DIALOG = "TAG_MATCH_DETAIL_DIALOG"
 
@@ -99,7 +101,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
             dismiss()
         }
         arguments.let{
-            mIsCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MOC)!!
+            mIsCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MODE)!!
             mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
             when (mSearchAccessId){
@@ -213,17 +215,27 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         playerDTO: PlayerDTO,
         rankerPlayerDTOList: List<RankerPlayerDTO>
     ) {
-        var playerDetailFragment = PlayerDetailDialogFragment.getInstance()
-        val bundle = Bundle()
-        bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
-        bundle.putParcelableArrayList(PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO, ArrayList(rankerPlayerDTOList))
-        playerDetailFragment.arguments = bundle
-        if (!playerDetailFragment.isAdded) {
-            playerDetailFragment.show(
-                fragmentManager!!,
-                PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
-            )
-        }
+        updatePlayer(playerDTO, {
+            var playerDetailFragment = PlayerDetailDialogFragment.getInstance()
+            val bundle = Bundle()
+            bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+            bundle.putParcelableArrayList(PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO, ArrayList(rankerPlayerDTOList))
+            playerDetailFragment.arguments = bundle
+            if (!playerDetailFragment.isAdded) {
+                playerDetailFragment.show(
+                    fragmentManager!!,
+                    PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
+                )
+            }
+        })
+    }
+
+    fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
+        CrawlingUtils().getPlayerImg(player,{
+            callback(it)
+        }, {
+            Log.v(TAG,"updatePlayer(...) : $it")
+        })
     }
 
     fun getPlayerImgMap(): HashMap<String,PlayerListDTO> {

@@ -164,7 +164,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     seasonEntity.let {
                         val url = seasonEntity.seasonImg
                         CoroutineScope(Dispatchers.Main).launch {
-                            Log.v(TAG,"TEST, saesonUrl : ${url}")
+                            if(isDebug) Log.v(TAG,"TEST, saesonUrl : ${url}")
                             Glide.with(context)
                                 .load(url)
                                 .listener(object : RequestListener<Drawable> {
