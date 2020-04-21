@@ -82,8 +82,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         return v
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
+        if (isRestartApp) return
         mSearchPresenter!!.takeView(this)
         initView()
         initMyInfoData()

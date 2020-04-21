@@ -63,7 +63,6 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.v(TAG,"onCreateView(...)")
         val v = inflater.inflate(R.layout.fragment_search_container, container,true)
         return v
     }
@@ -77,7 +76,6 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     override fun onPause() {
         super.onPause()
         Log.v(TAG,"onPause(...)")
-        dismiss()
     }
 
     override fun initPresenter() {
@@ -91,6 +89,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun onStart() {
         super.onStart()
+        if (isRestartApp) return
         mSearchDetailPresenter!!.takeView(this)
         mPlayerImgMap = hashMapOf()
         mTopView = view!!.findViewById(R.id.topView)

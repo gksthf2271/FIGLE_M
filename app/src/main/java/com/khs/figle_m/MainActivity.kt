@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.Home.HomeFragment
+import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,12 +33,23 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     private val MSG_DISCONNECTED_NETWORK = 0
     private val mHandler:Handler = Handler(this)
 
-    private var isRestartApp = false
+    companion object {
+        @Volatile
+        private var instance: MainActivity? = null
+
+        @JvmStatic
+        fun getInstance(): MainActivity =
+            instance ?: synchronized(this) {
+                instance
+                    ?: MainActivity().also {
+                        instance = it
+                    }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        isRestartApp = false
     }
 
     override fun onStart() {
@@ -59,12 +71,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        Log.v(TAG,"onRestart(...)")
-        isRestartApp = true
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
@@ -73,7 +79,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onPause() {
         super.onPause()
-        DialogFragment().dismiss()
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
