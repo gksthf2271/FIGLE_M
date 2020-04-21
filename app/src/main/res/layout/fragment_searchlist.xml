@@ -51,7 +51,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.khs.figle_m.SearchList.SearchDetailView.customView.PieChartView
+        <com.khs.figle_m.SearchDetail.PieChartView
             android:id="@+id/cview_pie_chart"
             android:layout_width="0dp"
             android:layout_height="0dp"

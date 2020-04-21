@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList.SearchDetailView
+package com.khs.figle_m.SearchDetail
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,13 +16,13 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.customDTO.PlayerListDTO
-import com.khs.figle_m.SearchList.SearchDetailView.customView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.DisplayUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
 
-class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.View {
+class SearchDetailDialogFragment : DialogBaseFragment(),
+    SearchDetailContract.View {
     val TAG = javaClass.name
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
@@ -36,7 +36,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
     lateinit var mOpposingUserId: String
     lateinit var mSearchDetailPresenter: SearchDetailPresenter
 
-    lateinit var mTopView:SearchDetailDialogTopView
+    lateinit var mTopView: SearchDetailDialogTopView
     lateinit var mViewPager:ViewPager
     lateinit var mBtnClose:Button
 
@@ -115,10 +115,11 @@ class SearchDetailDialogFragment : DialogBaseFragment(), SearchDetailContract.Vi
     }
 
     fun initView() {
-        mViewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail, {
-            group_topInfo.background = resources.getDrawable(R.color.fragment_background,null)
-            mTopView.updatePlayerInfo(it)
-        })
+        mViewPager.adapter =
+            SearchDetailDialogAdapter(context!!, mMatchDetail, {
+                group_topInfo.background = resources.getDrawable(R.color.fragment_background, null)
+                mTopView.updatePlayerInfo(it)
+            })
         mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(state: Int) {

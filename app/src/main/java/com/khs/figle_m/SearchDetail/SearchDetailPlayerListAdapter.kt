@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList.SearchDetailView
+package com.khs.figle_m.SearchDetail
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -17,16 +17,12 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import okhttp3.HttpUrl
 
 class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO>?, val itemClick: (PlayerDTO) -> Unit) :
     RecyclerView.Adapter<SearchDetailPlayerListAdapter.ViewHolder>() {

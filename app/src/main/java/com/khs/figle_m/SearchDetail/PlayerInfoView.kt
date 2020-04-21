@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList.SearchDetailView.customView
+package com.khs.figle_m.SearchDetail
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.SearchList.SearchDetailView.SearchDetailDialogFragment
 import kotlinx.android.synthetic.main.cview_player_info.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

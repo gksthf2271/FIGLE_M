@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList.SearchDetailView
+package com.khs.figle_m.SearchDetail
 
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
