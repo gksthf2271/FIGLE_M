@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchDetail
+package com.khs.figle_m.SearchDetail.firstView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -12,6 +12,8 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.customDTO.PlayerListDTO
+import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
+import com.khs.figle_m.SearchDetail.SearchDetailPlayerListAdapter
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.android.synthetic.main.cview_detail_player_view.view.*

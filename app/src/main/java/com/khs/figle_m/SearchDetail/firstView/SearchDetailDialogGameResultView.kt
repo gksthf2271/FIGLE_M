@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchDetail
+package com.khs.figle_m.SearchDetail.firstView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.utils.UserSortUtils
 
 class SearchDetailDialogGameResultView : ConstraintLayout {

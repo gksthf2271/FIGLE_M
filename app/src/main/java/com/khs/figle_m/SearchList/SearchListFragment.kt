@@ -19,7 +19,6 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
-import com.khs.figle_m.SearchDetail.PieChartView
 import com.khs.figle_m.SearchList.SearchListView.SearchListView
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils

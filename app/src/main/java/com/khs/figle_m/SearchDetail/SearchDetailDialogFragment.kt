@@ -16,7 +16,7 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.customDTO.PlayerListDTO
-import com.khs.figle_m.SearchList.SearchListFragment
+import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.DisplayUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator

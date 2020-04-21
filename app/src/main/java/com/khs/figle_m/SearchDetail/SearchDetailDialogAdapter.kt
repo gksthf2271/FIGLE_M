@@ -7,6 +7,8 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogGameResultView
+import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogPlayerInfoView
 
 
 class SearchDetailDialogAdapter() : PagerAdapter() {
@@ -30,7 +32,8 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
                 (view as SearchDetailDialogGameResultView).updateMatchInfo(mMatchDetailResponse)
             }
             1 -> {
-                view = SearchDetailDialogPlayerInfoView(mContext)
+                view =
+                    SearchDetailDialogPlayerInfoView(mContext)
                 view.updatePlayerInfo(
                     SearchDetailDialogFragment.getInstance().mSearchAccessId,
                     SearchDetailDialogFragment.getInstance().mOpposingUserId,

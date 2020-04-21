@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchDetail
+package com.khs.figle_m.SearchDetail.firstView
 
 import android.content.Context
 import android.util.AttributeSet
