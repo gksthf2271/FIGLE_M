@@ -133,14 +133,14 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mCoachModeView = SearchListView(context!!)
         mCoachModeView.setSearchUserInfo(mSearchUserInfo)
 
-        var mCoachModeLockView = LockView(context!!)
-        mCoachModeLockView.updateImageView(R.drawable.lock)
-        mCoachModeLockView.updateTextView("감독모드\n추후 공개 예정입니다.")
+//        var mCoachModeLockView = LockView(context!!)
+//        mCoachModeLockView.updateImageView(R.drawable.lock)
+//        mCoachModeLockView.updateTextView("감독모드\n추후 공개 예정입니다.")
 
         mOfficialGameView = SearchListView(context!!)
         mOfficialGameView.setSearchUserInfo(mSearchUserInfo)
         viewPager.adapter =
-            SearchListPagerAdapter(context!!, mOfficialGameView, mCoachModeLockView)
+            SearchListPagerAdapter(context!!, mOfficialGameView, mCoachModeView)
 
         //////////////////////////////////////////////////////////////////////
 
@@ -157,7 +157,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                     }
                     1 -> {
                         txt_play_mode.text = "감독모드"
-                        initRate(true)
+                        initRate(false)
                     }
                 }
             }
