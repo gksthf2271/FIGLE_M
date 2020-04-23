@@ -31,7 +31,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun show(isStart: Boolean) {
-        Log.v(TAG,"show LoadingView")
+        if(isDebug) Log.v(TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToShow()
         }
@@ -46,7 +46,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun hide(){
-        Log.v(TAG,"hide LoadingView")
+        if(isDebug) Log.v(TAG,"hide LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToHide()
         }
