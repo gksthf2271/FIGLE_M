@@ -24,7 +24,7 @@ class DataManager {
 
     enum class matchType(val matchType: Int) {
         normalMatch(50),
-        coachMatch(51)
+        coachMatch(52)
     }
 
     val offset: Int = 0

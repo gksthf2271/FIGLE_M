@@ -163,8 +163,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
         if (avi_loading.isShown) return
+        Log.v(TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         btn_close.visibility = View.GONE
         group_root.visibility = View.GONE

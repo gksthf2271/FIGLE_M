@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/search_detail_dialog_background"
-            app:layout_constraintHeight_percent="0.03"
+            app:layout_constraintHeight_percent="0.04"
             app:layout_constraintBottom_toTopOf="@+id/group_pager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.67"
+            app:layout_constraintHeight_percent="0.66"
             app:layout_constraintTop_toBottomOf="@+id/container_indicator">
 
             <androidx.viewpager.widget.ViewPager

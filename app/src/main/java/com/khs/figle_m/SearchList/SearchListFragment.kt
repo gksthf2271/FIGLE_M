@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
-import com.khs.figle_m.Lock.LockView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
@@ -22,6 +21,7 @@ import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.SearchList.SearchListView.SearchListView
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils
+import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_searchlist.*
 import okhttp3.ResponseBody
 
@@ -182,6 +182,12 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
+        initIndicator()
+    }
+
+    fun initIndicator() {
+        val dotsIndicator = view!!.findViewById<WormDotsIndicator>(R.id.dots_indicator)
+        dotsIndicator.setViewPager(viewPager)
     }
 
     fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
@@ -208,17 +214,19 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 //        group_rate.visibility = View.GONE
         viewPager.visibility = View.GONE
         avi_loading.show(false)
+        container_indicator.visibility = View.INVISIBLE
     }
 
     override fun hideLoading(isError: Boolean) {
         Log.v(TAG, "hideLoading(...)")
-            avi_loading.hide()
-            avi_loading.visibility = View.GONE
-            group_info.visibility = View.VISIBLE
+        avi_loading.hide()
+        avi_loading.visibility = View.GONE
+        group_info.visibility = View.VISIBLE
 //            group_rate.visibility = View.VISIBLE
-            viewPager.visibility = View.VISIBLE
-            group_info.visibility = View.VISIBLE
-            btn_back.visibility = View.VISIBLE
+        viewPager.visibility = View.VISIBLE
+        group_info.visibility = View.VISIBLE
+        btn_back.visibility = View.VISIBLE
+        container_indicator.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n")
