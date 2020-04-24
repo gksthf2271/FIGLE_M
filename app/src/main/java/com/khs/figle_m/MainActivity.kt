@@ -1,8 +1,5 @@
 package com.khs.figle_m
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -13,14 +10,14 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
+import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
-import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.utils.NetworkUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.ResponseBody
 
@@ -60,12 +57,13 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             mInitPresenter.getSeasonIdList(applicationContext)
             mInitPresenter.getPlayerNameList(applicationContext)
         }
+        DataManager.getInstance().init(applicationContext)
     }
 
     override fun onResume() {
         super.onResume()
-        if (!checkNetworkStatus()) {
-            showNetworkError()
+        if (!NetworkUtils().checkNetworkStatus(applicationContext)) {
+//            showNetworkError()
         } else {
             txt_disconnected_network.visibility = View.INVISIBLE
         }
@@ -79,6 +77,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onPause() {
         super.onPause()
+        DataManager.getInstance().init(null)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -105,13 +104,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             }
         }
         return false
-    }
-
-    fun checkNetworkStatus(): Boolean {
-        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-        return isConnected
     }
 
     fun getCurrentFragment(): Fragment {
