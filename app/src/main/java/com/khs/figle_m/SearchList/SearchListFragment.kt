@@ -289,7 +289,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
         if(DEBUG) Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
         if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
-            initRate(true)
             updateOfficialGameList()
         }
     }
@@ -303,7 +302,6 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
         if(DEBUG)  Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
         if (mCoachModeMatchList.size == mCoachModeMatchIdList.size) {
-            initRate(false)
             updateCoachModeList()
         }
     }
