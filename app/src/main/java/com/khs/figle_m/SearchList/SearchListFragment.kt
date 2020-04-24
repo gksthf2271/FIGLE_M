@@ -54,6 +54,12 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     lateinit var mSelectedMatchInfo:MatchDetailResponse
 
+    lateinit var mCoachDivision: String
+    lateinit var mNormalDivision: String
+
+    lateinit var mNormalMatchResponse: UserHighRankResponse
+    lateinit var mCoachMatchResponse: UserHighRankResponse
+
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
@@ -154,10 +160,16 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                     0 -> {
                         txt_play_mode.text = "1 ON 1"
                         initRate(true)
+                        mDivisionView.text = mNormalDivision ?: "-"
+                        mAchievementDateView.text =
+                            mNormalMatchResponse!!.achievementDate.replace("T", " / ")
                     }
                     1 -> {
                         txt_play_mode.text = "감독모드"
                         initRate(false)
+                        mDivisionView.text = mCoachDivision ?: "-"
+                        mAchievementDateView.text =
+                            mCoachMatchResponse!!.achievementDate.replace("T", " / ")
                     }
                 }
             }
@@ -310,22 +322,34 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
-        var normalMatchResponse: UserHighRankResponse? = null
-        var division: String? = null
         for (item in userHighRankResponse) {
-            if (DataManager.matchType.normalMatch.matchType == item.matchType)
-                normalMatchResponse = item
+            if (DataManager.matchType.normalMatch.matchType == item.matchType) {
+                mNormalMatchResponse = item
+            } else if (DataManager.matchType.coachMatch.matchType == item.matchType) {
+                mCoachMatchResponse = item
+            }
         }
-
-        normalMatchResponse ?: return
 
         for (item in DivisionEnum.values()) {
-            if (item.divisionId.equals(normalMatchResponse.division))
-                division = item.divisionName
+            if (mNormalMatchResponse != null && item.divisionId.equals(mNormalMatchResponse.division)) {
+                mNormalDivision = item.divisionName
+            } else if (mCoachMatchResponse != null && item.divisionId.equals(mCoachMatchResponse.division)) {
+                mCoachDivision = item.divisionName
+            }
         }
 
-        mDivisionView.text = division ?: "-"
-        mAchievementDateView.text = normalMatchResponse!!.achievementDate.replace("T", " / ")
+        when (viewPager.currentItem) {
+            0 -> {
+                mDivisionView.text = mNormalDivision ?: "-"
+                mAchievementDateView.text =
+                    mNormalMatchResponse!!.achievementDate.replace("T", " / ")
+            }
+            1 -> {
+                mDivisionView.text = mCoachDivision ?: "-"
+                mAchievementDateView.text =
+                    mCoachMatchResponse!!.achievementDate.replace("T", " / ")
+            }
+        }
     }
 
     fun initRate(isOfficialGame: Boolean) {
