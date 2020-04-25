@@ -18,10 +18,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.figle_m.SearchDetail.SearchDetailContract
 import com.khs.figle_m.utils.DisplayUtils
+import com.khs.figle_m.utils.NetworkUtils
 import com.khs.figle_m.utils.PositionEnum
 import com.khs.figle_m.utils.SeasonEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
@@ -30,7 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class PlayerDetailDialogFragment: DialogBaseFragment() {
+class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.View  {
     val TAG: String = javaClass.name
     val DEBUG: Boolean = false
     open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
@@ -68,6 +72,11 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        if (!NetworkUtils().checkNetworkStatus(context!!)) {
+            dismiss()
+            (activity as MainActivity).showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED, false)
+            return
+        }
         resizeDialog()
         setBackgroundColorDialog()
     }
@@ -274,5 +283,28 @@ class PlayerDetailDialogFragment: DialogBaseFragment() {
                 }
             }
         }
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showPlayerDetailDialogFragment(
+        playerDTO: PlayerDTO,
+        rankerPlayerDTOList: List<RankerPlayerDTO>
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(error: Int) {
+        (activity as MainActivity).showErrorPopup(error)
     }
 }

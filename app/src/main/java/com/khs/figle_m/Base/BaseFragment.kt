@@ -37,6 +37,11 @@ abstract class BaseFragment: Fragment(){
         isRestartApp = true
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.v(TAG,"onStop(...)")
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         Log.v(TAG,"onDestroyView(...)")

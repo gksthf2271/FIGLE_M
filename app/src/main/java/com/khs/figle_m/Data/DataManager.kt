@@ -1,14 +1,11 @@
 package com.khs.figle_m.Data
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.util.Log
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
-import com.khs.figle_m.utils.NetworkUtils
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -32,8 +29,31 @@ class DataManager{
     }
 
     val offset: Int = 0
+
+//    200	OK	성공
+//    301	Moved Permanently	HTTP 프로토콜로 호출
+//    400	Bad Request	요청 형식 오류 (잘못된 파라미터 입력)
+//    401	Unauthorized	미승인 서비스 (미지원 service, service type)
+//    403	Forbidden	허용되지 않은 AccessToken 사용
+//    404	Not Found	해당 리소스가 존재하지 않음
+//    405	Method not allowed	미지원 API
+//    413	Request Entity Too Large	너무 긴 요청 파라미터 입력
+//    429	Too many request	AccessToken의 요청 허용량(Rate Limit) 초과
+//    500	Internal Server Error	서버 내부 에러
+//    504	Gateway Timeout	서버 내부 처리 timeout
     open val SEARCH_LIMIT: Int = 100
     open val SUCCESS_CODE: Int = 200
+    open val ERROR_BAD_REQUEST = 400
+    open val ERROR_UNAUTHORIZED = 401
+    open val ERROR_FORBIDDEN = 403
+    open val ERROR_NOT_FOUND= 404
+    open val ERROR_METHOD_NOT_ALLOWED = 405
+    open val ERROR_REQUEST_ENTITY_TOO_LARGE = 413
+    open val ERROR_TOO_MANY_REQUEST = 429
+    open val ERROR_INTERNAL_SERVER_ERROR = 500
+    open val ERROR_GATEWAY_TIMEOUT = 504
+    open val ERROR_NETWORK_DISCONNECTED = 990
+    open val ERROR_OTHERS = 999
 
     private val mAuthorizationKey: String =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4"
@@ -61,13 +81,10 @@ class DataManager{
             .requestUser(authorization = mAuthorizationKey, nickname = nickName)
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                    if (mContext != null && t is UnknownHostException) {
-                        if (!NetworkUtils().checkNetworkStatus(mContext!!)) {
-                            showNetworkErrorPopup()
-                            return
-                        }
+                    if (t is UnknownHostException) {
+                        onFailed(maekErrorException(t))
+                        return
                     }
-                    onFailed(0)
                 }
 
                 override fun onResponse(
@@ -91,16 +108,15 @@ class DataManager{
     fun loadMatchDetail(
         matchId: String,
         onSuccess: ((MatchDetailResponse) -> Unit),
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
             .requestMatchDetail(authorization = mAuthorizationKey, matchid = matchId)
             .enqueue(object : Callback<MatchDetailResponse> {
                 override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
-                    onFailed("Failed! : $matchId")
-                    if (mContext != null && t is UnknownHostException) {
-                        if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                            showNetworkErrorPopup()
+                    if (t is UnknownHostException) {
+                        onFailed(maekErrorException(t))
+                        return
                     }
                 }
 
@@ -113,7 +129,7 @@ class DataManager{
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
-                        onFailed(response.code().toString())
+                        onFailed(response.code())
                     }
                 }
             })
@@ -125,7 +141,7 @@ class DataManager{
         offset: Int?,
         limit: Int?,
         onSuccess: (ResponseBody?) -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService().requestMatchId(
             authorization = mAuthorizationKey,
@@ -136,12 +152,10 @@ class DataManager{
         )
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    onFailed("Failed! " + t)
-                    if (mContext != null && t is UnknownHostException) {
-                        if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                            showNetworkErrorPopup()
+                    if (t is UnknownHostException) {
+                        onFailed(maekErrorException(t))
+                        return
                     }
-
                 }
 
                 override fun onResponse(
@@ -152,7 +166,7 @@ class DataManager{
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body())
                     } else {
-                        onFailed("Failed! errorcode : " + response.code())
+                        onFailed(response.code())
                     }
                 }
             })
@@ -161,16 +175,15 @@ class DataManager{
     fun loadUserHighRank(
         accessId: String,
         onSuccess: (List<UserHighRankResponse>) -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
             .requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
             .enqueue(object : Callback<List<UserHighRankResponse>> {
                 override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
-                    onFailed("Failed! " + t)
-                    if (mContext != null && t is UnknownHostException) {
-                        if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                            showNetworkErrorPopup()
+                    if (t is UnknownHostException) {
+                        onFailed(maekErrorException(t))
+                        return
                     }
                 }
 
@@ -183,7 +196,7 @@ class DataManager{
                         if (response.code() == SUCCESS_CODE) {
                             onSuccess(response!!.body()!!)
                         } else {
-                            onFailed("Failed! errorcode : " + response.code())
+                            onFailed(response.code())
                         }
                     }
                 }
@@ -193,7 +206,7 @@ class DataManager{
     fun loadPlayerImage(
         spid: Int,
         onSuccess: ((HttpUrl) -> Unit),
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         val call = SearchUser.getServiceImage()
             .requestPlayerImage(authorization = mAuthorizationKey, spid = spid)
@@ -201,15 +214,14 @@ class DataManager{
         onSuccess(call.request().url())
     }
 
-    fun loadSeasonIdList(onSuccess: ((ResponseBody) -> Unit), onFailed: (String) -> Unit) {
+    fun loadSeasonIdList(onSuccess: ((ResponseBody) -> Unit), onFailed: (Int) -> Unit) {
         val call = SearchUser.getPlayerNameApiService()
             .requestSeasonIdList(authorization = mAuthorizationKey)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                onFailed("Failed! " + t)
-                if (mContext != null && t is UnknownHostException) {
-                    if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                        showNetworkErrorPopup()
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
                 }
             }
 
@@ -219,22 +231,21 @@ class DataManager{
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
-                        onFailed("loadSeasonIdList Failed! errorcode : " + response.code())
+                        onFailed(response.code())
                     }
                 }
             }
         })
     }
 
-    fun loadPlayerName(onSuccess: ((ResponseBody) -> Unit), onFailed: (String) -> Unit) {
+    fun loadPlayerName(onSuccess: ((ResponseBody) -> Unit), onFailed: (Int) -> Unit) {
         val call = SearchUser.getPlayerNameApiService()
             .requestPlayerName(authorization = mAuthorizationKey)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                onFailed("Failed! " + t)
-                if (mContext != null && t is UnknownHostException) {
-                    if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                        showNetworkErrorPopup()
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
                 }
             }
 
@@ -244,7 +255,7 @@ class DataManager{
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
-                        onFailed("loadPlayerName Failed! errorcode : " + response.code())
+                        onFailed(response.code())
                     }
                 }
             }
@@ -255,7 +266,7 @@ class DataManager{
         matchType: Int,
         players: String,
         onSuccess: (List<RankerPlayerDTO>) -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         if (DEBUG) Log.v(TAG, "TEST, players : ${players}")
         val call = SearchUser.getApiService()
@@ -268,10 +279,9 @@ class DataManager{
 
         call.enqueue(object : Callback<List<RankerPlayerDTO>> {
             override fun onFailure(call: Call<List<RankerPlayerDTO>>, t: Throwable) {
-                onFailed("Failed! " + t)
-                if (mContext != null && t is UnknownHostException) {
-                    if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                        showNetworkErrorPopup()
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
                 }
             }
 
@@ -284,7 +294,7 @@ class DataManager{
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
-                        onFailed("Failed! errorcode : " + response.code())
+                        onFailed(response.code())
                     }
                 }
             }
@@ -294,7 +304,8 @@ class DataManager{
     fun loadPlayerInfo(
         spid: Int,
         strong: Int,
-        onSuccess: (ResponseBody) -> Unit
+        onSuccess: (ResponseBody) -> Unit,
+        onFailed: (Int) -> Unit
     ) {
         val call = SearchUser.getCrawlingService()
             .requestPlayerInfo(spId = spid, strong = strong)
@@ -303,10 +314,9 @@ class DataManager{
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.v(TAG, "loadPlayerInfo onFailure(...) : $t")
-                if (mContext != null && t is UnknownHostException) {
-                    if (!NetworkUtils().checkNetworkStatus(mContext!!))
-                        showNetworkErrorPopup()
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
                 }
             }
 
@@ -316,21 +326,11 @@ class DataManager{
         })
     }
 
-    fun showNetworkErrorPopup() {
-        val oDialog = AlertDialog.Builder(
-            mContext,
-            android.R.style.Theme_DeviceDefault_Light_Dialog
-        )
-
-        oDialog.setMessage("앱을 종료하시겠습니까?")
-            .setTitle("일반 Dialog")
-            .setPositiveButton("아니오", DialogInterface.OnClickListener({
-                Log.i("Dialog", "취소");
-            }))
-            .setNeutralButton("예", DialogInterface.OnClickListener({
-                finish()
-            }))
-            .setCancelable(false) // 백버튼으로 팝업창이 닫히지 않도록 한다.
-            .show()
+    fun maekErrorException(t :Throwable) :Int {
+        if (t is UnknownHostException) {
+            return ERROR_NETWORK_DISCONNECTED
+        } else {
+         return ERROR_OTHERS
+        }
     }
 }

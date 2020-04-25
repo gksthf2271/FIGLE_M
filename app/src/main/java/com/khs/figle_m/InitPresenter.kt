@@ -38,6 +38,7 @@ class InitPresenter : InitContract.Presenter {
                     })
                 }, {
                     Log.v(TAG, "getSeasonIdList Failed! $it")
+                    mInitContract?.showError(it)
                 })
             }
         }
@@ -62,12 +63,13 @@ class InitPresenter : InitContract.Presenter {
                     }, {
                         Log.v(TAG, "getPlayerNameList Failed! ${it}")
                         mInitContract?.hideLoading()
+                        mInitContract?.showError(it)
                     })
             }
         }
     }
 
-    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
+    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (Int) -> Unit) {
         DataManager.getInstance().loadPlayerName({
             if (isDebug) Log.v(TAG, "getPlayerNameList Success! $it")
             onSuccess(it)

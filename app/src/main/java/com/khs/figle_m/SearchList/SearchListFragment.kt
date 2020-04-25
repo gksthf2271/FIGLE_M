@@ -362,7 +362,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         mCustomPieChartView.setData(pieEntryList, win + draw + lose)
     }
 
-    override fun showError(error: String) {
+    override fun showError(error: Int) {
         if (SearchPresenter().ERROR_EMPTY.equals(error)) {
             hideLoading(true)
         }

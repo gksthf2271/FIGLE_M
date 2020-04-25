@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
@@ -24,8 +25,8 @@ import okhttp3.ResponseBody
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.name
     open val PREF_NAME = "playerNamePref"
-    private lateinit var mInitPresenter: InitPresenter
-    private lateinit var mPopupWindow: PopupWindow
+    lateinit var mInitPresenter: InitPresenter
+    private var mPopupWindow: PopupWindow? = null
 
     private val MSG_DISCONNECTED_NETWORK = 0
     private val mHandler:Handler = Handler(this)
@@ -54,16 +55,16 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         Log.v(TAG,"is Restart app? $isRestartApp")
         if (!isRestartApp) {
             mInitPresenter.takeView(this)
-            mInitPresenter.getSeasonIdList(applicationContext)
-            mInitPresenter.getPlayerNameList(applicationContext)
+            mInitPresenter.getSeasonIdList(this)
+            mInitPresenter.getPlayerNameList(this)
         }
-        DataManager.getInstance().init(applicationContext)
+        DataManager.getInstance().init(this)
     }
 
     override fun onResume() {
         super.onResume()
-        if (!NetworkUtils().checkNetworkStatus(applicationContext)) {
-//            showNetworkError()
+        if (!NetworkUtils().checkNetworkStatus(this)) {
+            showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED)
         } else {
             txt_disconnected_network.visibility = View.INVISIBLE
         }
@@ -72,6 +73,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun onDestroy() {
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
+        PopupWindow().dismiss()
         mInitPresenter!!.dropView()
     }
 
@@ -100,6 +102,11 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun handleMessage(msg: Message): Boolean {
         when(msg.what) {
             MSG_DISCONNECTED_NETWORK -> {
+                Log.v(TAG,"received MSG_DISCONNECTED NETWORK!")
+                if (mPopupWindow != null && mPopupWindow!!.isShowing) {
+                    Log.v(TAG,"dismiss!")
+                    mPopupWindow!!.dismiss()
+                }
                 finish()
             }
         }
@@ -111,8 +118,9 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     }
 
     override fun showNetworkError() {
+        Log.v(TAG,"showNetworkError(...)")
         txt_disconnected_network.visibility = View.VISIBLE
-        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
+//        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
     }
 
     override fun setProgressMax(max: Int) {
@@ -144,8 +152,9 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         FragmentUtils().loadFragment(homeFragment, R.id.fragment_container,fm)
     }
 
-    override fun showError(error: String) {
+    override fun showError(error: Int) {
         Log.v(TAG,"showError : $error")
+        showErrorPopup(error)
     }
 
     override fun initPresenter() {
@@ -159,14 +168,83 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        mPopupWindow.setFocusable(true)
-        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+        mPopupWindow!!.setFocusable(true)
+        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
 
 
         val cancel = popupView.findViewById(R.id.Cancel) as Button
-        cancel.setOnClickListener { mPopupWindow.dismiss() }
+        cancel.setOnClickListener { mPopupWindow!!.dismiss() }
 
         val ok = popupView.findViewById(R.id.Ok) as Button
-        ok.setOnClickListener { finish() }
+        ok.setOnClickListener {
+            mPopupWindow!!.dismiss()
+            finish()
+        }
+    }
+
+    open fun showErrorPopup(error: Int) {
+        showErrorPopup(error, true)
+    }
+
+    open fun showErrorPopup(error: Int, isFinish:Boolean) {
+        Log.v(TAG,"showErrorPopup(...) :$error , isDestroyed : $isDestroyed")
+        if (!this.window.isActive || isDestroyed) return
+        when (error) {
+            DataManager().ERROR_NETWORK_DISCONNECTED -> {
+//                if (isFinish) mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
+                showNetworkErrorPopup()
+            }
+            DataManager().ERROR_NOT_FOUND,
+            DataManager().ERROR_BAD_REQUEST -> {
+                showBadRequestPopup()
+            }
+        }
+    }
+
+    private fun showBadRequestPopup() {
+        if (isDestroyed) return
+        val popupView = this.layoutInflater.inflate(R.layout.activity_main_finish, null)
+        mPopupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        mPopupWindow!!.setFocusable(true)
+        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+        val textView = popupView.findViewById<TextView>(R.id.txt_title)
+        textView.text = "구단주명을 확인해주세요."
+
+        val cancel = popupView.findViewById(R.id.Cancel) as Button
+        cancel.visibility = View.GONE
+
+        val ok = popupView.findViewById(R.id.Ok) as Button
+        ok.setOnClickListener { mPopupWindow!!.dismiss() }
+    }
+
+    private fun showNetworkErrorPopup() {
+        Log.v(TAG,"showNetworkErrorPopup(...)")
+        if (!this.window.isActive || isDestroyed) return
+        val popupView = this.layoutInflater.inflate(R.layout.cview_network_error, null)
+        mPopupWindow = PopupWindow(
+            popupView,
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
+
+        mPopupWindow!!.setFocusable(true)
+        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+        val textView = popupView.findViewById<TextView>(R.id.txt_title)
+        textView.text = "네트워크 상태를 확인해주세요."
+
+        val cancel = popupView.findViewById(R.id.btn_setting) as Button
+        cancel.visibility = View.GONE
+
+        val ok = popupView.findViewById(R.id.btn_finish) as Button
+        ok.setOnClickListener {
+            PopupWindow().dismiss()
+            finish()
+        }
     }
 }

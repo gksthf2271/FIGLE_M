@@ -1,10 +1,10 @@
 package com.khs.figle_m.SearchList
 
-import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Response.UserHighRankResponse
 import okhttp3.ResponseBody
 
 interface SearchContract: BaseView {

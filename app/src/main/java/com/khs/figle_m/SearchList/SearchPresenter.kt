@@ -6,7 +6,6 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.utils.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody
 
 class SearchPresenter: SearchContract.Presenter {
 
@@ -14,7 +13,7 @@ class SearchPresenter: SearchContract.Presenter {
     val DEBUG:Boolean = false
     var  mSearchListView: SearchContract.View? = null
 
-    open val ERROR_EMPTY = "EMPTY"
+    open val ERROR_EMPTY = 0
 
     override fun takeView(view: SearchContract.View) {
         mSearchListView = view
@@ -38,8 +37,8 @@ class SearchPresenter: SearchContract.Presenter {
                         }
                     }
                 }, {
-                    Log.v("getMatchId", it)
                     mSearchListView?.hideLoading(true)
+                    mSearchListView?.showError(it)
                 })
         }).start()
     }
@@ -56,6 +55,7 @@ class SearchPresenter: SearchContract.Presenter {
                     }, {
                         Log.v(TAG, "getUserHighRank Failed! $it")
                         mSearchListView?.hideLoading(true)
+                        mSearchListView?.showError(it)
                     })
             }
         }
@@ -76,15 +76,15 @@ class SearchPresenter: SearchContract.Presenter {
 //                    mSearchListView?.hideLoading(false)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mSearchListView?.showError(ERROR_EMPTY)
                     mSearchListView?.hideLoading(true)
+                    mSearchListView?.showError(it)
                 })
 
             }
         }
     }
 
-    fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (String) -> Unit) {
+    fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (Int) -> Unit) {
         DataManager.getInstance().loadMatchDetail(matchId,
             {
                 if (DEBUG) Log.v(TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")

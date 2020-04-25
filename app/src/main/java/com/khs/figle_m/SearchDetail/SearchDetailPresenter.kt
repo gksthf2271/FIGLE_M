@@ -34,7 +34,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mDetailListView!!.showError(ERROR_EMPTY)
+                    mDetailListView!!.showError(it)
                     mDetailListView!!.hideLoading()
                 })
             }
@@ -75,7 +75,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     fun getPlayerImage(
         playerDTO: PlayerDTO,
         onSuccess: ((String) -> Unit),
-        onFailed: (String) -> Unit
+        onFailed: (Int) -> Unit
     ) {
         val seasonId = playerDTO.spId.toString().substring(0, 3)
         var seasonName: String? = null
@@ -102,9 +102,11 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     .attributes().get("src")
 
                 onSuccess(imageUrl!!)
+            }, {
+
             })
         }catch (e : Exception) {
-            onFailed(e.toString())
+            onFailed(0)
         }
     }
 }

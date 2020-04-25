@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import androidx.viewpager.widget.ViewPager
+import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.MainActivity
 import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
@@ -19,9 +21,13 @@ import com.khs.figle_m.Response.customDTO.PlayerListDTO
 import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogTopView
 import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.DisplayUtils
+import com.khs.figle_m.utils.NetworkUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SearchDetailDialogFragment : DialogBaseFragment(),
     SearchDetailContract.View {
@@ -71,6 +77,13 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun onResume() {
         super.onResume()
+        context.let {
+            if (!NetworkUtils().checkNetworkStatus(context!!)) {
+                dismiss()
+                (activity as MainActivity).showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED, false)
+                return
+            }
+        }
         resizeDialog()
         setBackgroundColorDialog()
     }
@@ -200,8 +213,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         }
     }
 
-    override fun showError(error: String) {
+    override fun showError(error: Int) {
         Log.v(TAG,"showError(...) $error")
+        (activity as MainActivity).showErrorPopup(error)
     }
 
     fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
@@ -228,11 +242,14 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
-        CrawlingUtils().getPlayerImg(player,{
-            callback(it)
-        }, {
-            Log.v(TAG,"updatePlayer(...) : $it")
-        })
+        CoroutineScope(Dispatchers.IO).launch {
+            CrawlingUtils().getPlayerImg(player, {
+                callback(it)
+            }, {
+                Log.v(TAG, "updatePlayer(...) : $it")
+                showError(it)
+            })
+        }
     }
 
     fun getPlayerImgMap(): HashMap<String,PlayerListDTO> {
