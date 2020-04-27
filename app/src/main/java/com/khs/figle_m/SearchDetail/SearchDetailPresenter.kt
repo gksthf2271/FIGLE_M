@@ -86,7 +86,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
 
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
-                Log.v(TAG, "TEST ----------- \n $it")
+                if(DEBUG) Log.v(TAG, "TEST ----------- \n $it")
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val imageUrl = doc.body().getElementById("wrapper")
                     .getElementById("middle")

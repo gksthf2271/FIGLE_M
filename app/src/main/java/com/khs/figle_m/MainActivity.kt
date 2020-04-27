@@ -1,5 +1,7 @@
 package com.khs.figle_m
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -18,9 +20,9 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.NetworkUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.ResponseBody
+
 
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.name
@@ -63,17 +65,14 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onResume() {
         super.onResume()
-        if (!NetworkUtils().checkNetworkStatus(this)) {
-            showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED)
-        } else {
-            txt_disconnected_network.visibility = View.INVISIBLE
-        }
+        txt_disconnected_network.visibility = View.INVISIBLE
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
-        PopupWindow().dismiss()
+        mPopupWindow!!.dismiss()
+        mPopupWindow = null
         mInitPresenter!!.dropView()
     }
 
@@ -244,7 +243,16 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         val ok = popupView.findViewById(R.id.btn_finish) as Button
         ok.setOnClickListener {
             PopupWindow().dismiss()
-            finish()
+            restartApp(this)
         }
+    }
+
+    fun restartApp(context: Context) {
+        val i = context.packageManager
+            .getLaunchIntentForPackage(baseContext.packageName)
+        i!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(i)
+
     }
 }

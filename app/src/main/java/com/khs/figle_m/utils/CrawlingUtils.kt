@@ -33,7 +33,6 @@ class CrawlingUtils() {
         }
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
-                Log.v(TAG, "TEST ----------- \n $it")
                 val doc = Jsoup.parseBodyFragment(it.string())
                 imageUrl = doc.body().getElementById("wrapper")
                     .getElementById("middle")
