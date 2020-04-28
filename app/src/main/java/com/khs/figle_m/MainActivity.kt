@@ -21,6 +21,9 @@ import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 
 
@@ -202,57 +205,62 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     private fun showBadRequestPopup() {
         if (isDestroyed) return
-        val popupView = this.layoutInflater.inflate(R.layout.activity_main_finish, null)
-        mPopupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        mPopupWindow!!.setFocusable(true)
-        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+        CoroutineScope(Dispatchers.Main).launch {
+            val popupView = layoutInflater.inflate(R.layout.activity_main_finish, null)
+            mPopupWindow = PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            mPopupWindow!!.setFocusable(true)
+            mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
 
-        val textView = popupView.findViewById<TextView>(R.id.txt_title)
-        textView.text = "구단주명을 확인해주세요."
+            val textView = popupView.findViewById<TextView>(R.id.txt_title)
+            textView.text = "구단주명을 확인해주세요."
 
-        val cancel = popupView.findViewById(R.id.Cancel) as Button
-        cancel.visibility = View.GONE
+            val cancel = popupView.findViewById(R.id.Cancel) as Button
+            cancel.visibility = View.GONE
 
-        val ok = popupView.findViewById(R.id.Ok) as Button
-        ok.setOnClickListener { mPopupWindow!!.dismiss() }
-    }
-
-    private fun showNetworkErrorPopup() {
-        Log.v(TAG,"showNetworkErrorPopup(...)")
-        if (!this.window.isActive || isDestroyed) return
-        val popupView = this.layoutInflater.inflate(R.layout.cview_network_error, null)
-        mPopupWindow = PopupWindow(
-            popupView,
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.MATCH_PARENT
-        )
-
-        mPopupWindow!!.setFocusable(true)
-        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
-
-        val textView = popupView.findViewById<TextView>(R.id.txt_title)
-        textView.text = "네트워크 상태를 확인해주세요."
-
-        val cancel = popupView.findViewById(R.id.btn_setting) as Button
-        cancel.visibility = View.GONE
-
-        val ok = popupView.findViewById(R.id.btn_finish) as Button
-        ok.setOnClickListener {
-            PopupWindow().dismiss()
-            restartApp(this)
+            val ok = popupView.findViewById(R.id.Ok) as Button
+            ok.setOnClickListener { mPopupWindow!!.dismiss() }
         }
     }
 
-    fun restartApp(context: Context) {
-        val i = context.packageManager
-            .getLaunchIntentForPackage(baseContext.packageName)
-        i!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(i)
+    private fun showNetworkErrorPopup() {
+        if (mPopupWindow!=null && mPopupWindow!!.isShowing) return
+        if (!this.window.isActive || isDestroyed) return
+        Log.v(TAG,"showNetworkErrorPopup(...)")
+        CoroutineScope(Dispatchers.Main).launch {
+            val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
+            mPopupWindow = PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
 
+            mPopupWindow!!.setFocusable(true)
+            mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+
+            val textView = popupView.findViewById<TextView>(R.id.txt_title)
+            textView.text = "네트워크 상태를 확인해주세요."
+
+            val cancel = popupView.findViewById(R.id.btn_setting) as Button
+            cancel.visibility = View.GONE
+
+            val ok = popupView.findViewById(R.id.btn_finish) as Button
+            ok.setOnClickListener {
+                mPopupWindow!!.dismiss()
+                finish()
+            }
+        }
     }
+
+//    fun restartApp(context: Context) {
+//        val i = context.packageManager
+//            .getLaunchIntentForPackage(baseContext.packageName)
+//        i!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//        startActivity(i)
+//
+//    }
 }
