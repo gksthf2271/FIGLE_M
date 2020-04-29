@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/txt_progress"
-        android:text="데이터 수집 중입니다..."
+        android:text="선수 데이터 수집 중입니다..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/search_text_color"
