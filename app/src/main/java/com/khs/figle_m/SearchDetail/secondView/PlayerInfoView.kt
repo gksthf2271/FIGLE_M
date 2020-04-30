@@ -89,7 +89,7 @@ class PlayerInfoView : ConstraintLayout {
         txt_goalRate.text = "유효슈팅(성공률) : " + String.format("%.1f",goalRate) + "%"
         txt_assistRate.text = "팀내 도움률 : " + String.format("%.1f",assistRate) + "%"
         txt_passRate.text = "패스(성공률) : " + String.format("%.1f",passRate) + "%"
-        txt_blockRate.text = "블락 / 태클 : " + player.status.block + " / " + player.status.tackle
+//        txt_blockRate.text = "블락 / 태클 : " + player.status.block + " / " + player.status.tackle
 
         chart_view.setCoverColor(resources.getColor(R.color.chart_cover, null))
         chart_view.setCoverAlpha(180)
