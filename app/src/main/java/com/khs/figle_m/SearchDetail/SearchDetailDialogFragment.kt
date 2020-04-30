@@ -215,6 +215,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun showError(error: Int) {
         Log.v(TAG,"showError(...) $error")
+        dismiss()
         (activity as MainActivity).showErrorPopup(error)
     }
 

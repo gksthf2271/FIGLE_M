@@ -305,6 +305,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     }
 
     override fun showError(error: Int) {
+        dismiss()
         (activity as MainActivity).showErrorPopup(error)
     }
 }
