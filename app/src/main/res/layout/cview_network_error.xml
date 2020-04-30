@@ -46,7 +46,7 @@
             android:id="@+id/btn_finish"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="종료"
+            android:text="재시도"
             android:layout_marginLeft="15dp"
             android:background="@color/search_text_color"
             app:layout_constraintTop_toTopOf="parent"

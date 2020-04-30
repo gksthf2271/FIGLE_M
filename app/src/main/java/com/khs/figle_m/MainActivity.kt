@@ -1,18 +1,18 @@
 package com.khs.figle_m
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
@@ -74,8 +74,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun onDestroy() {
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
-        mPopupWindow!!.dismiss()
-        mPopupWindow = null
         mInitPresenter!!.dropView()
     }
 
@@ -232,28 +230,36 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         Log.v(TAG,"showNetworkErrorPopup(...)")
         CoroutineScope(Dispatchers.Main).launch {
             val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
-            mPopupWindow = PopupWindow(
+            val popupWindow = PopupWindow(
                 popupView,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             )
 
-            mPopupWindow!!.setFocusable(true)
-            mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            popupWindow!!.setFocusable(true)
+            popupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
 
             val textView = popupView.findViewById<TextView>(R.id.txt_title)
             textView.text = "네트워크 상태를 확인해주세요."
 
             val cancel = popupView.findViewById(R.id.btn_setting) as Button
-            cancel.visibility = View.GONE
+            cancel.setOnClickListener {
+                popupWindow!!.dismiss()
+                val intent = Intent(Settings.ACTION_SETTINGS)
+                startActivityForResult(intent, 0)
+            }
 
             val ok = popupView.findViewById(R.id.btn_finish) as Button
             ok.setOnClickListener {
-                mPopupWindow!!.dismiss()
-                finish()
+                popupWindow!!.dismiss()
+                finishAffinity()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                System.exit(0)
             }
         }
     }
+
 
 //    fun restartApp(context: Context) {
 //        val i = context.packageManager
