@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
+import java.lang.NullPointerException
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
     val TAG:String = javaClass.name
@@ -86,10 +87,17 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
 
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
-                if(DEBUG) Log.v(TAG, "TEST ----------- \n $it")
                 val doc = Jsoup.parseBodyFragment(it.string())
-                val imageUrl = doc.body().getElementById("wrapper")
+                if(DEBUG) Log.v(TAG, "TEST ----------- \n $doc")
+                val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
+                if (parentBody == null) {
+                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    onFailed(0)
+                    return@loadPlayerInfo
+                }
+
+                val imageUrl = parentBody
                     .getElementsByClass("datacenter").get(0)
                     .getElementsByClass("wrap").get(0)
                     .getElementsByClass("player_view").get(0)
