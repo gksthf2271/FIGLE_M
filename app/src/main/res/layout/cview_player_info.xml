@@ -111,10 +111,14 @@
             app:layout_constraintRight_toRightOf="@id/txt_passRate"
             app:layout_constraintTop_toBottomOf="@id/txt_passRate">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/icon_add"
+            <TextView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textSize="30sp"
+                android:text="+"
+                android:textStyle="bold"
+                android:textColor="@color/search_text_color"
+                android:gravity="center"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
