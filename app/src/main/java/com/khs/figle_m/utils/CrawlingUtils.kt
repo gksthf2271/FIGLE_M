@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
+import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 
@@ -33,9 +34,17 @@ class CrawlingUtils() {
         }
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+
                 val doc = Jsoup.parseBodyFragment(it.string())
-                imageUrl = doc.body().getElementById("wrapper")
+                val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
+                if (parentBody == null) {
+                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    onFailed(0)
+                    return@loadPlayerInfo
+                }
+
+                val imageUrl = parentBody
                     .getElementsByClass("datacenter").get(0)
                     .getElementsByClass("wrap").get(0)
                     .getElementsByClass("player_view").get(0)
@@ -55,6 +64,65 @@ class CrawlingUtils() {
             Log.d(TAG, "Error : $e")
             onFailed(0)
         }
+    }
+
+    fun getRanking(page : Int, onSuccess: (List<Ranker>) -> Unit, onFailed: (Int) -> Unit) {
+        try {
+            DataManager.getInstance().loadRaking(page, {
+                val doc = Jsoup.parseBodyFragment(it.string())
+                val parentBody = doc.body().getElementById("wrapper")
+                    .getElementById("middle")
+                if (parentBody == null) {
+                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    onFailed(0)
+                    return@loadRaking
+                }
+                val rankerList = arrayListOf<Ranker>()
+                val bodyList = parentBody
+                    .getElementsByClass("datacenter").get(0)
+                    .getElementsByClass("wrap").get(0)
+                    .getElementsByClass("board_list datacenter_rank").get(0)
+                    .getElementsByClass("content datacenter_rank_list").get(0)
+                    .getElementsByClass("list_wrap").get(0)
+                    .getElementsByClass("tbody").get(0)
+                    .getElementsByClass("tr")
+
+                for (i in 0 .. bodyList.size){
+                    rankerList.add(searchBody(null, i))
+                }
+
+                onSuccess(rankerList)
+            }, {
+                onFailed(it)
+            })
+        } catch (e: IllegalStateException) {
+            Log.d(TAG, "Error : $e")
+            onFailed(0)
+        }
+    }
+
+    fun searchBody(ranker: Ranker?, index : Int) : Ranker {
+        if (ranker == null) {
+            searchBody(
+                Ranker(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                ), index
+            )
+        }
+
+        
     }
 
     fun updatePlayerImage(context: Context, imgView: ImageView, url: String) {

@@ -326,6 +326,31 @@ class DataManager{
         })
     }
 
+    //    http://fifaonline4.nexon.com/datacenter/rank?n4pageno=3
+    fun loadRaking(
+        page: Int,
+        onSuccess: (ResponseBody) -> Unit,
+        onFailed: (Int) -> Unit
+    ) {
+        val call = SearchUser.getCrawlingService()
+            .requestRaking(page = page)
+
+        /*if (DEBUG) */Log.v(TAG, "TEST, Call : ${call.request()}")
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
+                }
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                onSuccess(response.body()!!)
+            }
+        })
+    }
+
     fun maekErrorException(t :Throwable) :Int {
         if (t is UnknownHostException) {
             return ERROR_NETWORK_DISCONNECTED

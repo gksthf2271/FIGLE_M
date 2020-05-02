@@ -71,4 +71,10 @@ interface RetrofitService {
         @Query("spId") spId: Int,
         @Query("n1Strong") strong: Int
     ): Call<ResponseBody>
+
+    //    http://fifaonline4.nexon.com/datacenter/rank?n4pageno=3
+    @GET("rank")
+    fun requestRaking(
+        @Query("n4pageno") page: Int
+    ): Call<ResponseBody>
 }
