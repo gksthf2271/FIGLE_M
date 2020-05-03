@@ -15,9 +15,11 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 
 class CrawlingUtils() {
     private val TAG = this.javaClass.name
+    private val DEBUG = false
 
     fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
         val seasonId = playerDTO.spId.toString().substring(0, 3)
@@ -87,8 +89,10 @@ class CrawlingUtils() {
                     .getElementsByClass("tbody").get(0)
                     .getElementsByClass("tr")
 
-                for (i in 0 .. bodyList.size){
-                    rankerList.add(searchBody(null, i))
+                for (i in 0 .. bodyList.size-1){
+                    val item = searchBody(i, bodyList[i])
+                    if (item == null) continue
+                    rankerList.add(item)
                 }
 
                 onSuccess(rankerList)
@@ -101,28 +105,57 @@ class CrawlingUtils() {
         }
     }
 
-    fun searchBody(ranker: Ranker?, index : Int) : Ranker {
-        if (ranker == null) {
-            searchBody(
-                Ranker(
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-                ), index
-            )
-        }
+    fun searchBody(index : Int, body: Element) : Ranker? {
+        var rank_no: String?               //순위
+        var rank_icon_url: String?         //랭크 아이콘 주소
+        var level: String?                 //레벨
+        var level_gage: String?            //레벨 경험치 퍼센트
+        var name: String?                  //이름
+        var price: String?                 //구단가치
+        var win: String?         //승무패
+        var draw: String?         //승무패
+        var lose: String?         //승무패
+        var rank_rate: String?             //승률
+        var rank_point: String?            //랭크점수
+        var rank_percent: String?          //상위 랭크 퍼센트
+        var best_rank_icon_url: String?    //역대 랭크 아이콘 주소
+        var pre_rank_icon_url: String?     //이전 랭크 아이콘 주소
+        var cur_rank_icon_url: String?      //현재 랭크 아이콘 주소
 
-        
+        rank_no = body.childNode(1).childNode(0).toString()
+        rank_icon_url = body.childNode(3).childNode(1).childNode(0).attributes().get("src")
+        name = body.childNode(3).childNode(3).childNode(3).childNode(0).toString()
+        level_gage = body.childNode(3).childNode(3).childNode(1).childNode(0).attributes().get("style")
+        level = body.childNode(3).childNode(3).childNode(1).childNode(1).childNode(0).toString()
+        price = body.childNode(3).childNode(5).childNode(0).toString()
+        win = body.childNode(5).childNode(0).toString()
+        draw = body.childNode(5).childNode(2).toString()
+        lose = body.childNode(5).childNode(4).toString()
+        rank_rate = body.childNode(7).childNode(0).toString()
+        rank_point = body.childNode(9).childNode(0).toString()
+        rank_percent = body.childNode(11).childNode(0).toString()
+        best_rank_icon_url = body.childNode(13).childNode(1).childNode(0).attributes().get("src")
+        pre_rank_icon_url = body.childNode(13).childNode(5).childNode(0).attributes().get("src")
+        cur_rank_icon_url = body.childNode(13).childNode(9).childNode(0).attributes().get("src")
+
+        val result = Ranker(
+            rank_no,
+            rank_icon_url,
+            level,
+            level_gage,
+            name,
+            price,
+            win,
+            draw,
+            lose,
+            rank_rate,
+            rank_point,
+            rank_percent,
+            best_rank_icon_url,
+            pre_rank_icon_url,
+            cur_rank_icon_url)
+        if(DEBUG) Log.v(TAG,"TEST, Ranker : ${result}")
+        return result
     }
 
     fun updatePlayerImage(context: Context, imgView: ImageView, url: String) {

@@ -39,6 +39,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
     override fun onStart() {
         super.onStart()
         mRankingPresenter.takeView(this)
+        mRankingPresenter.getRankingList(this, 1)
     }
 
     override fun onDestroy() {
@@ -68,8 +69,8 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
         layout_recyclerview.visibility = View.VISIBLE
     }
 
-    override fun showRanking() {
-        TODO("Not yet implemented")
+    override fun showRanking(rankerList : List<Ranker>) {
+
     }
 
     override fun showNetworkError() {

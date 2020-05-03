@@ -8,7 +8,7 @@ interface RankingContract : BaseView {
     interface View : BaseView {
         fun showLoading()
         fun hideLoading()
-        fun showRanking()
+        fun showRanking(rankerList : List<Ranker>)
         fun showNetworkError()
     }
 

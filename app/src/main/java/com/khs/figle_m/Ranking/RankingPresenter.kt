@@ -2,8 +2,7 @@ package com.khs.figle_m.Ranking
 
 import android.content.Context
 import android.util.Log
-import com.khs.figle_m.Base.BasePresenter
-import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.utils.CrawlingUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -16,16 +15,26 @@ class RankingPresenter : RankingContract.Presenter{
         mRankingView?.showLoading()
         runBlocking {
             launch {
-                DataManager.getInstance().loadRaking(page,{
-                    if (isDebug) Log.v(TAG, "getSeasonIdList Success! $it")
-                    mRankingView?.showRanking()
+                loadRankingByCrawling(page,{
+                    if (isDebug) Log.v(TAG, "getRankingList Success! $it")
+                    mRankingView?.showRanking(it)
 
                 }, {
-                    Log.v(TAG, "getSeasonIdList Failed! $it")
+                    Log.v(TAG, "getRankingList Failed! $it")
                     mRankingView?.showError(it)
                 })
             }
         }
+    }
+
+    fun loadRankingByCrawling(page:Int, onSuccess:(List<Ranker>) -> Unit, onFailed:(Int) -> Unit) {
+        CrawlingUtils().getRanking(1,
+            {
+                onSuccess(it)
+            },
+            {
+                onFailed(it)
+            })
     }
 
     override fun takeView(view: RankingContract.View) {

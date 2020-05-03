@@ -166,8 +166,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         val deviceeHeight = size.y
-        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceeHeight * 0.9).toInt()
+        params?.width = (deviceWidth * 0.95).toInt()
+        params?.height = (deviceeHeight * 0.95).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
