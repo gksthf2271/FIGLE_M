@@ -26,6 +26,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         mDetailListView = view
     }
     override fun getPlayerImage(accessId: String, playerDTO: PlayerDTO, size:Int) {
+        mDetailListView ?: return
         mDetailListView!!.showLoading()
         runBlocking {
             launch {
@@ -40,6 +41,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 })
             }
         }
+
     }
 
     /*DummyData
@@ -85,6 +87,11 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 seasonName = item.className
         }
 
+        Log.v(TAG,"test, seasonName : $seasonName")
+        if (seasonName == null) {
+            return
+        }
+
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
                 val doc = Jsoup.parseBodyFragment(it.string())
@@ -97,19 +104,23 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     return@loadPlayerInfo
                 }
 
-                val imageUrl = parentBody
-                    .getElementsByClass("datacenter").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("player_view").get(0)
-                    .getElementsByClass("content data_detail").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("content_header").get(0)
-                    .getElementsByClass("thumb ${seasonName}").get(0)
-                    .getElementsByClass("img").get(0)
-                    .childNodes().get(0)
-                    .attributes().get("src")
-
-                onSuccess(imageUrl!!)
+                try {
+                    val imageUrl = parentBody
+                        .getElementsByClass("datacenter").get(0)
+                        .getElementsByClass("wrap").get(0)
+                        .getElementsByClass("player_view").get(0)
+                        .getElementsByClass("content data_detail").get(0)
+                        .getElementsByClass("wrap").get(0)
+                        .getElementsByClass("content_header").get(0)
+                        .getElementsByClass("thumb ${seasonName}").get(0)
+                        .getElementsByClass("img").get(0)
+                        .childNodes().get(0)
+                        .attributes().get("src")
+                    onSuccess(imageUrl!!)
+                } catch (e : IndexOutOfBoundsException) {
+                    Log.e(TAG,"IndexOutOfBoundsException $e")
+                    onFailed(0)
+                }
             }, {
 
             })
