@@ -1,0 +1,109 @@
+package com.khs.figle_m.Ranking
+
+import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.khs.figle_m.Base.BaseFragment
+import com.khs.figle_m.R
+import com.khs.figle_m.SearchList.SearchDecoration
+import kotlinx.android.synthetic.main.fragment_ranking.*
+
+class RankingFragment : BaseFragment(){
+    val TAG:String = javaClass.name
+    open val KEY_RANKING_LIST = "KEY_RANKING_LIST"
+    val DEBUG = false
+
+    override fun initPresenter() {
+        TODO("Not yet implemented")
+    }
+
+    companion object {
+        @Volatile
+        private var instance: RankingFragment? = null
+
+        @JvmStatic
+        fun getInstance(): RankingFragment =
+            instance ?: synchronized(this) {
+                instance
+                    ?: RankingFragment().also {
+                        instance = it
+                    }
+            }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val v: View = inflater.inflate(R.layout.fragment_ranking, container, false)
+        return v
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        initList()
+    }
+
+    fun initList() {
+        var rankingList = arrayListOf<Ranker>()
+        arguments.let {
+            rankingList = arguments!!.getParcelableArrayList(KEY_RANKING_LIST)!!
+        }
+        val layoutManager = LinearLayoutManager(context)
+        layout_recyclerview.addItemDecoration(SearchDecoration(10))
+        layout_recyclerview.setLayoutManager(layoutManager)
+        layout_recyclerview.adapter = RankingRecyclerViewAdapter(context!!, rankingList, {
+            updateTopView(it)
+        })
+        updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
+    }
+
+    fun updateTopView(rank:Ranker?) {
+        context ?: return
+        rank ?: return
+        txt_ranking.text = rank.rank_no
+        txt_rate.text = rank.rank_rate
+        txt_no1_id.text = rank.name
+        txt_no1_total_price.text = rank.price
+
+        Glide.with(context!!)
+            .load(Uri.parse(rank.rank_icon_url))
+            .placeholder(R.drawable.person_icon)
+            .error(R.drawable.person_icon)
+            .skipMemoryCache(false)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any,
+                    target: Target<Drawable>,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    model: Any,
+                    target: Target<Drawable>,
+                    dataSource: DataSource,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if(DEBUG) Log.d(TAG, "TEST, onResourceReady(...) url : ${rank.rank_icon_url}")
+                    return false
+                }
+            })
+            .into(img_no1_logo)
+    }
+}

@@ -26,7 +26,7 @@ class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val 
         var viewHolder: RecyclerView.ViewHolder? = null
         val view: View =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_search_list, parent, false)
+                .inflate(R.layout.item_ranking_list, parent, false)
         viewHolder = ViewHolder(view, itemClick)
         return viewHolder
     }
@@ -40,33 +40,40 @@ class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val 
         holder.bind(mRankerList!!.get(position), mContext)
     }
 
+    fun getFirstRanker(): Ranker? {
+        if (mRankerList == null || mRankerList.isEmpty()) {
+            Log.v(TAG,"mRankerList is null")
+            return null
+        }
+        return mRankerList!!.get(0)
+    }
+
     inner class ViewHolder(itemView: View, itemClick: (Ranker) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         val TAG: String = javaClass.name
-        var mRootLayout: ConstraintLayout
         var mItemView: View
-        var mTxtLeftNickName: TextView
-        var mTxtRightNickName: TextView
-        var mTxtLeftScore: TextView
-        var mTxtRightScore: TextView
-        var mTxtLeftResult: TextView
-        var mTxtRightResult: TextView
-        var mTxtDate: TextView
+        var mRootLayout: ConstraintLayout
+
+        var mTxtRanking: TextView
+        var mTxtRankingPoint: TextView
+        var mTxtId: TextView
+        var mTxtTotalPrice: TextView
 
         init {
             mItemView = itemView
-            mRootLayout = mItemView.findViewById(R.id.root_layout)
-            mTxtRightNickName = mItemView.findViewById(R.id.txt_right_nickName)
-            mTxtLeftNickName = mItemView.findViewById(R.id.txt_left_nickName)
-            mTxtLeftScore = mItemView.findViewById(R.id.txt_left_score)
-            mTxtRightScore = mItemView.findViewById(R.id.txt_right_score)
-            mTxtLeftResult = mItemView.findViewById(R.id.txt_left_result)
-            mTxtRightResult = mItemView.findViewById(R.id.txt_right_result)
-            mTxtDate = mItemView.findViewById(R.id.txt_date)
+            mRootLayout = mItemView.findViewById(R.id.view_no1)
+            mTxtRanking = mItemView.findViewById(R.id.txt_ranking)
+            mTxtRankingPoint = mItemView.findViewById(R.id.txt_rank_point)
+            mTxtId = mItemView.findViewById(R.id.txt_no1_id)
+            mTxtTotalPrice = mItemView.findViewById(R.id.txt_no1_total_price)
         }
 
-
         fun bind(item: Ranker, context: Context) {
+            mTxtRanking.text = item.rank_no
+            mTxtRankingPoint.text = item.rank_point
+            mTxtId.text = item.name
+            mTxtTotalPrice.text = item.price
+            itemClick(item)
         }
     }
 }
