@@ -54,11 +54,11 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     lateinit var mSelectedMatchInfo:MatchDetailResponse
 
-    lateinit var mCoachDivision: String
-    lateinit var mNormalDivision: String
+    var mCoachDivision: String = ""
+    var mNormalDivision: String = ""
 
-    lateinit var mNormalMatchResponse: UserHighRankResponse
-    lateinit var mCoachMatchResponse: UserHighRankResponse
+    var mNormalMatchResponse: UserHighRankResponse? = null
+    var mCoachMatchResponse: UserHighRankResponse? = null
 
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
@@ -161,6 +161,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                         txt_play_mode.text = "1 ON 1"
                         initRate(true)
                         mDivisionView.text = mNormalDivision ?: "-"
+                        mNormalMatchResponse ?: return
                         mAchievementDateView.text =
                             mNormalMatchResponse!!.achievementDate.replace("T", " / ")
                     }
@@ -168,6 +169,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
                         txt_play_mode.text = "감독모드"
                         initRate(false)
                         mDivisionView.text = mCoachDivision ?: "-"
+                        mCoachMatchResponse ?: return
                         mAchievementDateView.text =
                             mCoachMatchResponse!!.achievementDate.replace("T", " / ")
                     }
@@ -320,6 +322,10 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
+        if (userHighRankResponse.isEmpty() || userHighRankResponse.size == 0) {
+            showError(SearchPresenter().ERROR_EMPTY)
+            return
+        }
         for (item in userHighRankResponse) {
             if (DataManager.matchType.normalMatch.matchType == item.matchType) {
                 mNormalMatchResponse = item
@@ -329,9 +335,9 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
         }
 
         for (item in DivisionEnum.values()) {
-            if (mNormalMatchResponse != null && item.divisionId.equals(mNormalMatchResponse.division)) {
+            if (mNormalMatchResponse != null && item.divisionId.equals(mNormalMatchResponse!!.division)) {
                 mNormalDivision = item.divisionName
-            } else if (mCoachMatchResponse != null && item.divisionId.equals(mCoachMatchResponse.division)) {
+            } else if (mCoachMatchResponse != null && item.divisionId.equals(mCoachMatchResponse!!.division)) {
                 mCoachDivision = item.divisionName
             }
         }
