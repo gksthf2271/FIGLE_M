@@ -158,9 +158,11 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             val seasonDB = PlayerDataBase.getInstance(context)
             seasonDB.let {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val seasonId = item.spId.toString().substring(0,3)
+                    var seasonId = item.spId.toString().substring(0,3)
+                    //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요
+                    if ("224".equals(seasonId)) seasonId = "234"
                     val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                    if(isDebug) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
+                    if(!isDebug) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                     seasonEntity.let {
                         val url = seasonEntity.seasonImg
                         CoroutineScope(Dispatchers.Main).launch {

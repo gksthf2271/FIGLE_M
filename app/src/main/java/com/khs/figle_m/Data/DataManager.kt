@@ -268,14 +268,14 @@ class DataManager{
         onSuccess: (List<RankerPlayerDTO>) -> Unit,
         onFailed: (Int) -> Unit
     ) {
-        if (!DEBUG) Log.v(TAG, "TEST, players : ${players}")
+        if (DEBUG) Log.v(TAG, "TEST, players : ${players}")
         val call = SearchUser.getApiService()
             .requestRankerPlayerAverList(
                 authorization = mAuthorizationKey,
                 matchType = matchType,
                 players = players
             )
-        if (!DEBUG) Log.v(TAG, "TEST, call : ${call.request()}")
+        if (DEBUG) Log.v(TAG, "TEST, call : ${call.request()}")
 
         call.enqueue(object : Callback<List<RankerPlayerDTO>> {
             override fun onFailure(call: Call<List<RankerPlayerDTO>>, t: Throwable) {
@@ -289,7 +289,7 @@ class DataManager{
                 call: Call<List<RankerPlayerDTO>>,
                 response: Response<List<RankerPlayerDTO>>
             ) {
-                if (!DEBUG) Log.v(TAG, "loadRankerPlayerAverData response(...) ${response.code()}")
+                if (DEBUG) Log.v(TAG, "loadRankerPlayerAverData response(...) ${response.code()}")
                 if (response != null) {
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)

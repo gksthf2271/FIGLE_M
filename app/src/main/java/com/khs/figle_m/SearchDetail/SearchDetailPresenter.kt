@@ -33,10 +33,17 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 getPlayerImage(playerDTO, {
                     if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: $it")
                     playerDTO.imageUrl = it
+                    mDetailListView ?: return@getPlayerImage
                     mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mDetailListView!!.showError(it)
+                    mDetailListView ?: return@getPlayerImage
+                    playerDTO.imageUrl = it.toString()
+                    if (it == 0) {
+                        mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+                    } else {
+                        mDetailListView!!.showError(it)
+                    }
                     mDetailListView!!.hideLoading()
                 })
             }
@@ -53,10 +60,12 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 DataManager.getInstance().loadRankerPlayerAverData(matchType,
                     getPlayerObject(playerDTO),
                     {
+                        mDetailListView ?: return@loadRankerPlayerAverData
                         mDetailListView!!.hideLoading()
                         Log.v(TAG,"getRankerPlayerList success!")
                         mDetailListView!!.showPlayerDetailDialogFragment(playerDTO,it)
                     },{
+                        mDetailListView ?: return@loadRankerPlayerAverData
                         mDetailListView!!.hideLoading()
                         Log.v(TAG,"getRankerPlayerList failed!")
                         mDetailListView!!.showPlayerDetailDialogFragment(playerDTO, emptyList())
@@ -80,8 +89,14 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         onSuccess: ((String) -> Unit),
         onFailed: (Int) -> Unit
     ) {
-        val seasonId = playerDTO.spId.toString().substring(0, 3)
+        var seasonId = playerDTO.spId.toString().substring(0, 3)
         var seasonName: String? = null
+        if (seasonId.equals("224")) {
+            Log.v(TAG,"TEST, 224 : $playerDTO")
+            //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요
+            playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
+            seasonId = "234"
+        }
         for (item in SeasonEnum.values()) {
             if (item.seasonId.toString().equals(seasonId))
                 seasonName = item.className

@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlayerDTO (
-    val spId: Int,
+    var spId: Int,
     val spPosition: Int,
     val spGrade: Int,
     val status: StatusDTO,

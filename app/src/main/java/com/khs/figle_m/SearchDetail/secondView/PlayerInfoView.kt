@@ -39,6 +39,11 @@ class PlayerInfoView : ConstraintLayout {
     }
 
     fun updateView(player: PlayerDTO, assistList: List<Int>, teamBlockList: List<Int>) {
+        var seasonId = player.spId.toString().substring(0,3)
+        if("224".equals(seasonId)) {
+            player.spId = player.spId.toString().replaceRange(0 .. 2,"234").toInt()
+            seasonId = "234"
+        }
         mPlayerDTO = player
         var totalAssistCount = 0
         var totalBlockCount = 0

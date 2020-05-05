@@ -19,8 +19,9 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     TOTY20(220,"20toty"),
     UCL19(221,"19ucl"),
     TOTN20(222,"20totn"),
-    LH(234,"lh"),
+    LH1(224,"lh"),          //임시 방편 224, 234 뭐가 맞는지 문의필요
     TKL(225,"tkl"),
+    LH(234,"lh"),
     KFA19(295,"2019kfa"),
     MCFC(297,"mcfc"),
     KFA18(298,"kfa"),

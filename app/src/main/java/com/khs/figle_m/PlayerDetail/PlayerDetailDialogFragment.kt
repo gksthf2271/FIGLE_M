@@ -245,7 +245,9 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         val seasonDB = PlayerDataBase.getInstance(context)
         seasonDB.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val seasonId = item.spId.toString().substring(0,3)
+                var seasonId = item.spId.toString().substring(0,3)
+                //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요
+                if ("224".equals(seasonId)) seasonId = "234"
                 val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
                 Log.v(TAG,"seasonEntity : ${seasonEntity.className}")
                 seasonEntity.let {
