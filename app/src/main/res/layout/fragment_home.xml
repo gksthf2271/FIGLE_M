@@ -68,4 +68,15 @@
 <!--            app:layout_constraintLeft_toRightOf="@id/edit_search"-->
 <!--            app:layout_constraintTop_toTopOf="@id/edit_search" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/btn_ranking"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/lock"
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintTop_toBottomOf="@id/group_search"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

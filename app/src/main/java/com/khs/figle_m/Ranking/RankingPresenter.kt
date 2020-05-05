@@ -17,10 +17,12 @@ class RankingPresenter : RankingContract.Presenter{
             launch {
                 loadRankingByCrawling(page,{
                     if (isDebug) Log.v(TAG, "getRankingList Success! $it")
+                    mRankingView?.hideLoading()
                     mRankingView?.showRanking(it)
 
                 }, {
                     Log.v(TAG, "getRankingList Failed! $it")
+                    mRankingView?.hideLoading()
                     mRankingView?.showError(it)
                 })
             }

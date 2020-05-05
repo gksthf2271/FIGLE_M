@@ -1,5 +1,7 @@
 package com.khs.figle_m.Ranking
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -14,8 +16,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.Base.BaseFragment
+import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.SearchList.SearchDecoration
+import com.khs.figle_m.utils.DisplayUtils
 import kotlinx.android.synthetic.main.fragment_ranking.*
 
 class RankingFragment : BaseFragment(){
@@ -23,8 +27,10 @@ class RankingFragment : BaseFragment(){
     open val KEY_RANKING_LIST = "KEY_RANKING_LIST"
     val DEBUG = false
 
+    lateinit var mCurrentRank: Ranker
+
     override fun initPresenter() {
-        TODO("Not yet implemented")
+        Log.v(TAG,"initPresenter(...)")
     }
 
     companion object {
@@ -68,18 +74,30 @@ class RankingFragment : BaseFragment(){
             updateTopView(it)
         })
         updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
+        img_search.setOnClickListener {
+            Log.v(TAG,"TEST, onClick!!")
+            var intent = Intent()
+            intent.putExtra(HomeFragment().KEY_SEARCH, mCurrentRank.name)
+            Log.v(TAG,"TEST, 0!!")
+            if (activity != null && activity is RankingActivity) {
+                Log.v(TAG,"TEST, 1!!")
+                activity!!.setResult(Activity.RESULT_OK, intent)
+                activity!!.finish()
+            }
+        }
     }
 
     fun updateTopView(rank:Ranker?) {
         context ?: return
         rank ?: return
-        txt_ranking.text = rank.rank_no
-        txt_rate.text = rank.rank_rate
+        mCurrentRank = rank
+        txt_ranking.text = DisplayUtils().updateTextSize(mCurrentRank.rank_no + " 위", " 위")
+        txt_rate.text = "상위 " + mCurrentRank.rank_percent + "%"
         txt_no1_id.text = rank.name
-        txt_no1_total_price.text = rank.price
+        txt_no1_total_price.text = mCurrentRank.price
 
         Glide.with(context!!)
-            .load(Uri.parse(rank.rank_icon_url))
+            .load(Uri.parse(mCurrentRank.rank_icon_url))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)
             .skipMemoryCache(false)

@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.R
+import com.khs.figle_m.utils.DisplayUtils
 
 class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {
@@ -69,11 +70,13 @@ class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val 
         }
 
         fun bind(item: Ranker, context: Context) {
-            mTxtRanking.text = item.rank_no
-            mTxtRankingPoint.text = item.rank_point
+            mTxtRanking.text = DisplayUtils().updateTextSize(item.rank_no + " 위", " 위")
+            mTxtRankingPoint.text = item.rank_point + " 점"
             mTxtId.text = item.name
             mTxtTotalPrice.text = item.price
-            itemClick(item)
+            mRootLayout.setOnClickListener() {
+                itemClick(item)
+            }
         }
     }
 }

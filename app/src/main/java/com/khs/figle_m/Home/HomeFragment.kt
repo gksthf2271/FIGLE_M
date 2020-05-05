@@ -1,6 +1,8 @@
 package com.khs.figle_m.Home
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -18,6 +20,7 @@ import android.widget.PopupWindow
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
+import com.khs.figle_m.Ranking.RankingActivity
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.utils.FragmentUtils
@@ -30,6 +33,9 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1
     val MSG_SHOW_MATCH_ID_LIST : Int = 2
     val mHandler: Handler = Handler(this)
+
+    val RESULT_REQUEST_CODE = 1000
+    val KEY_SEARCH = "KEY_SEARCH"
 
     lateinit var mUserPresenter: UserPresenter
 
@@ -141,6 +147,10 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     override fun onStart() {
         super.onStart()
         initView()
+        btn_ranking.setOnClickListener {
+            val intent = Intent(context, RankingActivity::class.java)
+            startActivityForResult(intent, RESULT_REQUEST_CODE)
+        }
     }
 
     lateinit var mEditView :EditText
@@ -202,5 +212,20 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         if (mUserPresenter == null) return
         PopupWindow().dismiss()
         mUserPresenter!!.dropView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.v(TAG,"TEST, onActivityResult(...) requestCode : ${requestCode} , resultCode : $resultCode , data : $data")
+        when(requestCode) {
+            RESULT_REQUEST_CODE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data ?: return
+                    search(data!!.getStringExtra(KEY_SEARCH))
+                } else if(resultCode == Activity.RESULT_CANCELED) {
+
+                }
+            }
+        }
     }
 }
