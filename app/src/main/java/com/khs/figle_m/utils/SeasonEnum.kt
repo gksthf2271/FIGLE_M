@@ -19,7 +19,7 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     TOTY20(220,"20toty"),
     UCL19(221,"19ucl"),
     TOTN20(222,"20totn"),
-    LH(224,"lh"),
+    LH(234,"lh"),
     TKL(225,"tkl"),
     KFA19(295,"2019kfa"),
     MCFC(297,"mcfc"),
@@ -54,6 +54,11 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
 //18,222,20TOTN(20TeamOfTheNominated),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/20totn.png
 //19,224,LH(LH),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/lh.png
 //20,225,TKL(TKL),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/tkl.png
+//{
+//    "seasonId": 234,
+//    "className": "LH (LH)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/lh.png"
+//},
 //21,295,19KFA(19KFA),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/2019kfa.png
 //22,297,MCFC(17-18ManCityChampions),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/mcfc.png
 //23,298,18KFA(18KFA),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/kfa.png
