@@ -75,15 +75,18 @@ class RankingFragment : BaseFragment(){
         })
         updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
         img_search.setOnClickListener {
-            Log.v(TAG,"TEST, onClick!!")
+            if(DEBUG) Log.v(TAG,"TEST, onClick!!")
             var intent = Intent()
             intent.putExtra(HomeFragment().KEY_SEARCH, mCurrentRank.name)
-            Log.v(TAG,"TEST, 0!!")
+            if(DEBUG) Log.v(TAG,"TEST, 0!!")
             if (activity != null && activity is RankingActivity) {
-                Log.v(TAG,"TEST, 1!!")
+                if(DEBUG) Log.v(TAG,"TEST, 1!!")
                 activity!!.setResult(Activity.RESULT_OK, intent)
                 activity!!.finish()
             }
+        }
+        btn_close.setOnClickListener{
+            activity!!.finish()
         }
     }
 
