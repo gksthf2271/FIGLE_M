@@ -233,6 +233,7 @@ class SearchListFragment : BaseFragment(), SearchContract.View {
 
     override fun hideLoading(isError: Boolean) {
         Log.v(TAG, "hideLoading(...)")
+        if (!isError) mSearchPresenter.dropView()
         avi_loading.hide()
         avi_loading.visibility = View.GONE
         group_info.visibility = View.VISIBLE
