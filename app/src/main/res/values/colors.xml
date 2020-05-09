@@ -58,4 +58,16 @@
     <color name="chart_player_color">#2196F3</color>
     <color name="chart_player_color_fill">#4696F3</color>
 
+
+    <!-- version 2-->
+    <color name="primary_color">#23242A</color>
+    <color name="button_color">#282A31</color>
+    <color name="text_color">#ffffff</color>
+    <color name="accent_color">#E91B45</color>
+    <color name="grey1">#CBCBCB</color>
+    <color name="grey2">#838383</color>
+    <color name="blue_color">#0093EE</color>
+    <color name="yellow_color">#ffBA00</color>
+    <color name="green_color">#2fCC71</color>
+    <color name="red_color">#DF0531</color>
 </resources>
