@@ -1,8 +1,5 @@
 package com.khs.figle_m
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -12,13 +9,16 @@ import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
-import com.khs.figle_m.SearchList.SearchListFragment
+import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
@@ -84,7 +84,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (getCurrentFragment() is SearchListFragment) {
+            if (getCurrentFragment() is SearchHomeFragment) {
                 FragmentUtils().loadFragment(
                     HomeFragment(),
                     R.id.fragment_container,

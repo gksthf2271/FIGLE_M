@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList
+package com.khs.figle_m.SearchList.Common
 
 import android.content.Context
 import android.view.View
@@ -11,8 +11,9 @@ import androidx.viewpager.widget.ViewPager
 class SearchListPagerAdapter() : PagerAdapter() {
     private val TAG :String = javaClass.name
     lateinit var mContext : Context
-    lateinit var mFirstView : View
-    lateinit var mLastView : View
+    var mFirstView : View? = null
+    var mLastView : View? = null
+    var mEmptyView : View? = null
 
     constructor(context: Context, firstView : View, lastView : View) : this() {
         this.mContext = context
@@ -20,13 +21,22 @@ class SearchListPagerAdapter() : PagerAdapter() {
         this.mLastView = lastView
     }
 
+    constructor(context: Context, firstView : View, lastView : View, emptyView: View) : this() {
+        this.mContext = context
+        this.mFirstView = firstView
+        this.mLastView = lastView
+        this.mEmptyView = emptyView
+    }
+
     override fun instantiateItem(collection: ViewGroup, position: Int): Any {
         var view: View? = null
         when (position) {
             0 -> {
+                if(mFirstView == null) mFirstView = mEmptyView
                 view = mFirstView
             }
             1 -> {
+                if(mLastView == null) mLastView = mEmptyView
                 view = mLastView
             }
         }

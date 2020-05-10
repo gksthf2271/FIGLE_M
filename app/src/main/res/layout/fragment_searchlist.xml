@@ -1,37 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    app:layoutDescription="@xml/scene_search_list">
-
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/abc_vector_test"
-        android:visibility="invisible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txt_sub_MyNickName"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:singleLine="true"
-        android:text="sdfsdfasdf"
-        android:background="@color/fragment_background"
-        android:textColor="@color/search_text_color"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintHeight_percent="0.08"
-        app:layout_constraintTop_toBottomOf="@id/group_info" />
+    android:background="@color/primary_color">
+    <!--    app:layoutDescription="@xml/scene_search_list"-->
 
     <com.khs.figle_m.AvLoadingCustomView
         android:id="@+id/avi_loading"
@@ -43,187 +17,37 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/group_info"
+    <TextView
+        android:id="@+id/txt_title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/fragment_background"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.khs.figle_m.SearchList.PieChartView
-            android:id="@+id/cview_pie_chart"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.45" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/sub_group_info"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="5dp"
-            android:padding="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.9"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5">
-
-            <TextView
-                android:id="@+id/txt_play_mode"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:singleLine="true"
-                android:text="1 ON 1"
-                android:textColor="@color/search_text_color"
-                android:textSize="15sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/txt_MyNickName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:singleLine="true"
-                android:text="TESTTEST"
-                android:textColor="@color/search_text_color"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_play_mode" />
-
-            <TextView
-                android:id="@+id/txt_Level_title"
-                android:layout_width="90dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="10dp"
-                android:singleLine="true"
-                android:text="LV : "
-                android:textColor="@color/search_text_color"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_MyNickName" />
-
-            <TextView
-                android:id="@+id/txt_Level"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:singleLine="true"
-                android:textColor="@color/search_text_color"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toRightOf="@id/txt_Level_title"
-                app:layout_constraintTop_toTopOf="@id/txt_Level_title" />
-
-            <TextView
-                android:id="@+id/txt_High_Rank_title"
-                android:layout_width="90dp"
-                android:layout_height="20dp"
-                android:singleLine="true"
-                android:text="최고 등급 : "
-                android:textColor="@color/search_text_color"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_Level" />
-
-            <TextView
-                android:id="@+id/txt_High_Rank"
-                android:layout_width="90dp"
-                android:layout_height="20dp"
-                android:singleLine="true"
-                android:textColor="@color/search_text_color"
-                android:textSize="12sp"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toRightOf="@id/txt_High_Rank_title"
-                app:layout_constraintTop_toTopOf="@id/txt_High_Rank_title" />
-
-            <TextView
-                android:id="@+id/txt_Achievement_Date"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:singleLine="true"
-                android:textColor="@color/search_text_color"
-                android:textSize="12sp"
-                android:layout_marginTop="3dp"
-                android:gravity="center_vertical"
-                app:layout_constraintLeft_toLeftOf="@id/txt_High_Rank_title"
-                app:layout_constraintRight_toRightOf="@id/txt_High_Rank"
-                app:layout_constraintTop_toBottomOf="@id/txt_High_Rank" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/group_rate"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/fragment_background"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/viewPager"
-        app:layout_constraintHeight_percent="0.08"
-        app:layout_constraintTop_toBottomOf="@id/group_info">
-
-        <TextView
-            android:id="@+id/txt_rate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/search_text_color"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:textColor="@color/text_color"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintLeft_toRightOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="@id/btn_back"
         android:visibility="invisible"
-        android:background="@color/main_background"
-        app:layout_constraintBottom_toTopOf="@id/viewPager"
-        app:layout_constraintHeight_percent="0.04"
+        tools:text="감독 모드" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/abc_vector_test"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_info">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-            android:id="@+id/dots_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:dotsColor="@color/search_text_color"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="10dp"
-            app:dotsSpacing="4dp"
-            app:dotsStrokeColor="@color/search_text_color"
-            app:dotsStrokeWidth="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <com.khs.figle_m.SearchList.SearchListView.SearchListView
+        android:id="@+id/view_searchList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/search_text_color_black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintHeight_percent="0.9"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_indicator" />
+        app:layout_constraintRight_toRightOf="parent" />
 
-
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

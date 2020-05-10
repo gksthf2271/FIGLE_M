@@ -5,11 +5,13 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.github.mikephil.charting.animation.Easing
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import kotlinx.android.synthetic.main.cview_player_info.view.*
+import kotlinx.android.synthetic.main.cview_ranker_chart.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

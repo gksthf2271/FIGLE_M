@@ -1,6 +1,7 @@
 package com.khs.figle_m.SearchList
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import com.khs.figle_m.utils.DateUtils
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val isDebug = false
+    val isDebug = true
     val mSearchAccessId: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?
@@ -36,6 +37,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
     }
 
     override fun getItemCount(): Int {
+        Log.v(TAG,"getItemCount : ${mMatchList!!.size}")
         return mMatchList.let { mMatchList!!.size }
     }
 
@@ -155,19 +157,19 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 mTxtLeftResult.text = myResult
 //                mTxtRightResult.text = opposingUserResult
 
-                var res = 0
+                var drawable:Drawable
                 when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
-                        res = context.resources.getColor(R.color.search_list_win, null)
+                        drawable = context.resources.getDrawable(R.drawable.rounded_win, null)
                     }
                     "패" -> {
-                        res = context.resources.getColor(R.color.search_list_lose, null)
+                        drawable = context.resources.getDrawable(R.drawable.rounded_lose, null)
                     }
                     else -> {
-                        res = context.resources.getColor(R.color.search_list_draw, null)
+                        drawable = context.resources.getDrawable(R.drawable.rounded_draw, null)
                     }
                 }
-                mRootLayout.setBackgroundColor(res)
+                mRootLayout.background = drawable
                 itemView.setOnClickListener { itemClick(item) }
             }
         }

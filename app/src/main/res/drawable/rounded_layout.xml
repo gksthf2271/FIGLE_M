@@ -1,13 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="5dip" />
-    <stroke
-        android:width="1dip"
-        android:color="@color/button_color" />
-    <solid android:color="@color/button_color" />
-    <padding
-        android:bottom="0dip"
-        android:left="10dip"
-        android:right="10dip"
-        android:top="0dip" />
-</shape>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:left="3dp"-->
+<!--        android:top="3dp">-->
+<!--        <shape xmlns:android="http://schemas.android.com/apk/res/android">-->
+<!--            <corners android:radius="5dip" />-->
+<!--            <stroke-->
+<!--                android:width="1dip"-->
+<!--                android:color="#000000" />-->
+<!--            <solid android:color="#000000" />-->
+<!--        </shape>-->
+<!--    </item>-->
+    <item
+        android:right="3dp"
+        android:bottom="3dp">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <corners android:radius="5dip" />
+            <stroke
+                android:width="1dip"
+                android:color="@color/button_color" />
+            <solid android:color="@color/button_color" />
+            <padding
+                android:bottom="0dip"
+                android:left="10dip"
+                android:right="10dip"
+                android:top="0dip" />
+        </shape>
+    </item>
+</layer-list>

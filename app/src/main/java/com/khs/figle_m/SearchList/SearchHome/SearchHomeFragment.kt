@@ -13,24 +13,18 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
+import com.khs.figle_m.SearchList.Common.SearchListPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
-import com.khs.figle_m.SearchList.SearchListPagerAdapter
+import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.SearchList.SearchPresenter
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils
-import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-import kotlinx.android.synthetic.main.fragment_searchlist.*
 import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
-import kotlinx.android.synthetic.main.fragment_searchlist.group_info
-import kotlinx.android.synthetic.main.fragment_searchlist.txt_Achievement_Date
-import kotlinx.android.synthetic.main.fragment_searchlist.txt_High_Rank
-import kotlinx.android.synthetic.main.fragment_searchlist.txt_Level
-import kotlinx.android.synthetic.main.fragment_searchlist.txt_MyNickName
 import kotlinx.android.synthetic.main.fragment_searchlist_ver2.*
 import okhttp3.ResponseBody
 
 
-class SearchListFragment_ver2 : BaseFragment(),
+class SearchHomeFragment : BaseFragment(),
     SearchContract.View {
     val TAG: String = javaClass.name
     val DEBUG: Boolean = true
@@ -63,14 +57,14 @@ class SearchListFragment_ver2 : BaseFragment(),
 
     companion object {
         @Volatile
-        private var instance: SearchListFragment_ver2? = null
+        private var instance: SearchHomeFragment? = null
 
         @JvmStatic
-        fun getInstance(): SearchListFragment_ver2 =
+        fun getInstance(): SearchHomeFragment =
             instance
                 ?: synchronized(this) {
                 instance
-                    ?: SearchListFragment_ver2()
+                    ?: SearchHomeFragment()
                         .also {
                         instance = it
                     }
@@ -110,18 +104,40 @@ class SearchListFragment_ver2 : BaseFragment(),
         }
         mOfficialView = MatchView(context!!)
         mCoachView = MatchView(context!!)
-        val mTeamView = TeamView(context!!)
 
         mOfficialView.updateView(DataManager.matchType.normalMatch.matchType)
         mCoachView.updateView(DataManager.matchType.coachMatch.matchType)
-        mTeamView.updateView(10)
 
-        viewPager_search.adapter =  SearchListPagerAdapter(context!!, mOfficialView, mCoachView)
+        viewPager_search.adapter =
+            SearchListPagerAdapter(
+                context!!,
+                mOfficialView,
+                mCoachView
+            )
         viewPager_search.currentItem = 0
-        viewPager_team.adapter = SearchListPagerAdapter(context!!, mTeamView, mTeamView)
-        viewPager_team.currentItem = 0
 
         match_indicator.setViewPager(viewPager_search)
+    }
+
+    fun initRateView(accessId: String) {
+        initRateView(accessId, mOfficialGameMatchList, mCoachModeMatchList)
+    }
+
+    fun initRateView(accessId : String, officialModeList: List<MatchDetailResponse>, coachModeList: List<MatchDetailResponse>) {
+        val officialModeView = SearchHomeRateView(context!!)
+        val coachModeView = SearchHomeRateView(context!!)
+        val emptyModeView = SearchHomeRateView(context!!)
+
+        officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
+        coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
+        emptyModeView.updateEmptyView()
+
+        viewPager_team.adapter =
+            SearchListPagerAdapter(
+                context!!,
+                officialModeView,
+                coachModeView
+            )
         team_indicator.setViewPager(viewPager_team)
     }
 
@@ -223,8 +239,14 @@ class SearchListFragment_ver2 : BaseFragment(),
             mOfficialGameMatchList.add(searchResponse!!)
             mOfficialGameMatchList.sortByDescending { it.matchDate }
         }
-
         if(DEBUG) Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
+        if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
+            initRateView(mSearchUserInfo.accessId)
+            mOfficialView.setOnClickListener{
+                showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchList)
+            }
+        }
+        checkLoadingView()
     }
 
     override fun showCoachModeList(searchResponse: MatchDetailResponse?) {
@@ -235,6 +257,38 @@ class SearchListFragment_ver2 : BaseFragment(),
             mCoachModeMatchList.sortByDescending { it.matchDate }
         }
         if(DEBUG)  Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
+        if (mCoachModeMatchList.size == mCoachModeMatchIdList.size) {
+            initRateView(mSearchUserInfo.accessId)
+            mCoachView.setOnClickListener{
+                showSearchList(DataManager.matchType.coachMatch, mCoachModeMatchList)
+            }
+        }
+        checkLoadingView()
+    }
+
+    fun checkLoadingView(){
+        if(mCoachModeMatchList.size == mCoachModeMatchIdList.size && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size){
+            hideLoading(false)
+        }
+    }
+
+    fun showSearchList(matchtype: DataManager.matchType, matchList: List<MatchDetailResponse>) {
+        var fragment = SearchListFragment()
+        var bundle = Bundle()
+        bundle.putInt(SearchListFragment().KEY_SEARCH_MATCH_TYPE, matchtype.ordinal)
+        bundle.putParcelableArrayList(
+            SearchListFragment().KEY_SEARCH_MATCH_INFO,
+            ArrayList(matchList)
+        )
+        bundle.putParcelable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)
+
+        fragment.arguments = bundle
+        FragmentUtils().loadFragment(
+            fragment,
+            R.id.fragment_container,
+            fragmentManager!!,
+            true
+        )
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {

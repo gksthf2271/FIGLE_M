@@ -10,9 +10,18 @@ open class FragmentUtils{
     constructor()
 
     open fun loadFragment(fragment: Fragment, container_id:Int, fragmentManager: FragmentManager) {
+        loadFragment(fragment, container_id, fragmentManager, false)
+    }
+
+    open fun loadFragment(fragment: Fragment, container_id:Int, fragmentManager: FragmentManager, isAdded: Boolean) {
         val className: String = fragment.javaClass.name
         val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
-        fragmentTransaction.replace(container_id, fragment, className)
+        if (isAdded) {
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.add(container_id, fragment, className)
+        } else {
+            fragmentTransaction.replace(container_id, fragment, className)
+        }
         fragmentTransaction.commit()
     }
 

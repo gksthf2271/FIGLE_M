@@ -47,12 +47,13 @@
                 android:layout_height="0dp"
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/rounded_layout"
+                android:elevation="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.8"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.45"
-                app:layout_constraintVertical_bias="0.8">
+                app:layout_constraintVertical_bias="0.8"
+                app:layout_constraintWidth_percent="0.45">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager_team"
@@ -71,14 +72,14 @@
                     app:dotsSpacing="4dp"
                     app:dotsStrokeColor="@color/search_text_color"
                     app:dotsStrokeWidth="1dp"
-                    app:layout_constraintHeight_percent="0.07"
-                    app:layout_constraintTop_toBottomOf="@id/viewPager_team"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.07"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewPager_team" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        <com.khs.figle_m.SearchList.PieChartView-->
+            <!--        <com.khs.figle_m.SearchList.Common.PieChartView-->
             <!--            android:id="@+id/cview_pie_chart"-->
             <!--            android:layout_width="0dp"-->
             <!--            android:layout_height="0dp"-->
@@ -132,7 +133,7 @@
                     android:id="@+id/line"
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
-                    android:background="@color/grey2"
+                    android:background="@color/grey1"
                     android:gravity="center_vertical"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txt_team_price" />
@@ -252,6 +253,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/rounded_layout"
+            android:elevation="5dp"
             app:layout_constraintHeight_percent="0.24"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/group_info"
@@ -274,11 +276,11 @@
                 app:dotsSpacing="4dp"
                 app:dotsStrokeColor="@color/search_text_color"
                 app:dotsStrokeWidth="1dp"
-                app:layout_constraintHeight_percent="0.1"
-                app:layout_constraintTop_toBottomOf="@id/viewPager_search"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.1"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewPager_search" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -288,6 +290,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/rounded_layout"
+            android:elevation="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.24"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -298,33 +301,34 @@
                 android:id="@+id/img_icon_cost"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:src="@drawable/calculators"
+                app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/calculators" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="3dp"
-                android:background="@color/text_color"
+                android:background="@color/grey1"
                 android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/img_icon_cost"
+                app:layout_constraintBottom_toTopOf="@id/txt_cost"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/txt_cost" />
+                app:layout_constraintTop_toBottomOf="@id/img_icon_cost" />
 
             <TextView
                 android:id="@+id/txt_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="예산"
                 android:textColor="@color/text_color"
-                app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_icon_cost"
-                android:text="예산" />
+                app:layout_constraintVertical_bias="0.4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -334,6 +338,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/rounded_layout"
+            android:elevation="5dp"
             app:layout_constraintHeight_percent="0.49"
             app:layout_constraintLeft_toRightOf="@id/group_official"
             app:layout_constraintRight_toRightOf="parent"
@@ -344,33 +349,35 @@
                 android:id="@+id/img_icon_field"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:src="@drawable/field"
+                app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/field" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:layout_width="70dp"
                 android:layout_height="3dp"
-                android:background="@color/text_color"
+                android:background="@color/grey1"
                 android:gravity="center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/img_icon_field"
+                app:layout_constraintBottom_toTopOf="@id/txt_sq"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/txt_sq" />
+                app:layout_constraintTop_toBottomOf="@id/img_icon_field" />
 
             <TextView
                 android:id="@+id/txt_sq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="최근 10경기\n분석"
                 android:textColor="@color/text_color"
-                app:layout_constraintVertical_bias="0.4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_icon_field"
-                android:text="스쿼드" />
+                app:layout_constraintVertical_bias="0.4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchList
+package com.khs.figle_m.SearchList.Common
 
 import android.content.Context
 import android.graphics.Color

@@ -22,7 +22,7 @@ import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.RankingActivity
 import com.khs.figle_m.Response.UserResponse
-import com.khs.figle_m.SearchList.SearchListFragment
+import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -75,15 +75,15 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 mUserResponse.accessId ?: return false
                 fragmentManager ?: return false
 
-                val searchListFragment = SearchListFragment()
+                val searchHomeFragment = SearchHomeFragment()
                 val bundle = Bundle()
                 bundle.putParcelable(
-                    SearchListFragment.getInstance().KEY_SEARCH_USER_INFO,
+                    SearchHomeFragment.getInstance().KEY_SEARCH_USER_INFO,
                     mUserResponse
                 )
-                searchListFragment.arguments = bundle
+                searchHomeFragment.arguments = bundle
                 FragmentUtils().loadFragment(
-                    searchListFragment,
+                    searchHomeFragment,
                     R.id.fragment_container, fragmentManager!!
                 )
                 return true

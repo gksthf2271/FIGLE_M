@@ -62,6 +62,7 @@
     <!-- version 2-->
     <color name="primary_color">#23242A</color>
     <color name="button_color">#282A31</color>
+    <color name="button_color_shadow">#282A31</color>
     <color name="text_color">#ffffff</color>
     <color name="accent_color">#E91B45</color>
     <color name="grey1">#CBCBCB</color>

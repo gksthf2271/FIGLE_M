@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:padding="1dp"
-    android:background="#00FFFFFF"
+    android:background="@drawable/rounded_layout"
+    android:elevation="5dp"
     app:layout_constraintHorizontal_weight="5">
 
     <TextView
@@ -114,7 +115,7 @@
             android:id="@+id/txt_left_result"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WIN"
+            tools:text="몰수승\n(3:0)"
             android:textSize="15sp"
             android:textColor="@color/search_text_color"
             android:gravity="center"
