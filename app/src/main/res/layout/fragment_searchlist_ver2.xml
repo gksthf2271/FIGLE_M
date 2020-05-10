@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_color"
+    app:layoutDescription="@xml/scene_search_list">
+
+    <com.khs.figle_m.AvLoadingCustomView
+        android:id="@+id/avi_loading2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/abc_vector_test"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rounded_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.8"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.45"
+                app:layout_constraintVertical_bias="0.8">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager_team"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.9"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                    android:id="@+id/team_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:dotsColor="@color/search_text_color"
+                    app:dotsCornerRadius="8dp"
+                    app:dotsSize="5dp"
+                    app:dotsSpacing="4dp"
+                    app:dotsStrokeColor="@color/search_text_color"
+                    app:dotsStrokeWidth="1dp"
+                    app:layout_constraintHeight_percent="0.07"
+                    app:layout_constraintTop_toBottomOf="@id/viewPager_team"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--        <com.khs.figle_m.SearchList.PieChartView-->
+            <!--            android:id="@+id/cview_pie_chart"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="0dp"-->
+            <!--            android:layout_marginLeft="5dp"-->
+            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--            app:layout_constraintHeight_percent="0.9"-->
+            <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+            <!--            app:layout_constraintTop_toTopOf="parent"-->
+            <!--            app:layout_constraintWidth_percent="0.45" />-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sub_group_info"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginRight="5dp"
+                android:padding="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.8"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.8"
+                app:layout_constraintWidth_percent="0.5">
+
+                <TextView
+                    android:id="@+id/txt_MyNickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:singleLine="true"
+                    android:textColor="@color/search_text_color"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="정도남" />
+
+                <TextView
+                    android:id="@+id/txt_team_price"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/accent_color"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_MyNickName"
+                    tools:text="1,024,758,000 BP" />
+
+                <ImageView
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/grey2"
+                    android:gravity="center_vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_team_price" />
+
+                <TextView
+                    android:id="@+id/txt_Level_title"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="LV : "
+                    android:textColor="@color/grey1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line" />
+
+                <TextView
+                    android:id="@+id/txt_Level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/grey1"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@id/txt_Level_title"
+                    app:layout_constraintTop_toTopOf="@id/txt_Level_title"
+                    tools:text="130" />
+
+                <TextView
+                    android:id="@+id/txt_High_Rank_title"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="1 ON 1 : "
+                    android:textColor="@color/grey1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_Level" />
+
+                <TextView
+                    android:id="@+id/txt_High_Rank"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toRightOf="@id/txt_High_Rank_title"
+                    app:layout_constraintTop_toTopOf="@id/txt_High_Rank_title"
+                    tools:text="프로1" />
+
+                <TextView
+                    android:id="@+id/txt_Achievement_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="@id/txt_High_Rank_title"
+                    app:layout_constraintRight_toRightOf="@id/txt_High_Rank"
+                    app:layout_constraintTop_toBottomOf="@id/txt_High_Rank"
+                    tools:text="2020-03-10 / 18:32:12" />
+
+                <TextView
+                    android:id="@+id/txt_CoachMode_High_Rank_title"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="감독 모드 : "
+                    android:textColor="@color/grey1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_Achievement_Date" />
+
+                <TextView
+                    android:id="@+id/txt_CoachMode_High_Rank"
+                    android:layout_width="90dp"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toRightOf="@id/txt_CoachMode_High_Rank_title"
+                    app:layout_constraintTop_toTopOf="@id/txt_CoachMode_High_Rank_title"
+                    tools:text="프로1" />
+
+                <TextView
+                    android:id="@+id/txt_CoachMode_Achievement_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="@id/txt_CoachMode_High_Rank_title"
+                    app:layout_constraintRight_toRightOf="@id/txt_CoachMode_High_Rank"
+                    app:layout_constraintTop_toBottomOf="@id/txt_CoachMode_High_Rank"
+                    tools:text="2020-03-10 / 18:32:12" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_official"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/rounded_layout"
+            app:layout_constraintHeight_percent="0.24"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_info"
+            app:layout_constraintWidth_percent="0.45">
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager_search"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.8"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/match_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:dotsColor="@color/search_text_color"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="5dp"
+                app:dotsSpacing="4dp"
+                app:dotsStrokeColor="@color/search_text_color"
+                app:dotsStrokeWidth="1dp"
+                app:layout_constraintHeight_percent="0.1"
+                app:layout_constraintTop_toBottomOf="@id/viewPager_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_coach"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/rounded_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.24"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_official"
+            app:layout_constraintWidth_percent="0.45">
+
+            <ImageView
+                android:id="@+id/img_icon_cost"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/calculators" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="3dp"
+                android:background="@color/text_color"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/img_icon_cost"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txt_cost" />
+
+            <TextView
+                android:id="@+id/txt_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_icon_cost"
+                android:text="예산" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_sq"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rounded_layout"
+            app:layout_constraintHeight_percent="0.49"
+            app:layout_constraintLeft_toRightOf="@id/group_official"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_info"
+            app:layout_constraintWidth_percent="0.5">
+
+            <ImageView
+                android:id="@+id/img_icon_field"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/field" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="3dp"
+                android:background="@color/text_color"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/img_icon_field"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/txt_sq" />
+
+            <TextView
+                android:id="@+id/txt_sq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_icon_field"
+                android:text="스쿼드" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
