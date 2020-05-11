@@ -36,8 +36,8 @@ class SearchHomeFragment : BaseFragment(),
     lateinit var mOfficialGameMatchList: ArrayList<MatchDetailResponse>
     lateinit var mCoachModeMatchList: ArrayList<MatchDetailResponse>
 
-    lateinit var mOfficialGameMatchIdList: List<String>
-    lateinit var mCoachModeMatchIdList: List<String>
+    var mOfficialGameMatchIdList: List<String> = arrayListOf()
+    var mCoachModeMatchIdList: List<String> = arrayListOf()
     lateinit var mSearchUserInfo: UserResponse
 
     lateinit var mOfficialView: MatchView
@@ -176,6 +176,7 @@ class SearchHomeFragment : BaseFragment(),
 //        group_rate.visibility = View.GONE
         viewPager_team.visibility = View.GONE
         viewPager_search.visibility = View.GONE
+        txt_title.visibility = View.GONE
         avi_loading2.show(false)
     }
 
@@ -188,13 +189,13 @@ class SearchHomeFragment : BaseFragment(),
         viewPager_team.visibility = View.VISIBLE
         viewPager_search.visibility = View.VISIBLE
         btn_back.visibility = View.VISIBLE
+        txt_title.visibility = View.VISIBLE
     }
 
     @SuppressLint("SetTextI18n")
     override fun showOfficialGameMatchIdList(userMatchIdResponse: ResponseBody?) {
         userMatchIdResponse ?: return
         var result: String = userMatchIdResponse.string()
-        mOfficialGameMatchIdList = arrayListOf()
         mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
@@ -215,7 +216,6 @@ class SearchHomeFragment : BaseFragment(),
     override fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?) {
         matchDetailResponse ?: return
         var result: String = matchDetailResponse.string()
-        mCoachModeMatchIdList = arrayListOf()
         mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
@@ -267,7 +267,8 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun checkLoadingView(){
-        if(mCoachModeMatchList.size == mCoachModeMatchIdList.size && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size){
+        if(mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
+            && mCoachModeMatchList.size == mCoachModeMatchIdList.size){
             hideLoading(false)
         }
     }
