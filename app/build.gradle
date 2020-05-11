@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -100,4 +101,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
 
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+
+    //FireBase
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 }
