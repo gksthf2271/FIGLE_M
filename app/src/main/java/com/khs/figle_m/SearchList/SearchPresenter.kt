@@ -2,8 +2,10 @@ package com.khs.figle_m.SearchList
 
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.utils.DateUtils
+import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -37,10 +39,23 @@ class SearchPresenter: SearchContract.Presenter {
                         }
                     }
                 }, {
-                    mSearchListView?.hideLoading(true)
                     mSearchListView?.showError(it)
                 })
         }).start()
+    }
+
+    override fun getMatchAnalysis(accessId: String, list: List<MatchDetailResponse>) {
+        var userMatchList = arrayListOf<MatchInfoDTO>()
+        var opposingUserList = arrayListOf<MatchInfoDTO>()
+        runBlocking {
+            launch {
+                for (match in list) {
+                    val matchPair = UserSortUtils().sortUserList(accessId, match)
+                    userMatchList.add(matchPair.first)
+                    opposingUserList.add(matchPair.second)
+                }
+            }
+        }
     }
 
     override fun getUserHighRank(accessId: String) {
@@ -54,7 +69,6 @@ class SearchPresenter: SearchContract.Presenter {
                         mSearchListView?.showHighRank(it)
                     }, {
                         Log.v(TAG, "getUserHighRank Failed! $it")
-                        mSearchListView?.hideLoading(true)
                         mSearchListView?.showError(it)
                     })
             }
@@ -76,7 +90,6 @@ class SearchPresenter: SearchContract.Presenter {
 //                    mSearchListView?.hideLoading(false)
                 }, {
                     Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mSearchListView?.hideLoading(true)
                     mSearchListView?.showError(it)
                 })
 

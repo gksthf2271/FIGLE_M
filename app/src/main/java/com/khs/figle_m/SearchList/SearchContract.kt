@@ -25,5 +25,6 @@ interface SearchContract: BaseView {
         fun getMatchDetailList(isOfficialGame: Boolean, matchId: String)
         fun getUserHighRank(accessId: String)
         fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit:Int)
+        fun getMatchAnalysis(accessId: String, list: List<MatchDetailResponse>)
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
+import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
@@ -267,8 +268,12 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun checkLoadingView(){
-        if(mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
+        if(mOfficialGameMatchList.size != 0
+            && mCoachModeMatchList.size != 0
+            && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
             && mCoachModeMatchList.size == mCoachModeMatchIdList.size){
+            Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size}, mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
+            Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size}, mCoachModeMatchIdList size : ${mCoachModeMatchIdList.size}")
             hideLoading(false)
         }
     }
@@ -321,8 +326,26 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     override fun showError(error: Int) {
-        if (SearchPresenter().ERROR_EMPTY.equals(error)) {
-            hideLoading(true)
+        when (error) {
+            DataManager().ERROR_UNAUTHORIZED,
+            DataManager().ERROR_FORBIDDEN,
+            DataManager().ERROR_NOT_FOUND,
+            DataManager().ERROR_METHOD_NOT_ALLOWED,
+            DataManager().ERROR_REQUEST_ENTITY_TOO_LARGE,
+            DataManager().ERROR_TOO_MANY_REQUEST,
+            DataManager().ERROR_INTERNAL_SERVER_ERROR,
+            DataManager().ERROR_OTHERS,
+            DataManager().ERROR_BAD_REQUEST -> {
+                hideLoading(false)
+                mSearchPresenter.dropView()
+            }
+            DataManager().ERROR_NETWORK_DISCONNECTED,
+            DataManager().ERROR_GATEWAY_TIMEOUT -> {
+                hideLoading(true)
+                mSearchPresenter.dropView()
+                (activity as MainActivity).showErrorPopup(error)
+            }
         }
+
     }
 }
