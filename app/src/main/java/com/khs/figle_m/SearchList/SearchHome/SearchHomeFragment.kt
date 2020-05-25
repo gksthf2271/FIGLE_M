@@ -1,16 +1,19 @@
 package com.khs.figle_m.SearchList.SearchHome
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.khs.figle_m.Analytics.AnalyticsActivity
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
+import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
@@ -233,6 +236,19 @@ class SearchHomeFragment : BaseFragment(),
         }
     }
 
+    override fun showAnaysisInfo(
+       userMatchList: List<MatchInfoDTO>,
+        opposingUserList: List<MatchInfoDTO>
+    ) {
+        Log.v(TAG,"userMatchList : $userMatchList")
+        group_sq.setOnClickListener {
+            val intent = Intent(context, AnalyticsActivity::class.java)
+            intent.putParcelableArrayListExtra(AnalyticsActivity().KEY_MY_DATA, ArrayList(userMatchList))
+            intent.putParcelableArrayListExtra(AnalyticsActivity().KEY_OPPOSING_USER_DATA, ArrayList(opposingUserList))
+            startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
+        }
+    }
+
     override fun showOfficialGameList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
@@ -243,6 +259,8 @@ class SearchHomeFragment : BaseFragment(),
         if(DEBUG) Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
         if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
             initRateView(mSearchUserInfo.accessId)
+            //Todo : AnalysisInfo
+            mSearchPresenter.getMatchAnalysis(mSearchUserInfo.accessId, mOfficialGameMatchList)
             mOfficialView.setOnClickListener{
                 showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchList)
             }

@@ -17,6 +17,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="구단주 조회"
+        android:textColor="@color/text_color"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintLeft_toRightOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="@id/btn_back" />
+
     <Button
         android:id="@+id/btn_back"
         android:layout_width="30dp"
@@ -46,7 +59,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/rounded_layout"
                 android:elevation="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.8"
@@ -105,13 +117,14 @@
 
                 <TextView
                     android:id="@+id/txt_MyNickName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:singleLine="true"
                     android:textColor="@color/search_text_color"
                     android:textSize="25sp"
                     android:textStyle="bold"
+                    android:gravity="center"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="정도남" />
@@ -302,11 +315,11 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/calculators"
-                app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
 
             <ImageView
                 android:layout_width="70dp"
@@ -350,11 +363,11 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/field"
-                app:layout_constraintVertical_bias="0.3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
 
             <ImageView
                 android:layout_width="70dp"

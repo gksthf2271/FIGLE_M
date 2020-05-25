@@ -3,6 +3,7 @@ package com.khs.figle_m.SearchList
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import okhttp3.ResponseBody
@@ -19,6 +20,7 @@ interface SearchContract: BaseView {
 
         fun showOfficialGameMatchIdList(matchDetailResponse: ResponseBody?)
         fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?)
+        fun showAnaysisInfo(userMatchList:List<MatchInfoDTO>, opposingUserList: List<MatchInfoDTO>)
     }
 
     interface Presenter : BasePresenter<View> {

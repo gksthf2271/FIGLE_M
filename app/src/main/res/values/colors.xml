@@ -71,4 +71,6 @@
     <color name="yellow_color">#ffBA00</color>
     <color name="green_color">#2fCC71</color>
     <color name="red_color">#DF0531</color>
+
+    <color name="analytics_wrapper">#80000000</color>
 </resources>

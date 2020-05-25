@@ -3,6 +3,7 @@ package com.khs.figle_m.SearchList
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
+import com.khs.figle_m.Response.DTO.ShootDetailDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.utils.DateUtils
 import com.khs.figle_m.utils.UserSortUtils
@@ -14,6 +15,7 @@ class SearchPresenter: SearchContract.Presenter {
     val TAG:String = javaClass.name
     val DEBUG:Boolean = false
     var  mSearchListView: SearchContract.View? = null
+    val KEY_ANALYSIS_INFO = "KEY_ANALYSIS_INFO"
 
     open val ERROR_EMPTY = 0
 
@@ -54,9 +56,15 @@ class SearchPresenter: SearchContract.Presenter {
                     userMatchList.add(matchPair.first)
                     opposingUserList.add(matchPair.second)
                 }
+                mSearchListView?.showAnaysisInfo(userMatchList, opposingUserList)
             }
         }
     }
+
+//    fun <T> parseData(list: List<MatchDetailResponse>) : HashMap<String,T>{
+//        var hashMap = hashMapOf<String, T>()
+//        hashMap.put(, )
+//    }
 
     override fun getUserHighRank(accessId: String) {
         mSearchListView?.showLoading()
