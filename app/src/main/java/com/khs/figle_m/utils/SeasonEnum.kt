@@ -19,7 +19,7 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     TOTY20(220,"20toty"),
     UCL19(221,"19ucl"),
     TOTN20(222,"20totn"),
-    LH1(224,"lh"),          //임시 방편 224, 234 뭐가 맞는지 문의필요
+    LH1(224,"lh"),          //임시 방편 224, 234 뭐가 맞는지 문의필요 // 문의 결과 234가 맞고, 224는 급여이슈로 임시 할당번호
     TKL(225,"tkl"),
     LH(234,"lh"),
     KFA19(295,"2019kfa"),
