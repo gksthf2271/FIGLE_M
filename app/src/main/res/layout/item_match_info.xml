@@ -1,6 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:background="@color/analytics_wrapper">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/img_player_group"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/layout_rounded_white"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15">
+
+            <ImageView
+                android:id="@+id/img_player"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/abc_vector_test"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt_player_spGrade"
+            android:layout_width="25dp"
+            android:layout_height="18dp"
+            android:gravity="center"
+            android:textColor="@color/search_text_color"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginTop="7dp"
+            tools:text="5"
+            tools:background="@color/player_grade_gold"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toLeftOf="@id/img_player_group"
+            app:layout_constraintTop_toTopOf="@id/img_player_group" />
+
+        <TextView
+            android:id="@+id/txt_play_count"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:background="@drawable/rounded_player"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/search_text_color"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/img_player_group"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toRightOf="@id/img_player_group"
+            app:layout_constraintTop_toBottomOf="@id/img_player_group"
+            tools:text="10.0" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toRightOf="@id/img_player_group"
+            app:layout_constraintTop_toBottomOf="@id/img_player_group">
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="25dp"
+                android:layout_height="15dp"
+                app:layout_constraintBottom_toBottomOf="@id/txt_player_name"
+                app:layout_constraintRight_toLeftOf="@id/txt_player_name"
+                app:layout_constraintTop_toTopOf="@id/txt_player_name" />
+
+            <TextView
+                android:id="@+id/txt_player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:textColor="@color/search_text_color"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/img_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="킹갓충무공 손흥민" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt_player_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/search_text_color"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/group_name"
+            app:layout_constraintRight_toRightOf="@id/group_name"
+            app:layout_constraintTop_toBottomOf="@id/group_name"
+            tools:text="FW" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
