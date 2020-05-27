@@ -286,14 +286,14 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun checkLoadingView(){
-        if(mOfficialGameMatchList.size != 0
-            && mCoachModeMatchList.size != 0
-            && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
-            && mCoachModeMatchList.size == mCoachModeMatchIdList.size){
+//        if(mOfficialGameMatchList.size != 0
+//            && mCoachModeMatchList.size != 0
+//            && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
+//            && mCoachModeMatchList.size == mCoachModeMatchIdList.size){
             Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size}, mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
             Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size}, mCoachModeMatchIdList size : ${mCoachModeMatchIdList.size}")
             hideLoading(false)
-        }
+//        }
     }
 
     fun showSearchList(matchtype: DataManager.matchType, matchList: List<MatchDetailResponse>) {
