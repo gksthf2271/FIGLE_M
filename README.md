@@ -7,18 +7,8 @@
 1 ON 1 전적검색을 제공하며, 추가 기능에 대해서 업데이트 예정입니다.
 
 ## 결과물
-### 1. Home
-<img src="https://user-images.githubusercontent.com/22634053/83354397-56ccbe00-a393-11ea-85f2-5ebac642b5e0.png"  width="300" height="500">
+### 1. 스크린샷
+<img src="https://user-images.githubusercontent.com/22634053/83354397-56ccbe00-a393-11ea-85f2-5ebac642b5e0.png"  width="250" height="450"><img src="https://user-images.githubusercontent.com/22634053/83354405-5fbd8f80-a393-11ea-855f-7eb3fb940a95.png"  width="250" height="450"><img src="https://user-images.githubusercontent.com/22634053/83354409-621fe980-a393-11ea-8d18-d29cb3eeb77b.png"  width="250" height="450"><img src="https://user-images.githubusercontent.com/22634053/83354414-6ba95180-a393-11ea-8451-538aa3384e61.png"  width="250" height="450">
 
-### 2. SearchList
-<img src="https://user-images.githubusercontent.com/22634053/83354405-5fbd8f80-a393-11ea-855f-7eb3fb940a95.png"  width="300" height="500">
-
-### 3. SearchInfo
-<img src="https://user-images.githubusercontent.com/22634053/83354409-621fe980-a393-11ea-8d18-d29cb3eeb77b.png"  width="300" height="500">
-
-### 4. PlayerDetail
-<img src="https://user-images.githubusercontent.com/22634053/83354414-6ba95180-a393-11ea-8451-538aa3384e61.png"  width="300" height="500">
-
-### 다운로드 경로
+### 2. 다운로드 경로
 https://play.google.com/store/apps/details?id=com.khs.figle_m
-
