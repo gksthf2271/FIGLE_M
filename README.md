@@ -22,7 +22,7 @@
 ### Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.3'
 
-### Room Lib
+### Room
     implementation "android.arch.persistence.room:runtime:1.1.1"
     kapt "android.arch.persistence.room:compiler:1.1.1"
 
