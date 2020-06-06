@@ -1,31 +1,45 @@
 package com.khs.figle_m.Data
 
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
 
 object SearchUser {
+
+    var okHttpClient = OkHttpClient.Builder()
+        .connectTimeout(1, TimeUnit.MINUTES)
+        .readTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .build()
+
     private val api =
         Retrofit.Builder()
             .baseUrl("https://api.nexon.co.kr/fifaonline4/") // 도메인 주소
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val cdn =
         Retrofit.Builder()
             .baseUrl("https://fo4.dn.nexoncdn.co.kr/") // 도메인 주소
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val playerNameApi =
         Retrofit.Builder()
             .baseUrl("https://static.api.nexon.co.kr/fifaonline4/") // 도메인 주소
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val dataCenterCrawlingUrl =
         Retrofit.Builder()
             .baseUrl("http://fifaonline4.nexon.com/DataCenter/")
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
