@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager
 
 
 
-class SearchListPagerAdapter() : PagerAdapter() {
+class CustomPagerAdapter() : PagerAdapter() {
     private val TAG :String = javaClass.name
     lateinit var mContext : Context
     var mFirstView : View? = null

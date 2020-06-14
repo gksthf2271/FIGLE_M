@@ -39,6 +39,7 @@ class AvLoadingCustomView: ConstraintLayout {
         if (isStart) {
             txt_data_based_on_nexon.visibility = View.VISIBLE
         } else {
+            if (isShownLoadingView()) return
             txt_data_based_on_nexon.visibility = View.INVISIBLE
             txt_progress.visibility = View.INVISIBLE
             progress_horizontal.visibility = View.INVISIBLE
@@ -65,6 +66,12 @@ class AvLoadingCustomView: ConstraintLayout {
             progress_horizontal.visibility = View.VISIBLE
             txt_progress.visibility = View.VISIBLE
             progress_horizontal.progress = progress
+        }
+    }
+
+    fun isShownLoadingView() : Boolean{
+        return view.let {
+            loading_view.visibility == View.VISIBLE
         }
     }
 }

@@ -17,7 +17,7 @@ import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
-import com.khs.figle_m.SearchList.Common.SearchListPagerAdapter
+import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.SearchList.SearchPresenter
@@ -113,7 +113,7 @@ class SearchHomeFragment : BaseFragment(),
         mCoachView.updateView(DataManager.matchType.coachMatch.matchType)
 
         viewPager_search.adapter =
-            SearchListPagerAdapter(
+            CustomPagerAdapter(
                 context!!,
                 mOfficialView,
                 mCoachView
@@ -137,7 +137,7 @@ class SearchHomeFragment : BaseFragment(),
         emptyModeView.updateEmptyView()
 
         viewPager_team.adapter =
-            SearchListPagerAdapter(
+            CustomPagerAdapter(
                 context!!,
                 officialModeView,
                 coachModeView

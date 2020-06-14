@@ -9,6 +9,9 @@ import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
+import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
+import kotlinx.android.synthetic.main.fragment_analytics.*
+import kotlinx.android.synthetic.main.fragment_searchlist_ver2.*
 
 class AnalyticsFragment : BaseFragment(){
     val TAG:String = javaClass.name
@@ -39,14 +42,24 @@ class AnalyticsFragment : BaseFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_analytics, container, false)
-        return v
+        return inflater.inflate(R.layout.fragment_analytics, container, false)
     }
-
 
     override fun onStart() {
         super.onStart()
         initList()
+    }
+
+    fun initViewPager(firstView: View, lastView: View) {
+        view_pager.adapter =
+            CustomPagerAdapter(
+                context!!,
+                firstView,
+                lastView
+            )
+        view_pager.currentItem = 0
+
+        indicator.setViewPager(view_pager)
     }
 
     fun initList() {
@@ -56,9 +69,10 @@ class AnalyticsFragment : BaseFragment(){
             myList = arguments!!.getParcelableArrayList(AnalyticsActivity().KEY_MY_DATA)!!
             opposingUserList = arguments!!.getParcelableArrayList(AnalyticsActivity().KEY_OPPOSING_USER_DATA)!!
         }
-    }
+        var fieldView = FiledView(context!!)
+        fieldView.setMatchList(myList)
 
-    fun updateTopView(rank: Ranker?) {
+        initViewPager(fieldView, fieldView)
 
     }
 }

@@ -30,7 +30,9 @@ class DataManager{
 
     val offset: Int = 0
 
-//    200	OK	성공
+    open val SEARCH_LIMIT: Int = 20
+
+    //    200	OK	성공
 //    301	Moved Permanently	HTTP 프로토콜로 호출
 //    400	Bad Request	요청 형식 오류 (잘못된 파라미터 입력)
 //    401	Unauthorized	미승인 서비스 (미지원 service, service type)
@@ -41,7 +43,6 @@ class DataManager{
 //    429	Too many request	AccessToken의 요청 허용량(Rate Limit) 초과
 //    500	Internal Server Error	서버 내부 에러
 //    504	Gateway Timeout	서버 내부 처리 timeout
-    open val SEARCH_LIMIT: Int = 100
     open val SUCCESS_CODE: Int = 200
     open val ERROR_BAD_REQUEST = 400
     open val ERROR_UNAUTHORIZED = 401

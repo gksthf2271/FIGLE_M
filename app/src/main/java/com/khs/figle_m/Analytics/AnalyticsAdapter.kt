@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
@@ -52,8 +50,8 @@ class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val
             mItemView = itemView
         }
 
-
         fun bind(item: MatchInfoDTO, context: Context) {
+
         }
     }
 }
