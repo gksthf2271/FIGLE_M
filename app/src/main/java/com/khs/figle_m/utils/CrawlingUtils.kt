@@ -16,6 +16,7 @@ import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.lang.NullPointerException
 
 class CrawlingUtils() {
     private val TAG = this.javaClass.name
@@ -106,37 +107,41 @@ class CrawlingUtils() {
     }
 
     fun searchBody(index : Int, body: Element) : Ranker? {
-        var rank_no: String?               //순위
-        var rank_icon_url: String?         //랭크 아이콘 주소
-        var level: String?                 //레벨
-        var level_gage: String?            //레벨 경험치 퍼센트
-        var name: String?                  //이름
-        var price: String?                 //구단가치
-        var win: String?         //승무패
-        var draw: String?         //승무패
-        var lose: String?         //승무패
-        var rank_rate: String?             //승률
-        var rank_point: String?            //랭크점수
-        var rank_percent: String?          //상위 랭크 퍼센트
-        var best_rank_icon_url: String?    //역대 랭크 아이콘 주소
-        var pre_rank_icon_url: String?     //이전 랭크 아이콘 주소
-        var cur_rank_icon_url: String?      //현재 랭크 아이콘 주소
+        var rank_no: String? = null               //순위
+        var rank_icon_url: String? = null        //랭크 아이콘 주소
+        var level: String? = null               //레벨
+        var level_gage: String? = null            //레벨 경험치 퍼센트
+        var name: String? = null                  //이름
+        var price: String? = null                 //구단가치
+        var win: String? = null         //승무패
+        var draw: String? = null         //승무패
+        var lose: String? = null         //승무패
+        var rank_rate: String? = null             //승률
+        var rank_point: String? = null            //랭크점수
+        var rank_percent: String? = null          //상위 랭크 퍼센트
+        var best_rank_icon_url: String? = null    //역대 랭크 아이콘 주소
+        var pre_rank_icon_url: String? = null     //이전 랭크 아이콘 주소
+        var cur_rank_icon_url: String? = null      //현재 랭크 아이콘 주소
 
-        rank_no = body.childNode(1).childNode(0).toString()
-        rank_icon_url = body.childNode(3).childNode(1).childNode(0).attributes().get("src")
-        name = body.childNode(3).childNode(3).childNode(3).childNode(0).toString()
-        level_gage = body.childNode(3).childNode(3).childNode(1).childNode(0).attributes().get("style")
-        level = body.childNode(3).childNode(3).childNode(1).childNode(1).childNode(0).toString()
-        price = body.childNode(3).childNode(5).childNode(0).toString()
-        win = body.childNode(5).childNode(0).toString()
-        draw = body.childNode(5).childNode(2).toString()
-        lose = body.childNode(5).childNode(4).toString()
-        rank_rate = body.childNode(7).childNode(0).toString()
-        rank_point = body.childNode(9).childNode(0).toString()
-        rank_percent = body.childNode(11).childNode(0).toString()
-        best_rank_icon_url = body.childNode(13).childNode(1).childNode(0).attributes().get("src")
-        pre_rank_icon_url = body.childNode(13).childNode(5).childNode(0).attributes().get("src")
-        cur_rank_icon_url = body.childNode(13).childNode(9).childNode(0).attributes().get("src")
+        try{
+            rank_no = body.childNode(1).childNode(0).toString()
+            rank_icon_url = body.childNode(3).childNode(1).childNode(0).attributes().get("src")
+            name = body.childNode(3).childNode(3).childNode(3).childNode(0).toString()
+            level_gage = body.childNode(3).childNode(3).childNode(1).childNode(0).attributes().get("style")
+            level = body.childNode(3).childNode(3).childNode(1).childNode(1).childNode(0).toString()
+            price = body.childNode(3).childNode(5).childNode(0).toString()
+            win = body.childNode(5).childNode(0).toString()
+            draw = body.childNode(5).childNode(2).toString()
+            lose = body.childNode(5).childNode(4).toString()
+            rank_rate = body.childNode(7).childNode(0).toString()
+            rank_point = body.childNode(9).childNode(0).toString()
+            rank_percent = body.childNode(11).childNode(0).toString()
+            best_rank_icon_url = body.childNode(13).childNode(1).childNode(0).attributes().get("src")
+            pre_rank_icon_url = body.childNode(13).childNode(5).childNode(0).attributes().get("src")
+            cur_rank_icon_url = body.childNode(13).childNode(9).childNode(0).attributes().get("src")
+        } catch(npe : NullPointerException){
+            Log.e(TAG,"searchBody NPE!")
+        }
 
         val result = Ranker(
             rank_no,
