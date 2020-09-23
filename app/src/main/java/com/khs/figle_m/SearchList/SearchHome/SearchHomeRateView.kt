@@ -11,10 +11,21 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import kotlinx.android.synthetic.main.cview_loading_view.view.*
 import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*
+import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.loading_view
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchHomeRateView : ConstraintLayout {
+
+    lateinit var mMatchDetailList: ArrayList<MatchDetailResponse>
+    lateinit var mFailedRequestQ : Queue<String>
+
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -28,9 +39,10 @@ class SearchHomeRateView : ConstraintLayout {
         inflater.inflate(R.layout.cview_search_home_pie_chart, this)
     }
 
-    fun updateView(accessId : String, matchType: DataManager.matchType, arrayList: List<MatchDetailResponse>) {
-        hideEmptyView()
-
+    fun updateView(accessId : String, matchType: DataManager.matchType, arrayList: List<String>) {
+        showEmptyView()
+        mMatchDetailList = arrayListOf()
+        mFailedRequestQ = PriorityQueue<String>()
         if(!arrayList.isEmpty()) initRate(accessId, arrayList)
 
         when (matchType.name) {
@@ -43,28 +55,49 @@ class SearchHomeRateView : ConstraintLayout {
         }
     }
 
-    fun updateEmptyView() {
-        showEmptyView()
-    }
-
     fun showEmptyView() {
         Log.v(TAG,"showEmptyView(...)")
         search_home_group_view.visibility = View.GONE
         search_home_empty_view.visibility = View.VISIBLE
+        loading_view.visibility = View.VISIBLE
+        loading_view.show()
     }
 
     fun hideEmptyView() {
         Log.v(TAG,"hideEmptyView(...)")
         search_home_empty_view.visibility = View.GONE
         search_home_group_view.visibility = View.VISIBLE
+        loading_view.visibility = View.GONE
+        loading_view.hide()
     }
 
-    fun initRate(accessId : String, arrayList: List<MatchDetailResponse>) {
+    fun initRate(accessId: String, arrayList: List<String>) {
+        CoroutineScope(Dispatchers.Default).launch {
+            for (item in arrayList) {
+                DataManager.getInstance().loadMatchDetailWrapper(item,
+                    {
+                        mMatchDetailList.add(it)
+                        Log.v(TAG,"${mMatchDetailList.size} Success Request : $it")
+                        if (arrayList.size == mMatchDetailList.size + mFailedRequestQ.size) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                updateView(accessId, mMatchDetailList)
+                                hideEmptyView()
+                            }
+                        }
+                    }, {
+                        Log.e(TAG, "Failed Request : $it")
+                        mFailedRequestQ.add(it)
+                    })
+            }
+        }
+    }
+
+    fun updateView(accessId: String, matchInfoList: List<MatchDetailResponse>) {
         var win = 0
         var draw = 0
         var lose = 0
 
-        for (item in arrayList) {
+        for (item in matchInfoList) {
             var myInfo: MatchInfoDTO? = null
             if (accessId == item.matchInfo[0].accessId) {
                 myInfo = item.matchInfo[0]

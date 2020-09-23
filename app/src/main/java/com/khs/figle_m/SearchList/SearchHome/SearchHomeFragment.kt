@@ -37,9 +37,6 @@ class SearchHomeFragment : BaseFragment(),
 
     lateinit var mSearchHomePresenter: SearchHomePresenter
 
-    lateinit var mOfficialGameMatchList: ArrayList<MatchDetailResponse>
-    lateinit var mCoachModeMatchList: ArrayList<MatchDetailResponse>
-
     var mOfficialGameMatchIdList: List<String> = arrayListOf()
     var mCoachModeMatchIdList: List<String> = arrayListOf()
     lateinit var mSearchUserInfo: UserResponse
@@ -124,17 +121,15 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun initRateView(accessId: String) {
-        initRateView(accessId, mOfficialGameMatchList, mCoachModeMatchList)
+        initRateView(accessId, mOfficialGameMatchIdList, mCoachModeMatchIdList)
     }
 
-    fun initRateView(accessId : String, officialModeList: List<MatchDetailResponse>, coachModeList: List<MatchDetailResponse>) {
+    fun initRateView(accessId : String, officialModeList: List<String>, coachModeList: List<String>) {
         val officialModeView = SearchHomeRateView(context!!)
         val coachModeView = SearchHomeRateView(context!!)
-        val emptyModeView = SearchHomeRateView(context!!)
 
         officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
         coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
-        emptyModeView.updateEmptyView()
 
         viewPager_team.adapter =
             CustomPagerAdapter(
@@ -155,8 +150,6 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun initListData() {
-        mOfficialGameMatchList = arrayListOf()
-        mCoachModeMatchList = arrayListOf()
 
         mSearchHomePresenter!!.getMatchId(
             mSearchUserInfo.accessId!!,
@@ -212,6 +205,7 @@ class SearchHomeFragment : BaseFragment(),
         mOfficialView.setOnClickListener {
             showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
+        initRateView(mSearchUserInfo.accessId)
     }
 
     @SuppressLint("SetTextI18n")
@@ -231,6 +225,7 @@ class SearchHomeFragment : BaseFragment(),
         mCoachView.setOnClickListener {
             showSearchList(DataManager.matchType.coachMatch, mOfficialGameMatchIdList)
         }
+        initRateView(mSearchUserInfo.accessId)
     }
 
     override fun showAnaysisInfo(

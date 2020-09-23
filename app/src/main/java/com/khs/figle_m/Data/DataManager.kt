@@ -107,6 +107,14 @@ class DataManager{
             })
     }
 
+    fun loadMatchDetailWrapper(matchId: String,
+                               onSuccess: ((MatchDetailResponse) -> Unit),
+                               onFailed: (String) -> Unit) {
+        loadMatchDetail(matchId, onSuccess, {
+            onFailed(matchId)
+        })
+    }
+
     fun loadMatchDetail(
         matchId: String,
         onSuccess: ((MatchDetailResponse) -> Unit),

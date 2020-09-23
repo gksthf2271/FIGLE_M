@@ -91,17 +91,6 @@
                     app:layout_constraintTop_toBottomOf="@id/viewPager_team" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        <com.khs.figle_m.SearchList.Common.PieChartView-->
-            <!--            android:id="@+id/cview_pie_chart"-->
-            <!--            android:layout_width="0dp"-->
-            <!--            android:layout_height="0dp"-->
-            <!--            android:layout_marginLeft="5dp"-->
-            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--            app:layout_constraintHeight_percent="0.9"-->
-            <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-            <!--            app:layout_constraintTop_toTopOf="parent"-->
-            <!--            app:layout_constraintWidth_percent="0.45" />-->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/sub_group_info"
                 android:layout_width="0dp"
