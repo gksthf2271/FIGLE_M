@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class UserResponse(
     val accessId: String,
     val nickname: String,
-    val level: String
+    val level: String,
+    var teamPrice : String
 ) : Parcelable

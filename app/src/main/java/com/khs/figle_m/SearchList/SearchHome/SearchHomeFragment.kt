@@ -14,7 +14,6 @@ import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
@@ -146,6 +145,10 @@ class SearchHomeFragment : BaseFragment(),
         }
         txt_MyNickName.text = mSearchUserInfo.nickname
         txt_Level.text = mSearchUserInfo.level
+        mSearchUserInfo.teamPrice.let{
+            txt_team_price.text = mSearchUserInfo.teamPrice
+            txt_team_price.visibility = View.VISIBLE
+        }
         mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
     }
 

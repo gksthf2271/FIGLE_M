@@ -78,6 +78,7 @@ class RankingFragment : BaseFragment(){
             if(DEBUG) Log.v(TAG,"TEST, onClick!!")
             var intent = Intent()
             intent.putExtra(HomeFragment().KEY_SEARCH, mCurrentRank.name)
+            intent.putExtra(HomeFragment().KEY_SEARCH_TEAM_PRICE, mCurrentRank.price)
             if(DEBUG) Log.v(TAG,"TEST, 0!!")
             if (activity != null && activity is RankingActivity) {
                 if(DEBUG) Log.v(TAG,"TEST, 1!!")

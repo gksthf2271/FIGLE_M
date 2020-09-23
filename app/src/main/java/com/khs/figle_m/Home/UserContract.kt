@@ -13,6 +13,6 @@ interface UserContract : BaseView {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getUserDatailList(nickname: String)
+        fun getUserDatailList(nickname: String, teamPrice: String)
     }
 }

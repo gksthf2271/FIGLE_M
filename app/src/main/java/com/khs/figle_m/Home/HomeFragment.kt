@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
@@ -17,6 +18,7 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupWindow
+import androidx.room.util.StringUtil
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
@@ -36,6 +38,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     val RESULT_REQUEST_CODE = 1000
     val KEY_SEARCH = "KEY_SEARCH"
+    val KEY_SEARCH_TEAM_PRICE = "KEY_SEARCH_TEAM_PRICE"
 
     lateinit var mUserPresenter: UserPresenter
 
@@ -202,9 +205,13 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         }
     }
 
-    fun search(searchString: String) {
+    fun search(searchString: String, teamPrice : String) {
         mSearchString = searchString
-        mUserPresenter!!.getUserDatailList(searchString)
+        mUserPresenter!!.getUserDatailList(searchString, teamPrice)
+    }
+
+    fun search(searchString: String) {
+        search(searchString, "")
     }
 
     override fun onDestroy() {
@@ -221,7 +228,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             RESULT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     data ?: return
-                    search(data!!.getStringExtra(KEY_SEARCH))
+                    search(data!!.getStringExtra(KEY_SEARCH), data!!.getStringExtra(KEY_SEARCH_TEAM_PRICE))
                 } else if(resultCode == Activity.RESULT_CANCELED) {
 
                 }
