@@ -30,6 +30,14 @@ class AvLoadingCustomView: ConstraintLayout {
         view = inflater.inflate(R.layout.cview_loading_view, this)
     }
 
+    fun backroundColorVisible(isVisible : Boolean) {
+        if (isVisible) {
+            root_view.background = context.getDrawable(R.color.loading_background)
+        } else {
+            root_view.background = context.getDrawable(R.color.search_loading_color)
+        }
+    }
+
     fun show(isStart: Boolean) {
         if(isDebug) Log.v(TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {

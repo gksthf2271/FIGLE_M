@@ -30,7 +30,8 @@ class DataManager{
 
     val offset: Int = 0
 
-    open val SEARCH_LIMIT: Int = 20
+    open val SEARCH_LIMIT: Int = 100
+    open val SEARCH_PAGE_SIZE: Int = 20
 
     //    200	OK	성공
 //    301	Moved Permanently	HTTP 프로토콜로 호출
@@ -150,8 +151,7 @@ class DataManager{
             matchtype = matchtype,
             offset = offset,
             limit = limit
-        )
-            .enqueue(object : Callback<ResponseBody> {
+        ).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     if (t is UnknownHostException) {
                         onFailed(maekErrorException(t))

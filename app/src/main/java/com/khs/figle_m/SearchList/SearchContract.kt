@@ -14,19 +14,26 @@ interface SearchContract: BaseView {
         fun showLoading()
         fun hideLoading(isError: Boolean)
 
-        fun showOfficialGameList(searchResponse : MatchDetailResponse?)
-        fun showCoachModeList(searchResponse : MatchDetailResponse?)
         fun showHighRank(userHighRankResponse: List<UserHighRankResponse>)
-
         fun showOfficialGameMatchIdList(matchDetailResponse: ResponseBody?)
         fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?)
         fun showAnaysisInfo(userMatchList:List<MatchInfoDTO>, opposingUserList: List<MatchInfoDTO>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getMatchDetailList(isOfficialGame: Boolean, matchId: String)
         fun getUserHighRank(accessId: String)
         fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit:Int)
         fun getMatchAnalysis(accessId: String, list: List<MatchDetailResponse>)
+    }
+
+    interface SearchListPresenter : BasePresenter<SearchListView> {
+        fun getMatchDetailList(isOfficialGame: Boolean, matchId: String)
+    }
+
+    interface SearchListView : BaseView {
+        fun showLoading()
+        fun hideLoading(isError: Boolean)
+
+        fun showGameList(searchResponse : MatchDetailResponse?)
     }
 }

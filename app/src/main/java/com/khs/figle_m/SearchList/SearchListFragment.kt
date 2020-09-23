@@ -21,11 +21,12 @@ class SearchListFragment : BaseFragment() {
     open val KEY_SEARCH_USER_INFO: String = "KEY_SEARCH_USER_INFO"
     open val KEY_SEARCH_MATCH_INFO: String = "KEY_SEARCH_MATCH_INFO"
     open val KEY_SEARCH_MATCH_TYPE: String = "KEY_SEARCH_MATCH_TYPE"
+    open val KEY_SEARCH_MATCH_ID: String = "KEY_SEARCH_MATCH_ID"
 
     lateinit var mSearchList: ArrayList<MatchDetailResponse>
     var mMatchtype: Int = 0
 
-    lateinit var mMatchIdList: List<String>
+    var mMatchIdList: ArrayList<String> = arrayListOf()
     lateinit var mSearchUserInfo: UserResponse
 
     lateinit var mSelectedMatchInfo: MatchDetailResponse
@@ -76,9 +77,9 @@ class SearchListFragment : BaseFragment() {
     fun initMyInfoData() {
         arguments.let {
             mSearchUserInfo = arguments!!.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
-            mSearchList =
-                arguments!!.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
+//            mSearchList = arguments!!.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
             mMatchtype = arguments!!.getInt(KEY_SEARCH_MATCH_TYPE)!!
+            mMatchIdList = arguments!!.getStringArrayList(KEY_SEARCH_MATCH_ID) as ArrayList<String>
         }
 
         when (mMatchtype) {
@@ -93,12 +94,11 @@ class SearchListFragment : BaseFragment() {
                 mIsCoachMode = true
             }
         }
-
     }
 
     fun initListData() {
         view_searchList.setSearchUserInfo(mSearchUserInfo)
-        view_searchList.updateView(mSearchList, {
+        view_searchList.updateView(mMatchtype, mMatchIdList, {
             showDetail(mSearchUserInfo.accessId, it)
         })
     }

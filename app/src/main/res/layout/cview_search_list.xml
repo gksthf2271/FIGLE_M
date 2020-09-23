@@ -29,4 +29,14 @@
         app:layout_constraintRight_toRightOf="@id/layout_recyclerview"
         app:layout_constraintTop_toTopOf="@id/layout_recyclerview" />
 
+
+    <com.khs.figle_m.AvLoadingCustomView
+        android:id="@+id/avi_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

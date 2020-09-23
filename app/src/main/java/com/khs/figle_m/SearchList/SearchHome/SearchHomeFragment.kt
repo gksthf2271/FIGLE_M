@@ -19,8 +19,8 @@ import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
+import com.khs.figle_m.SearchList.SearchHomePresenter
 import com.khs.figle_m.SearchList.SearchListFragment
-import com.khs.figle_m.SearchList.SearchPresenter
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
@@ -35,7 +35,7 @@ class SearchHomeFragment : BaseFragment(),
 
     open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
 
-    lateinit var mSearchPresenter: SearchPresenter
+    lateinit var mSearchHomePresenter: SearchHomePresenter
 
     lateinit var mOfficialGameMatchList: ArrayList<MatchDetailResponse>
     lateinit var mCoachModeMatchList: ArrayList<MatchDetailResponse>
@@ -56,7 +56,7 @@ class SearchHomeFragment : BaseFragment(),
 
     open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
-        mSearchPresenter = SearchPresenter()
+        mSearchHomePresenter = SearchHomePresenter()
     }
 
     companion object {
@@ -87,7 +87,7 @@ class SearchHomeFragment : BaseFragment(),
     override fun onStart() {
         super.onStart()
         if (isRestartApp) return
-        mSearchPresenter!!.takeView(this)
+        mSearchHomePresenter!!.takeView(this)
         initView()
         initMyInfoData()
         initListData()
@@ -95,7 +95,7 @@ class SearchHomeFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        mSearchPresenter!!.dropView()
+        mSearchHomePresenter!!.dropView()
     }
 
     fun initView() {
@@ -151,21 +151,21 @@ class SearchHomeFragment : BaseFragment(),
         }
         txt_MyNickName.text = mSearchUserInfo.nickname
         txt_Level.text = mSearchUserInfo.level
-        mSearchPresenter.getUserHighRank(mSearchUserInfo.accessId)
+        mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
     }
 
     fun initListData() {
         mOfficialGameMatchList = arrayListOf()
         mCoachModeMatchList = arrayListOf()
 
-        mSearchPresenter!!.getMatchId(
+        mSearchHomePresenter!!.getMatchId(
             mSearchUserInfo.accessId!!,
             DataManager.matchType.normalMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
 
-        mSearchPresenter!!.getMatchId(
+        mSearchHomePresenter!!.getMatchId(
             mSearchUserInfo.accessId!!,
             DataManager.matchType.coachMatch,
             DataManager.getInstance().offset,
@@ -209,10 +209,8 @@ class SearchHomeFragment : BaseFragment(),
         } else {
             mOfficialView.hideEmptyView()
         }
-
-        for (item in mOfficialGameMatchIdList) {
-            if (DEBUG) Log.v(TAG, "item, matchId : ${item} ")
-            mSearchPresenter.getMatchDetailList(true, item)
+        mOfficialView.setOnClickListener {
+            showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
     }
 
@@ -229,10 +227,9 @@ class SearchHomeFragment : BaseFragment(),
         } else {
             mCoachView.hideEmptyView()
         }
-
-        for (item in mCoachModeMatchIdList) {
-            if (DEBUG) Log.v(TAG, "coach item, matchId : ${item} ")
-            mSearchPresenter.getMatchDetailList(false, item)
+        hideLoading(false)
+        mCoachView.setOnClickListener {
+            showSearchList(DataManager.matchType.coachMatch, mOfficialGameMatchIdList)
         }
     }
 
@@ -249,61 +246,11 @@ class SearchHomeFragment : BaseFragment(),
         }
     }
 
-    override fun showOfficialGameList(searchResponse: MatchDetailResponse?) {
-        searchResponse ?: return
-        Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
-        synchronized("Lock") {
-            mOfficialGameMatchList.add(searchResponse!!)
-            mOfficialGameMatchList.sortByDescending { it.matchDate }
-        }
-        if(DEBUG) Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size} , mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
-        if (mOfficialGameMatchList.size == mOfficialGameMatchIdList.size) {
-            initRateView(mSearchUserInfo.accessId)
-            //Todo : AnalysisInfo
-            mSearchPresenter.getMatchAnalysis(mSearchUserInfo.accessId, mOfficialGameMatchList)
-            mOfficialView.setOnClickListener{
-                showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchList)
-            }
-        }
-        checkLoadingView()
-    }
-
-    override fun showCoachModeList(searchResponse: MatchDetailResponse?) {
-        searchResponse ?: return
-        Log.v(TAG, "showCoachModeList : ${searchResponse!!.matchId}")
-        synchronized("Lock") {
-            mCoachModeMatchList.add(searchResponse!!)
-            mCoachModeMatchList.sortByDescending { it.matchDate }
-        }
-        if(DEBUG)  Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size} , mOfficialGameMatchIdList size : ${mCoachModeMatchList.size}")
-        if (mCoachModeMatchList.size == mCoachModeMatchIdList.size) {
-            initRateView(mSearchUserInfo.accessId)
-            mCoachView.setOnClickListener{
-                showSearchList(DataManager.matchType.coachMatch, mCoachModeMatchList)
-            }
-        }
-        checkLoadingView()
-    }
-
-    fun checkLoadingView(){
-//        if(mOfficialGameMatchList.size != 0
-//            && mCoachModeMatchList.size != 0
-//            && mOfficialGameMatchList.size == mOfficialGameMatchIdList.size
-//            && mCoachModeMatchList.size == mCoachModeMatchIdList.size){
-            Log.v(TAG,"mOfficialGameMatchList size : ${mOfficialGameMatchList.size}, mOfficialGameMatchIdList size : ${mOfficialGameMatchIdList.size}")
-            Log.v(TAG,"mCoachModeMatchList size : ${mCoachModeMatchList.size}, mCoachModeMatchIdList size : ${mCoachModeMatchIdList.size}")
-            hideLoading(false)
-//        }
-    }
-
-    fun showSearchList(matchtype: DataManager.matchType, matchList: List<MatchDetailResponse>) {
+    fun showSearchList(matchtype: DataManager.matchType, matchIdList: List<String>) {
         var fragment = SearchListFragment()
         var bundle = Bundle()
+        bundle.putStringArrayList(SearchListFragment().KEY_SEARCH_MATCH_ID, ArrayList(matchIdList))
         bundle.putInt(SearchListFragment().KEY_SEARCH_MATCH_TYPE, matchtype.ordinal)
-        bundle.putParcelableArrayList(
-            SearchListFragment().KEY_SEARCH_MATCH_INFO,
-            ArrayList(matchList)
-        )
         bundle.putParcelable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)
 
         fragment.arguments = bundle
@@ -317,7 +264,7 @@ class SearchHomeFragment : BaseFragment(),
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
         if (userHighRankResponse.isEmpty() || userHighRankResponse.size == 0) {
-            showError(SearchPresenter().ERROR_EMPTY)
+            showError(SearchHomePresenter().ERROR_EMPTY)
             return
         }
         for (item in userHighRankResponse) {
@@ -355,12 +302,12 @@ class SearchHomeFragment : BaseFragment(),
             DataManager().ERROR_OTHERS,
             DataManager().ERROR_BAD_REQUEST -> {
                 hideLoading(false)
-                mSearchPresenter.dropView()
+                mSearchHomePresenter.dropView()
             }
             DataManager().ERROR_NETWORK_DISCONNECTED,
             DataManager().ERROR_GATEWAY_TIMEOUT -> {
                 hideLoading(true)
-                mSearchPresenter.dropView()
+                mSearchHomePresenter.dropView()
                 (activity as MainActivity).showErrorPopup(error)
             }
         }

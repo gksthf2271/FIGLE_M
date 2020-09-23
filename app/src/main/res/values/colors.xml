@@ -73,4 +73,6 @@
     <color name="red_color">#DF0531</color>
 
     <color name="analytics_wrapper">#80000000</color>
+
+    <color name="search_loading_color">#34000000</color>
 </resources>

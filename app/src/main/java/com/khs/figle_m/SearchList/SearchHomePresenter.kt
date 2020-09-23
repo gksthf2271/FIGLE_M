@@ -10,7 +10,7 @@ import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class SearchPresenter: SearchContract.Presenter {
+class SearchHomePresenter: SearchContract.Presenter {
 
     val TAG:String = javaClass.name
     val DEBUG:Boolean = false
@@ -31,7 +31,6 @@ class SearchPresenter: SearchContract.Presenter {
         Thread(Runnable {
             DataManager.getInstance().loadMatchId(accessId, matchType.matchType, offset, limit,
                 {
-//                    mSearchListView?.hideLoading(false)
                     when (matchType.name) {
                         DataManager.matchType.normalMatch.name -> {
                             mSearchListView?.showOfficialGameMatchIdList(it)
@@ -81,39 +80,6 @@ class SearchPresenter: SearchContract.Presenter {
                     })
             }
         }
-    }
-
-    override fun getMatchDetailList(isOfficialGame: Boolean, matchId: String) {
-        mSearchListView?.showLoading()
-        runBlocking {
-            launch {
-                getMatchDetail(matchId, {
-                    if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: ${it.matchId}")
-                    it.matchDate = DateUtils().getDate(it.matchDate).toString()
-                    if (isOfficialGame) {
-                        mSearchListView?.showOfficialGameList(it)
-                    } else {
-                        mSearchListView?.showCoachModeList(it)
-                    }
-//                    mSearchListView?.hideLoading(false)
-                }, {
-                    Log.v(TAG, "Result : getMatchDetailList response : $it")
-                    mSearchListView?.showError(it)
-                })
-
-            }
-        }
-    }
-
-    fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (Int) -> Unit) {
-        DataManager.getInstance().loadMatchDetail(matchId,
-            {
-                if (DEBUG) Log.v(TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")
-                onSuccess(it)
-            }, {
-                Log.v(TAG,"getMatchDetail Failed! $it")
-                onFailed(it)
-            })
     }
 
 //    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
