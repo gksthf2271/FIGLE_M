@@ -127,6 +127,7 @@ class SearchHomeFragment : BaseFragment(),
         val officialModeView = SearchHomeRateView(context!!)
         val coachModeView = SearchHomeRateView(context!!)
 
+        //승률 갯수 20개로 한정
         officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
         coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
 

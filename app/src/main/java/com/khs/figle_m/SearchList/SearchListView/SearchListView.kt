@@ -157,6 +157,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
     override fun showGameList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
+        if (searchResponse.matchInfo.size <= 1) return
         Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mMatchList.add(searchResponse!!)

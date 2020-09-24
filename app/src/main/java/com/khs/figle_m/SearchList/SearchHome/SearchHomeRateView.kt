@@ -11,7 +11,6 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import kotlinx.android.synthetic.main.cview_loading_view.view.*
 import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.loading_view
@@ -40,10 +39,12 @@ class SearchHomeRateView : ConstraintLayout {
     }
 
     fun updateView(accessId : String, matchType: DataManager.matchType, arrayList: List<String>) {
-        showEmptyView()
         mMatchDetailList = arrayListOf()
         mFailedRequestQ = PriorityQueue<String>()
-        if(!arrayList.isEmpty()) initRate(accessId, arrayList)
+        if(!arrayList.isEmpty()) {
+            showLoadingView()
+            initRate(accessId, arrayList)
+        }
 
         when (matchType.name) {
             DataManager.matchType.normalMatch.name -> {
@@ -55,16 +56,16 @@ class SearchHomeRateView : ConstraintLayout {
         }
     }
 
-    fun showEmptyView() {
-        Log.v(TAG,"showEmptyView(...)")
+    fun showLoadingView() {
+        Log.v(TAG,"showLoadingView(...)")
         search_home_group_view.visibility = View.GONE
         search_home_empty_view.visibility = View.VISIBLE
         loading_view.visibility = View.VISIBLE
         loading_view.show()
     }
 
-    fun hideEmptyView() {
-        Log.v(TAG,"hideEmptyView(...)")
+    fun hideLoadingView() {
+        Log.v(TAG,"hideLoadingView(...)")
         search_home_empty_view.visibility = View.GONE
         search_home_group_view.visibility = View.VISIBLE
         loading_view.visibility = View.GONE
@@ -72,16 +73,23 @@ class SearchHomeRateView : ConstraintLayout {
     }
 
     fun initRate(accessId: String, arrayList: List<String>) {
-        CoroutineScope(Dispatchers.Default).launch {
-            for (item in arrayList) {
-                DataManager.getInstance().loadMatchDetailWrapper(item,
-                    {
+        CoroutineScope(Dispatchers.IO).launch {
+            mMatchDetailList.clear()
+            var searchSize = DataManager().SEARCH_PAGE_SIZE
+            if (arrayList.size < DataManager().SEARCH_PAGE_SIZE) {
+                searchSize = arrayList.size
+            }
+            for (index in 0 .. searchSize) {
+                if (arrayList.size <= index) break
+                DataManager.getInstance().loadMatchDetailWrapper(arrayList.get(index)
+                    ,{
                         mMatchDetailList.add(it)
                         Log.v(TAG,"${mMatchDetailList.size} Success Request : $it")
-                        if (arrayList.size == mMatchDetailList.size + mFailedRequestQ.size) {
+                        if (DataManager().SEARCH_PAGE_SIZE == mMatchDetailList.size + mFailedRequestQ.size) {
+                            Log.v(TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
                             CoroutineScope(Dispatchers.Main).launch {
                                 updateView(accessId, mMatchDetailList)
-                                hideEmptyView()
+                                hideLoadingView()
                             }
                         }
                     }, {

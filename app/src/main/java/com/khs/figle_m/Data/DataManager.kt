@@ -34,16 +34,16 @@ class DataManager{
     open val SEARCH_PAGE_SIZE: Int = 20
 
     //    200	OK	성공
-//    301	Moved Permanently	HTTP 프로토콜로 호출
-//    400	Bad Request	요청 형식 오류 (잘못된 파라미터 입력)
-//    401	Unauthorized	미승인 서비스 (미지원 service, service type)
-//    403	Forbidden	허용되지 않은 AccessToken 사용
-//    404	Not Found	해당 리소스가 존재하지 않음
-//    405	Method not allowed	미지원 API
-//    413	Request Entity Too Large	너무 긴 요청 파라미터 입력
-//    429	Too many request	AccessToken의 요청 허용량(Rate Limit) 초과
-//    500	Internal Server Error	서버 내부 에러
-//    504	Gateway Timeout	서버 내부 처리 timeout
+    //    301	Moved Permanently	HTTP 프로토콜로 호출
+    //    400	Bad Request	요청 형식 오류 (잘못된 파라미터 입력)
+    //    401	Unauthorized	미승인 서비스 (미지원 service, service type)
+    //    403	Forbidden	허용되지 않은 AccessToken 사용
+    //    404	Not Found	해당 리소스가 존재하지 않음
+    //    405	Method not allowed	미지원 API
+    //    413	Request Entity Too Large	너무 긴 요청 파라미터 입력
+    //    429	Too many request	AccessToken의 요청 허용량(Rate Limit) 초과
+    //    500	Internal Server Error	서버 내부 에러
+    //    504	Gateway Timeout	서버 내부 처리 timeout
     open val SUCCESS_CODE: Int = 200
     open val ERROR_BAD_REQUEST = 400
     open val ERROR_UNAUTHORIZED = 401
