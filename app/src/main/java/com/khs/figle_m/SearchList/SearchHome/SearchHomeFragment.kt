@@ -227,7 +227,7 @@ class SearchHomeFragment : BaseFragment(),
         }
         hideLoading(false)
         mCoachView.setOnClickListener {
-            showSearchList(DataManager.matchType.coachMatch, mOfficialGameMatchIdList)
+            showSearchList(DataManager.matchType.coachMatch, mCoachModeMatchIdList)
         }
         initRateView(mSearchUserInfo.accessId)
     }

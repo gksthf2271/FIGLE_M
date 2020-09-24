@@ -85,7 +85,7 @@ class SearchHomeRateView : ConstraintLayout {
                     ,{
                         mMatchDetailList.add(it)
                         Log.v(TAG,"${mMatchDetailList.size} Success Request : $it")
-                        if (DataManager().SEARCH_PAGE_SIZE == mMatchDetailList.size + mFailedRequestQ.size) {
+                        if (searchSize == mMatchDetailList.size + mFailedRequestQ.size) {
                             Log.v(TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
                             CoroutineScope(Dispatchers.Main).launch {
                                 updateView(accessId, mMatchDetailList)
