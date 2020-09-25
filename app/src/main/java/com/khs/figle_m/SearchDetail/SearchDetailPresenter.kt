@@ -93,7 +93,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         var seasonName: String? = null
         if (seasonId.equals("224")) {
             Log.v(TAG,"TEST, 224 : $playerDTO")
-            //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요
+            //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
             playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
             seasonId = "234"
         }

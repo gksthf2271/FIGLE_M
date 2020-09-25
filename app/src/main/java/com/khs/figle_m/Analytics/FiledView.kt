@@ -29,18 +29,14 @@ class FiledView : ConstraintLayout, AnalyticsContract.View{
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
     }
 
     override fun hideLoading(isError: Boolean) {
-        TODO("Not yet implemented")
     }
 
     override fun showPlayerList(playerList: List<PlayerDTO>) {
-        TODO("Not yet implemented")
     }
 
     override fun showError(error: Int) {
-        TODO("Not yet implemented")
     }
 }

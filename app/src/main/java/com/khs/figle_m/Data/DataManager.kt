@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import okhttp3.HttpUrl
@@ -355,6 +356,36 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                onSuccess(response.body()!!)
+            }
+        })
+    }
+
+    fun loadTradeInfo(
+        accessId: String,
+        tradeType: String,
+        offset: Int?,
+        limit: Int?,
+        onSuccess: (List<TradeResponse>) -> Unit,
+        onFailed: (Int) -> Unit
+    ) {
+        val call = SearchUser.getApiService().requestTradeInfo(
+            authorization = mAuthorizationKey,
+            accessid = accessId,
+            tradeType = tradeType,
+            offset = offset,
+            limit = limit
+        )
+
+        call.enqueue(object : Callback<List<TradeResponse>> {
+            override fun onFailure(call: Call<List<TradeResponse>>, t: Throwable) {
+                if (t is UnknownHostException) {
+                    onFailed(maekErrorException(t))
+                    return
+                }
+            }
+
+            override fun onResponse(call: Call<List<TradeResponse>>, response: Response<List<TradeResponse>>) {
                 onSuccess(response.body()!!)
             }
         })

@@ -99,8 +99,10 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     fun loadMatch(matchType: Int, startIndex : Int, endIndex: Int) {
         for (index in startIndex .. endIndex) {
             Log.v(TAG,"loadMatch : ${index}")
-            mSearchListPresenter.getMatchDetailList(
+            mSearchListPresenter.let {
+                mSearchListPresenter.getMatchDetailList(
                 matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList.get(index))
+            }
         }
     }
 
@@ -171,6 +173,6 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     override fun showError(error: Int) {
-        TODO("Not yet implemented")
+
     }
 }

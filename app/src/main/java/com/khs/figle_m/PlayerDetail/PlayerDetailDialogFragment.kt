@@ -246,7 +246,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         seasonDB.let {
             CoroutineScope(Dispatchers.IO).launch {
                 var seasonId = item.spId.toString().substring(0,3)
-                //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요
+                //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                 if ("224".equals(seasonId)) seasonId = "234"
                 val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
                 Log.v(TAG,"seasonEntity : ${seasonEntity.className}")
@@ -288,22 +288,21 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
+
     }
 
     override fun hideLoading() {
-        TODO("Not yet implemented")
+
     }
 
     override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun showPlayerDetailDialogFragment(
         playerDTO: PlayerDTO,
         rankerPlayerDTOList: List<RankerPlayerDTO>
     ) {
-        TODO("Not yet implemented")
     }
 
     override fun showError(error: Int) {

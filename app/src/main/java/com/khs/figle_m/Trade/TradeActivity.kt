@@ -1,25 +1,23 @@
-package com.khs.figle_m.Analytics
+package com.khs.figle_m.Trade
 
 import android.os.Bundle
 import android.util.Log
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.utils.FragmentUtils
 
-class AnalyticsActivity : BaseActivity() {
+class TradeActivity : BaseActivity() {
     val TAG: String = javaClass.name
-    val KEY_MY_DATA = "KEY_MY_DATA"
-    val KEY_OPPOSING_USER_DATA = "KEY_OPPOSING_USER_DATA"
+    val KEY_ACCESS_ID = "KEY_ACCESS_ID"
     companion object {
         @Volatile
-        private var instance: AnalyticsActivity? = null
+        private var instance: TradeActivity? = null
 
         @JvmStatic
-        fun getInstance(): AnalyticsActivity =
+        fun getInstance(): TradeActivity =
             instance ?: synchronized(this) {
                 instance
-                    ?: AnalyticsActivity().also {
+                    ?: TradeActivity().also {
                         instance = it
                     }
             }
@@ -32,16 +30,13 @@ class AnalyticsActivity : BaseActivity() {
 
     override fun onStart() {
         super.onStart()
-        val myList = intent.getParcelableArrayListExtra<MatchInfoDTO>(KEY_MY_DATA)
-        val opposingUserList =
-            intent.getParcelableArrayListExtra<MatchInfoDTO>(KEY_OPPOSING_USER_DATA)
-        var analyticsFragment = AnalyticsFragment()
+        val accessId = intent.getStringExtra(KEY_ACCESS_ID)
+        var tradeFragment = TradeHomeFragment()
         var bundle = Bundle()
-        bundle.putParcelableArrayList(KEY_MY_DATA, myList)
-        bundle.putParcelableArrayList(KEY_OPPOSING_USER_DATA, opposingUserList)
-        analyticsFragment.arguments = bundle
+        bundle.putString(KEY_ACCESS_ID, accessId)
+        tradeFragment.arguments = bundle
         FragmentUtils().loadFragment(
-            analyticsFragment,
+            tradeFragment,
             R.id.fragment_container,
             supportFragmentManager
         )

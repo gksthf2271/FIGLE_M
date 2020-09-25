@@ -20,6 +20,7 @@ import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchHomePresenter
 import com.khs.figle_m.SearchList.SearchListFragment
+import com.khs.figle_m.Trade.TradeActivity
 import com.khs.figle_m.utils.DivisionEnum
 import com.khs.figle_m.utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
@@ -102,6 +103,7 @@ class SearchHomeFragment : BaseFragment(),
                 fragmentManager!!
             )
         }
+
         mOfficialView = MatchView(context!!)
         mCoachView = MatchView(context!!)
 
@@ -151,6 +153,11 @@ class SearchHomeFragment : BaseFragment(),
             txt_team_price.visibility = View.VISIBLE
         }
         mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
+        group_trade.setOnClickListener{
+            val intent = Intent(context, TradeActivity::class.java)
+            intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.accessId)
+            startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
+        }
     }
 
     fun initListData() {

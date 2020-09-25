@@ -2,6 +2,7 @@ package com.khs.figle_m.Data
 
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
@@ -41,6 +42,15 @@ interface RetrofitService {
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String
     ): Call<List<UserHighRankResponse>>
+
+    @GET("v1.0/users/{accessid}/markets")
+    fun requestTradeInfo(
+        @Header("Authorization") authorization: String,
+        @Path("accessid") accessid: String,
+        @Query("tradeType") tradeType: String,
+        @Query("offset") offset: Int?,
+        @Query("limit") limit: Int?
+    ): Call<List<TradeResponse>>
 
     @GET("live/externalAssets/common/players/p{spid}.png")
     fun requestPlayerImage(
