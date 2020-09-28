@@ -18,6 +18,6 @@ interface TradeContract : BaseView {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getTradeInfoList(accessId : String, tradeType: String, offset : Int?, limit: Int?)
+        fun getTradeInfoList(accessId : String, offset : Int?, limit: Int?)
     }
 }

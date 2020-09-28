@@ -14,6 +14,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
+        <TextView
+            android:id="@+id/sell_txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/dotted_line"
+            tools:text="2020-03-05-13:24:15"
+            android:textColor="@color/search_text_color"
+            />
+
         <ImageView
             android:id="@+id/dotted_line"
             android:layout_width="0dp"
@@ -27,7 +38,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/player_info_layout"
+        android:id="@+id/sell_layout_trade_player"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintWidth_percent="0.40"

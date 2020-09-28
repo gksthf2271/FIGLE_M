@@ -13,8 +13,10 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class TradeResponse(
     val tradeDate: String,
+    var tradeDateMs: Long,
     val saleSn: String,
     val spid: Integer,
     var grade : Integer,
-    var value : Integer
+    var value : Integer,
+    var tradeType : Int
 ) : Parcelable

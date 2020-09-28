@@ -7,6 +7,8 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
+import com.khs.figle_m.Trade.TradeHomeFragment
+import com.khs.figle_m.utils.DateUtils
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -363,7 +365,7 @@ class DataManager{
 
     fun loadTradeInfo(
         accessId: String,
-        tradeType: String,
+        tradeType: TradeHomeFragment.TradeType,
         offset: Int?,
         limit: Int?,
         onSuccess: (List<TradeResponse>) -> Unit,
@@ -372,7 +374,7 @@ class DataManager{
         val call = SearchUser.getApiService().requestTradeInfo(
             authorization = mAuthorizationKey,
             accessid = accessId,
-            tradeType = tradeType,
+            tradeType = tradeType.name,
             offset = offset,
             limit = limit
         )
@@ -386,7 +388,12 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<List<TradeResponse>>, response: Response<List<TradeResponse>>) {
-                onSuccess(response.body()!!)
+                onSuccess(response.body()!!.apply {
+                    for (item in this){
+                        item.tradeType = tradeType.ordinal
+                        item.tradeDateMs = DateUtils().getDate(item.tradeDate)
+                    }
+                })
             }
         })
     }
