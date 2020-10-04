@@ -13,6 +13,9 @@ import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.SearchList.SearchDecoration
 import kotlinx.android.synthetic.main.fragment_ranking.*
 import kotlinx.android.synthetic.main.fragment_trade.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TradeHomeFragment : BaseFragment(), TradeContract.View {
     val TAG = javaClass.name
@@ -61,18 +64,26 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     }
 
     override fun showLoading() {
-
+        Log.v(TAG,"showLoading(...)")
     }
 
     override fun hideLoading() {
-
+        Log.v(TAG,"hideLoading(...)")
     }
 
     override fun showTradeInfo(tradeInfoList: List<TradeResponse>) {
         Log.v(TAG,"TEST, TradeInfoList : $tradeInfoList")
-        recycler_view.adapter = TradeRecyclerViewAdapter(context!!, tradeInfoList, {
+        mTradePresenter.let {
+            mTradePresenter!!.getTradePlayerImageUrl(tradeInfoList)
+        }
+    }
 
-        })
+    override fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
+        CoroutineScope(Dispatchers.Main).launch {
+            Log.v(TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
+            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, tradeInfoList, {
+            })
+        }
     }
 
     override fun showError(error: Int) {

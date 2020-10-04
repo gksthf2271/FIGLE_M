@@ -87,7 +87,7 @@ class DataManager{
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     if (t is UnknownHostException) {
-                        onFailed(maekErrorException(t))
+                        onFailed(makeErrorException(t))
                         return
                     }
                 }
@@ -128,7 +128,7 @@ class DataManager{
             .enqueue(object : Callback<MatchDetailResponse> {
                 override fun onFailure(call: Call<MatchDetailResponse>, t: Throwable) {
                     if (t is UnknownHostException) {
-                        onFailed(maekErrorException(t))
+                        onFailed(makeErrorException(t))
                         return
                     }
                 }
@@ -165,7 +165,7 @@ class DataManager{
         ).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     if (t is UnknownHostException) {
-                        onFailed(maekErrorException(t))
+                        onFailed(makeErrorException(t))
                         return
                     }
                 }
@@ -194,7 +194,7 @@ class DataManager{
             .enqueue(object : Callback<List<UserHighRankResponse>> {
                 override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
                     if (t is UnknownHostException) {
-                        onFailed(maekErrorException(t))
+                        onFailed(makeErrorException(t))
                         return
                     }
                 }
@@ -232,7 +232,7 @@ class DataManager{
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
@@ -256,7 +256,7 @@ class DataManager{
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
@@ -292,7 +292,7 @@ class DataManager{
         call.enqueue(object : Callback<List<RankerPlayerDTO>> {
             override fun onFailure(call: Call<List<RankerPlayerDTO>>, t: Throwable) {
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
@@ -322,12 +322,12 @@ class DataManager{
         val call = SearchUser.getCrawlingService()
             .requestPlayerInfo(spId = spid, strong = strong)
 
-        if (!DEBUG) Log.v(TAG, "TEST, Call : ${call.request()}")
+        if (DEBUG) Log.v(TAG, "TEST, Call : ${call.request()}")
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
@@ -352,7 +352,7 @@ class DataManager{
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
@@ -378,16 +378,19 @@ class DataManager{
             offset = offset,
             limit = limit
         )
+        if (DEBUG) Log.v(TAG,"loadTradeInfo : ${call.request()}")
 
         call.enqueue(object : Callback<List<TradeResponse>> {
             override fun onFailure(call: Call<List<TradeResponse>>, t: Throwable) {
+                Log.d(TAG,"onFailure(...) : $t")
                 if (t is UnknownHostException) {
-                    onFailed(maekErrorException(t))
+                    onFailed(makeErrorException(t))
                     return
                 }
             }
 
             override fun onResponse(call: Call<List<TradeResponse>>, response: Response<List<TradeResponse>>) {
+                Log.v(TAG,"loadTradeInfo(...), onResponse : ${(response.body())!!.get(0)}")
                 onSuccess(response.body()!!.apply {
                     for (item in this){
                         item.tradeType = tradeType.ordinal
@@ -398,7 +401,7 @@ class DataManager{
         })
     }
 
-    fun maekErrorException(t :Throwable) :Int {
+    fun makeErrorException(t :Throwable) :Int {
         if (t is UnknownHostException) {
             return ERROR_NETWORK_DISCONNECTED
         } else {

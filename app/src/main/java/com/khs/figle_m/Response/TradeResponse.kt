@@ -17,6 +17,7 @@ data class TradeResponse(
     val saleSn: String,
     val spid: Integer,
     var grade : Integer,
-    var value : Integer,
-    var tradeType : Int
+    var value : Long,       //가격 값이 Integer 범주보다 큼 고로 Long을 사용
+    var tradeType : Int,
+    var imageResUrl : String // custom
 ) : Parcelable

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.TradeResponse
 import kotlinx.android.synthetic.main.item_trade_buy.view.*
@@ -59,52 +60,16 @@ RecyclerView.Adapter<TradeViewHolder>() {
         val view: View =
             LayoutInflater.from(parent.context).inflate(resId, parent, false)
 
-        val playerView = LayoutInflater.from(mContext).inflate(R.layout.cview_player_item_view, null)
+        val playerView = CirclePlayerView(mContext)
+        playerView.tag = playerView.TAG
 
         if(viewType == TradeHomeFragment.TradeType.sell.ordinal) {
-            initLayout(view.sell_layout_trade_player, playerView)
             view.sell_layout_trade_player.addView(playerView)
         } else {
-            initLayout(view.buy_layout_trade_player, playerView)
             view.buy_layout_trade_player.addView(playerView)
         }
-
         viewHolder = ViewHolderMaker().getViewHolder(viewType, view)
         return viewHolder
-    }
-
-    fun initLayout(constraintLayout: ConstraintLayout, itemView: View){
-        var constraintSet = ConstraintSet()
-        constraintSet.clone(constraintLayout)
-        constraintSet.connect(
-            itemView.id,
-            ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP,
-            0
-        )
-        constraintSet.connect(
-            itemView.id,
-            ConstraintSet.BOTTOM,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.BOTTOM,
-            0
-        )
-        constraintSet.connect(
-            itemView.id,
-            ConstraintSet.LEFT,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.LEFT,
-            0
-        )
-        constraintSet.connect(
-            itemView.id,
-            ConstraintSet.RIGHT,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.RIGHT,
-            0
-        )
-        constraintSet.applyTo(constraintLayout)
     }
 
     override fun getItemCount(): Int {

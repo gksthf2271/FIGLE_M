@@ -1,7 +1,12 @@
 package com.khs.figle_m.Trade
 
+import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.TradeResponse
+import com.khs.figle_m.utils.CrawlingUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TradePresenter : TradeContract.Presenter{
     var mTradeView : TradeContract.View? = null
@@ -15,6 +20,7 @@ class TradePresenter : TradeContract.Presenter{
         for (item in TradeHomeFragment.TradeType.values()) {
             DataManager.getInstance().loadTradeInfo(accessId, item, offset, limit,
                 {
+                    Log.v(this.javaClass.name,"loadTradeInfo response(...) : $item")
                     responseMap.put(item.name, it)
                     if (responseMap.size == TradeHomeFragment.TradeType.values().size) {
                         var responseList = mutableListOf<TradeResponse>()
@@ -25,14 +31,41 @@ class TradePresenter : TradeContract.Presenter{
                         }
                         responseList.sortByDescending { it.tradeDateMs }
                         mTradeView!!.showTradeInfo(responseList)
-                        mTradeView!!.hideLoading()
                     }
                 },
                 {
+                    Log.e(this.javaClass.name,"load failed : $it")
                     if (TradeHomeFragment.TradeType.sell.name.equals(item)){
                         mTradeView!!.hideLoading()
                     }
                 })
+        }
+    }
+
+    override fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
+        var requestMap = hashMapOf<String, TradeResponse>()
+        Log.v(this.javaClass.name,"requestSize : ${tradeInfoList.size}")
+        var index = 0
+        CoroutineScope(Dispatchers.IO).launch {
+            for (item in tradeInfoList) {
+                var spId = item.spid.toInt()
+                var grade = item.grade.toInt()
+                Log.v(this.javaClass.name,"requestCall : $spId, index : $index")
+                CrawlingUtils().getPlayerImg(spId, grade, {
+                    item.imageResUrl = it
+                    requestMap.put(spId.toString(), item)
+                    Log.v(this.javaClass.name, "S, input RequestMap : ${requestMap.values.size}")
+                    if (requestMap.values.size == tradeInfoList.size)
+                        mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
+                }, {
+                    item.imageResUrl = ""
+                    requestMap.put(spId.toString(), item)
+                    Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size}")
+                    if (requestMap.values.size == tradeInfoList.size)
+                        mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
+                })
+                index++
+            }
         }
     }
 
@@ -43,5 +76,4 @@ class TradePresenter : TradeContract.Presenter{
     override fun dropView() {
         mTradeView = null
     }
-
 }

@@ -15,9 +15,11 @@ interface TradeContract : BaseView {
         fun showLoading()
         fun hideLoading()
         fun showTradeInfo(tradeInfoList: List<TradeResponse>)
+        fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>)
     }
 
     interface Presenter : BasePresenter<View> {
         fun getTradeInfoList(accessId : String, offset : Int?, limit: Int?)
+        fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>)
     }
 }

@@ -23,7 +23,11 @@ class CrawlingUtils() {
     private val DEBUG = false
 
     fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
-        val seasonId = playerDTO.spId.toString().substring(0, 3)
+        getPlayerImg(playerDTO.spId, playerDTO.spGrade, onSuccess, onFailed)
+    }
+
+    fun getPlayerImg(spId: Int, spGrade:Int, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
+        val seasonId = spId.toString().substring(0, 3)
         var seasonName: String? = null
         var imageUrl: String? = null
         for (item in SeasonEnum.values()) {
@@ -36,7 +40,7 @@ class CrawlingUtils() {
             return
         }
         try {
-            DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+            DataManager.getInstance().loadPlayerInfo(spId, spGrade, {
 
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody = doc.body().getElementById("wrapper")
