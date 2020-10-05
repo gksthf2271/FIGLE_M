@@ -72,6 +72,9 @@
     <color name="green_color">#2fCC71</color>
     <color name="red_color">#DF0531</color>
 
+    <color name="trade_red_color">#B3B30024</color>
+    <color name="trade_blue_color">#B30073BA</color>
+
     <color name="analytics_wrapper">#80000000</color>
 
     <color name="search_loading_color">#66000000</color>
