@@ -54,14 +54,18 @@ class TradePresenter : TradeContract.Presenter{
                     item.imageResUrl = it
                     requestMap.put(item.saleSn, item)
                     Log.v(this.javaClass.name, "S, input RequestMap : ${requestMap.values.size}")
-                    if (requestMap.values.size == tradeInfoList.size)
+                    if (requestMap.values.size == tradeInfoList.size) {
                         mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
+                        mTradeView!!.hideLoading()
+                    }
                 }, {
                     item.imageResUrl = ""
                     requestMap.put(item.saleSn, item)
                     Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size} ? $it")
-                    if (requestMap.values.size == tradeInfoList.size)
+                    if (requestMap.values.size == tradeInfoList.size) {
                         mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
+                        mTradeView!!.hideLoading()
+                    }
                 })
                 index++
             }

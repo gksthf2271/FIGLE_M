@@ -66,10 +66,18 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
 
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
+        CoroutineScope(Dispatchers.Main).launch {
+            avi_loading.visibility = View.VISIBLE
+            avi_loading.show(false)
+        }
     }
 
     override fun hideLoading() {
-        Log.v(TAG,"hideLoading(...)")
+        Log.v(TAG, "hideLoading(...)")
+        CoroutineScope(Dispatchers.Main).launch {
+            avi_loading.visibility = View.GONE
+            avi_loading.hide()
+        }
     }
 
     override fun showTradeInfo(tradeInfoList: List<TradeResponse>) {
