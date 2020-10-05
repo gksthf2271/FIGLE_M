@@ -21,7 +21,11 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     TOTN20(222,"20totn"),
     LH1(224,"lh"),          //임시 방편 224, 234 뭐가 맞는지 문의필요 // 문의 결과 234가 맞고, 224는 급여이슈로 임시 할당번호
     TKL(225,"tkl"),
+    TOTS20(230,"20tots"),
+    VTR(231,"vtr"),
+    MOG(233,"mog"),
     LH(234,"lh"),
+    LA(236,"la"),
     KFA19(295,"2019kfa"),
     MCFC(297,"mcfc"),
     KFA18(298,"kfa"),
@@ -34,6 +38,8 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     PLC_S19(503,"19pls"),
     KLeague20(504,"20kl")
 }
+
+
 
 //1,101,ICON(ICON),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/icon.png
 //2,201,NHD(NationalHeroDebut),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/nhd.png
@@ -60,6 +66,30 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
 //    "className": "LH (LH)",
 //    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/lh.png"
 //},
+////////////////////
+//추가 20.10.05
+//{
+//    "seasonId": 230,
+//    "className": "20 TOTS (20 Team Of The Season)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/20tots.png"
+//},
+//{
+//    "seasonId": 231,
+//    "className": "VTR (Veteran)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/vtr.png"
+//},
+//{
+//    "seasonId": 233,
+//    "className": "MOG (Moments Of Glory)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/mog.png"
+//},
+//
+//{
+//    "seasonId": 236,
+//    "className": "LA (Liverpool Ambassador)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/la.png"
+//}
+////////////////////
 //21,295,19KFA(19KFA),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/2019kfa.png
 //22,297,MCFC(17-18ManCityChampions),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/mcfc.png
 //23,298,18KFA(18KFA),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/kfa.png
