@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.TradeResponse
+import kotlinx.android.synthetic.main.cview_trade_player.view.*
 import kotlinx.android.synthetic.main.item_trade_buy.view.*
 import kotlinx.android.synthetic.main.item_trade_sell.view.*
 
@@ -16,16 +17,20 @@ open class TradeSellViewHolder(itemView: View) : TradeViewHolder(itemView) {
    override fun bind(item: TradeResponse) {
       itemView.sell_txt_date.text = item.tradeDate.replace("T","\n")
       var circlePlayerView = itemView.sell_layout_trade_player.findViewWithTag<CirclePlayerView>("com.khs.figle_m.Common.CirclePlayerView")
-      circlePlayerView.initView(R.layout.cview_trade_player)
       circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
    }
 }
 
 open class TradeBuyViewHolder(itemView: View) : TradeViewHolder(itemView) {
    override fun bind(item: TradeResponse) {
-      itemView.buy_txt_date.text = item.tradeDate
+      itemView.buy_txt_date.text = item.tradeDate.replace("T","\n")
       var circlePlayerView = itemView.buy_layout_trade_player.findViewWithTag<CirclePlayerView>("com.khs.figle_m.Common.CirclePlayerView")
-      circlePlayerView.initView(R.layout.cview_trade_player)
       circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
+      itemView.txt_player_value.text = item.value.toString() + " BP"
+      if (item.tradeType == TradeHomeFragment.TradeType.sell.ordinal) {
+         itemView.txt_player_value.background = itemView.context.resources.getDrawable(R.color.red_color,null)
+      } else {
+         itemView.txt_player_value.background = itemView.context.resources.getDrawable(R.color.blue_color,null)
+      }
    }
 }

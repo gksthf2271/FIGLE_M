@@ -29,21 +29,21 @@ RecyclerView.Adapter<TradeViewHolder>() {
     inner class ViewHolderMaker(){
         fun getLayoutResId(type: Int) : Int{
             var resId = 0
-            if (TradeHomeFragment.TradeType.sell.ordinal == type){
-                resId = R.layout.item_trade_sell
-            } else {
+//            if (TradeHomeFragment.TradeType.sell.ordinal == type){
+//                resId = R.layout.item_trade_sell
+//            } else {
                 resId = R.layout.item_trade_buy
-            }
+//            }
             return resId
         }
 
         fun getViewHolder(type: Int, view:View) : TradeViewHolder{
             var viewHolder : TradeViewHolder
-            if (TradeHomeFragment.TradeType.sell.ordinal.equals(type)){
-                viewHolder = TradeSellViewHolder(view)
-            } else {
+//            if (TradeHomeFragment.TradeType.sell.ordinal.equals(type)){
+//                viewHolder = TradeSellViewHolder(view)
+//            } else {
                 viewHolder = TradeBuyViewHolder(view)
-            }
+//            }
             return viewHolder
         }
     }
@@ -62,12 +62,13 @@ RecyclerView.Adapter<TradeViewHolder>() {
 
         val playerView = CirclePlayerView(mContext)
         playerView.tag = playerView.TAG
+        playerView.initView(R.layout.cview_trade_player)
 
-        if(viewType == TradeHomeFragment.TradeType.sell.ordinal) {
-            view.sell_layout_trade_player.addView(playerView)
-        } else {
+//        if(viewType == TradeHomeFragment.TradeType.sell.ordinal) {
+//            view.sell_layout_trade_player.addView(playerView)
+//        } else {
             view.buy_layout_trade_player.addView(playerView)
-        }
+//        }
         viewHolder = ViewHolderMaker().getViewHolder(viewType, view)
         return viewHolder
     }

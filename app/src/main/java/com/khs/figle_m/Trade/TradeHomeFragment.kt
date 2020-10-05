@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
@@ -81,7 +82,10 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
         CoroutineScope(Dispatchers.Main).launch {
             Log.v(TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
-            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, tradeInfoList, {
+            recycler_view.addItemDecoration(SearchDecoration(10))
+            recycler_view.setLayoutManager(LinearLayoutManager(context))
+            var sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
+            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, sortedList, {
             })
         }
     }

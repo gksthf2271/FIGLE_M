@@ -29,12 +29,11 @@ class TradePresenter : TradeContract.Presenter{
                                 responseList.addAll(responseList.size, item)
                             }
                         }
-                        responseList.sortByDescending { it.tradeDateMs }
                         mTradeView!!.showTradeInfo(responseList)
                     }
                 },
                 {
-                    Log.e(this.javaClass.name,"load failed : $it")
+                    Log.v(this.javaClass.name,"load failed : $it")
                     if (TradeHomeFragment.TradeType.sell.name.equals(item)){
                         mTradeView!!.hideLoading()
                     }
@@ -46,21 +45,21 @@ class TradePresenter : TradeContract.Presenter{
         var requestMap = hashMapOf<String, TradeResponse>()
         Log.v(this.javaClass.name,"requestSize : ${tradeInfoList.size}")
         var index = 0
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Default).launch {
             for (item in tradeInfoList) {
                 var spId = item.spid.toInt()
                 var grade = item.grade.toInt()
                 Log.v(this.javaClass.name,"requestCall : $spId, index : $index")
                 CrawlingUtils().getPlayerImg(spId, grade, {
                     item.imageResUrl = it
-                    requestMap.put(spId.toString(), item)
+                    requestMap.put(item.saleSn, item)
                     Log.v(this.javaClass.name, "S, input RequestMap : ${requestMap.values.size}")
                     if (requestMap.values.size == tradeInfoList.size)
                         mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
                 }, {
                     item.imageResUrl = ""
-                    requestMap.put(spId.toString(), item)
-                    Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size}")
+                    requestMap.put(item.saleSn, item)
+                    Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size} ? $it")
                     if (requestMap.values.size == tradeInfoList.size)
                         mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
                 })
