@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 
 class RankingPresenter : RankingContract.Presenter{
     val TAG: String = javaClass.name
-    val isDebug: Boolean = false
+    val DEBUG: Boolean = false
     var mRankingView: RankingContract.View? = null
 
     override fun getRankingList(context: Context, page: Int) {
@@ -16,7 +16,7 @@ class RankingPresenter : RankingContract.Presenter{
         runBlocking {
             launch {
                 loadRankingByCrawling(page,{
-                    if (isDebug) Log.v(TAG, "getRankingList Success! $it")
+                    if (DEBUG) Log.v(TAG, "getRankingList Success! $it")
                     mRankingView?.hideLoading()
                     mRankingView?.showRanking(it)
 

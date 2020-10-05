@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO>?, val itemClick: (PlayerDTO) -> Unit) :
     RecyclerView.Adapter<SearchDetailPlayerListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val isDebug = false
+    val DEBUG = false
     val mContext: Context
     val mPlayerList: List<PlayerDTO>?
     var mMvpPlayer: PlayerDTO? = null
@@ -51,7 +51,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        /*if(isDebug) */Log.v(TAG, "onBindViewHolder, position : $position")
+        /*if(DEBUG) */Log.v(TAG, "onBindViewHolder, position : $position")
         holder.bind(mContext, position)
     }
 
@@ -162,11 +162,11 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                     if ("224".equals(seasonId)) seasonId = "234"
                     val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                    if(!isDebug) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
+                    if(!DEBUG) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                     seasonEntity.let {
                         val url = seasonEntity.seasonImg
                         CoroutineScope(Dispatchers.Main).launch {
-                            if(isDebug) Log.v(TAG,"TEST, saesonUrl : ${url}")
+                            if(DEBUG) Log.v(TAG,"TEST, saesonUrl : ${url}")
                             Glide.with(context)
                                 .load(url)
                                 .listener(object : RequestListener<Drawable> {
@@ -176,7 +176,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                                         target: Target<Drawable>,
                                         isFirstResource: Boolean
                                     ): Boolean {
-                                        if(isDebug) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                        if(DEBUG) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
                                         mIcon.visibility = View.GONE
                                         return false
                                     }
@@ -189,7 +189,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                                         isFirstResource: Boolean
                                     ): Boolean {
                                         mIcon.visibility = View.VISIBLE
-                                        if(isDebug) Log.d(TAG, "Season, onResourceReady(...) $url")
+                                        if(DEBUG) Log.d(TAG, "Season, onResourceReady(...) $url")
                                         return false
                                     }
                                 })
@@ -237,8 +237,8 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
-//                    /*if (isDebug) */Log.d(TAG, "TEST, onLoadFailed(...) GlideException!!! position : $position, url : $playerimg")
-//                    /*if (isDebug) */Log.d(TAG, "TEST, item : $item")
+//                    /*if (DEBUG) */Log.d(TAG, "TEST, onLoadFailed(...) GlideException!!! position : $position, url : $playerimg")
+//                    /*if (DEBUG) */Log.d(TAG, "TEST, item : $item")
 //                    mPlayerList.let {
 //                        if (mPlayerList!!.get(position).subImageUrl == null) {
 //                            CrawlingUtils().getPlayerImg(item, {
@@ -263,7 +263,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if(isDebug) Log.d(TAG, "TEST, onResourceReady(...) position : $position, url : $url")
+                    if(DEBUG) Log.d(TAG, "TEST, onResourceReady(...) position : $position, url : $url")
                     return false
                 }
             })

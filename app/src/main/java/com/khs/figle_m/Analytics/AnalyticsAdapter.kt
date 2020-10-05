@@ -13,7 +13,7 @@ import com.khs.figle_m.Response.MatchDetailResponse
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<AnalyticsAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val isDebug = true
+    val DEBUG = true
     val mMatchInfoList: List<MatchInfoDTO>
     val mContext: Context
 
@@ -37,7 +37,7 @@ class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(isDebug) Log.v(TAG, "onBindViewHolder, position : $position")
+        if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
         holder.bind(mMatchInfoList!!.get(position), mContext)
     }
 

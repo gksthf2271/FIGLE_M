@@ -14,7 +14,7 @@ import okhttp3.ResponseBody
 
 class InitPresenter : InitContract.Presenter {
     val TAG: String = javaClass.name
-    val isDebug: Boolean = false
+    val DEBUG: Boolean = false
     var mInitContract: InitContract.View? = null
 
     open val ERROR_EMPTY = "EMPTY"
@@ -32,7 +32,7 @@ class InitPresenter : InitContract.Presenter {
         runBlocking {
             launch {
                 DataManager.getInstance().loadSeasonIdList({
-                    if (isDebug) Log.v(TAG, "getSeasonIdList Success! $it")
+                    if (DEBUG) Log.v(TAG, "getSeasonIdList Success! $it")
                     updateSeasonDB(context,it,{
                         Log.v(TAG, "SeasonList save successful")
                     })
@@ -71,7 +71,7 @@ class InitPresenter : InitContract.Presenter {
 
     fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (Int) -> Unit) {
         DataManager.getInstance().loadPlayerName({
-            if (isDebug) Log.v(TAG, "getPlayerNameList Success! $it")
+            if (DEBUG) Log.v(TAG, "getPlayerNameList Success! $it")
             onSuccess(it)
         }, {
             Log.v(TAG, "getPlayerNameList Failed! $it")
@@ -99,7 +99,7 @@ class InitPresenter : InitContract.Presenter {
                 val seasonId = stringList[index]
                 val className = stringList[++index]
                 val seasonImg = stringList[++index]
-                if (isDebug) Log.v(TAG, "index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
+                if (DEBUG) Log.v(TAG, "index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
                 seasonList.add(SeasonEntity(null, seasonId.toLong(), className, seasonImg))
                 index++
             }
@@ -144,7 +144,7 @@ class InitPresenter : InitContract.Presenter {
                 val loIndex = index
                 val key = stringList[index]
                 val value = stringList[++index]
-                if(isDebug) Log.v(TAG, "index : $loIndex , key : $key , value : $value")
+                if(DEBUG) Log.v(TAG, "index : $loIndex , key : $key , value : $value")
                 playerList.add(PlayerEntity(null,key,value))
                 index++
             }
@@ -153,13 +153,13 @@ class InitPresenter : InitContract.Presenter {
             if(playerList.size != localPlayerList.size) {
                 mInitContract!!.setProgressMax(stringList.size)
                 index = 0
-                if(isDebug) Log.v(TAG,"------------------ update Player DB ------------------")
+                if(DEBUG) Log.v(TAG,"------------------ update Player DB ------------------")
                 playerDB!!.playerDao().deleteAll()
                 for (item in 0..stringList.size - 1 step 2) {
                     val loIndex = index
                     val key = stringList[index]
                     val value = stringList[++index]
-                    if(isDebug) Log.v(TAG, "updatePlayerDB - index : $loIndex , key : $key , value : $value")
+                    if(DEBUG) Log.v(TAG, "updatePlayerDB - index : $loIndex , key : $key , value : $value")
                     playerDB!!.playerDao().insert(PlayerEntity(null,key,value))
                     mInitContract!!.updateProgress(index)
                     index++

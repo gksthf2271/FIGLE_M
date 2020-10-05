@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class AvLoadingCustomView: ConstraintLayout {
     val TAG = javaClass.name
-    val isDebug: Boolean = false
+    val DEBUG: Boolean = false
     lateinit var view: View
     var mMax: Int = 0
 
@@ -39,7 +39,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun show(isStart: Boolean) {
-        if(isDebug) Log.v(TAG,"show LoadingView")
+        if(DEBUG) Log.v(TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToShow()
         }
@@ -55,7 +55,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun hide(){
-        if(isDebug) Log.v(TAG,"hide LoadingView")
+        if(DEBUG) Log.v(TAG,"hide LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToHide()
         }
@@ -68,7 +68,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun updateProgress(progress: Int) {
-        if(isDebug) Log.v(TAG,"progress : $progress")
+        if(DEBUG) Log.v(TAG,"progress : $progress")
         CoroutineScope(Dispatchers.Main).launch {
             loading_view.visibility = View.INVISIBLE
             progress_horizontal.visibility = View.VISIBLE
