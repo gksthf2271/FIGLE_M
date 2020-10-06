@@ -3,17 +3,20 @@ package com.khs.figle_m.Analytics
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Response.MatchDetailResponse
 
 interface AnalyticsContract : BaseView {
     interface View : BaseView{
         fun showLoading()
         fun hideLoading(isError: Boolean)
 
-        fun showPlayerList(playerList: List<PlayerDTO>)
+        fun showMatchDetail(matchDetailList: List<MatchDetailResponse>)
+        fun showPlayerList(playerMap: Map<Int, List<PlayerDTO>>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun loadPlayerList(key: String)
+        fun loadMatchDetail(matchIdList: List<String>)
+        fun loadPlayerList(accessId: String, matchDetailList: List<MatchDetailResponse>)
     }
 
     //TODO :  MatchInfoDTO List ->

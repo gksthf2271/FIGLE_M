@@ -13,7 +13,6 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
@@ -217,6 +216,9 @@ class SearchHomeFragment : BaseFragment(),
             showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
         initRateView(mSearchUserInfo.accessId)
+        group_sq.setOnClickListener {
+            mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.accessId, mOfficialGameMatchIdList)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -239,17 +241,12 @@ class SearchHomeFragment : BaseFragment(),
         initRateView(mSearchUserInfo.accessId)
     }
 
-    override fun showAnaysisInfo(
-       userMatchList: List<MatchInfoDTO>,
-        opposingUserList: List<MatchInfoDTO>
-    ) {
-        Log.v(TAG,"userMatchList : $userMatchList")
-        group_sq.setOnClickListener {
-            val intent = Intent(context, AnalyticsActivity::class.java)
-            intent.putParcelableArrayListExtra(AnalyticsActivity().KEY_MY_DATA, ArrayList(userMatchList))
-            intent.putParcelableArrayListExtra(AnalyticsActivity().KEY_OPPOSING_USER_DATA, ArrayList(opposingUserList))
-            startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
-        }
+    override fun showAnalysisInfo(accessId: String, matchIdList: List<String>) {
+        Log.v(TAG,"showAnaysisInfo : $matchIdList")
+        val intent = Intent(context, AnalyticsActivity::class.java)
+        intent.putStringArrayListExtra(AnalyticsActivity().KEY_MY_DATA, ArrayList(matchIdList))
+        intent.putExtra(AnalyticsActivity().KEY_ACCESS_ID, accessId)
+        startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
     }
 
     fun showSearchList(matchtype: DataManager.matchType, matchIdList: List<String>) {

@@ -17,13 +17,13 @@ interface SearchContract: BaseView {
         fun showHighRank(userHighRankResponse: List<UserHighRankResponse>)
         fun showOfficialGameMatchIdList(matchDetailResponse: ResponseBody?)
         fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?)
-        fun showAnaysisInfo(userMatchList:List<MatchInfoDTO>, opposingUserList: List<MatchInfoDTO>)
+        fun showAnalysisInfo(accessId: String, matchIdList: List<String>)
     }
 
     interface Presenter : BasePresenter<View> {
         fun getUserHighRank(accessId: String)
         fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit:Int)
-        fun getMatchAnalysis(accessId: String, list: List<MatchDetailResponse>)
+        fun getMatchAnalysisByMatchId(accessId: String, matchIdList: List<String>)
     }
 
     interface SearchListPresenter : BasePresenter<SearchListView> {

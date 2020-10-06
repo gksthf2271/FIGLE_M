@@ -2,11 +2,6 @@ package com.khs.figle_m.SearchList
 
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.Response.DTO.ShootDetailDTO
-import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.utils.DateUtils
-import com.khs.figle_m.utils.UserSortUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -45,25 +40,16 @@ class SearchHomePresenter: SearchContract.Presenter {
         }).start()
     }
 
-    override fun getMatchAnalysis(accessId: String, list: List<MatchDetailResponse>) {
-        var userMatchList = arrayListOf<MatchInfoDTO>()
-        var opposingUserList = arrayListOf<MatchInfoDTO>()
+    override fun getMatchAnalysisByMatchId(accessId: String, matchIdList: List<String>) {
         runBlocking {
             launch {
-                for (match in list) {
-                    val matchPair = UserSortUtils().sortUserList(accessId, match)
-                    userMatchList.add(matchPair.first)
-                    opposingUserList.add(matchPair.second)
+                mSearchListView.let {
+                    mSearchListView!!.showAnalysisInfo(accessId, matchIdList)
                 }
-                mSearchListView?.showAnaysisInfo(userMatchList, opposingUserList)
             }
         }
     }
 
-//    fun <T> parseData(list: List<MatchDetailResponse>) : HashMap<String,T>{
-//        var hashMap = hashMapOf<String, T>()
-//        hashMap.put(, )
-//    }
 
     override fun getUserHighRank(accessId: String) {
         mSearchListView?.showLoading()
@@ -81,14 +67,4 @@ class SearchHomePresenter: SearchContract.Presenter {
             }
         }
     }
-
-//    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (String) -> Unit) {
-//        DataManager.getInstance().loadPlayerName({
-//            if (DEBUG) Log.v(TAG,"getMatchDetail Success! $it")
-//            onSuccess(it)
-//        },{
-//            Log.v(TAG,"getMatchDetail Failed! $it")
-//            onFailed(it)
-//        })
-//    }
 }
