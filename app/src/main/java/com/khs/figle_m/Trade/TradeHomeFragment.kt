@@ -58,6 +58,9 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         val layoutManager = LinearLayoutManager(context)
         recycler_view.addItemDecoration(SearchDecoration(10))
         recycler_view.setLayoutManager(layoutManager)
+
+        txt_title.text = "최근 거래 내역"
+        btn_back.setOnClickListener { activity!!.finish() }
     }
 
     fun requestData(accessId: String) {
