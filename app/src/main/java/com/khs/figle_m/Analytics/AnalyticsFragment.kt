@@ -108,7 +108,11 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showPlayerImage(playerInfoList: List<AnalyticsPlayer>) {
-        recycler_view.adapter = AnalyticsRecyclerViewAdapter(context!!,playerInfoList ,{
+        recycler_view.adapter = AnalyticsRecyclerViewAdapter(
+            context!!,
+            playerInfoList.apply {
+                this.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
+            },{
             Log.v(TAG, "ItemClick! ${it}")
         })
     }

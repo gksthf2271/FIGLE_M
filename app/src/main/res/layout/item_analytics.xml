@@ -72,6 +72,20 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
+            android:id="@+id/txt_avgRating"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/search_text_color"
+            android:textSize="10sp"
+            android:singleLine="true"
+            android:layout_marginTop="2dp"
+            tools:text="10.0"
+            app:layout_constraintTop_toBottomOf="@id/txt_rating"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
             android:id="@+id/txt_player_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -10,6 +10,7 @@ import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
 import com.khs.figle_m.utils.DrawUtils
+import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_player_detail_bottom.view.*
 import kotlinx.android.synthetic.main.item_analytics.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +62,19 @@ class AnalyticsRecyclerViewAdapter(context: Context, playerList : List<Analytics
 
             DrawUtils().drawSeasonIcon(context, mItemView.analytics_img_icon, item.spId.toString())
             DrawUtils().drawPlayerImage(mItemView.analytics_img_player, item.imageResUrl)
+            var positionSet = mutableSetOf<String>()
 
+
+            for (playerDTO in item.playerDataList) {
+                for (position in PositionEnum.values()) {
+                    if (playerDTO.spPosition == position.spposition) {
+                        positionSet.add(position.description)
+                    }
+                }
+            }
+
+            mItemView.txt_avgRating.text = String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
+            positionSet.let { mItemView.txt_player_position.text = positionSet.toString() }
             mItemView.txt_rating.text = mPlayerInfoList.let { (mPlayerInfoList!!.indexOf(item) + 1).toString()}
             mItemView.txt_player_name.apply {
                 val playerDB = PlayerDataBase.getInstance(context)

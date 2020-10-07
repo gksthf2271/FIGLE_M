@@ -8,9 +8,9 @@ import kotlinx.android.parcel.Parcelize
 data class AnalyticsPlayer(
     var spId : Int = 0,
     var position : ParentPositionEnum = ParentPositionEnum.NONE,
-    var playerDataList: List<PlayerDTO> = emptyList(),
     var totalData : TotalStatus = TotalStatus(),
-    var imageResUrl : String = ""
+    var imageResUrl : String = "",
+    var playerDataList: List<PlayerDTO> = emptyList()
 ) : Parcelable
 
 @Parcelize
@@ -30,7 +30,7 @@ data class TotalStatus(
 enum class ParentPositionEnum(val spposition:Int, val description:String){
     F(0,"Forward"),
     M(1, "Midfielder"),
-    D(2, "Defencer"),
+    D(2, "Defender"),
     GK(3, "GK"),
     NONE(4,"NONE")
 }
