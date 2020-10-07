@@ -20,8 +20,8 @@ class TradePresenter : TradeContract.Presenter{
         for (item in TradeHomeFragment.TradeType.values()) {
             DataManager.getInstance().loadTradeInfo(accessId, item, offset, limit,
                 {
-                    Log.v(this.javaClass.name,"loadTradeInfo response(...) : $item")
-                    responseMap.put(item.name, it)
+                    Log.v(this.javaClass.name,"loadTradeInfo response(...) : ${it.first().tradeType}")
+                    responseMap.put(it.first().tradeType.toString(), it)
                     if (responseMap.size == TradeHomeFragment.TradeType.values().size) {
                         var responseList = mutableListOf<TradeResponse>()
                         responseList.run{
@@ -34,7 +34,8 @@ class TradePresenter : TradeContract.Presenter{
                 },
                 {
                     Log.v(this.javaClass.name,"load failed : $it")
-                    if (TradeHomeFragment.TradeType.sell.name.equals(item)){
+                    responseMap.put(it.toString(), emptyList())
+                    if (responseMap.values.size >= 2){
                         mTradeView!!.hideLoading()
                     }
                 })

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
+import com.khs.figle_m.utils.DrawUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_player_item_view.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -35,14 +36,14 @@ class CirclePlayerView @JvmOverloads constructor(
 
     fun updateView(spId:String, spRating: Int, isMVP: Boolean, spGrade: Int, goalCount: Int, spPosition: Int, imageUrl: String?){
         updatePlayerName(spId)
-        updateSeason(spId)
+        DrawUtils().drawSeasonIcon(context, img_icon, spId)
         if(spRating >= 0) updateSpRateColor(spRating, isMVP)
         if(spGrade >= 0) updateGradeColor(spGrade)
         if(goalCount >= 0) addGoalIcon(goalCount)
         if(spPosition >= 0) updateSpPosition(spPosition)
 
-        if (imageUrl != null) updatePlayerImage(imageUrl)
-        else updatePlayerImage("")
+        if (imageUrl != null) DrawUtils().drawPlayerImage(img_player, imageUrl)
+        else DrawUtils().drawPlayerImage(img_player, "")
     }
 
     fun updatePlayerName(spId: String){
@@ -53,53 +54,6 @@ class CirclePlayerView @JvmOverloads constructor(
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
                     txt_player_name.text = player.playerName
-                }
-            }
-        }
-    }
-
-
-    fun updateSeason(spId: String) {
-        val seasonDB = PlayerDataBase.getInstance(context)
-        seasonDB.let {
-            CoroutineScope(Dispatchers.IO).launch {
-                var seasonId = spId.substring(0,3)
-                //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
-                if ("224".equals(seasonId)) seasonId = "234"
-                val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                if(!DEBUG) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
-                seasonEntity.let {
-                    val url = seasonEntity.seasonImg
-                    CoroutineScope(Dispatchers.Main).launch {
-                        if(DEBUG) Log.v(TAG,"TEST, saesonUrl : ${url}")
-                        Glide.with(context)
-                            .load(url)
-                            .listener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(
-                                    e: GlideException?,
-                                    model: Any,
-                                    target: Target<Drawable>,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    if(DEBUG) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
-                                    img_icon.visibility = View.GONE
-                                    return false
-                                }
-
-                                override fun onResourceReady(
-                                    resource: Drawable,
-                                    model: Any,
-                                    target: Target<Drawable>,
-                                    dataSource: DataSource,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    img_icon.visibility = View.VISIBLE
-                                    if(DEBUG) Log.d(TAG, "Season, onResourceReady(...) $url")
-                                    return false
-                                }
-                            })
-                            .into(img_icon)
-                    }
                 }
             }
         }
@@ -167,36 +121,5 @@ class CirclePlayerView @JvmOverloads constructor(
                 txt_player_position.visibility = View.VISIBLE
                 txt_player_position.text = positionItem.description
         }
-    }
-
-    fun updatePlayerImage(url: String) {
-        Log.v(TAG,"updatePlayerImage(...) url : ${url}")
-        Glide.with(img_player.context)
-            .load(Uri.parse(url))
-            .placeholder(R.drawable.person_icon)
-            .error(R.drawable.person_icon)
-            .skipMemoryCache(false)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    if(DEBUG) Log.d(TAG, "TEST, onResourceReady(...) url : $url")
-                    return false
-                }
-            })
-            .into(img_player)
     }
 }

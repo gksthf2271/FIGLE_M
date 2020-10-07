@@ -23,7 +23,7 @@ class PlayerDetailInfoView  : ConstraintLayout {
     }
 
     fun setTitleList(titleList: List<String>) {
-        titleList.isEmpty() ?: return
+        if (titleList.size != 4) return
         txt_title_1.text = titleList.get(0)
         txt_title_2.text = titleList.get(1)
         txt_title_3.text = titleList.get(2)
@@ -31,7 +31,7 @@ class PlayerDetailInfoView  : ConstraintLayout {
     }
 
     fun setDataList(dataList: List<String>) {
-        dataList.isEmpty() ?: return
+        if (dataList.size != 4) return
         txt_value_1.text = dataList.get(0)
         txt_value_2.text = dataList.get(1)
         txt_value_3.text = dataList.get(2)

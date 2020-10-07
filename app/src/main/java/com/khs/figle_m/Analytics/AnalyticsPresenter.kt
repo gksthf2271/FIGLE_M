@@ -1,9 +1,11 @@
 package com.khs.figle_m.Analytics
 
+import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.utils.CrawlingUtils
 import com.khs.figle_m.utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +63,71 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
         }
         mAnalyticsView.let {
             mAnalyticsView!!.hideLoading(false)
-            mAnalyticsView!!.showPlayerList(playerMap)
+            mAnalyticsView!!.showPlayerMap(playerMap)
+        }
+    }
+
+    override fun loadPlayerInfoList(playerMap: Map<Int, List<PlayerDTO>>) {
+        var playerInfoList = mutableListOf<AnalyticsPlayer>()
+        for (key in playerMap.keys){
+            var playerInfo = AnalyticsPlayer()
+            for (playerDto in playerMap.get(key)!!.toList()){
+                playerInfo.totalData.totalShoot += playerDto.status.shoot
+                playerInfo.totalData.totalEffectiveShoot += playerDto.status.effectiveShoot
+                playerInfo.totalData.totalAssist += playerDto.status.assist
+                playerInfo.totalData.totalGoal += playerDto.status.goal
+                playerInfo.totalData.totalDribble += playerDto.status.dribble
+                playerInfo.totalData.totalPassTry += playerDto.status.passTry
+                playerInfo.totalData.totalPassSuccess += playerDto.status.passSuccess
+                playerInfo.totalData.totalBlock += playerDto.status.block
+                playerInfo.totalData.totalTackle += playerDto.status.tackle
+                playerInfo.totalData.totalSpRating += playerDto.status.spRating
+                playerInfo.spId = playerDto.spId
+                when (playerDto.spPosition) {
+                    in 1 .. 8 -> {
+                        playerInfo.position = ParentPositionEnum.D
+                    }
+                    in 9 .. 19 -> {
+                        playerInfo.position = ParentPositionEnum.M
+                    }
+                    in 20 .. 27 -> {
+                        playerInfo.position = ParentPositionEnum.F
+                    }
+                    0 -> {
+                        playerInfo.position = ParentPositionEnum.GK
+                    }
+                }
+            }
+            playerInfo.playerDataList = playerMap.get(key)!!
+            playerInfoList.add(playerInfo)
+        }
+        mAnalyticsView.let {
+            mAnalyticsView!!.showPlayerInfoList(playerInfoList)
+        }
+    }
+
+    override fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>) {
+        Log.v(TAG,"requestSize : ${playerInfoList.size}")
+        var responseQ = PriorityQueue<String>()
+        CoroutineScope(Dispatchers.Default).launch {
+            for (item in playerInfoList) {
+                var spId = item.spId
+                var grade = 1
+                CrawlingUtils().getPlayerImg(spId, grade, {
+                    item.imageResUrl = it
+                    responseQ.add(it)
+                    if (responseQ.size == playerInfoList.size)
+                        mAnalyticsView.let {
+                            mAnalyticsView!!.showPlayerImage(playerInfoList)
+                        }
+                }, {
+                    responseQ.add("")
+                    if (responseQ.size == playerInfoList.size)
+                        mAnalyticsView.let {
+                            mAnalyticsView!!.showPlayerImage(playerInfoList)
+                        }
+                })
+            }
         }
     }
 

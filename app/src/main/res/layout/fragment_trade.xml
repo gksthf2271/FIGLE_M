@@ -19,6 +19,7 @@
             android:gravity="center"
             android:textColor="@color/text_color"
             android:textSize="20sp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="@id/btn_back"
             app:layout_constraintLeft_toRightOf="@id/btn_back"
             app:layout_constraintTop_toTopOf="@id/btn_back"

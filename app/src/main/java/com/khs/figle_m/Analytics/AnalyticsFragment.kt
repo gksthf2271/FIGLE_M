@@ -5,11 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.SearchList.SearchDecoration
+import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.fragment_analytics.*
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
@@ -61,6 +66,10 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
                 activity!!.finish()
             }
         }
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        recycler_view.setLayoutManager(layoutManager)
    }
 
     fun initList() {
@@ -80,6 +89,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     override fun showLoading() {
         Log.v(TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
+        avi_loading.backroundColorVisible(true)
         avi_loading.show(true)
     }
 
@@ -88,13 +98,24 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         avi_loading.visibility = View.GONE
         avi_loading.hide()
     }
-    override fun showPlayerList(playerMap: Map<Int, List<PlayerDTO>>) {
+    override fun showPlayerMap(playerMap: Map<Int, List<PlayerDTO>>) {
         Log.v(TAG,"showPlayerList, playerList size : ${playerMap.values.size}")
+        mAnalyticsPresenter.loadPlayerInfoList(playerMap)
+    }
 
+    override fun showPlayerInfoList(playerInfoList: List<AnalyticsPlayer>) {
+        mAnalyticsPresenter.loadPlayerImageUrl(playerInfoList)
+    }
+
+    override fun showPlayerImage(playerInfoList: List<AnalyticsPlayer>) {
+        recycler_view.adapter = AnalyticsRecyclerViewAdapter(context!!,playerInfoList ,{
+            Log.v(TAG, "ItemClick! ${it}")
+        })
     }
 
     override fun showMatchDetail(matchDetailList: List<MatchDetailResponse>) {
         mAnalyticsPresenter.loadPlayerList(mAccessId, matchDetailList)
+        //TODO : 경기에 대한 분석 어떻게 노출할지 생각해봐야됨. Contents Depth가 너무 얕음.
     }
 
     override fun showError(error: Int) {

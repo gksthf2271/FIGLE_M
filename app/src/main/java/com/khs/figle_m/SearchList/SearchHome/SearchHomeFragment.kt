@@ -230,6 +230,7 @@ class SearchHomeFragment : BaseFragment(),
         if (result == null || result.isEmpty() || "[]".equals(result)) {
             Log.v(TAG,"coachList is null")
             mCoachView.showEmptyView()
+            hideLoading(false)
             return
         } else {
             mCoachView.hideEmptyView()

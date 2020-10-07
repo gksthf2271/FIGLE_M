@@ -428,7 +428,11 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<List<TradeResponse>>, response: Response<List<TradeResponse>>) {
-                Log.v(TAG,"loadTradeInfo(...), onResponse : ${(response.body())!!.get(0)}")
+                Log.v(TAG,"loadTradeInfo(...)")
+                if (response.body() == null) {
+                    onFailed(tradeType.ordinal)
+                    return
+                }
                 onSuccess(response.body()!!.apply {
                     for (item in this){
                         item.tradeType = tradeType.ordinal

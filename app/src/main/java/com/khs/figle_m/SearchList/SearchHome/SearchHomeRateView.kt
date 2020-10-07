@@ -79,12 +79,12 @@ class SearchHomeRateView : ConstraintLayout {
             if (arrayList.size < DataManager().SEARCH_PAGE_SIZE) {
                 searchSize = arrayList.size
             }
-            for (index in 0 .. searchSize) {
+            for (index in 0 .. searchSize-1) {
                 if (arrayList.size <= index) break
                 DataManager.getInstance().loadMatchDetailWrapper(arrayList.get(index)
                     ,{
                         mMatchDetailList.add(it)
-                        Log.v(TAG,"${mMatchDetailList.size} Success Request : $it")
+                        Log.v(TAG,"${mMatchDetailList.size} Success Request : ${it.matchId}")
                         if (searchSize == mMatchDetailList.size + mFailedRequestQ.size) {
                             Log.v(TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
                             CoroutineScope(Dispatchers.Main).launch {
