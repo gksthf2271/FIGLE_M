@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/fragment_background">
+
+    <com.khs.figle_m.Analytics.Squad.SquadPositionView
+        android:id="@+id/position_st"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        tools:background="@color/red_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <com.khs.figle_m.Analytics.Squad.SquadPositionView
+        android:id="@+id/position_gk"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        tools:background="@color/yellow_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

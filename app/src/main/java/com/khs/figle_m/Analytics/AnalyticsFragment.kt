@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.SearchList.SearchDecoration
-import com.khs.figle_m.utils.PositionEnum
 import kotlinx.android.synthetic.main.fragment_analytics.*
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
@@ -108,18 +105,19 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showPlayerImage(playerInfoList: List<AnalyticsPlayer>) {
-        recycler_view.adapter = AnalyticsRecyclerViewAdapter(
-            context!!,
-            playerInfoList.apply {
-                this.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
-            },{
-            Log.v(TAG, "ItemClick! ${it}")
-        })
+        recycler_view.adapter =
+            AnalyticsRecyclerViewAdapter(
+                context!!,
+                playerInfoList.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
+                    .subList(0, 10)
+                , {
+                    Log.v(TAG, "ItemClick! ${it}")
+                })
     }
 
     override fun showMatchDetail(matchDetailList: List<MatchDetailResponse>) {
         mAnalyticsPresenter.loadPlayerList(mAccessId, matchDetailList)
-        //TODO : 경기에 대한 분석 어떻게 노출할지 생각해봐야됨. Contents Depth가 너무 얕음.
+
     }
 
     override fun showError(error: Int) {
