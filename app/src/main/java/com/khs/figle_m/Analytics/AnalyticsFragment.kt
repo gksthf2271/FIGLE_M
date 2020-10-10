@@ -63,10 +63,20 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
                 activity!!.finish()
             }
         }
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        val rating_layoutManager = LinearLayoutManager(context)
+        rating_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view.setLayoutManager(layoutManager)
+        recycler_view.setLayoutManager(rating_layoutManager)
+
+        val goale_layoutManager = LinearLayoutManager(context)
+        goale_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler_view_goal.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        recycler_view_goal.setLayoutManager(goale_layoutManager)
+
+        val assist_layoutManager = LinearLayoutManager(context)
+        assist_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recycler_view_assist.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+        recycler_view_assist.setLayoutManager(assist_layoutManager)
    }
 
     fun initList() {
@@ -108,11 +118,30 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         recycler_view.adapter =
             AnalyticsRecyclerViewAdapter(
                 context!!,
+                ROW_TYPE.MATCH_RATING,
                 playerInfoList.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
                     .subList(0, 10)
                 , {
-                    Log.v(TAG, "ItemClick! ${it}")
+                    Log.v(TAG, "ItemClick, AVG Rating TOP 10 ${it}")
                 })
+
+        recycler_view_goal.adapter = AnalyticsRecyclerViewAdapter(
+            context!!,
+            ROW_TYPE.GOAL,
+            playerInfoList.sortedByDescending { it.totalData.totalGoal }.subList(0, 5)
+            ,{
+                Log.v(TAG, "ItemClick, Total Goal TOP 5 ${it}")
+            }
+        )
+
+        recycler_view_assist.adapter = AnalyticsRecyclerViewAdapter(
+            context!!,
+            ROW_TYPE.ASSIST,
+            playerInfoList.sortedByDescending { it.totalData.totalAssist }.subList(0, 5)
+            ,{
+                Log.v(TAG, "ItemClick, Total Assist TOP 5 ${it}")
+            }
+        )
     }
 
     override fun showMatchDetail(matchDetailList: List<MatchDetailResponse>) {
@@ -122,5 +151,11 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
 
     override fun showError(error: Int) {
         TODO("Not yet implemented")
+    }
+
+    enum class ROW_TYPE(val rowType:Int, val description:String){
+        MATCH_RATING(0,"GRADE_TOP_10"),
+        GOAL(1, "GOAL_TOP_5"),
+        ASSIST(2, "ASSIST_TOP_5")
     }
 }

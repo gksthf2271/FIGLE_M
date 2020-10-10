@@ -117,10 +117,8 @@ open class AnalyticsGradeViewHolder(itemView: View, itemClick: (AnalyticsPlayer)
     }
 
     fun resizeView() {
-        mPlayerDetailInfoView.txt_title_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-        mPlayerDetailInfoView.txt_title_2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-        mPlayerDetailInfoView.txt_title_3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-        mPlayerDetailInfoView.txt_title_4.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
+        mPlayerDetailInfoView.setValueTextSize(25f)
+        mPlayerDetailInfoView.setTitleTextSize(9f)
     }
 }
 

@@ -1,7 +1,6 @@
 package com.khs.figle_m.Analytics
 
 import android.content.Context
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,22 +10,23 @@ import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
 import com.khs.figle_m.utils.DrawUtils
 import com.khs.figle_m.utils.PositionEnum
-import kotlinx.android.synthetic.main.cview_player_detail_bottom.view.*
 import kotlinx.android.synthetic.main.item_analytics.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AnalyticsRecyclerViewAdapter(context: Context, playerList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
+class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE , playerList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
     : RecyclerView.Adapter<AnalyticsRecyclerViewAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
     val DEBUG = false
     val mContext: Context
     val mPlayerInfoList: List<AnalyticsPlayer>?
+    val mRowType: AnalyticsFragment.ROW_TYPE
 
     init {
         mContext = context
         mPlayerInfoList = playerList
+        mRowType = rowType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -57,8 +57,7 @@ class AnalyticsRecyclerViewAdapter(context: Context, playerList : List<Analytics
         }
 
         fun bind(item: AnalyticsPlayer, context: Context) {
-            resizeView()
-            var totalData = item.totalData
+            setTextSize()
 
             DrawUtils().drawSeasonIcon(context, mItemView.analytics_img_icon, item.spId.toString())
             DrawUtils().drawPlayerImage(mItemView.analytics_img_player, item.imageResUrl)
@@ -73,9 +72,8 @@ class AnalyticsRecyclerViewAdapter(context: Context, playerList : List<Analytics
                 }
             }
 
-            mItemView.txt_avgRating.text = String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
             positionSet.let { mItemView.txt_player_position.text = positionSet.toString() }
-            mItemView.txt_rating.text = mPlayerInfoList.let { (mPlayerInfoList!!.indexOf(item) + 1).toString()}
+            showRatingView(context, item)
             mItemView.txt_player_name.apply {
                 val playerDB = PlayerDataBase.getInstance(context)
                 playerDB.let {
@@ -89,34 +87,119 @@ class AnalyticsRecyclerViewAdapter(context: Context, playerList : List<Analytics
                 }
             }
 
-            when(item.position) {
-                ParentPositionEnum.F -> {
-                    mPlayerDetailInfoView.setTitleList(listOf("슛","유효 슛","어시스트","득점"))
-                    mPlayerDetailInfoView.setDataList(listOf(totalData.totalShoot.toString(), totalData.totalEffectiveShoot.toString(), totalData.totalAssist.toString(), totalData.totalGoal.toString()))
-                }
-                ParentPositionEnum.M -> {
-                    mPlayerDetailInfoView.setTitleList(listOf("패스 시도","패스 성공","어시스트","득점"))
-                    mPlayerDetailInfoView.setDataList(listOf(totalData.totalPassTry.toString(), totalData.totalPassSuccess.toString(), totalData.totalAssist.toString(), totalData.totalGoal.toString()))
-                }
-                ParentPositionEnum.D -> {
-                    mPlayerDetailInfoView.setTitleList(listOf("블락 성공","태클 성공","패스 시도","패스 성공"))
-                    mPlayerDetailInfoView.setDataList(listOf(totalData.totalBlock.toString(), totalData.totalTackle.toString(), totalData.totalPassTry.toString(), totalData.totalPassSuccess.toString()))
-                }
-                ParentPositionEnum.GK -> {
-                    mPlayerDetailInfoView.setTitleList(listOf("블락 성공","태클 성공","패스 시도","패스 성공"))
-                    mPlayerDetailInfoView.setDataList(listOf(totalData.totalBlock.toString(), totalData.totalTackle.toString(), totalData.totalPassTry.toString(), totalData.totalPassSuccess.toString()))
-                }
-            }
+            initInfoView(item)
+
             mItemView.setOnClickListener() {
                 itemClick(item)
             }
         }
 
-        fun resizeView() {
-            mPlayerDetailInfoView.txt_title_1.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-            mPlayerDetailInfoView.txt_title_2.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-            mPlayerDetailInfoView.txt_title_3.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
-            mPlayerDetailInfoView.txt_title_4.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9f)
+        fun showRatingView(context: Context, item : AnalyticsPlayer){
+            var index = mPlayerInfoList!!.indexOf(item) + 1
+            if (index == 1) {
+                mItemView.txt_rating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
+            } else {
+                mItemView.txt_rating.background = context.getDrawable(R.drawable.rounded_player)
+            }
+            mItemView.txt_rating.text = mPlayerInfoList.let { (index).toString()}
+        }
+
+        fun initInfoView(item : AnalyticsPlayer) {
+            var totalData = item.totalData
+            when(mRowType){
+                AnalyticsFragment.ROW_TYPE.ASSIST -> {
+                    mItemView.txt_avgRating.visibility = View.GONE
+                    mPlayerDetailInfoView.setTitleList(listOf("도움", "패스 시도", "패스 성공 ", "평점"))
+                    mPlayerDetailInfoView.setDataList(
+                        listOf(
+                            totalData.totalAssist.toString(),
+                            totalData.totalPassTry.toString(),
+                            totalData.totalPassSuccess.toString(),
+                            String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
+                        )
+                    )
+                }
+                AnalyticsFragment.ROW_TYPE.GOAL -> {
+                    mItemView.txt_avgRating.visibility = View.GONE
+                    mPlayerDetailInfoView.setTitleList(listOf("득점", "슛", "유효 슛", "평점"))
+                    mPlayerDetailInfoView.setDataList(
+                        listOf(
+                            totalData.totalGoal.toString(),
+                            totalData.totalShoot.toString(),
+                            totalData.totalEffectiveShoot.toString(),
+                            String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
+                        )
+                    )
+                }
+                AnalyticsFragment.ROW_TYPE.MATCH_RATING -> {
+                    mItemView.txt_avgRating.text = String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
+                    when (item.position) {
+                        ParentPositionEnum.F -> {
+                            mPlayerDetailInfoView.setTitleList(listOf("슛", "유효 슛", "도움", "득점"))
+                            mPlayerDetailInfoView.setDataList(
+                                listOf(
+                                    totalData.totalShoot.toString(),
+                                    totalData.totalEffectiveShoot.toString(),
+                                    totalData.totalAssist.toString(),
+                                    totalData.totalGoal.toString()
+                                )
+                            )
+                        }
+                        ParentPositionEnum.M -> {
+                            mPlayerDetailInfoView.setTitleList(listOf("패스 시도", "패스 성공", "도움", "득점"))
+                            mPlayerDetailInfoView.setDataList(
+                                listOf(
+                                    totalData.totalPassTry.toString(),
+                                    totalData.totalPassSuccess.toString(),
+                                    totalData.totalAssist.toString(),
+                                    totalData.totalGoal.toString()
+                                )
+                            )
+                        }
+                        ParentPositionEnum.D -> {
+                            mPlayerDetailInfoView.setTitleList(
+                                listOf(
+                                    "블락 성공",
+                                    "태클 성공",
+                                    "패스 시도",
+                                    "패스 성공"
+                                )
+                            )
+                            mPlayerDetailInfoView.setDataList(
+                                listOf(
+                                    totalData.totalBlock.toString(),
+                                    totalData.totalTackle.toString(),
+                                    totalData.totalPassTry.toString(),
+                                    totalData.totalPassSuccess.toString()
+                                )
+                            )
+                        }
+                        ParentPositionEnum.GK -> {
+                            mPlayerDetailInfoView.setTitleList(
+                                listOf(
+                                    "블락 성공",
+                                    "태클 성공",
+                                    "패스 시도",
+                                    "패스 성공"
+                                )
+                            )
+                            mPlayerDetailInfoView.setDataList(
+                                listOf(
+                                    totalData.totalBlock.toString(),
+                                    totalData.totalTackle.toString(),
+                                    totalData.totalPassTry.toString(),
+                                    totalData.totalPassSuccess.toString()
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        fun setTextSize() {
+            mPlayerDetailInfoView.setValueTextSize(23f)
+            mPlayerDetailInfoView.setTitleTextSize(9f)
         }
     }
 }

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:background="@color/analytics_wrapper"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_player"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/img_player_group"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/layout_rounded_white"
+            android:scaleType="fitXY"
+            android:layout_marginTop="5dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/analytics_img_player"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                tools:src="@drawable/abc_vector_test"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/txt_player_spGrade"
+            android:layout_width="25dp"
+            android:layout_height="18dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="@color/search_text_color"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toLeftOf="@id/img_player_group"
+            app:layout_constraintTop_toTopOf="@id/img_player_group" />
+
+        <TextView
+            android:id="@+id/txt_rating"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:background="@drawable/rounded_player"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/search_text_color"
+            android:textSize="10sp"
+            android:singleLine="true"
+            android:layout_marginTop="5dp"
+            tools:text="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_avgRating"
+            android:layout_width="40dp"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/search_text_color"
+            android:textSize="10sp"
+            android:singleLine="true"
+            android:layout_marginTop="2dp"
+            tools:text="10.0"
+            app:layout_constraintTop_toBottomOf="@id/txt_rating"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_player_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="FW"
+            android:textSize="13sp"
+            android:textColor="@color/search_text_color"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/img_player_group"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toRightOf="@id/img_player_group"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_player_position"
+            app:layout_constraintLeft_toLeftOf="@id/img_player_group"
+            app:layout_constraintRight_toRightOf="@id/img_player_group">
+
+            <ImageView
+                android:id="@+id/analytics_img_icon"
+                android:layout_width="25dp"
+                android:layout_height="15dp"
+                app:layout_constraintTop_toTopOf="@id/txt_player_name"
+                app:layout_constraintBottom_toBottomOf="@id/txt_player_name"
+                app:layout_constraintRight_toLeftOf="@id/txt_player_name" />
+
+            <TextView
+                android:id="@+id/txt_player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/search_text_color"
+                android:layout_marginLeft="7dp"
+                tools:text="차범근손흥민박지성"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/analytics_img_icon"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.35"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_player">
+
+        <com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
+            android:id="@+id/player_info_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.85"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
