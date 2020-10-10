@@ -25,6 +25,10 @@
         <activity android:name=".Ranking.RankingActivity"/>
         <activity android:name=".Analytics.AnalyticsActivity"/>
         <activity android:name=".Trade.TradeActivity"/>
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${enableCrashReporting}"/>
     </application>
 
 </manifest>
