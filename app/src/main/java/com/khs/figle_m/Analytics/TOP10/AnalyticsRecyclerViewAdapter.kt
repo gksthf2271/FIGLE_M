@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE , playerList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
     : RecyclerView.Adapter<AnalyticsRecyclerViewAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
     val mContext: Context
     val mPlayerInfoList: List<AnalyticsPlayer>?
     val mRowType: AnalyticsFragment.ROW_TYPE

@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.Base.BaseFragment
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.SearchList.SearchDecoration
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_ranking.*
 class RankingFragment : BaseFragment(){
     val TAG:String = javaClass.name
     open val KEY_RANKING_LIST = "KEY_RANKING_LIST"
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
 
     lateinit var mCurrentRank: Ranker
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.figle_m.Base.BaseFragment
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_analytics.*
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     val TAG:String = javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
 
     lateinit var mAnalyticsPresenter: AnalyticsPresenter
     lateinit var mCurrentRank: Ranker

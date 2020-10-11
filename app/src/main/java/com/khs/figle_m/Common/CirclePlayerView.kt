@@ -14,6 +14,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.utils.DrawUtils
@@ -27,7 +28,7 @@ class CirclePlayerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
     val TAG = this.javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
 
     fun initView(layoutResId: Int){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

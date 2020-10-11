@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
@@ -13,7 +14,7 @@ import com.khs.figle_m.Response.MatchDetailResponse
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<AnalyticsAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val DEBUG = true
+    val DEBUG = BuildConfig.DEBUG
     val mMatchInfoList: List<MatchInfoDTO>
     val mContext: Context
 

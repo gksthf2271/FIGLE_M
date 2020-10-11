@@ -9,6 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
@@ -29,7 +30,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     ) {
         initView(context)
     }
-    val DEBUG = true
+    val DEBUG = BuildConfig.DEBUG
     val TAG = javaClass.name
     lateinit var mSearchUserInfo: UserResponse
     var mMatchIdList = arrayListOf<String>()

@@ -16,6 +16,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO>?, val itemClick: (PlayerDTO) -> Unit) :
     RecyclerView.Adapter<SearchDetailPlayerListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
     val mContext: Context
     val mPlayerList: List<PlayerDTO>?
     var mMvpPlayer: PlayerDTO? = null

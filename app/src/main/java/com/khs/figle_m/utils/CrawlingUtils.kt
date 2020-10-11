@@ -10,6 +10,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
@@ -20,7 +21,7 @@ import java.lang.NullPointerException
 
 class CrawlingUtils() {
     private val TAG = this.javaClass.name
-    private val DEBUG = false
+    private val DEBUG = BuildConfig.DEBUG
 
     fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
         getPlayerImg(playerDTO.spId, playerDTO.spGrade, onSuccess, onFailed)

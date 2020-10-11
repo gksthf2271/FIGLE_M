@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
@@ -14,7 +15,7 @@ import com.khs.figle_m.utils.UserSortUtils
 class SearchDetailDialogGameResultView : ConstraintLayout {
     val TAG = javaClass.name
     var mView: View? = null
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.utils.DateUtils
@@ -16,7 +17,7 @@ import com.khs.figle_m.utils.DateUtils
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val DEBUG = true
+    val DEBUG = BuildConfig.DEBUG
     val mSearchAccessId: String
     val mContext: Context
     val mMatchList: List<MatchDetailResponse>?

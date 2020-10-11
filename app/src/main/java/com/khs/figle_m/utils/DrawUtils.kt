@@ -11,6 +11,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 
 open class DrawUtils () {
     private val TAG: String = javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
 
     fun drawPlayerImage(playerimg: ImageView, url: String) {
         Log.v(TAG,"updatePlayerImage(...) uri : ${url}")

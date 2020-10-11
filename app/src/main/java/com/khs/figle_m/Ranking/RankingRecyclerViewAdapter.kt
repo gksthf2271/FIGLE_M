@@ -8,13 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.utils.DisplayUtils
 
 class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
-    val DEBUG = false
+    val DEBUG = BuildConfig.DEBUG
     val mContext: Context
     val mRankerList: List<Ranker>?
 
