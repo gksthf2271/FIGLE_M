@@ -15,6 +15,7 @@ class TradePresenter : TradeContract.Presenter{
         accessId : String,
         offset: Int?,
         limit: Int?) {
+        if (mTradeView == null) return
         mTradeView!!.showLoading()
         var responseMap = mutableMapOf<String, List<TradeResponse>>()
         for (item in TradeHomeFragment.TradeType.values()) {
@@ -43,6 +44,7 @@ class TradePresenter : TradeContract.Presenter{
     }
 
     override fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
+        if (mTradeView == null) return
         var requestMap = hashMapOf<String, TradeResponse>()
         Log.v(this.javaClass.name,"requestSize : ${tradeInfoList.size}")
         var index = 0

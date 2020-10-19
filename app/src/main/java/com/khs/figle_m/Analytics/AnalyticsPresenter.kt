@@ -20,24 +20,26 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     var mFailedResponseQ = PriorityQueue<String>()
 
     override fun loadMatchDetail(matchIdList: List<String>) {
-        mAnalyticsView.let{
-            mAnalyticsView!!.showLoading()
-            mFailedResponseQ.clear()
-            var resultList = mutableListOf<MatchDetailResponse>()
-            CoroutineScope(Dispatchers.Default).launch {
-                for (matchId in matchIdList) {
-                    DataManager.getInstance().loadMatchDetail(matchId, {
-                        resultList.add(it)
-                        if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
+        mAnalyticsView!!.showLoading()
+        mFailedResponseQ.clear()
+        var resultList = mutableListOf<MatchDetailResponse>()
+        CoroutineScope(Dispatchers.Default).launch {
+            for (matchId in matchIdList) {
+                DataManager.getInstance().loadMatchDetail(matchId, {
+                    resultList.add(it)
+                    if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
+                        mAnalyticsView.let {
                             mAnalyticsView!!.showMatchDetail(resultList)
                         }
-                    }, {
-                        mFailedResponseQ.add(it.toString())
-                        if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
+                    }
+                }, {
+                    mFailedResponseQ.add(it.toString())
+                    if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
+                        mAnalyticsView.let {
                             mAnalyticsView!!.showMatchDetail(resultList)
                         }
-                    })
-                }
+                    }
+                })
             }
         }
     }
