@@ -17,6 +17,7 @@ import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
+import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
 class CrawlingUtils() {
@@ -52,17 +53,18 @@ class CrawlingUtils() {
                     return@loadPlayerInfo
                 }
 
-                val imageUrl = parentBody
-                    .getElementsByClass("datacenter").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("player_view").get(0)
-                    .getElementsByClass("content data_detail").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("content_header").get(0)
-                    .getElementsByClass("thumb ${seasonName}").get(0)
-                    .getElementsByClass("img").get(0)
-                    .childNodes().get(0)
-                    .attributes().get("src")
+                var imageUrl = ""
+                    imageUrl = parentBody
+                        .getElementsByClass("datacenter").get(0)
+                        .getElementsByClass("wrap").get(0)
+                        .getElementsByClass("player_view").get(0)
+                        .getElementsByClass("content data_detail").get(0)
+                        .getElementsByClass("wrap").get(0)
+                        .getElementsByClass("content_header").get(0)
+                        .getElementsByClass("thumb ${seasonName}").get(0)
+                        .getElementsByClass("img").get(0)
+                        .childNodes().get(0)
+                        .attributes().get("src")
 
                 onSuccess(imageUrl!!)
             }, {
@@ -70,6 +72,9 @@ class CrawlingUtils() {
             })
         } catch (e: IllegalStateException) {
             Log.d(TAG, "Error : $e")
+            onFailed(0)
+        } catch (index: IndexOutOfBoundsException) {
+            Log.d(TAG, "Error : $index")
             onFailed(0)
         }
     }
