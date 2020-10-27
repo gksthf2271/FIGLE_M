@@ -12,19 +12,21 @@ class RankingPresenter : RankingContract.Presenter{
     var mRankingView: RankingContract.View? = null
 
     override fun getRankingList(context: Context, page: Int) {
-        mRankingView?.showLoading()
-        runBlocking {
-            launch {
-                loadRankingByCrawling(page,{
-                    if (DEBUG) Log.v(TAG, "getRankingList Success! $it")
-                    mRankingView?.hideLoading()
-                    mRankingView?.showRanking(it)
+        mRankingView.let {
+            mRankingView?.showLoading()
+            runBlocking {
+                launch {
+                    loadRankingByCrawling(page, {
+                        if (DEBUG) Log.v(TAG, "getRankingList Success! $it")
+                        mRankingView?.hideLoading()
+                        mRankingView?.showRanking(it)
 
-                }, {
-                    Log.v(TAG, "getRankingList Failed! $it")
-                    mRankingView?.hideLoading()
-                    mRankingView?.showError(it)
-                })
+                    }, {
+                        Log.v(TAG, "getRankingList Failed! $it")
+                        mRankingView?.hideLoading()
+                        mRankingView?.showError(it)
+                    })
+                }
             }
         }
     }
