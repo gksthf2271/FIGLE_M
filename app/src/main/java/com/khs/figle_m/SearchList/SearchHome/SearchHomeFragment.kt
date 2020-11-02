@@ -83,6 +83,9 @@ class SearchHomeFragment : BaseFragment(),
     override fun onStart() {
         super.onStart()
         if (isRestartApp) return
+        if (mSearchHomePresenter == null) {
+            mSearchHomePresenter = SearchHomePresenter()
+        }
         mSearchHomePresenter!!.takeView(this)
         initView()
         initMyInfoData()

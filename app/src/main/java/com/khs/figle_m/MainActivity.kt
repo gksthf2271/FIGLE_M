@@ -225,8 +225,8 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     }
 
     private fun showNetworkErrorPopup() {
-        if (mPopupWindow!=null && mPopupWindow!!.isShowing) return
-        if (!this.window.isActive || isDestroyed) return
+        if (mPopupWindow != null && mPopupWindow!!.isShowing) return
+        if (!this.window.isActive || this.isFinishing || isDestroyed) return
         Log.v(TAG,"showNetworkErrorPopup(...)")
         CoroutineScope(Dispatchers.Main).launch {
             val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
