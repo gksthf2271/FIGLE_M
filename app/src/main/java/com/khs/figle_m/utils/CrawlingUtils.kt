@@ -54,6 +54,7 @@ class CrawlingUtils() {
                 }
 
                 var imageUrl = ""
+                try {
                     imageUrl = parentBody
                         .getElementsByClass("datacenter").get(0)
                         .getElementsByClass("wrap").get(0)
@@ -65,6 +66,9 @@ class CrawlingUtils() {
                         .getElementsByClass("img").get(0)
                         .childNodes().get(0)
                         .attributes().get("src")
+                }catch (e : IndexOutOfBoundsException) {
+                    Log.e(TAG,"Error, $seasonName")
+                }
 
                 onSuccess(imageUrl!!)
             }, {

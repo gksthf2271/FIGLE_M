@@ -15,7 +15,7 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     HOT(216,"hot"),
     COC(217,"coc"),
     OTW(218,"otw"),
-    NG(219,"ng"),
+    NG(219,"19ng"),
     TOTY20(220,"20toty"),
     UCL19(221,"19ucl"),
     TOTN20(222,"20totn"),
@@ -26,17 +26,22 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     MOG(233,"mog"),
     LH(234,"lh"),
     LA(236,"la"),
+    MC(237,"mc"),
+    NG20(238,"20ng"),
+    KLB20(239,"20klb"),
     KFA19(295,"2019kfa"),
     MCFC(297,"mcfc"),
     KFA18(298,"kfa"),
-    LIVE19(300,"live"),
+    LIVE20(300,"live"),
     LIVE17(317,"17"),
     LIVE18(318,"18"),
+    LIVE19(319,"19"),
     PLC_A18(500,"plc"),
     PLC_S18(501,"18pls"),
     PLC_A19(502,"19pla"),
     PLC_S19(503,"19pls"),
-    KLeague20(504,"20kl")
+    KLeague20(504,"20kl"),
+    PLC_A20(506,"20pla")
 }
 
 
@@ -89,6 +94,34 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
 //    "className": "LA (Liverpool Ambassador)",
 //    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/la.png"
 //}
+////////////////////
+//12월 18일 추가
+//{
+//    "seasonId": 237,
+//    "className": "MC (Multi-League Champions)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/mc.png"
+//},
+//{
+//    "seasonId": 238,
+//    "className": "20NG (20 NEW GENERATION)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/20ng.png"
+//}
+//{
+//    "seasonId": 239,
+//    "className": "20KLB (20 K-League Best)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/20klb.png"
+//},
+//{
+//    "seasonId": 319,
+//    "className": "19 LIVE (19 LIVE)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/19.png"
+//},
+//{
+//    "seasonId": 506,
+//    "className": "20 PLC–A (20 Premium Live Autumn)",
+//    "seasonImg": "http://s.nx.com/s2/game/fo4/obt/externalAssets/season/20pla.png"
+//}
+
 ////////////////////
 //21,295,19KFA(19KFA),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/2019kfa.png
 //22,297,MCFC(17-18ManCityChampions),http://s.nx.com/s2/game/fo4/obt/externalAssets/season/mcfc.png
