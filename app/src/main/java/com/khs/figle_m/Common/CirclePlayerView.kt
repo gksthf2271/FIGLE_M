@@ -1,24 +1,16 @@
 package com.khs.figle_m.Common
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.Utils.DrawUtils
+import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_player_item_view.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

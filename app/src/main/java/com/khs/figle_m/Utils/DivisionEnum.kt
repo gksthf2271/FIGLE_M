@@ -1,4 +1,4 @@
-package com.khs.figle_m.utils
+package com.khs.figle_m.Utils
 
 enum class DivisionEnum(val divisionId:Int, val divisionName: String) {
     CHALLENGE(1100,"챌린지"),

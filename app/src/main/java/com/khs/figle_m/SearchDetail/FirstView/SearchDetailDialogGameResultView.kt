@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchDetail.firstView
+package com.khs.figle_m.SearchDetail.FirstView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,7 +10,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
-import com.khs.figle_m.utils.UserSortUtils
+import com.khs.figle_m.Utils.UserSortUtils
 
 class SearchDetailDialogGameResultView : ConstraintLayout {
     val TAG = javaClass.name

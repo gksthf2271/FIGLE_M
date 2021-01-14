@@ -24,10 +24,10 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailContract
-import com.khs.figle_m.utils.DisplayUtils
-import com.khs.figle_m.utils.NetworkUtils
-import com.khs.figle_m.utils.PositionEnum
-import com.khs.figle_m.utils.SeasonEnum
+import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.NetworkUtils
+import com.khs.figle_m.Utils.PositionEnum
+import com.khs.figle_m.Utils.SeasonEnum
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

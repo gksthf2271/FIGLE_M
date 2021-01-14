@@ -8,7 +8,7 @@ import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.Trade.TradeHomeFragment
-import com.khs.figle_m.utils.DateUtils
+import com.khs.figle_m.Utils.DateUtils
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call

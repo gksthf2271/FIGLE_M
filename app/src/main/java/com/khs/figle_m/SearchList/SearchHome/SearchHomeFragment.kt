@@ -20,8 +20,8 @@ import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchHomePresenter
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.Trade.TradeActivity
-import com.khs.figle_m.utils.DivisionEnum
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.DivisionEnum
+import com.khs.figle_m.Utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
 import kotlinx.android.synthetic.main.fragment_searchlist_ver2.*
 import okhttp3.ResponseBody

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.FragmentUtils
 
 class TradeActivity : BaseActivity() {
     val TAG: String = javaClass.name

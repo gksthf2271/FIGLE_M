@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.utils.DateUtils
+import com.khs.figle_m.Utils.DateUtils
 
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {

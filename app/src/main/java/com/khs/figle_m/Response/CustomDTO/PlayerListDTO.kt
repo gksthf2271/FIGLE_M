@@ -1,4 +1,4 @@
-package com.khs.figle_m.Response.customDTO
+package com.khs.figle_m.Response.CustomDTO
 
 import android.os.Parcelable
 import com.khs.figle_m.Response.DTO.PlayerDTO

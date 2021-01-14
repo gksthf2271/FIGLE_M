@@ -1,13 +1,11 @@
 package com.khs.figle_m.Analytics
 
-import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
-import kotlinx.android.synthetic.main.cview_player_detail_bottom.view.*
+import com.khs.figle_m.Utils.DrawUtils
+import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.item_analytics.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

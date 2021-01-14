@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.TradeResponse
-import com.khs.figle_m.utils.StringUtils
+import com.khs.figle_m.Utils.StringUtils
 import kotlinx.android.synthetic.main.cview_trade_player.view.*
 import kotlinx.android.synthetic.main.item_trade_buy.view.*
 import kotlinx.android.synthetic.main.item_trade_sell.view.*
@@ -24,7 +24,7 @@ open class TradeSellViewHolder(itemView: View) : TradeViewHolder(itemView) {
 
 open class TradeBuyViewHolder(itemView: View) : TradeViewHolder(itemView) {
    override fun bind(item: TradeResponse) {
-      itemView.buy_txt_date.text = com.khs.figle_m.utils.DateUtils().formatTimeString(item.tradeDateMs)
+      itemView.buy_txt_date.text = com.khs.figle_m.Utils.DateUtils().formatTimeString(item.tradeDateMs)
       var circlePlayerView = itemView.buy_layout_trade_player.findViewWithTag<CirclePlayerView>("com.khs.figle_m.Common.CirclePlayerView")
       circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
       itemView.txt_player_value.text = StringUtils().parseValue(item.value) + " BP"

@@ -1,4 +1,4 @@
-package com.khs.figle_m.utils
+package com.khs.figle_m.Utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

@@ -20,7 +20,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

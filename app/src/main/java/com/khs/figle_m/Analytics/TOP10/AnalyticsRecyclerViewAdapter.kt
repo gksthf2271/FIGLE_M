@@ -9,8 +9,8 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.Utils.DrawUtils
+import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.item_analytics.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

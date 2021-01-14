@@ -1,4 +1,4 @@
-package com.khs.figle_m.utils
+package com.khs.figle_m.Utils
 
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse

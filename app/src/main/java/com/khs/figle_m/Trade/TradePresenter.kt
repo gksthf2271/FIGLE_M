@@ -3,7 +3,7 @@ package com.khs.figle_m.Trade
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.TradeResponse
-import com.khs.figle_m.utils.CrawlingUtils
+import com.khs.figle_m.Utils.CrawlingUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

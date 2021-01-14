@@ -15,7 +15,7 @@ import android.widget.TextView
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_ranking.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

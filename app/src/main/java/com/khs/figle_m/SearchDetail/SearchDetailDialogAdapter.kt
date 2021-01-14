@@ -7,8 +7,8 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogGameResultView
-import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogPlayerInfoView
+import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogGameResultView
+import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogPlayerInfoView
 
 
 class SearchDetailDialogAdapter() : PagerAdapter() {

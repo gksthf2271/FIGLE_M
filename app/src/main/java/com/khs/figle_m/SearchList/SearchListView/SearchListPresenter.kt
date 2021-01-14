@@ -4,7 +4,7 @@ import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchContract
-import com.khs.figle_m.utils.DateUtils
+import com.khs.figle_m.Utils.DateUtils
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

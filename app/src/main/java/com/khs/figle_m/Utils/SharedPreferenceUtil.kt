@@ -1,4 +1,4 @@
-package com.khs.figle_m.utils
+package com.khs.figle_m.Utils
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

@@ -20,7 +20,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.SearchList.SearchDecoration
-import com.khs.figle_m.utils.DisplayUtils
+import com.khs.figle_m.Utils.DisplayUtils
 import kotlinx.android.synthetic.main.fragment_ranking.*
 
 class RankingFragment : BaseFragment(){

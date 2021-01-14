@@ -1,4 +1,4 @@
-package com.khs.figle_m.utils
+package com.khs.figle_m.Utils
 
 enum class SeasonEnum(val seasonId:Int, val className: String) {
     ICON(101,"icon"),

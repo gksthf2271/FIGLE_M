@@ -19,7 +19,7 @@ import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.FragmentUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

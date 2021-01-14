@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
@@ -18,14 +17,13 @@ import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupWindow
-import androidx.room.util.StringUtil
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.RankingActivity
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {

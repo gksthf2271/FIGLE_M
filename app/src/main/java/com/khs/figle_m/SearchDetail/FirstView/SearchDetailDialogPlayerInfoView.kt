@@ -1,4 +1,4 @@
-package com.khs.figle_m.SearchDetail.firstView
+package com.khs.figle_m.SearchDetail.FirstView
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Response.customDTO.PlayerListDTO
+import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.SearchDetail.SearchDetailPlayerListAdapter
 import com.khs.figle_m.SearchList.SearchDecoration
-import com.khs.figle_m.utils.UserSortUtils
+import com.khs.figle_m.Utils.UserSortUtils
 import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 
 class SearchDetailDialogPlayerInfoView : ConstraintLayout {

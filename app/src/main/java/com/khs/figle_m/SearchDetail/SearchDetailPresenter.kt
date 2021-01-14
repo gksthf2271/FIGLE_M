@@ -3,13 +3,12 @@ package com.khs.figle_m.SearchDetail
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.utils.SeasonEnum
+import com.khs.figle_m.Utils.SeasonEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
-import java.lang.NullPointerException
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
     val TAG:String = javaClass.name

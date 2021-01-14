@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.Utils.FragmentUtils
 
 class AnalyticsActivity : BaseActivity() {
     val TAG: String = javaClass.name

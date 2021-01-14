@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.DisplayUtils
+import com.khs.figle_m.Utils.DisplayUtils
 
 class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {

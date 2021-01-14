@@ -17,11 +17,11 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Response.customDTO.PlayerListDTO
-import com.khs.figle_m.SearchDetail.firstView.SearchDetailDialogTopView
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.DisplayUtils
-import com.khs.figle_m.utils.NetworkUtils
+import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
+import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogTopView
+import com.khs.figle_m.Utils.CrawlingUtils
+import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.NetworkUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
 import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
