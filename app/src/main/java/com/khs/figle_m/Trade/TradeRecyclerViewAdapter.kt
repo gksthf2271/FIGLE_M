@@ -5,15 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.TradeResponse
 import kotlinx.android.synthetic.main.item_trade_buy.view.*
-import kotlinx.android.synthetic.main.item_trade_sell.view.*
 
 class TradeRecyclerViewAdapter(context: Context, tradeList:List<TradeResponse>, val itemClick: (TradeResponse) -> Unit) :
 RecyclerView.Adapter<TradeViewHolder>() {

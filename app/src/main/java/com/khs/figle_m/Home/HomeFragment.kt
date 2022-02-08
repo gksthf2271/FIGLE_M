@@ -9,14 +9,15 @@ import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupWindow
+import android.widget.Toast
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
@@ -157,19 +158,25 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     lateinit var mEditView :EditText
     lateinit var mCloseBtn : Button
     fun initView() {
-        if (mUserPresenter == null) return
-        mUserPresenter!!.takeView(this)
+        mUserPresenter.takeView(this)
         mEditView = edit_search.findViewById<EditText>(R.id.edit_view)
         mCloseBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
         mEditView.imeOptions = IME_ACTION_SEARCH
 
-        mEditView.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP){
+        mEditView.setOnEditorActionListener { view, actionId, keyEvent ->
+            if (view.hasFocus() && actionId == EditorInfo.IME_ACTION_SEARCH) {
+                //TODO hideKeywordHistoryView()
+                val searchText = (view as EditText).text.toString()
+                if (searchText.isNullOrEmpty()) {
+                    Toast.makeText(context, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
+                    return@setOnEditorActionListener false
+                }
                 search(mEditView.text.toString())
-             return@OnKeyListener true
+                view.clearFocus()
+                return@setOnEditorActionListener true
             }
-            false
-        })
+            return@setOnEditorActionListener false
+        }
 
         mEditView.addTextChangedListener(textWatcher)
 
@@ -205,7 +212,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     fun search(searchString: String, teamPrice : String) {
         mSearchString = searchString
-        mUserPresenter!!.getUserDatailList(searchString, teamPrice)
+        mUserPresenter.getUserDatailList(searchString, teamPrice)
     }
 
     fun search(searchString: String) {
@@ -214,9 +221,8 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mUserPresenter == null) return
         PopupWindow().dismiss()
-        mUserPresenter!!.dropView()
+        mUserPresenter.dropView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -226,7 +232,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             RESULT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {
                     data ?: return
-                    search(data!!.getStringExtra(KEY_SEARCH), data!!.getStringExtra(KEY_SEARCH_TEAM_PRICE))
+                    search(data.getStringExtra(KEY_SEARCH)!!, data.getStringExtra(KEY_SEARCH_TEAM_PRICE)!!)
                 } else if(resultCode == Activity.RESULT_CANCELED) {
 
                 }
