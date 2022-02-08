@@ -35,7 +35,8 @@
 
 ## 결과물
 ### 1. 스크린샷
-<img src="https://user-images.githubusercontent.com/22634053/83354397-56ccbe00-a393-11ea-85f2-5ebac642b5e0.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/83354405-5fbd8f80-a393-11ea-855f-7eb3fb940a95.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/83354409-621fe980-a393-11ea-8d18-d29cb3eeb77b.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/83354414-6ba95180-a393-11ea-8451-538aa3384e61.png"  width="220" height="400">
+<img src="https://user-images.githubusercontent.com/22634053/83354397-56ccbe00-a393-11ea-85f2-5ebac642b5e0.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009653-81a49280-7046-11eb-9f74-7eb7efdeff60.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009681-8b2dfa80-7046-11eb-9631-0d52b468ea00.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009692-92550880-7046-11eb-8edb-2937e433ab69.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009703-97b25300-7046-11eb-9ff8-f2a156795a5b.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009716-9e40ca80-7046-11eb-80d5-47503f7d2d60.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009721-a26ce800-7046-11eb-8171-8b3202e2a0aa.png"  width="220" height="400"><img src="https://user-images.githubusercontent.com/22634053/108009731-a6006f00-7046-11eb-874b-072c6cf78df9.png"  width="220" height="400">
+
 
 ### 2. 다운로드 경로
 https://play.google.com/store/apps/details?id=com.khs.figle_m
