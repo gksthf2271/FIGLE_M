@@ -15,7 +15,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     val DEBUG:Boolean = false
     var  mDetailListView: SearchDetailContract.View? = null
 
-    open val ERROR_EMPTY = "EMPTY"
+    val ERROR_EMPTY = "EMPTY"
 
     override fun dropView() {
         mDetailListView = null
@@ -73,17 +73,16 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         }
     }
 
-    fun getPlayerObject(playerDTO: PlayerDTO) : String {
-        var jsonObject = JSONObject()
-        jsonObject.put("id", playerDTO.spId)
-        jsonObject.put("po", playerDTO.spPosition)
+    private fun getPlayerObject(playerDTO: PlayerDTO) : String {
+        val jsonObject = JSONObject().apply {
+            put("id", playerDTO.spId)
+            put("po", playerDTO.spPosition)
+        }
 
-        var jsonArray = JSONArray()
-        jsonArray.put(jsonObject)
-        return jsonArray.toString()
+        return JSONArray().put(jsonObject).toString()
     }
 
-    fun getPlayerImage(
+    private fun getPlayerImage(
         playerDTO: PlayerDTO,
         onSuccess: ((String) -> Unit),
         onFailed: (Int) -> Unit
@@ -120,15 +119,15 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
 
                 try {
                     val imageUrl = parentBody
-                        .getElementsByClass("datacenter").get(0)
-                        .getElementsByClass("wrap").get(0)
-                        .getElementsByClass("player_view").get(0)
-                        .getElementsByClass("content data_detail").get(0)
-                        .getElementsByClass("wrap").get(0)
-                        .getElementsByClass("content_header").get(0)
-                        .getElementsByClass("thumb ${seasonName}").get(0)
-                        .getElementsByClass("img").get(0)
-                        .childNodes().get(0)
+                        .getElementsByClass("datacenter").first()
+                        .getElementsByClass("wrap").first()
+                        .getElementsByClass("player_view").first()
+                        .getElementsByClass("content data_detail").first()
+                        .getElementsByClass("wrap").first()
+                        .getElementsByClass("content_header").first()
+                        .getElementsByClass("thumb $seasonName").first()
+                        .getElementsByClass("img").first()
+                        .childNodes().first()
                         .attributes().get("src")
                     onSuccess(imageUrl!!)
                 } catch (e : IndexOutOfBoundsException) {

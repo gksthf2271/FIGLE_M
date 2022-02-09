@@ -25,18 +25,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO>?, val itemClick: (PlayerDTO) -> Unit) :
+class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerList: List<PlayerDTO>, val itemClick: (PlayerDTO) -> Unit) :
     RecyclerView.Adapter<SearchDetailPlayerListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
     val DEBUG = BuildConfig.DEBUG
-    val mContext: Context
-    val mPlayerList: List<PlayerDTO>?
     var mMvpPlayer: PlayerDTO? = null
-
-    init {
-        mContext = context
-        mPlayerList = playerList
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var viewHolder: RecyclerView.ViewHolder? = null
@@ -48,7 +41,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     }
 
     override fun getItemCount(): Int {
-        return mPlayerList.let { mPlayerList!!.size }
+        return mPlayerList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -60,35 +53,25 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
         mMvpPlayer = mvpPlayer
     }
 
-    inner class ViewHolder(itemView: View, itemClick: (PlayerDTO) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
-        var mItemView: View
-        var mRootLayout: ConstraintLayout
-        var mPlayerImg: ImageView
-        var mIcon: ImageView
-        var mRating: TextView
-        var mPlayerName: TextView
-        var mPlayerPosition: TextView
-        var mPlayerSpGrade: TextView
-
-        init {
-            mItemView = itemView
-            mRootLayout = mItemView.findViewById(R.id.group_player)
-            mIcon = mItemView.findViewById(R.id.img_icon)
-            mPlayerImg = mItemView.findViewById(R.id.img_player)
-            mRating = mItemView.findViewById(R.id.txt_rating)
-            mPlayerName = mItemView.findViewById(R.id.txt_player_name)
-            mPlayerPosition = mItemView.findViewById(R.id.txt_player_position)
-            mPlayerSpGrade = mItemView.findViewById(R.id.txt_player_spGrade)
-        }
+    inner class ViewHolder(val mItemView: View, itemClick: (PlayerDTO) -> Unit) :
+        RecyclerView.ViewHolder(mItemView) {
         val TAG: String = javaClass.name
+
+        var mRootLayout: ConstraintLayout = mItemView.findViewById(R.id.group_player)
+        var mPlayerImg: ImageView = mItemView.findViewById(R.id.img_player)
+        var mIcon: ImageView = mItemView.findViewById(R.id.img_icon)
+        var mRating: TextView = mItemView.findViewById(R.id.txt_rating)
+        var mPlayerName: TextView = mItemView.findViewById(R.id.txt_player_name)
+        var mPlayerPosition: TextView = mItemView.findViewById(R.id.txt_player_position)
+        var mPlayerSpGrade: TextView = mItemView.findViewById(R.id.txt_player_spGrade)
+
         fun bind(context: Context, position: Int) {
-            val item = mPlayerList!!.get(position)
+            val item = mPlayerList[position]
 //            val playerName = SharedPreferenceUtil().getPref(context, MainActivity().PREF_NAME,item.spId.toString())
             val playerDB = PlayerDataBase.getInstance(context)
-            playerDB.let {
+            playerDB?.let { playerDataBase ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    val player = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                    val player = playerDataBase.playerDao().getPlayer(item.spId.toString())
                     player ?: return@launch
                     CoroutineScope(Dispatchers.Main).launch {
                         mPlayerName.text = player.playerName
@@ -134,15 +117,15 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
 
 /*            runBlocking {
                 launch {
-                    mPlayerList.let {
-                        val item = mPlayerList!!.get(position)
+                    mPlayerList?.let {
+                        val item = mPlayerList.get(position)
                         CrawlingUtils().getPlayerImg(item,{
                             updatePlayerImage(mPlayerImg, item, it, position)
                         }, {
                             Log.v(TAG,"Failed Loading...")
                         })
 //                        DataManager.getInstance().loadPlayerImage(item.spId, {
-//                            mPlayerList!!.get(position).imageUrl = it.toString()
+//                            mPlayerList.get(position).imageUrl = it.toString()
 //                            updatePlayerImage(mPlayerImg, item, it, position)
 //                        }, {
 //                            Log.v(TAG, "load Failed : $it")
@@ -155,7 +138,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             itemView.setOnClickListener { itemClick(item) }
         }
 
-        fun updateSeason(context: Context, item: PlayerDTO) {
+        private fun updateSeason(context: Context, item: PlayerDTO) {
             val seasonDB = PlayerDataBase.getInstance(context)
             seasonDB.let {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -201,7 +184,7 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
             }
         }
 
-        fun addGoalIcon(goalCount: Int) {
+        private fun addGoalIcon(goalCount: Int) {
             val rootView = mItemView.findViewById(R.id.layout_goal) as ConstraintLayout
             val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             rootView.removeAllViews()
@@ -225,8 +208,8 @@ class SearchDetailPlayerListAdapter(context: Context, playerList: List<PlayerDTO
     }
 
     fun updatePlayerImage(playerimg: ImageView, item:PlayerDTO, url: String, position: Int) {
-        Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
-        Glide.with(playerimg.getContext())
+        Log.v(TAG,"updatePlayerImage(...) uri : $url")
+        Glide.with(playerimg.context)
             .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)

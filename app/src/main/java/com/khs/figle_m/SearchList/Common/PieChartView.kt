@@ -15,27 +15,20 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.MPPointF
 
-class PieChartView : ConstraintLayout{
+class PieChartView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.name
-
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        initView(context)
-    }
-
     val colorList = intArrayOf(
         resources.getColor(R.color.search_list_win,null),
         resources.getColor(R.color.search_list_draw,null),
         resources.getColor(R.color.search_list_lose,null)
     )
-
-
     lateinit var mChartView:PieChart
+
+    init {
+        initView(context)
+    }
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

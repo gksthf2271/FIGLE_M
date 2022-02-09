@@ -13,25 +13,21 @@ import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*
-import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.loading_view
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.collections.ArrayList
 
-class SearchHomeRateView : ConstraintLayout {
-
+class SearchHomeRateView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
+    val TAG = javaClass.name
     lateinit var mMatchDetailList: ArrayList<MatchDetailResponse>
     lateinit var mFailedRequestQ : Queue<String>
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    init {
         initView(context)
     }
-
-    val TAG = javaClass.name
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -56,7 +52,7 @@ class SearchHomeRateView : ConstraintLayout {
         }
     }
 
-    fun showLoadingView() {
+    private fun showLoadingView() {
         Log.v(TAG,"showLoadingView(...)")
         search_home_group_view.visibility = View.GONE
         search_home_empty_view.visibility = View.VISIBLE
@@ -64,7 +60,7 @@ class SearchHomeRateView : ConstraintLayout {
         loading_view.show()
     }
 
-    fun hideLoadingView() {
+    private fun hideLoadingView() {
         Log.v(TAG,"hideLoadingView(...)")
         search_home_empty_view.visibility = View.GONE
         search_home_group_view.visibility = View.VISIBLE
@@ -72,7 +68,7 @@ class SearchHomeRateView : ConstraintLayout {
         loading_view.hide()
     }
 
-    fun initRate(accessId: String, arrayList: List<String>) {
+    private fun initRate(accessId: String, arrayList: List<String>) {
         CoroutineScope(Dispatchers.IO).launch {
             mMatchDetailList.clear()
             var searchSize = DataManager().SEARCH_PAGE_SIZE
@@ -100,7 +96,7 @@ class SearchHomeRateView : ConstraintLayout {
         }
     }
 
-    fun updateView(accessId: String, matchInfoList: List<MatchDetailResponse>) {
+    private fun updateView(accessId: String, matchInfoList: List<MatchDetailResponse>) {
         var win = 0
         var draw = 0
         var lose = 0

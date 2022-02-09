@@ -12,15 +12,13 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DisplayUtils
 
-class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
+class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
     val DEBUG = BuildConfig.DEBUG
-    val mContext: Context
     val mRankerList: List<Ranker>?
 
     init {
-        mContext = context
         mRankerList = rankerList
     }
 
@@ -39,7 +37,7 @@ class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
-        holder.bind(mRankerList!!.get(position), mContext)
+        holder.bind(mRankerList!!.get(position))
     }
 
     fun getFirstRanker(): Ranker? {
@@ -70,7 +68,7 @@ class RankingRecyclerViewAdapter(context: Context, rankerList:List<Ranker>, val 
             mTxtTotalPrice = mItemView.findViewById(R.id.txt_no1_total_price)
         }
 
-        fun bind(item: Ranker, context: Context) {
+        fun bind(item: Ranker) {
             mTxtRanking.text = DisplayUtils().updateTextSize(item.rank_no + " 위", " 위")
             mTxtRankingPoint.text = item.rank_point + " 점"
             mTxtId.text = item.name

@@ -57,7 +57,7 @@ class SearchHomePresenter: SearchContract.Presenter {
             launch {
                 DataManager.getInstance().loadUserHighRank(accessId,
                     {
-                        Log.v(TAG, "getUserHighRank Success! ${it}")
+                        Log.v(TAG, "getUserHighRank Success! $it")
 //                        mSearchListView?.hideLoading(false)
                         mSearchListView?.showHighRank(it)
                     }, {

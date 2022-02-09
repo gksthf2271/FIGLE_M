@@ -71,9 +71,9 @@ class RankingFragment : BaseFragment(){
         val layoutManager = LinearLayoutManager(context)
         layout_recyclerview.addItemDecoration(SearchDecoration(10))
         layout_recyclerview.setLayoutManager(layoutManager)
-        layout_recyclerview.adapter = RankingRecyclerViewAdapter(context!!, rankingList, {
-            updateTopView(it)
-        })
+        layout_recyclerview.adapter = RankingRecyclerViewAdapter(context!!, rankingList) { ranker ->
+            updateTopView(ranker)
+        }
         updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
         img_search.setOnClickListener {
             if(DEBUG) Log.v(TAG,"TEST, onClick!!")
@@ -97,7 +97,7 @@ class RankingFragment : BaseFragment(){
         rank ?: return
         mCurrentRank = rank
         txt_ranking.text = DisplayUtils().updateTextSize(mCurrentRank.rank_no + " 위", " 위")
-        txt_rate.text = "상위 " + mCurrentRank.rank_percent + "%"
+        txt_rate.text = "상위 ${mCurrentRank.rank_percent} %"
         txt_no1_id.text = rank.name
         txt_no1_total_price.text = mCurrentRank.price
 

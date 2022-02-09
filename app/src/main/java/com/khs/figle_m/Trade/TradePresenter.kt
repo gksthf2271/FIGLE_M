@@ -44,7 +44,6 @@ class TradePresenter : TradeContract.Presenter{
     }
 
     override fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
-        if (mTradeView == null) return
         var requestMap = hashMapOf<String, TradeResponse>()
         Log.v(this.javaClass.name,"requestSize : ${tradeInfoList.size}")
         var index = 0
@@ -58,16 +57,20 @@ class TradePresenter : TradeContract.Presenter{
                     requestMap.put(item.saleSn, item)
                     Log.v(this.javaClass.name, "S, input RequestMap : ${requestMap.values.size}")
                     if (requestMap.values.size == tradeInfoList.size) {
-                        mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
-                        mTradeView!!.hideLoading()
+                        mTradeView?.apply {
+                            showTradePlayerImageUrl(requestMap.values.toList())
+                            hideLoading()
+                        }
                     }
                 }, {
                     item.imageResUrl = ""
                     requestMap.put(item.saleSn, item)
                     Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size} ? $it")
                     if (requestMap.values.size == tradeInfoList.size) {
-                        mTradeView!!.showTradePlayerImageUrl(requestMap.values.toList())
-                        mTradeView!!.hideLoading()
+                        mTradeView?.apply {
+                            showTradePlayerImageUrl(requestMap.values.toList())
+                            hideLoading()
+                        }
                     }
                 })
                 index++

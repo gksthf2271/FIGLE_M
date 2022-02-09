@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_ranking.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
 
 class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
     val TAG: String = javaClass.name
@@ -96,28 +97,28 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
                 popupView,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
-            )
-
-            popupWindow!!.setFocusable(true)
-            popupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            ).apply {
+                isFocusable = true
+                showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            }
 
             val textView = popupView.findViewById<TextView>(R.id.txt_title)
             textView.text = "네트워크 상태를 확인해주세요."
 
             val cancel = popupView.findViewById(R.id.btn_setting) as Button
             cancel.setOnClickListener {
-                popupWindow!!.dismiss()
+                popupWindow.dismiss()
                 val intent = Intent(Settings.ACTION_SETTINGS)
                 startActivityForResult(intent, 0)
             }
 
             val ok = popupView.findViewById(R.id.btn_finish) as Button
             ok.setOnClickListener {
-                popupWindow!!.dismiss()
+                popupWindow.dismiss()
                 finishAffinity()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)
-                System.exit(0)
+                exitProcess(0)
             }
         }
     }

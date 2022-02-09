@@ -13,13 +13,10 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import kotlinx.android.synthetic.main.cview_detail_top_view.view.*
 
-class SearchDetailDialogTopView : ConstraintLayout {
+class SearchDetailDialogTopView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.name
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initView(context)
-    }
 
     lateinit var mRootLayout: ConstraintLayout
     lateinit var mTxtLeftNickName: TextView
@@ -31,6 +28,10 @@ class SearchDetailDialogTopView : ConstraintLayout {
     lateinit var mSearchAccessId: String
     var mBlockListMap: HashMap<Boolean, List<Int>> = hashMapOf()
     var mAssistListMap: HashMap<Boolean, List<Int>> = hashMapOf()
+
+    init {
+        initView(context)
+    }
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

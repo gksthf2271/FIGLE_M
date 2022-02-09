@@ -18,17 +18,17 @@ import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.Utils.UserSortUtils
 import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 
-class SearchDetailDialogPlayerInfoView : ConstraintLayout {
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initView(context)
-    }
-
+class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.name
     lateinit var mLeftRecyclerView: RecyclerView
     lateinit var mRightRecyclerView: RecyclerView
     var mMVPPlayer : PlayerDTO? = null
+
+    init {
+        initView(context)
+    }
 
 
     fun initView(context: Context) {
@@ -65,14 +65,14 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
             group_left_error.visibility = View.INVISIBLE
         }
         mLeftRecyclerView.adapter =
-            SearchDetailPlayerListAdapter(context!!, playerList, {
-                Log.v(TAG, "ItemClick! ${it}")
-                itemClick(Pair(it, true))
-            })
+            SearchDetailPlayerListAdapter(context!!, playerList) { playerDTO ->
+                Log.v(TAG, "ItemClick! $playerDTO")
+                itemClick(Pair(playerDTO, true))
+            }
 
         val rightLayoutManager = LinearLayoutManager(context)
         mRightRecyclerView.addItemDecoration(SearchDecoration(10))
-        mRightRecyclerView.setLayoutManager(rightLayoutManager)
+        mRightRecyclerView.layoutManager = rightLayoutManager
 
         playerList = initPlayerList(
             false, (playerMap.get(opposingUserAccessId) ?: PlayerListDTO(
@@ -87,10 +87,10 @@ class SearchDetailDialogPlayerInfoView : ConstraintLayout {
             group_right_error.visibility = View.INVISIBLE
         }
         mRightRecyclerView.adapter =
-            SearchDetailPlayerListAdapter(context!!, playerList, {
-                Log.v(TAG, "ItemClick! ${it}")
-                itemClick(Pair(it, false))
-            })
+            SearchDetailPlayerListAdapter(context!!, playerList) { playerDTO ->
+                Log.v(TAG, "ItemClick! $playerDTO")
+                itemClick(Pair(playerDTO, false))
+            }
 
         (mRightRecyclerView.adapter as SearchDetailPlayerListAdapter).updateMvpPlayer(mMVPPlayer)
         (mLeftRecyclerView.adapter as SearchDetailPlayerListAdapter).updateMvpPlayer(mMVPPlayer)

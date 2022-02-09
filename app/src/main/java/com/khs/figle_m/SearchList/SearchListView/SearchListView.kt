@@ -60,7 +60,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     fun setSearchUserInfo(searchUserInfo: UserResponse) {
-        Log.v(TAG, "setSearchUserInfo : ${searchUserInfo}")
+        Log.v(TAG, "setSearchUserInfo : $searchUserInfo")
         mSearchUserInfo = searchUserInfo
     }
 
@@ -80,14 +80,10 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
         mMatchType = matchType
         layout_recyclerview.adapter =
-            SearchListAdapter(
-                context!!,
-                mSearchUserInfo.accessId,
-                mMatchList,
-                {
-                    Log.v(TAG, "ItemClick! ${it.matchInfo}")
-                    itemClick(it)
-                })
+            SearchListAdapter(context!!, mSearchUserInfo.accessId, mMatchList) { matchDetailResponse ->
+                Log.v(TAG, "ItemClick! ${matchDetailResponse.matchInfo}")
+                itemClick(matchDetailResponse)
+            }
         if (mMatchIdList.size > DataManager().SEARCH_PAGE_SIZE) {
             loadMatch(matchType, 0, DataManager().SEARCH_PAGE_SIZE - 1)
         } else {
@@ -99,10 +95,11 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
     fun loadMatch(matchType: Int, startIndex : Int, endIndex: Int) {
         for (index in startIndex .. endIndex) {
-            Log.v(TAG,"loadMatch : ${index}")
+            Log.v(TAG,"loadMatch : $index")
             mSearchListPresenter.let {
                 mSearchListPresenter.getMatchDetailList(
-                matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList.get(index))
+                matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList[index]
+                )
             }
         }
     }
@@ -131,13 +128,13 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         }
     }
 
-    fun showEmptyView() {
+    private fun showEmptyView() {
         Log.v(TAG, "showEmptyView(...)")
         layout_recyclerview.visibility = View.GONE
         txt_emptyView.visibility = View.VISIBLE
     }
 
-    fun hideEmptyView() {
+    private fun hideEmptyView() {
         Log.v(TAG, "hideEmptyView(...)")
         layout_recyclerview.visibility = View.VISIBLE
         txt_emptyView.visibility = View.GONE
@@ -167,7 +164,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
             mMatchList.sortByDescending { it.matchDate }
         }
         if (DEBUG) Log.v(TAG, "mMatchList size : ${mMatchList.size} , mMatchIdList size : ${mMatchIdList.size}")
-        layout_recyclerview.adapter!!.notifyDataSetChanged()
+        layout_recyclerview.adapter?.notifyDataSetChanged()
         Handler().postDelayed({
             hideLoading(false)
         }, 500)

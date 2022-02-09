@@ -14,13 +14,13 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.DateUtils
 
-class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>?, val itemClick: (MatchDetailResponse) -> Unit) :
+class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.name
     val DEBUG = BuildConfig.DEBUG
     val mSearchAccessId: String
     val mContext: Context
-    val mMatchList: List<MatchDetailResponse>?
+    val mMatchList: List<MatchDetailResponse>
 
     init {
         mContext = context
@@ -38,13 +38,13 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
     }
 
     override fun getItemCount(): Int {
-        Log.v(TAG,"getItemCount : ${mMatchList!!.size}")
-        return mMatchList.let { mMatchList!!.size }
+        Log.v(TAG,"getItemCount : ${mMatchList.size}")
+        return mMatchList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(DEBUG)Log.v(TAG, "onBindViewHolder, position : $position")
-        holder.bind(mSearchAccessId, mMatchList!!.get(position), mContext)
+        holder.bind(mSearchAccessId, mMatchList[position], mContext)
     }
 
     inner class ViewHolder(itemView: View, itemClick: (MatchDetailResponse) -> Unit) :
@@ -77,7 +77,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
             item.matchInfo.let {
                 var opposingUserIndex = 1
                 var myIndex = 0
-                val matchInfo = item.matchInfo!!
+                val matchInfo = item.matchInfo
 
                 if (searchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
                     opposingUserIndex = 1
@@ -117,23 +117,23 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 var myResult: String? = null
                 var opposingUserResult: String? = null
 
-                if (myMatchInfo.matchDetail!!.matchResult == null) {
+                if (myMatchInfo.matchDetail.matchResult == null) {
                     if ("승".equals(opposingUserMatchInfo.matchDetail.matchResult)) {
-                        myMatchInfo.matchDetail!!.matchResult = "패"
+                        myMatchInfo.matchDetail.matchResult = "패"
                     } else {
-                        myMatchInfo.matchDetail!!.matchResult = "승"
+                        myMatchInfo.matchDetail.matchResult = "승"
                     }
                 }
 
-                if (opposingUserMatchInfo.matchDetail!!.matchResult == null) {
+                if (opposingUserMatchInfo.matchDetail.matchResult == null) {
                     if ("승".equals(myMatchInfo.matchDetail.matchResult)) {
-                        opposingUserMatchInfo.matchDetail!!.matchResult = "패"
+                        opposingUserMatchInfo.matchDetail.matchResult = "패"
                     } else {
-                        opposingUserMatchInfo.matchDetail!!.matchResult = "승"
+                        opposingUserMatchInfo.matchDetail.matchResult = "승"
                     }
                 }
 
-                when (myMatchInfo.matchDetail!!.matchResult) {
+                when (myMatchInfo.matchDetail.matchResult) {
                     "승" -> {
                         if (myMatchInfo.shoot.goalTotal == myMatchInfo.shoot.goalTotalDisplay) {
                             myResult = "승"

@@ -12,14 +12,14 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.Utils.UserSortUtils
 
-class SearchDetailDialogGameResultView : ConstraintLayout {
+class SearchDetailDialogGameResultView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.name
     var mView: View? = null
     val DEBUG = BuildConfig.DEBUG
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    init {
         initView(context)
     }
 

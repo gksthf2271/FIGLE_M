@@ -10,10 +10,10 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import kotlinx.android.synthetic.main.cview_match_type_view.view.*
 
-class MatchView : ConstraintLayout {
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+class MatchView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
+    init {
         initView(context)
     }
 

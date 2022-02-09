@@ -74,7 +74,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun onDestroy() {
         super.onDestroy()
         Log.v(TAG,"onDestory(...)")
-        mInitPresenter!!.dropView()
+        mInitPresenter.dropView()
     }
 
     override fun onPause() {
@@ -182,11 +182,11 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         }
     }
 
-    open fun showErrorPopup(error: Int) {
+    fun showErrorPopup(error: Int) {
         showErrorPopup(error, true)
     }
 
-    open fun showErrorPopup(error: Int, isFinish:Boolean) {
+    fun showErrorPopup(error: Int, isFinish:Boolean) {
         Log.v(TAG,"showErrorPopup(...) :$error , isDestroyed : $isDestroyed")
         if (!this.window.isActive || isDestroyed) return
         when (error) {
@@ -234,24 +234,25 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
                 popupView,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
-            )
+            ).apply {
+                isFocusable = true
+                showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            }
 
-            popupWindow!!.setFocusable(true)
-            popupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
-
-            val textView = popupView.findViewById<TextView>(R.id.txt_title)
-            textView.text = "네트워크 상태를 확인해주세요."
+            val textView = popupView.findViewById<TextView>(R.id.txt_title).apply {
+                text = "네트워크 상태를 확인해주세요."
+            }
 
             val cancel = popupView.findViewById(R.id.btn_setting) as Button
             cancel.setOnClickListener {
-                popupWindow!!.dismiss()
+                popupWindow.dismiss()
                 val intent = Intent(Settings.ACTION_SETTINGS)
                 startActivityForResult(intent, 0)
             }
 
             val ok = popupView.findViewById(R.id.btn_finish) as Button
             ok.setOnClickListener {
-                popupWindow!!.dismiss()
+                popupWindow.dismiss()
                 finishAffinity()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 startActivity(intent)

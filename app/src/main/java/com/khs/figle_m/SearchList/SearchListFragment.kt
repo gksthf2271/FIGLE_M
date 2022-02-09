@@ -75,11 +75,11 @@ class SearchListFragment : BaseFragment() {
     }
 
     fun initMyInfoData() {
-        arguments.let {
-            mSearchUserInfo = arguments!!.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
-//            mSearchList = arguments!!.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
-            mMatchtype = arguments!!.getInt(KEY_SEARCH_MATCH_TYPE)!!
-            mMatchIdList = arguments!!.getStringArrayList(KEY_SEARCH_MATCH_ID) as ArrayList<String>
+        arguments?.let { bundle ->
+            mSearchUserInfo = bundle.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
+//            mSearchList = bundle.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
+            mMatchtype = bundle.getInt(KEY_SEARCH_MATCH_TYPE)
+            mMatchIdList = bundle.getStringArrayList(KEY_SEARCH_MATCH_ID) as ArrayList<String>
         }
 
         when (mMatchtype) {
@@ -96,14 +96,14 @@ class SearchListFragment : BaseFragment() {
         }
     }
 
-    fun initListData() {
+    private fun initListData() {
         view_searchList.setSearchUserInfo(mSearchUserInfo)
-        view_searchList.updateView(mMatchtype, mMatchIdList, {
-            showDetail(mSearchUserInfo.accessId, it)
-        })
+        view_searchList.updateView(mMatchtype, mMatchIdList) { matchDetailResponse ->
+            showDetail(mSearchUserInfo.accessId, matchDetailResponse)
+        }
     }
 
-    fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
+    private fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
         mSelectedMatchInfo = matchDetailResponse

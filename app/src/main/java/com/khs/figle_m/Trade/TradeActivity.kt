@@ -31,8 +31,8 @@ class TradeActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         val accessId = intent.getStringExtra(KEY_ACCESS_ID)
-        var tradeFragment = TradeHomeFragment()
-        var bundle = Bundle()
+        val tradeFragment = TradeHomeFragment()
+        val bundle = Bundle()
         bundle.putString(KEY_ACCESS_ID, accessId)
         tradeFragment.arguments = bundle
         FragmentUtils().loadFragment(

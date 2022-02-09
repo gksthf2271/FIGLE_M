@@ -5,10 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 class SearchDecoration(divHeight: Int) : RecyclerView.ItemDecoration() {
-    var mDivHeight:Int
-    init{
-        mDivHeight = divHeight
-    }
+    var mDivHeight:Int = divHeight
 
     override fun getItemOffsets(
         outRect: Rect,

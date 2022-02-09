@@ -100,8 +100,8 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
             recycler_view.addItemDecoration(SearchDecoration(10))
             recycler_view.setLayoutManager(LinearLayoutManager(context))
             var sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
-            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, sortedList, {
-            })
+            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, sortedList){ tradeResponse ->
+            }
         }
     }
 

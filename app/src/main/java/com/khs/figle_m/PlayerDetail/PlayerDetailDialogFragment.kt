@@ -81,7 +81,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         setBackgroundColorDialog()
     }
 
-    fun resizeDialog(){
+    private fun resizeDialog(){
         context ?: return
         val size = DisplayUtils().getDisplaySize(context!!)
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
@@ -92,7 +92,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
-    fun setBackgroundColorDialog() {
+    private fun setBackgroundColorDialog() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
@@ -104,7 +104,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         }
     }
 
-    fun initData() {
+    private fun initData() {
         var playerDetailInfo: PlayerDTO? = null
         var rankerPlayerInfo: List<RankerPlayerDTO>? = null
         arguments.let {
@@ -209,7 +209,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         }
     }
 
-    fun updatePlayerImage(url: String) {
+    private fun updatePlayerImage(url: String) {
         val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
         Glide.with(context!!)
@@ -241,7 +241,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
             .into(imgView)
     }
 
-    fun updateIcon(context: Context, item:PlayerDTO) {
+    private fun updateIcon(context: Context, item:PlayerDTO) {
         val seasonDB = PlayerDataBase.getInstance(context)
         seasonDB.let {
             CoroutineScope(Dispatchers.IO).launch {

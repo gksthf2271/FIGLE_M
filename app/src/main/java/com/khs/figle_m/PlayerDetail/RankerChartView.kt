@@ -20,16 +20,12 @@ import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import kotlinx.android.synthetic.main.cview_ranker_chart.view.*
 
 
-class RankerChartView : ConstraintLayout {
+class RankerChartView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.name
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    init {
         initView(context)
     }
 

@@ -12,7 +12,7 @@ class SearchListPresenter : SearchContract.SearchListPresenter {
     val TAG:String = javaClass.name
     val DEBUG:Boolean = true
     var  mSearchListView: SearchContract.SearchListView? = null
-    open val ERROR_EMPTY = 0
+    val ERROR_EMPTY = 0
 
     override fun takeView(view: SearchContract.SearchListView) {
         mSearchListView = view
@@ -38,7 +38,7 @@ class SearchListPresenter : SearchContract.SearchListPresenter {
         }
     }
 
-    fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (Int) -> Unit) {
+    private fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (Int) -> Unit) {
         DataManager.getInstance().loadMatchDetail(matchId,
             {
                 if (DEBUG) Log.v(TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")

@@ -94,7 +94,7 @@ class SearchHomeFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        mSearchHomePresenter!!.dropView()
+        mSearchHomePresenter.dropView()
     }
 
     fun initView() {
@@ -123,11 +123,11 @@ class SearchHomeFragment : BaseFragment(),
         match_indicator.setViewPager(viewPager_search)
     }
 
-    fun initRateView(accessId: String) {
+    private fun initRateView(accessId: String) {
         initRateView(accessId, mOfficialGameMatchIdList, mCoachModeMatchIdList)
     }
 
-    fun initRateView(accessId : String, officialModeList: List<String>, coachModeList: List<String>) {
+    private fun initRateView(accessId : String, officialModeList: List<String>, coachModeList: List<String>) {
         val officialModeView = SearchHomeRateView(context!!)
         val coachModeView = SearchHomeRateView(context!!)
 
@@ -144,9 +144,9 @@ class SearchHomeFragment : BaseFragment(),
         team_indicator.setViewPager(viewPager_team)
     }
 
-    fun initMyInfoData() {
-        arguments.let {
-            mSearchUserInfo = arguments!!.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
+    private fun initMyInfoData() {
+        arguments?.let { bundle ->
+            mSearchUserInfo = bundle.getParcelable(KEY_SEARCH_USER_INFO)!!
         }
         txt_MyNickName.text = mSearchUserInfo.nickname
         txt_Level.text = mSearchUserInfo.level
@@ -162,17 +162,17 @@ class SearchHomeFragment : BaseFragment(),
         }
     }
 
-    fun initListData() {
+    private fun initListData() {
 
-        mSearchHomePresenter!!.getMatchId(
-            mSearchUserInfo.accessId!!,
+        mSearchHomePresenter.getMatchId(
+            mSearchUserInfo.accessId,
             DataManager.matchType.normalMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
 
-        mSearchHomePresenter!!.getMatchId(
-            mSearchUserInfo.accessId!!,
+        mSearchHomePresenter.getMatchId(
+            mSearchUserInfo.accessId,
             DataManager.matchType.coachMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
