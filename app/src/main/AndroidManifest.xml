@@ -15,7 +15,8 @@
         android:usesCleartextTraffic="true"
         android:screenOrientation="portrait">
 
-        <activity android:name="com.khs.figle_m.MainActivity">
+        <activity android:name="com.khs.figle_m.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
