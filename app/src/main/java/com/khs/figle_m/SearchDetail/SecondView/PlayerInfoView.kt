@@ -76,9 +76,9 @@ class PlayerInfoView @JvmOverloads constructor(
 
 
         val playerDB = PlayerDataBase.getInstance(context)
-        playerDB.let {
+        playerDB?.let { playerDataBase ->
             CoroutineScope(Dispatchers.IO).launch {
-                val player = playerDB!!.playerDao().getPlayer(player.spId.toString())
+                val player = playerDataBase.playerDao().getPlayer(player.spId.toString())
                 CoroutineScope(Dispatchers.Main).launch {
                     txt_name.text = player.playerName
                 }
