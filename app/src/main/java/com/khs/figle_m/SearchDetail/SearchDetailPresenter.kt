@@ -11,7 +11,7 @@ import org.json.JSONObject
 import org.jsoup.Jsoup
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
-    val TAG:String = javaClass.name
+    val TAG:String = javaClass.simpleName
     val DEBUG:Boolean = false
     var  mDetailListView: SearchDetailContract.View? = null
 

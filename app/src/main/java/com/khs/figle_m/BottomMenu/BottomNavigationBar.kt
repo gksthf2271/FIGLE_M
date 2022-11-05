@@ -9,7 +9,7 @@ import com.khs.figle_m.R
 
 class BottomNavigationBar(context: Context?, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
-    private val TAG = javaClass.name
+    private val TAG = javaClass.simpleName
 
     init {
         initView()

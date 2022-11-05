@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity: AppCompatActivity() {
-    private val TAG:String = javaClass.name
+    private val TAG:String = javaClass.simpleName
     var isRestartApp: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

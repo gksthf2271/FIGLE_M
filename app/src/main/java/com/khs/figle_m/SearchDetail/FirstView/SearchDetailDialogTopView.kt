@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.cview_detail_top_view.view.*
 class SearchDetailDialogTopView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
 
     lateinit var mRootLayout: ConstraintLayout
     lateinit var mTxtLeftNickName: TextView

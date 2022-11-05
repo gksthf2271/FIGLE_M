@@ -14,7 +14,7 @@ import com.khs.figle_m.Utils.DisplayUtils
 
 class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mRankerList: List<Ranker>?
 
@@ -50,7 +50,7 @@ class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<
 
     inner class ViewHolder(itemView: View, itemClick: (Ranker) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val TAG: String = javaClass.name
+        val TAG: String = javaClass.simpleName
         var mItemView: View
         var mRootLayout: ConstraintLayout
 

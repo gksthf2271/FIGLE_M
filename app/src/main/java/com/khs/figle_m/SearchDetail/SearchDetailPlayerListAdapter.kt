@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerList: List<PlayerDTO>, val itemClick: (PlayerDTO) -> Unit) :
     RecyclerView.Adapter<SearchDetailPlayerListAdapter.ViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     var mMvpPlayer: PlayerDTO? = null
 
@@ -55,7 +55,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
 
     inner class ViewHolder(val mItemView: View, itemClick: (PlayerDTO) -> Unit) :
         RecyclerView.ViewHolder(mItemView) {
-        val TAG: String = javaClass.name
+        val TAG: String = javaClass.simpleName
 
         var mRootLayout: ConstraintLayout = mItemView.findViewById(R.id.group_player)
         var mPlayerImg: ImageView = mItemView.findViewById(R.id.img_player)

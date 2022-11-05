@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 
 class SearchHomePresenter: SearchContract.Presenter {
 
-    val TAG:String = javaClass.name
+    val TAG:String = javaClass.simpleName
     val DEBUG:Boolean = false
     var  mSearchListView: SearchContract.View? = null
     val KEY_ANALYSIS_INFO = "KEY_ANALYSIS_INFO"

@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 open class DrawUtils () {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
 
     fun drawPlayerImage(playerimg: ImageView, url: String) {

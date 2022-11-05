@@ -13,7 +13,7 @@ import com.khs.figle_m.Response.MatchDetailResponse
 
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<AnalyticsAdapter.ViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mMatchInfoList: List<MatchInfoDTO>
     val mContext: Context
@@ -44,7 +44,7 @@ class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val
 
     inner class ViewHolder(itemView: View, itemClick: (MatchDetailResponse) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val TAG: String = javaClass.name
+        val TAG: String = javaClass.simpleName
         var mItemView: View
 
         init {

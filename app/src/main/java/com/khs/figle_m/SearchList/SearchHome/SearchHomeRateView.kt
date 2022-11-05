@@ -21,7 +21,7 @@ import java.util.*
 class SearchHomeRateView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     lateinit var mMatchDetailList: ArrayList<MatchDetailResponse>
     lateinit var mFailedRequestQ : Queue<String>
 

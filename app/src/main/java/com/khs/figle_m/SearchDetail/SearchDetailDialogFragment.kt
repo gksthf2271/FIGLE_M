@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 
 class SearchDetailDialogFragment : DialogBaseFragment(),
     SearchDetailContract.View {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
 
     open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
     open val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"

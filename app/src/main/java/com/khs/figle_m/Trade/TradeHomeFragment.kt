@@ -19,7 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TradeHomeFragment : BaseFragment(), TradeContract.View {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     var mTradePresenter : TradePresenter? = null
     enum class TradeType(index:Int){
         buy(0),

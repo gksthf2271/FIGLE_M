@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class AnalyticsPresenter : AnalyticsContract.Presenter{
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = false
     var mAnalyticsView: AnalyticsContract.View? = null
     var mFailedResponseQ = PriorityQueue<String>()

@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class RankingPresenter : RankingContract.Presenter{
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = false
     var mRankingView: RankingContract.View? = null
 

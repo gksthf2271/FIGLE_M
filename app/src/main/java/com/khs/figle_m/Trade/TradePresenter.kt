@@ -21,7 +21,7 @@ class TradePresenter : TradeContract.Presenter{
         for (item in TradeHomeFragment.TradeType.values()) {
             DataManager.getInstance().loadTradeInfo(accessId, item, offset, limit,
                 {
-                    Log.v(this.javaClass.name,"loadTradeInfo response(...) : ${it.first().tradeType}")
+                    Log.v(this.javaClass.simpleName,"loadTradeInfo response(...) : ${it.first().tradeType}")
                     responseMap.put(it.first().tradeType.toString(), it)
                     if (responseMap.size == TradeHomeFragment.TradeType.values().size) {
                         var responseList = mutableListOf<TradeResponse>()
@@ -34,7 +34,7 @@ class TradePresenter : TradeContract.Presenter{
                     }
                 },
                 {
-                    Log.v(this.javaClass.name,"load failed : $it")
+                    Log.v(this.javaClass.simpleName,"load failed : $it")
                     responseMap.put(it.toString(), emptyList())
                     if (responseMap.values.size >= 2){
                         mTradeView!!.hideLoading()
@@ -45,17 +45,17 @@ class TradePresenter : TradeContract.Presenter{
 
     override fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
         var requestMap = hashMapOf<String, TradeResponse>()
-        Log.v(this.javaClass.name,"requestSize : ${tradeInfoList.size}")
+        Log.v(this.javaClass.simpleName,"requestSize : ${tradeInfoList.size}")
         var index = 0
         CoroutineScope(Dispatchers.Default).launch {
             for (item in tradeInfoList) {
                 var spId = item.spid.toInt()
                 var grade = item.grade.toInt()
-                Log.v(this.javaClass.name,"requestCall : $spId, index : $index")
+                Log.v(this.javaClass.simpleName,"requestCall : $spId, index : $index")
                 CrawlingUtils().getPlayerImg(spId, grade, {
                     item.imageResUrl = it
                     requestMap.put(item.saleSn, item)
-                    Log.v(this.javaClass.name, "S, input RequestMap : ${requestMap.values.size}")
+                    Log.v(this.javaClass.simpleName, "S, input RequestMap : ${requestMap.values.size}")
                     if (requestMap.values.size == tradeInfoList.size) {
                         mTradeView?.apply {
                             showTradePlayerImageUrl(requestMap.values.toList())
@@ -65,7 +65,7 @@ class TradePresenter : TradeContract.Presenter{
                 }, {
                     item.imageResUrl = ""
                     requestMap.put(item.saleSn, item)
-                    Log.v(this.javaClass.name, "F, input RequestMap : ${requestMap.values.size} ? $it")
+                    Log.v(this.javaClass.simpleName, "F, input RequestMap : ${requestMap.values.size} ? $it")
                     if (requestMap.values.size == tradeInfoList.size) {
                         mTradeView?.apply {
                             showTradePlayerImageUrl(requestMap.values.toList())

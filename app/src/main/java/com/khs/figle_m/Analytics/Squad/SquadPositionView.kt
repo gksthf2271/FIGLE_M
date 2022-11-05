@@ -9,7 +9,7 @@ import com.khs.figle_m.R
 //TODO : 최근 경기 분석화면에서 필드와 포지션, 선수를 출력할 때 사용될 클래스
 
 class SquadPositionView : ConstraintLayout{
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)

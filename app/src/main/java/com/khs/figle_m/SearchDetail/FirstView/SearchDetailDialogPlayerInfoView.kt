@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.cview_detail_player_view.view.*
 class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     lateinit var mLeftRecyclerView: RecyclerView
     lateinit var mRightRecyclerView: RecyclerView
     var mMVPPlayer : PlayerDTO? = null

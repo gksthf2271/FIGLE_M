@@ -16,7 +16,7 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import kotlinx.android.synthetic.main.fragment_analytics.*
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
-    val TAG:String = javaClass.name
+    val TAG:String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
 
     lateinit var mAnalyticsPresenter: AnalyticsPresenter
@@ -86,7 +86,11 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
             myList = arguments!!.getStringArrayList(AnalyticsActivity().KEY_MY_DATA)!!
             mAccessId = arguments!!.getString(AnalyticsActivity().KEY_ACCESS_ID)!!
         }
-        mAnalyticsPresenter.loadMatchDetail(myList.subList(0,10))
+        var lastIdx = 10;
+        if (myList.size < 10) {
+            lastIdx = myList.lastIndex
+        }
+        mAnalyticsPresenter.loadMatchDetail(myList.subList(0, lastIdx))
     }
 
     override fun onDestroy() {

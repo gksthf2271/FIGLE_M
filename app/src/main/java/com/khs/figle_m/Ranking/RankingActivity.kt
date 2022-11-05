@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     lateinit var mRankingPresenter: RankingPresenter
     private val mHandler:Handler = Handler(this)
     override fun initPresenter() {

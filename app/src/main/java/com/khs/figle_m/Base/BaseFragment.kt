@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 
 abstract class BaseFragment: Fragment(){
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     var isRestartApp: Boolean = false
 
     override fun onCreateView(

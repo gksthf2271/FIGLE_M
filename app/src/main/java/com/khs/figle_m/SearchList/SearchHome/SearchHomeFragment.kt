@@ -29,7 +29,7 @@ import okhttp3.ResponseBody
 
 class SearchHomeFragment : BaseFragment(),
     SearchContract.View {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
 
     open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"

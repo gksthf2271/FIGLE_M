@@ -7,7 +7,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Utils.FragmentUtils
 
 class AnalyticsActivity : BaseActivity() {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val KEY_MY_DATA = "KEY_MY_DATA"
     val KEY_ACCESS_ID = "KEY_ACCESS_ID"
     val KEY_OPPOSING_USER_DATA = "KEY_OPPOSING_USER_DATA"

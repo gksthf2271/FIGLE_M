@@ -28,7 +28,7 @@ import com.khs.figle_m.Utils.FragmentUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
 
     val MSG_SHOW_USER_LIST : Int = 0
     val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1

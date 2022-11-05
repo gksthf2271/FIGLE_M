@@ -28,7 +28,7 @@ import okhttp3.ResponseBody
 
 
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     open val PREF_NAME = "playerNamePref"
     lateinit var mInitPresenter: InitPresenter
     private var mPopupWindow: PopupWindow? = null

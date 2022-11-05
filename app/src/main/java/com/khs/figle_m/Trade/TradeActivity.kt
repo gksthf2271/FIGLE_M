@@ -7,7 +7,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Utils.FragmentUtils
 
 class TradeActivity : BaseActivity() {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val KEY_ACCESS_ID = "KEY_ACCESS_ID"
     companion object {
         @Volatile

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.cview_player_detail_bottom.view.*
 class PlayerDetailInfoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
 
     init {
         initView(context)

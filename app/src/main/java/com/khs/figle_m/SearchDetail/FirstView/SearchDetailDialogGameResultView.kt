@@ -10,14 +10,14 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
+import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.UserSortUtils
 
 class SearchDetailDialogGameResultView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     var mView: View? = null
-    val DEBUG = BuildConfig.DEBUG
 
     init {
         initView(context)
@@ -30,7 +30,7 @@ class SearchDetailDialogGameResultView @JvmOverloads constructor(
     }
 
     fun updateMatchInfo(matchInfo:MatchDetailResponse) {
-        if(DEBUG) Log.v(TAG,"updateMatchInfo(...) $matchInfo")
+        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"updateMatchInfo(...) $matchInfo")
         val matchInfoPair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId,matchInfo)
         val possessionView = findViewById<SearchDetailItemView>(R.id.cview_item1)
         val foulView = findViewById<SearchDetailItemView>(R.id.cview_item2)
@@ -55,8 +55,8 @@ class SearchDetailDialogGameResultView @JvmOverloads constructor(
 //        cardView.setTitleText("카드")
 //        cardView.setRightText("R : ${matchInfoPair.second.matchDetail.redCards}, Y : ${matchInfoPair.second.matchDetail.yellowCards}")
 
-        if (DEBUG) Log.v(TAG,"TEST1, ${matchInfoPair.first.matchDetail.redCards}, ${matchInfoPair.first.matchDetail.yellowCards}")
-        if (DEBUG) Log.v(TAG,"TEST2, ${matchInfoPair.second.matchDetail.redCards}, ${matchInfoPair.second.matchDetail.yellowCards}")
+        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST1, ${matchInfoPair.first.matchDetail.redCards}, ${matchInfoPair.first.matchDetail.yellowCards}")
+        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST2, ${matchInfoPair.second.matchDetail.redCards}, ${matchInfoPair.second.matchDetail.yellowCards}")
         cardView.addLeftCard(matchInfoPair.first.matchDetail.redCards, matchInfoPair.first.matchDetail.yellowCards)
         cardView.setTitleText("카드")
         cardView.addRightCard(matchInfoPair.second.matchDetail.redCards, matchInfoPair.second.matchDetail.yellowCards)

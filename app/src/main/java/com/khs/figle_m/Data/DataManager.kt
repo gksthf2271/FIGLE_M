@@ -17,7 +17,7 @@ import retrofit2.Response
 import java.net.UnknownHostException
 
 class DataManager{
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = false
 
     var mContext: Context? = null
@@ -99,7 +99,7 @@ class DataManager{
     open val ERROR_OTHERS = 999
 
     private val mAuthorizationKey: String =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiI1MDA6MTAiLCJuYmYiOjE2NDQzMzg5MTcsImV4cCI6MTY1OTg5MDkxNywiaWF0IjoxNjQ0MzM4OTE3fQ.pJ9S50clV5-YJ2_cpySbLRyuGUhJnGjDAH0hrZMDK9c"
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFwcC1SYXRlLUxpbWl0IjoiNTAwOjEwIiwiYWNjb3VudF9pZCI6IjEyNDE1MjkyNjQiLCJhdXRoX2lkIjoiMiIsImV4cCI6MTY4MzE4MzQ0MSwiaWF0IjoxNjY3NjMxNDQxLCJuYmYiOjE2Njc2MzE0NDEsInNlcnZpY2VfaWQiOiI0MzAwMTE0ODEiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4ifQ.fSaIlCKts-yIgg_65oEX6k1z6D-EWnZGToShWrDIulU"
 
     companion object {
         @Volatile

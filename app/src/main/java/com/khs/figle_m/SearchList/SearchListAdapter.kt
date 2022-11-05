@@ -13,10 +13,11 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.DateUtils
+import com.khs.figle_m.Utils.LogUtil
 
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mSearchAccessId: String
     val mContext: Context
@@ -38,18 +39,18 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
     }
 
     override fun getItemCount(): Int {
-        Log.v(TAG,"getItemCount : ${mMatchList.size}")
+        LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"getItemCount : ${mMatchList.size}")
         return mMatchList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(DEBUG)Log.v(TAG, "onBindViewHolder, position : $position")
+        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"onBindViewHolder, position : $position")
         holder.bind(mSearchAccessId, mMatchList[position], mContext)
     }
 
     inner class ViewHolder(itemView: View, itemClick: (MatchDetailResponse) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val TAG: String = javaClass.name
+        val TAG: String = javaClass.simpleName
         var mRootLayout: ConstraintLayout
         var mItemView: View
         var mTxtLeftNickName: TextView
@@ -88,7 +89,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 }
 
                 if (matchInfo.size <= 1) {
-                    Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
+                    LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
                     return
                 }
                 val myMatchInfo = matchInfo[myIndex]

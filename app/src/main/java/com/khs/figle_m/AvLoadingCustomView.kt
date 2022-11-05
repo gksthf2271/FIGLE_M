@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AvLoadingCustomView: ConstraintLayout {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     val DEBUG: Boolean = false
     lateinit var view: View
     var mMax: Int = 0

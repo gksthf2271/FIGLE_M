@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.item_trade_buy.view.*
 
 class TradeRecyclerViewAdapter(context: Context, tradeList:List<TradeResponse>, val itemClick: (TradeResponse) -> Unit) :
 RecyclerView.Adapter<TradeViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mContext: Context
     val mPlayerList: List<TradeResponse>?
@@ -77,6 +77,8 @@ RecyclerView.Adapter<TradeViewHolder>() {
 
     override fun onBindViewHolder(holder: TradeViewHolder, position: Int) {
         if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
-        holder.bind(mPlayerList!!.get(position))
+        mPlayerList?.let {
+            holder.bind(it[position])
+        }
     }
 }

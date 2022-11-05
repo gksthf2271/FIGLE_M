@@ -24,7 +24,7 @@ import com.khs.figle_m.Utils.DisplayUtils
 import kotlinx.android.synthetic.main.fragment_ranking.*
 
 class RankingFragment : BaseFragment(){
-    val TAG:String = javaClass.name
+    val TAG:String = javaClass.simpleName
     open val KEY_RANKING_LIST = "KEY_RANKING_LIST"
     val DEBUG = BuildConfig.DEBUG
 

@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.R
 
 class SearchEditView  : ConstraintLayout {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     var mView: View? = null
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)

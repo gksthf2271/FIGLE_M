@@ -17,7 +17,7 @@ open abstract class TradeViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 open class TradeSellViewHolder(itemView: View) : TradeViewHolder(itemView) {
    override fun bind(item: TradeResponse) {
       itemView.sell_txt_date.text = item.tradeDate.replace("T","\n")
-      var circlePlayerView = itemView.sell_layout_trade_player.findViewWithTag<CirclePlayerView>("com.khs.figle_m.Common.CirclePlayerView")
+      var circlePlayerView = itemView.sell_layout_trade_player.findViewWithTag<CirclePlayerView>("CirclePlayerView")
       circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
    }
 }
@@ -25,7 +25,7 @@ open class TradeSellViewHolder(itemView: View) : TradeViewHolder(itemView) {
 open class TradeBuyViewHolder(itemView: View) : TradeViewHolder(itemView) {
    override fun bind(item: TradeResponse) {
       itemView.buy_txt_date.text = com.khs.figle_m.Utils.DateUtils().formatTimeString(item.tradeDateMs)
-      var circlePlayerView = itemView.buy_layout_trade_player.findViewWithTag<CirclePlayerView>("com.khs.figle_m.Common.CirclePlayerView")
+      var circlePlayerView = itemView.buy_layout_trade_player.findViewWithTag<CirclePlayerView>("CirclePlayerView")
       circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
       itemView.txt_player_value.text = StringUtils().parseValue(item.value) + " BP"
       if (item.tradeType == TradeHomeFragment.TradeType.sell.ordinal) {

@@ -31,7 +31,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         initView(context)
     }
     val DEBUG = BuildConfig.DEBUG
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     lateinit var mSearchUserInfo: UserResponse
     var mMatchIdList = arrayListOf<String>()
     var mMatchList = arrayListOf<MatchDetailResponse>()

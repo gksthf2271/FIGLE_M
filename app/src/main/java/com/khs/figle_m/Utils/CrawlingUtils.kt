@@ -21,7 +21,7 @@ import java.lang.IndexOutOfBoundsException
 import java.lang.NullPointerException
 
 class CrawlingUtils() {
-    private val TAG = this.javaClass.name
+    private val TAG = this.javaClass.simpleName
     private val DEBUG = BuildConfig.DEBUG
 
     fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
@@ -37,7 +37,7 @@ class CrawlingUtils() {
                 seasonName = item.className
         }
         if (seasonName == null) {
-            Log.d(TAG, "seasonName is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonName is null")
             onFailed(0)
             return
         }
@@ -48,7 +48,7 @@ class CrawlingUtils() {
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
                 if (parentBody == null) {
-                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    LogUtil.eLog(LogUtil.TAG_UI, TAG,"ERROR ----------- \n $doc")
                     onFailed(0)
                     return@loadPlayerInfo
                 }
@@ -67,7 +67,7 @@ class CrawlingUtils() {
                         .childNodes().get(0)
                         .attributes().get("src")
                 }catch (e : IndexOutOfBoundsException) {
-                    Log.e(TAG,"Error, $seasonName")
+                    LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error, $seasonName")
                 }
 
                 onSuccess(imageUrl!!)
@@ -75,10 +75,10 @@ class CrawlingUtils() {
                 onFailed(it)
             })
         } catch (e: IllegalStateException) {
-            Log.d(TAG, "Error : $e")
+            LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error : $e")
             onFailed(0)
         } catch (index: IndexOutOfBoundsException) {
-            Log.d(TAG, "Error : $index")
+            LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error : $index")
             onFailed(0)
         }
     }
@@ -90,7 +90,7 @@ class CrawlingUtils() {
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
                 if (parentBody == null) {
-                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    LogUtil.eLog(LogUtil.TAG_UI, TAG,"ERROR ----------- \n $doc")
                     onFailed(0)
                     return@loadRaking
                 }
@@ -115,7 +115,7 @@ class CrawlingUtils() {
                 onFailed(it)
             })
         } catch (e: IllegalStateException) {
-            Log.d(TAG, "Error : $e")
+            LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error : $e")
             onFailed(0)
         }
     }
@@ -154,7 +154,7 @@ class CrawlingUtils() {
             pre_rank_icon_url = body.childNode(13).childNode(5).childNode(0).attributes().get("src")
             cur_rank_icon_url = body.childNode(13).childNode(9).childNode(0).attributes().get("src")
         } catch(npe : NullPointerException){
-            Log.e(TAG,"searchBody NPE!")
+            LogUtil.eLog(LogUtil.TAG_UI, TAG,"searchBody NPE!")
         }
 
         val result = Ranker(
@@ -173,14 +173,14 @@ class CrawlingUtils() {
             best_rank_icon_url,
             pre_rank_icon_url,
             cur_rank_icon_url)
-        if(DEBUG) Log.v(TAG,"TEST, Ranker : ${result}")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, Ranker : ${result}")
         return result
     }
 
     fun updatePlayerImage(context: Context, imgView: ImageView, url: String) {
-        Log.v(TAG,"updatePlayerImage :: $url")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"updatePlayerImage :: $url")
         url ?: return
-        Glide.with(context!!)
+        Glide.with(context)
             .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
             .error(R.drawable.person_icon)
@@ -192,7 +192,7 @@ class CrawlingUtils() {
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onLoadFailed(...) GlideException!!! " + e!!)
                     return false
                 }
 
@@ -203,7 +203,7 @@ class CrawlingUtils() {
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "onResourceReady(...) $url")
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onResourceReady(...) $url")
                     return false
                 }
             })

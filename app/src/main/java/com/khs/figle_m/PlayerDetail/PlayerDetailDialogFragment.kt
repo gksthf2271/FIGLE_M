@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 
 
 class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.View  {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = false
     open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
     open val KEY_PLAYER_INFO = "KEY_PLAYER_INFO"

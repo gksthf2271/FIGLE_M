@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.khs.figle_m.MainActivity
 
 abstract class DialogBaseFragment : DialogFragment() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     var isRestartApp: Boolean = false
 
     override fun onCreateView(

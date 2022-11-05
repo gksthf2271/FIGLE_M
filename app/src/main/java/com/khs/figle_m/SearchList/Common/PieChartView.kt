@@ -18,7 +18,7 @@ import com.github.mikephil.charting.utils.MPPointF
 class PieChartView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     val colorList = intArrayOf(
         resources.getColor(R.color.search_list_win,null),
         resources.getColor(R.color.search_list_draw,null),

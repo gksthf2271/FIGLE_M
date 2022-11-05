@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class SearchListPresenter : SearchContract.SearchListPresenter {
-    val TAG:String = javaClass.name
+    val TAG:String = javaClass.simpleName
     val DEBUG:Boolean = true
     var  mSearchListView: SearchContract.SearchListView? = null
     val ERROR_EMPTY = 0

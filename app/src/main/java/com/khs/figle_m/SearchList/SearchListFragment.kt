@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_searchlist.*
 
 
 class SearchListFragment : BaseFragment() {
-    val TAG: String = javaClass.name
+    val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
 
     open val KEY_SEARCH_USER_INFO: String = "KEY_SEARCH_USER_INFO"

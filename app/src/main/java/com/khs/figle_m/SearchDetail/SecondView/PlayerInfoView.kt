@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class PlayerInfoView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
     lateinit  var mPlayerDTO :PlayerDTO
     init {
         initView(context)

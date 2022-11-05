@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE , playerList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
     : RecyclerView.Adapter<AnalyticsRecyclerViewAdapter.ViewHolder>() {
-    private val TAG: String = javaClass.name
+    private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mContext: Context
     val mPlayerInfoList: List<AnalyticsPlayer>?
@@ -49,7 +49,7 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
 
     inner class ViewHolder(itemView: View, itemClick: (AnalyticsPlayer) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val TAG: String = javaClass.name
+        val TAG: String = javaClass.simpleName
         var mItemView: View
         var mPlayerDetailInfoView : PlayerDetailInfoView
         init {

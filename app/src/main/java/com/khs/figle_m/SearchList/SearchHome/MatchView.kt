@@ -17,7 +17,7 @@ class MatchView @JvmOverloads constructor(
         initView(context)
     }
 
-    val TAG = javaClass.name
+    val TAG = javaClass.simpleName
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
