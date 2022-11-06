@@ -45,13 +45,13 @@ class TradePresenter : TradeContract.Presenter{
     }
 
     override fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
-        var requestMap = hashMapOf<String, TradeResponse>()
+        val requestMap = hashMapOf<String, TradeResponse>()
         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"requestSize : ${tradeInfoList.size}")
         var index = 0
         CoroutineScope(Dispatchers.Default).launch {
             for (item in tradeInfoList) {
-                var spId = item.spid.toInt()
-                var grade = item.grade.toInt()
+                val spId = item.spid.toInt()
+                val grade = item.grade.toInt()
                 LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"requestCall : $spId, index : $index")
                 CrawlingUtils().getPlayerImg(spId, grade, {
                     item.imageResUrl = it

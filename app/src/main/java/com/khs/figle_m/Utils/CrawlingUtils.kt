@@ -56,15 +56,15 @@ class CrawlingUtils() {
                 var imageUrl = ""
                 try {
                     imageUrl = parentBody
-                        .getElementsByClass("datacenter").get(0)
-                        .getElementsByClass("wrap").get(0)
-                        .getElementsByClass("player_view").get(0)
-                        .getElementsByClass("content data_detail").get(0)
-                        .getElementsByClass("wrap").get(0)
-                        .getElementsByClass("content_header").get(0)
-                        .getElementsByClass("thumb ${seasonName}").get(0)
-                        .getElementsByClass("img").get(0)
-                        .childNodes().get(0)
+                        .getElementsByClass("datacenter")[0]
+                        .getElementsByClass("wrap")[0]
+                        .getElementsByClass("player_view")[0]
+                        .getElementsByClass("content data_detail")[0]
+                        .getElementsByClass("wrap")[0]
+                        .getElementsByClass("content_header")[0]
+                        .getElementsByClass("thumb $seasonName")[0]
+                        .getElementsByClass("img")[0]
+                        .childNodes()[0]
                         .attributes().get("src")
                 }catch (e : IndexOutOfBoundsException) {
                     LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error, $seasonName")

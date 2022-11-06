@@ -125,12 +125,13 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
             seasonId = "234"
         }
         for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString().equals(seasonId))
+            if (item.seasonId.toString() == seasonId)
                 seasonName = item.className
         }
 
         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > seasonName : $seasonName")
         if (seasonName == null) {
+            onFailed(0)
             return
         }
 

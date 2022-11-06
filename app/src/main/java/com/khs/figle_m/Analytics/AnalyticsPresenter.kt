@@ -110,11 +110,11 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
 
     override fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>) {
         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"requestSize : ${playerInfoList.size}")
-        var responseQ = PriorityQueue<String>()
+        val responseQ = PriorityQueue<String>()
         CoroutineScope(Dispatchers.Default).launch {
             for (item in playerInfoList) {
-                var spId = item.spId
-                var grade = 1
+                val spId = item.spId
+                val grade = 1
                 CrawlingUtils().getPlayerImg(spId, grade, {
                     item.imageResUrl = it
                     responseQ.add(it)
