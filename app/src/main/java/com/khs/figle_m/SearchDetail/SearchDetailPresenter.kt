@@ -32,12 +32,12 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         runBlocking {
             launch {
                 getPlayerImage(playerDTO, {
-                    LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"SearchPresenter getMatchDetailList: $it")
+                    LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > getMatchDetailList: $it")
                     playerDTO.imageUrl = it
                     mDetailListView ?: return@getPlayerImage
                     mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
                 }, {
-                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"Result : getMatchDetailList response : $it")
+                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > Result : getMatchDetailList response : $it")
                     mDetailListView ?: return@getPlayerImage
                     playerDTO.imageUrl = it.toString()
                     if (it == 0) {
@@ -129,7 +129,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 seasonName = item.className
         }
 
-        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"test, seasonName : $seasonName")
+        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > seasonName : $seasonName")
         if (seasonName == null) {
             return
         }
@@ -137,11 +137,9 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
                 val doc = Jsoup.parseBodyFragment(it.string())
-                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST ----------- \n $doc")
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
                 if (parentBody == null) {
-                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"ERROR ----------- \n $doc")
                     onFailed(0)
                     return@loadPlayerInfo
                 }
@@ -160,7 +158,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                         .attributes().get("src")
                     onSuccess(imageUrl!!)
                 } catch (e : Exception) {
-                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"exception $e")
+                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > exception $e")
                     onFailed(0)
                 }
             }, {

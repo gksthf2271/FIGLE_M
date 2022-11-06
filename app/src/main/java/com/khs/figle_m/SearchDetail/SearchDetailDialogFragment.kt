@@ -197,8 +197,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
-        val playerListDTO =
-            mPlayerImgMap.get(accessId) ?: PlayerListDTO("", listOf()) as PlayerListDTO
+        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > accessId : $accessId /  ${playerDTO.imageUrl}")
+        val playerListDTO : PlayerListDTO = mPlayerImgMap[accessId] ?: PlayerListDTO("", listOf())
 
         var playerList:ArrayList<PlayerDTO>
         playerListDTO.let {
@@ -207,8 +207,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         }
         playerListDTO.playerList = playerList
 
-        mPlayerImgMap.put(accessId,playerListDTO)
-        if (size == (mPlayerImgMap.get(accessId) as PlayerListDTO).playerList.size)  {
+        mPlayerImgMap[accessId] = playerListDTO
+        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > size : $size / mPlayerImgMap playerList size : ${(mPlayerImgMap[accessId] as PlayerListDTO).playerList.size}")
+        if (size == (mPlayerImgMap[accessId] as PlayerListDTO).playerList.size)  {
             hideLoading()
             initView()
         }
