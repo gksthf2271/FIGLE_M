@@ -34,7 +34,7 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     //22년 11월 추가
     TOTY21(240,"21toty"),
     TOTN21(241,"21totn"),
-    UCL21(242,"21ucl"),
+    UCL20(242,"20ucl"),
     UP(246,"up"),
     KH2012(247,"2012kh"),
     NGT(249,"ngt"),
@@ -47,7 +47,7 @@ enum class SeasonEnum(val seasonId:Int, val className: String) {
     KLeagueB21(257,"21klb"),
     TOTY22(258,"22toty"),
     TOTN22(259,"22totn"),
-    UCL22(260,"22ucl"),
+    UCL21(260,"21ucl"),
     HR22(261,"22hr"),
     NG21(262,"21ng"),
     FA(264,"fa"),
