@@ -71,8 +71,8 @@ class DataManager{
 
     val offset: Int = 0
 
-    open val SEARCH_LIMIT: Int = 100
-    open val SEARCH_PAGE_SIZE: Int = 20
+    val SEARCH_LIMIT: Int = 100
+    val SEARCH_PAGE_SIZE: Int = 20
 
     //    200	OK	성공
     //    301	Moved Permanently	HTTP 프로토콜로 호출
@@ -85,18 +85,18 @@ class DataManager{
     //    429	Too many request	AccessToken의 요청 허용량(Rate Limit) 초과
     //    500	Internal Server Error	서버 내부 에러
     //    504	Gateway Timeout	서버 내부 처리 timeout
-    open val SUCCESS_CODE: Int = 200
-    open val ERROR_BAD_REQUEST = 400
-    open val ERROR_UNAUTHORIZED = 401
-    open val ERROR_FORBIDDEN = 403
-    open val ERROR_NOT_FOUND= 404
-    open val ERROR_METHOD_NOT_ALLOWED = 405
-    open val ERROR_REQUEST_ENTITY_TOO_LARGE = 413
-    open val ERROR_TOO_MANY_REQUEST = 429
-    open val ERROR_INTERNAL_SERVER_ERROR = 500
-    open val ERROR_GATEWAY_TIMEOUT = 504
-    open val ERROR_NETWORK_DISCONNECTED = 990
-    open val ERROR_OTHERS = 999
+    val SUCCESS_CODE: Int = 200
+    val ERROR_BAD_REQUEST = 400
+    val ERROR_UNAUTHORIZED = 401
+    val ERROR_FORBIDDEN = 403
+    val ERROR_NOT_FOUND= 404
+    val ERROR_METHOD_NOT_ALLOWED = 405
+    val ERROR_REQUEST_ENTITY_TOO_LARGE = 413
+    val ERROR_TOO_MANY_REQUEST = 429
+    val ERROR_INTERNAL_SERVER_ERROR = 500
+    val ERROR_GATEWAY_TIMEOUT = 504
+    val ERROR_NETWORK_DISCONNECTED = 990
+    val ERROR_OTHERS = 999
 
     private val mAuthorizationKey: String =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFwcC1SYXRlLUxpbWl0IjoiNTAwOjEwIiwiYWNjb3VudF9pZCI6IjEyNDE1MjkyNjQiLCJhdXRoX2lkIjoiMiIsImV4cCI6MTY4MzE4MzQ0MSwiaWF0IjoxNjY3NjMxNDQxLCJuYmYiOjE2Njc2MzE0NDEsInNlcnZpY2VfaWQiOiI0MzAwMTE0ODEiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4ifQ.fSaIlCKts-yIgg_65oEX6k1z6D-EWnZGToShWrDIulU"

@@ -22,6 +22,7 @@ import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
+import com.khs.figle_m.Utils.SeasonManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,7 @@ import okhttp3.ResponseBody
 
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.simpleName
-    open val PREF_NAME = "playerNamePref"
+    val PREF_NAME = "playerNamePref"
     lateinit var mInitPresenter: InitPresenter
     private var mPopupWindow: PopupWindow? = null
 
@@ -64,6 +65,9 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             mInitPresenter.takeView(this)
             mInitPresenter.getSeasonIdList(this)
             mInitPresenter.getPlayerNameList(this)
+            CoroutineScope(Dispatchers.Default).launch {
+                SeasonManager.updateSeason(this@MainActivity)
+            }
         }
         DataManager.getInstance().init(this)
     }

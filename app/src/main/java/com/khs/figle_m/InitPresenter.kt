@@ -18,8 +18,6 @@ class InitPresenter : InitContract.Presenter {
     val DEBUG: Boolean = false
     var mInitContract: InitContract.View? = null
 
-    open val ERROR_EMPTY = "EMPTY"
-
     override fun takeView(view: InitContract.View) {
         mInitContract = view
     }
@@ -34,9 +32,9 @@ class InitPresenter : InitContract.Presenter {
             launch {
                 DataManager.getInstance().loadSeasonIdList({
                     LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Success! $it")
-                    updateSeasonDB(context,it,{
-                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"SeasonList save successful")
-                    })
+                    updateSeasonDB(context,it) {
+                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "SeasonList save successful")
+                    }
                 }, {
                     LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Failed! $it")
                     mInitContract?.showError(it)
@@ -54,13 +52,12 @@ class InitPresenter : InitContract.Presenter {
                         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Success! ${it}")
                         mInitContract?.showMainActivity(it)
                         updatePlayerDB(context, it
-                            , {
-                                LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"PlayerName save successful")
-                                CoroutineScope(Dispatchers.Main).launch {
+                        ) {
+                            LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "PlayerName save successful")
+                            CoroutineScope(Dispatchers.Main).launch {
                                 mInitContract?.hideLoading()
-                                }
                             }
-                        )
+                        }
                     }, {
                         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Failed! ${it}")
                         mInitContract?.hideLoading()

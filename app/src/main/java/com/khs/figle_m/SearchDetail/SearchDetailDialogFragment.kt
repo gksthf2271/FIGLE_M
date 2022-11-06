@@ -34,11 +34,11 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     SearchDetailContract.View {
     val TAG = javaClass.simpleName
 
-    open val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
-    open val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"
-    open val KEY_IS_COACH_MODE = "KEY_IS_COACH_MODE"
+    val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
+    val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"
+    val KEY_IS_COACH_MODE = "KEY_IS_COACH_MODE"
 
-    open val TAG_MATCH_DETAIL_DIALOG = "TAG_MATCH_DETAIL_DIALOG"
+    val TAG_MATCH_DETAIL_DIALOG = "TAG_MATCH_DETAIL_DIALOG"
 
     lateinit var mMatchDetail: MatchDetailResponse
     lateinit var mSearchAccessId: String

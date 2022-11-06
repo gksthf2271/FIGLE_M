@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.View  {
     val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = false
-    open val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
-    open val KEY_PLAYER_INFO = "KEY_PLAYER_INFO"
-    open val KEY_RANKER_PLAYER_INFO = "KEY_RANKER_PLAYER_INFO"
+    val TAG_PLAYER_DETAIL_DIALOG = "TAG_PLAYER_DETAIL_DIALOG"
+    val KEY_PLAYER_INFO = "KEY_PLAYER_INFO"
+    val KEY_RANKER_PLAYER_INFO = "KEY_RANKER_PLAYER_INFO"
 
     lateinit var mPlayerInfo : PlayerDTO
 
@@ -116,26 +116,8 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
             chart_ranker.setData(playerDetailInfo,rankerPlayerInfo!!.get(0))
         }
 
-        val seasonId = playerDetailInfo!!.spId.toString().substring(0, 3)
-        var seasonName: String? = null
-        for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString().equals(seasonId))
-                seasonName = item.className
-        }
-        if (seasonName == null) {
-            LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonName is null")
-            return
-        }
 
         updatePlayerImage(mPlayerInfo.imageUrl!!)
-
-//                DataManager.getInstance().loadPlayerImage(playerDetailInfo!!.spId, {
-//                    updatePlayerImage(playerDetailInfo!!, it)
-//
-//                }, {
-//                    LogUtil.vLog(LogUtil.TAG_UI, TAG,"load Failed : $it")
-//                    img_player.setImageResource(R.drawable.ic_launcher_foreground)
-//                })
 
         updateIcon(context!!, playerDetailInfo!!)
 

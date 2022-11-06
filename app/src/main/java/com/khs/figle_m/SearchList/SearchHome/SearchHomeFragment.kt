@@ -33,7 +33,7 @@ class SearchHomeFragment : BaseFragment(),
     val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
 
-    open val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
+    val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
 
     lateinit var mSearchHomePresenter: SearchHomePresenter
 
@@ -51,7 +51,7 @@ class SearchHomeFragment : BaseFragment(),
     var mCoachMatchResponse: UserHighRankResponse? = null
 
 
-    open val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
+    val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
     override fun initPresenter() {
         mSearchHomePresenter = SearchHomePresenter()
     }

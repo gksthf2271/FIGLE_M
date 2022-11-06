@@ -13,7 +13,7 @@ class SearchHomePresenter: SearchContract.Presenter {
     var  mSearchListView: SearchContract.View? = null
     val KEY_ANALYSIS_INFO = "KEY_ANALYSIS_INFO"
 
-    open val ERROR_EMPTY = 0
+    val ERROR_EMPTY = 0
 
     override fun takeView(view: SearchContract.View) {
         mSearchListView = view

@@ -34,10 +34,9 @@ class CrawlingUtils() {
             cSpId = spId.toString().replaceRange(0 .. 2, "234").toInt()
             seasonId = "234"
         }
-        var imageUrl: String? = null
-        for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString().equals(seasonId))
-                seasonName = item.className
+        for (item in SeasonManager.loadSeason()) {
+            if (item.seasonId == seasonId)
+                seasonName = item.classId
         }
         if (seasonName == null) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonName is null")
@@ -98,9 +97,9 @@ class CrawlingUtils() {
             playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
             seasonId = "234"
         }
-        for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString() == seasonId)
-                seasonName = item.className
+        for (item in SeasonManager.loadSeason()) {
+            if (item.seasonId == seasonId)
+                seasonName = item.seasonId
         }
 
         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > seasonName : $seasonName")

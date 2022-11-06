@@ -1,17 +1,13 @@
 package com.khs.figle_m.SearchDetail
 
-import android.util.Log
-import com.khs.figle_m.DB.PlayerDao
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.LogUtil
-import com.khs.figle_m.Utils.SeasonEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray
 import org.json.JSONObject
-import org.jsoup.Jsoup
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
     val TAG:String = javaClass.simpleName

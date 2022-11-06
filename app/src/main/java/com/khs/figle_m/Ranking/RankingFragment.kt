@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_ranking.*
 
 class RankingFragment : BaseFragment(){
     val TAG:String = javaClass.simpleName
-    open val KEY_RANKING_LIST = "KEY_RANKING_LIST"
+    val KEY_RANKING_LIST = "KEY_RANKING_LIST"
     val DEBUG = BuildConfig.DEBUG
 
     lateinit var mCurrentRank: Ranker
