@@ -19,6 +19,7 @@ import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
+import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.activity_main.*
@@ -91,9 +92,10 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
                     R.id.fragment_container,
                     supportFragmentManager
                 )
-            }
-            if (getCurrentFragment() is HomeFragment) {
+            } else if (getCurrentFragment() is HomeFragment) {
                 showFinishPopup()
+            } else {
+                supportFragmentManager.popBackStack()
             }
             return false
         }

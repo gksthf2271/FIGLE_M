@@ -4,6 +4,7 @@ import android.util.Log
 import com.khs.figle_m.DB.PlayerDao
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.SeasonEnum
 import kotlinx.coroutines.launch
@@ -117,56 +118,6 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         onSuccess: ((String) -> Unit),
         onFailed: (Int) -> Unit
     ) {
-        var seasonId = playerDTO.spId.toString().substring(0, 3)
-        var seasonName: String? = null
-        if (seasonId == "224") {
-            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"TEST, 224 : $playerDTO")
-            playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
-            seasonId = "234"
-        }
-        for (item in SeasonEnum.values()) {
-            if (item.seasonId.toString() == seasonId)
-                seasonName = item.className
-        }
-
-        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > seasonName : $seasonName")
-        if (seasonName == null) {
-            onFailed(0)
-            return
-        }
-
-        try {
-            DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
-                val doc = Jsoup.parseBodyFragment(it.string())
-                val parentBody = doc.body().getElementById("wrapper")
-                    .getElementById("middle")
-                if (parentBody == null) {
-                    onFailed(0)
-                    return@loadPlayerInfo
-                }
-
-                try {
-                    val imageUrl = parentBody
-                        .getElementsByClass("datacenter").first()
-                        .getElementsByClass("wrap").first()
-                        .getElementsByClass("player_view").first()
-                        .getElementsByClass("content data_detail").first()
-                        .getElementsByClass("wrap").first()
-                        .getElementsByClass("content_header").first()
-                        .getElementsByClass("thumb $seasonName  _${seasonName.toUpperCase()}").first()
-                        .getElementsByClass("img").first()
-                        .childNodes().first()
-                        .attributes().get("src")
-                    onSuccess(imageUrl!!)
-                } catch (e : Exception) {
-                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > exception $e")
-                    onFailed(0)
-                }
-            }, {
-
-            })
-        }catch (e : Exception) {
-            onFailed(0)
-        }
+        CrawlingUtils().getPlayerImg(playerDTO, onSuccess, onFailed)
     }
 }

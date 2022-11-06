@@ -3,7 +3,6 @@ package com.khs.figle_m.Utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -17,8 +16,6 @@ import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.lang.IndexOutOfBoundsException
-import java.lang.NullPointerException
 
 class CrawlingUtils() {
     private val TAG = this.javaClass.simpleName
@@ -29,8 +26,14 @@ class CrawlingUtils() {
     }
 
     fun getPlayerImg(spId: Int, spGrade:Int, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
-        val seasonId = spId.toString().substring(0, 3)
+        var cSpId = spId
+        var seasonId = spId.toString().substring(0, 3)
         var seasonName: String? = null
+        if (seasonId == "224") {
+            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > 224 : $spId")
+            cSpId = spId.toString().replaceRange(0 .. 2, "234").toInt()
+            seasonId = "234"
+        }
         var imageUrl: String? = null
         for (item in SeasonEnum.values()) {
             if (item.seasonId.toString().equals(seasonId))
@@ -42,7 +45,7 @@ class CrawlingUtils() {
             return
         }
         try {
-            DataManager.getInstance().loadPlayerInfo(spId, spGrade, {
+            DataManager.getInstance().loadPlayerInfo(cSpId, spGrade, {
 
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody = doc.body().getElementById("wrapper")
@@ -62,7 +65,7 @@ class CrawlingUtils() {
                         .getElementsByClass("content data_detail")[0]
                         .getElementsByClass("wrap")[0]
                         .getElementsByClass("content_header")[0]
-                        .getElementsByClass("thumb $seasonName")[0]
+                        .getElementsByClass("thumb $seasonName  _${seasonName.toUpperCase()}")[0]
                         .getElementsByClass("img")[0]
                         .childNodes()[0]
                         .attributes().get("src")
@@ -79,6 +82,64 @@ class CrawlingUtils() {
             onFailed(0)
         } catch (index: IndexOutOfBoundsException) {
             LogUtil.eLog(LogUtil.TAG_UI, TAG,"Error : $index")
+            onFailed(0)
+        }
+    }
+
+    fun getPlayerImage(
+        playerDTO: PlayerDTO,
+        onSuccess: ((String) -> Unit),
+        onFailed: (Int) -> Unit
+    ) {
+        var seasonId = playerDTO.spId.toString().substring(0, 3)
+        var seasonName: String? = null
+        if (seasonId == "224") {
+            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > 224 : $playerDTO")
+            playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
+            seasonId = "234"
+        }
+        for (item in SeasonEnum.values()) {
+            if (item.seasonId.toString() == seasonId)
+                seasonName = item.className
+        }
+
+        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > seasonName : $seasonName")
+        if (seasonName == null) {
+            onFailed(0)
+            return
+        }
+
+        try {
+            DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+                val doc = Jsoup.parseBodyFragment(it.string())
+                val parentBody = doc.body().getElementById("wrapper")
+                    .getElementById("middle")
+                if (parentBody == null) {
+                    onFailed(0)
+                    return@loadPlayerInfo
+                }
+
+                try {
+                    val imageUrl = parentBody
+                        .getElementsByClass("datacenter").first()
+                        .getElementsByClass("wrap").first()
+                        .getElementsByClass("player_view").first()
+                        .getElementsByClass("content data_detail").first()
+                        .getElementsByClass("wrap").first()
+                        .getElementsByClass("content_header").first()
+                        .getElementsByClass("thumb $seasonName  _${seasonName.toUpperCase()}").first()
+                        .getElementsByClass("img").first()
+                        .childNodes().first()
+                        .attributes().get("src")
+                    onSuccess(imageUrl!!)
+                } catch (e : Exception) {
+                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > exception $e")
+                    onFailed(0)
+                }
+            }, {
+
+            })
+        }catch (e : Exception) {
             onFailed(0)
         }
     }

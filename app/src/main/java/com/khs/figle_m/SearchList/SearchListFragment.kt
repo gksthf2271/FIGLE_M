@@ -19,10 +19,10 @@ class SearchListFragment : BaseFragment() {
     val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
 
-    open val KEY_SEARCH_USER_INFO: String = "KEY_SEARCH_USER_INFO"
-    open val KEY_SEARCH_MATCH_INFO: String = "KEY_SEARCH_MATCH_INFO"
-    open val KEY_SEARCH_MATCH_TYPE: String = "KEY_SEARCH_MATCH_TYPE"
-    open val KEY_SEARCH_MATCH_ID: String = "KEY_SEARCH_MATCH_ID"
+    val KEY_SEARCH_USER_INFO: String = "KEY_SEARCH_USER_INFO"
+    val KEY_SEARCH_MATCH_INFO: String = "KEY_SEARCH_MATCH_INFO"
+    val KEY_SEARCH_MATCH_TYPE: String = "KEY_SEARCH_MATCH_TYPE"
+    val KEY_SEARCH_MATCH_ID: String = "KEY_SEARCH_MATCH_ID"
 
     lateinit var mSearchList: ArrayList<MatchDetailResponse>
     var mMatchtype: Int = 0
