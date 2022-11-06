@@ -27,6 +27,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         sell(1)
     }
     override fun initPresenter() {
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
         mTradePresenter = TradePresenter()
         mTradePresenter!!.takeView(this)
     }
@@ -36,8 +37,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_trade, container, false)
-        return v
+        return inflater.inflate(R.layout.fragment_trade, container, false)
     }
 
     override fun onDestroy() {

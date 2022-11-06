@@ -75,7 +75,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroy(...)")
         mInitPresenter.dropView()
     }
 

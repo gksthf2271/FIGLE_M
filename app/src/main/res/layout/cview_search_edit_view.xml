@@ -36,6 +36,7 @@
             android:backgroundTint="@android:color/transparent"
             android:hint="구단주 검색"
             android:textCursorDrawable="@color/fragment_background"
+            android:textColorHint="@color/grey1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.9"
             app:layout_constraintLeft_toLeftOf="parent"

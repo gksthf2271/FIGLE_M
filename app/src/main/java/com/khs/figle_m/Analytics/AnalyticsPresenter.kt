@@ -1,6 +1,5 @@
 package com.khs.figle_m.Analytics
 
-import android.util.Log
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.DTO.PlayerDTO
@@ -20,7 +19,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     var mFailedResponseQ = PriorityQueue<String>()
 
     override fun loadMatchDetail(matchIdList: List<String>) {
-        mAnalyticsView!!.showLoading()
+        mAnalyticsView?.showLoading()
         mFailedResponseQ.clear()
         var resultList = mutableListOf<MatchDetailResponse>()
         CoroutineScope(Dispatchers.Default).launch {
@@ -28,16 +27,12 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
                 DataManager.getInstance().loadMatchDetail(matchId, {
                     resultList.add(it)
                     if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
-                        mAnalyticsView.let {
-                            mAnalyticsView!!.showMatchDetail(resultList)
-                        }
+                        mAnalyticsView?.showMatchDetail(resultList)
                     }
                 }, {
                     mFailedResponseQ.add(it.toString())
                     if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
-                        mAnalyticsView.let {
-                            mAnalyticsView!!.showMatchDetail(resultList)
-                        }
+                        mAnalyticsView?.showMatchDetail(resultList)
                     }
                 })
             }
@@ -45,14 +40,14 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     }
 
     override fun loadPlayerList(accessId: String, matchDetailList: List<MatchDetailResponse>) {
-        var playerMap = hashMapOf<Int, ArrayList<PlayerDTO>>()
+        val playerMap = hashMapOf<Int, ArrayList<PlayerDTO>>()
         for(match in matchDetailList) {
             var matchInfo : MatchInfoDTO? = null
             if (match.matchInfo.size != 2) continue
-            if (accessId.equals(match.matchInfo.get(0).accessId)) {
-                matchInfo = match.matchInfo.get(0)
+            if (accessId.equals(match.matchInfo[0].accessId)) {
+                matchInfo = match.matchInfo[0]
             } else {
-                matchInfo = match.matchInfo.get(1)
+                matchInfo = match.matchInfo[1]
             }
 
             for (player in matchInfo.player) {
@@ -60,11 +55,10 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
                 var playerList: ArrayList<PlayerDTO>? = playerMap.get(player.spId)
                 if (playerList == null) playerList = arrayListOf()
                 playerList.add(player)
-                playerMap.put(player.spId, playerList)
+                playerMap[player.spId] = playerList
             }
         }
         mAnalyticsView.let {
-            mAnalyticsView!!.hideLoading(false)
             mAnalyticsView!!.showPlayerMap(playerMap)
         }
     }
@@ -130,6 +124,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
                         }
                 })
             }
+            mAnalyticsView!!.hideLoading(false)
         }
     }
 

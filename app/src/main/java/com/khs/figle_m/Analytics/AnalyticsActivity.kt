@@ -35,8 +35,8 @@ class AnalyticsActivity : BaseActivity() {
         super.onStart()
         val myList = intent.getStringArrayListExtra(KEY_MY_DATA)
         val accessId = intent.getStringExtra(KEY_ACCESS_ID)
-        var analyticsFragment = AnalyticsFragment()
-        var bundle = Bundle()
+        val analyticsFragment = AnalyticsFragment()
+        val bundle = Bundle()
         bundle.putStringArrayList(KEY_MY_DATA, myList)
         bundle.putString(KEY_ACCESS_ID, accessId)
         analyticsFragment.arguments = bundle
@@ -52,7 +52,7 @@ class AnalyticsActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroy(...)")
 
     }
 }

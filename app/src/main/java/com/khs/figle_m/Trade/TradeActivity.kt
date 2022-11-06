@@ -48,7 +48,7 @@ class TradeActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroy(...)")
 
     }
 }

@@ -1,7 +1,6 @@
 package com.khs.figle_m.Analytics
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,9 @@ import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_analytics.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     val TAG:String = javaClass.simpleName
@@ -30,26 +32,17 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         mAnalyticsPresenter.takeView(this)
     }
 
-    companion object {
-        @Volatile
-        private var instance: AnalyticsFragment? = null
-
-        @JvmStatic
-        fun getInstance(): AnalyticsFragment =
-            instance ?: synchronized(this) {
-                instance
-                    ?: AnalyticsFragment().also {
-                        instance = it
-                    }
-            }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_analytics, container, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mAnalyticsPresenter.dropView()
     }
 
     override fun onStart() {
@@ -68,17 +61,17 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         val rating_layoutManager = LinearLayoutManager(context)
         rating_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view.setLayoutManager(rating_layoutManager)
+        recycler_view.layoutManager = rating_layoutManager
 
         val goale_layoutManager = LinearLayoutManager(context)
         goale_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recycler_view_goal.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view_goal.setLayoutManager(goale_layoutManager)
+        recycler_view_goal.layoutManager = goale_layoutManager
 
         val assist_layoutManager = LinearLayoutManager(context)
         assist_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
         recycler_view_assist.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view_assist.setLayoutManager(assist_layoutManager)
+        recycler_view_assist.layoutManager = assist_layoutManager
    }
 
     fun initList() {
@@ -94,22 +87,25 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         mAnalyticsPresenter.loadMatchDetail(myList.subList(0, lastIdx))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mAnalyticsPresenter.dropView()
-    }
-
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
-        avi_loading.visibility = View.VISIBLE
-        avi_loading.backroundColorVisible(true)
-        avi_loading.show(true)
+        CoroutineScope(Dispatchers.Main).launch {
+            avi_loading.apply {
+                visibility = View.VISIBLE
+                backroundColorVisible(true)
+                show(false)
+            }
+        }
     }
 
     override fun hideLoading(isError: Boolean) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
-        avi_loading.visibility = View.GONE
-        avi_loading.hide()
+        CoroutineScope(Dispatchers.Main).launch {
+            avi_loading.let {
+                avi_loading.visibility = View.GONE
+                avi_loading.hide()
+            }
+        }
     }
     override fun showPlayerMap(playerMap: Map<Int, List<PlayerDTO>>) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showPlayerList, playerList size : ${playerMap.values.size}")
