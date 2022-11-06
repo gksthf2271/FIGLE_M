@@ -9,6 +9,7 @@ import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_player_info.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -104,7 +105,7 @@ class PlayerInfoView @JvmOverloads constructor(
         data.add(String.format("%.2f", passRate).toDouble())
         data.add(String.format("%.2f", block).toDouble())
         chart_view.setData(data)
-        Log.v(TAG, "data : $data")
-        Log.v(TAG, "player : $player")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"data : $data")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"player : $player")
     }
 }

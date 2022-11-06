@@ -10,12 +10,13 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Utils.LogUtil
 
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<AnalyticsAdapter.ViewHolder>() {
     private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
-    val mMatchInfoList: List<MatchInfoDTO>
+    val mMatchInfoList: List<MatchInfoDTO>?
     val mContext: Context
 
     init {
@@ -33,13 +34,12 @@ class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val
     }
 
     override fun getItemCount(): Int {
-        Log.v(TAG,"getItemCount : ${mMatchInfoList!!.size}")
-        return mMatchInfoList.let { mMatchInfoList!!.size }
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"getItemCount : ${mMatchInfoList?.size}")
+        return mMatchInfoList?.let { it.size } ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
-        holder.bind(mMatchInfoList!!.get(position), mContext)
+        holder.bind(mMatchInfoList!![position], mContext)
     }
 
     inner class ViewHolder(itemView: View, itemClick: (MatchDetailResponse) -> Unit) :

@@ -8,6 +8,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_match_type_view.view.*
 
 class MatchView @JvmOverloads constructor(
@@ -25,7 +26,7 @@ class MatchView @JvmOverloads constructor(
     }
 
     fun updateView(matchType: Int) {
-        Log.v(TAG,"updateView : ${matchType}")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"updateView : ${matchType}")
         hideEmptyView()
         when(matchType) {
             DataManager.matchType.normalMatch.matchType -> {
@@ -40,13 +41,13 @@ class MatchView @JvmOverloads constructor(
     }
 
     fun showEmptyView() {
-        Log.v(TAG,"showEmptyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showEmptyView(...)")
         group_view.visibility = View.GONE
         empty_view.visibility = View.VISIBLE
     }
 
     fun hideEmptyView() {
-        Log.v(TAG,"hideEmptyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideEmptyView(...)")
         empty_view.visibility = View.GONE
         group_view.visibility = View.VISIBLE
     }

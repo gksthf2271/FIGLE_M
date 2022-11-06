@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,7 @@ import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_ranking.*
 
 class RankingFragment : BaseFragment(){
@@ -31,7 +31,7 @@ class RankingFragment : BaseFragment(){
     lateinit var mCurrentRank: Ranker
 
     override fun initPresenter() {
-        Log.v(TAG,"initPresenter(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
     }
 
     companion object {
@@ -76,13 +76,13 @@ class RankingFragment : BaseFragment(){
         }
         updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
         img_search.setOnClickListener {
-            if(DEBUG) Log.v(TAG,"TEST, onClick!!")
+            LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onClick!!")
             var intent = Intent()
             intent.putExtra(HomeFragment().KEY_SEARCH, mCurrentRank.name)
             intent.putExtra(HomeFragment().KEY_SEARCH_TEAM_PRICE, mCurrentRank.price)
-            if(DEBUG) Log.v(TAG,"TEST, 0!!")
+            LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, 0!!")
             if (activity != null && activity is RankingActivity) {
-                if(DEBUG) Log.v(TAG,"TEST, 1!!")
+                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, 1!!")
                 activity!!.setResult(Activity.RESULT_OK, intent)
                 activity!!.finish()
             }
@@ -123,7 +123,7 @@ class RankingFragment : BaseFragment(){
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if(DEBUG) Log.d(TAG, "TEST, onResourceReady(...) url : ${rank.rank_icon_url}")
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onResourceReady(...) url : ${rank.rank_icon_url}")
                     return false
                 }
             })

@@ -22,6 +22,7 @@ import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.Trade.TradeActivity
 import com.khs.figle_m.Utils.DivisionEnum
 import com.khs.figle_m.Utils.FragmentUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
 import kotlinx.android.synthetic.main.fragment_searchlist_ver2.*
 import okhttp3.ResponseBody
@@ -180,7 +181,7 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     override fun showLoading() {
-        Log.v(TAG, "showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         avi_loading2.visibility = View.VISIBLE
         group_content.visibility = View.GONE
 //        group_rate.visibility = View.GONE
@@ -191,7 +192,7 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     override fun hideLoading(isError: Boolean) {
-        Log.v(TAG, "hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         avi_loading2.hide()
         avi_loading2.visibility = View.GONE
         group_content.visibility = View.VISIBLE
@@ -209,7 +210,7 @@ class SearchHomeFragment : BaseFragment(),
         mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
-            Log.v(TAG,"officialGmae is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"officialGmae is null")
             mOfficialView.showEmptyView()
             return
         } else {
@@ -231,7 +232,7 @@ class SearchHomeFragment : BaseFragment(),
         mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
         if (result == null || result.isEmpty() || "[]".equals(result)) {
-            Log.v(TAG,"coachList is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"coachList is null")
             mCoachView.showEmptyView()
             hideLoading(false)
             return
@@ -246,7 +247,7 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     override fun showAnalysisInfo(accessId: String, matchIdList: List<String>) {
-        Log.v(TAG,"showAnaysisInfo : $matchIdList")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showAnaysisInfo : $matchIdList")
         val intent = Intent(context, AnalyticsActivity::class.java)
         intent.putStringArrayListExtra(AnalyticsActivity().KEY_MY_DATA, ArrayList(matchIdList))
         intent.putExtra(AnalyticsActivity().KEY_ACCESS_ID, accessId)
@@ -254,8 +255,8 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun showSearchList(matchtype: DataManager.matchType, matchIdList: List<String>) {
-        var fragment = SearchListFragment()
-        var bundle = Bundle()
+        val fragment = SearchListFragment()
+        val bundle = Bundle()
         bundle.putStringArrayList(SearchListFragment().KEY_SEARCH_MATCH_ID, ArrayList(matchIdList))
         bundle.putInt(SearchListFragment().KEY_SEARCH_MATCH_TYPE, matchtype.ordinal)
         bundle.putParcelable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)

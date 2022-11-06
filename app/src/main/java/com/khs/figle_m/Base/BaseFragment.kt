@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.khs.figle_m.Utils.LogUtil
 
 abstract class BaseFragment: Fragment(){
     private val TAG: String = javaClass.simpleName
@@ -17,34 +18,34 @@ abstract class BaseFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
-        Log.v(TAG, "onCreateView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onCreateView(...)")
         isRestartApp = false
     }
 
     override fun onStart() {
         super.onStart()
         if (!isRestartApp) {
-            Log.v(TAG, "onStart(...)")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStart(...)")
             initPresenter()
         } else {
-            Log.v(TAG, "RestartApp!")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"RestartApp!")
         }
     }
 
     override fun onStop() {
         super.onStop()
-        Log.v(TAG,"onStop(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStop(...)")
         isRestartApp = true
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG,"onStop(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStop(...)")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.v(TAG,"onDestroyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroyView(...)")
         isRestartApp = false
     }
 

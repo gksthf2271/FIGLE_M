@@ -5,6 +5,7 @@ import android.util.Log
 import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.FragmentUtils
+import com.khs.figle_m.Utils.LogUtil
 
 class TradeActivity : BaseActivity() {
     val TAG: String = javaClass.simpleName
@@ -47,7 +48,7 @@ class TradeActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
 
     }
 }

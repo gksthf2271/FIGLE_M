@@ -16,6 +16,7 @@ import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.FragmentUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.activity_ranking.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +58,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
         mRankingPresenter!!.dropView()
     }
 
@@ -67,14 +68,14 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         fragment_container.visibility = View.GONE
         avi_loading.show(true)
     }
 
     override fun hideLoading() {
-        Log.v(TAG,"hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         avi_loading.hide()
         avi_loading.visibility = View.GONE
         fragment_container.visibility = View.VISIBLE
@@ -82,7 +83,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
 
     override fun showRanking(rankerList : List<Ranker>) {
         val rankingFragment = RankingFragment.getInstance()
-        var bundle = Bundle()
+        val bundle = Bundle()
         bundle.putParcelableArrayList(RankingFragment().KEY_RANKING_LIST,ArrayList(rankerList))
         rankingFragment.arguments = bundle
         FragmentUtils().loadFragment(rankingFragment, R.id.fragment_container ,supportFragmentManager)
@@ -90,7 +91,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
 
     override fun showNetworkError() {
         if (!this.window.isActive || isDestroyed) return
-        Log.v(TAG,"showNetworkErrorPopup(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkErrorPopup(...)")
         CoroutineScope(Dispatchers.Main).launch {
             val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
             val popupWindow = PopupWindow(

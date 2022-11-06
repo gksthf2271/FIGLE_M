@@ -20,6 +20,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +46,6 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        /*if(DEBUG) */Log.v(TAG, "onBindViewHolder, position : $position")
         holder.bind(mContext, position)
     }
 
@@ -122,13 +122,13 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                         CrawlingUtils().getPlayerImg(item,{
                             updatePlayerImage(mPlayerImg, item, it, position)
                         }, {
-                            Log.v(TAG,"Failed Loading...")
+                            LogUtil.vLog(LogUtil.TAG_UI, TAG,"Failed Loading...")
                         })
 //                        DataManager.getInstance().loadPlayerImage(item.spId, {
 //                            mPlayerList.get(position).imageUrl = it.toString()
 //                            updatePlayerImage(mPlayerImg, item, it, position)
 //                        }, {
-//                            Log.v(TAG, "load Failed : $it")
+//                            LogUtil.vLog(LogUtil.TAG_UI, TAG,"load Failed : $it")
 //                            mPlayerImg.setImageResource(R.drawable.ic_launcher_foreground)
 //                        })
                     }
@@ -146,11 +146,11 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                     //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                     if ("224".equals(seasonId)) seasonId = "234"
                     val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                    if(!DEBUG) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
+                    LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                     seasonEntity.let {
                         val url = seasonEntity.seasonImg
                         CoroutineScope(Dispatchers.Main).launch {
-                            if(DEBUG) Log.v(TAG,"TEST, saesonUrl : ${url}")
+                            LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, saesonUrl : ${url}")
                             Glide.with(context)
                                 .load(url)
                                 .listener(object : RequestListener<Drawable> {
@@ -160,7 +160,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                                         target: Target<Drawable>,
                                         isFirstResource: Boolean
                                     ): Boolean {
-                                        if(DEBUG) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"Season, onLoadFailed(...) GlideException!!! " + e!!)
                                         mIcon.visibility = View.GONE
                                         return false
                                     }
@@ -173,7 +173,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                                         isFirstResource: Boolean
                                     ): Boolean {
                                         mIcon.visibility = View.VISIBLE
-                                        if(DEBUG) Log.d(TAG, "Season, onResourceReady(...) $url")
+                                        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"Season, onResourceReady(...) $url")
                                         return false
                                     }
                                 })
@@ -208,7 +208,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
     }
 
     fun updatePlayerImage(playerimg: ImageView, item:PlayerDTO, url: String, position: Int) {
-        Log.v(TAG,"updatePlayerImage(...) uri : $url")
+        LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"updatePlayerImage(...) uri : $url")
         Glide.with(playerimg.context)
             .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
@@ -221,16 +221,16 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
-//                    /*if (DEBUG) */Log.d(TAG, "TEST, onLoadFailed(...) GlideException!!! position : $position, url : $playerimg")
-//                    /*if (DEBUG) */Log.d(TAG, "TEST, item : $item")
+//                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onLoadFailed(...) GlideException!!! position : $position, url : $playerimg")
+//                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, item : $item")
 //                    mPlayerList.let {
 //                        if (mPlayerList!!.get(position).subImageUrl == null) {
 //                            CrawlingUtils().getPlayerImg(item, {
-//                                Log.d(TAG, "TEST, reload position : $position, url : $it")
+//                                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, reload position : $position, url : $it")
 //                                CrawlingUtils().updatePlayerImage(mContext, playerimg, it)
 //                                mPlayerList!!.get(position).subImageUrl = it
 //                            }, {
-//                                Log.v(TAG, "Failed Crawling! : $it")
+//                                LogUtil.vLog(LogUtil.TAG_UI, TAG,"Failed Crawling! : $it")
 //                                mPlayerList!!.get(position).subImageUrl = it
 //                            })
 //                        } else {
@@ -247,7 +247,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    if(DEBUG) Log.d(TAG, "TEST, onResourceReady(...) position : $position, url : $url")
+                    LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, onResourceReady(...) position : $position, url : $url")
                     return false
                 }
             })

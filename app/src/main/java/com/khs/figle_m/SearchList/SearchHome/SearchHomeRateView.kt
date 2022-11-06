@@ -2,7 +2,6 @@ package com.khs.figle_m.SearchList.SearchHome
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,6 +10,7 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +53,7 @@ class SearchHomeRateView @JvmOverloads constructor(
     }
 
     private fun showLoadingView() {
-        Log.v(TAG,"showLoadingView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoadingView(...)")
         search_home_group_view.visibility = View.GONE
         search_home_empty_view.visibility = View.VISIBLE
         loading_view.visibility = View.VISIBLE
@@ -61,7 +61,7 @@ class SearchHomeRateView @JvmOverloads constructor(
     }
 
     private fun hideLoadingView() {
-        Log.v(TAG,"hideLoadingView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoadingView(...)")
         search_home_empty_view.visibility = View.GONE
         search_home_group_view.visibility = View.VISIBLE
         loading_view.visibility = View.GONE
@@ -80,16 +80,16 @@ class SearchHomeRateView @JvmOverloads constructor(
                 DataManager.getInstance().loadMatchDetailWrapper(arrayList.get(index)
                     ,{
                         mMatchDetailList.add(it)
-                        Log.v(TAG,"${mMatchDetailList.size} Success Request : ${it.matchId}")
+                        LogUtil.vLog(LogUtil.TAG_UI, TAG,"${mMatchDetailList.size} Success Request : ${it.matchId}")
                         if (searchSize == mMatchDetailList.size + mFailedRequestQ.size) {
-                            Log.v(TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
+                            LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
                             CoroutineScope(Dispatchers.Main).launch {
                                 updateView(accessId, mMatchDetailList)
                                 hideLoadingView()
                             }
                         }
                     }, {
-                        Log.e(TAG, "Failed Request : $it")
+                        LogUtil.eLog(LogUtil.TAG_UI, TAG,"Failed Request : $it")
                         mFailedRequestQ.add(it)
                     })
             }

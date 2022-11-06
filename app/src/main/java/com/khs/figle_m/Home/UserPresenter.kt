@@ -1,8 +1,7 @@
 package com.khs.figle_m.Home
 
-import android.util.Log
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.UserResponse
+import com.khs.figle_m.Utils.LogUtil
 
 class UserPresenter : UserContract.Presenter {
     val TAG: String = javaClass.simpleName
@@ -17,7 +16,7 @@ class UserPresenter : UserContract.Presenter {
                         mUserView?.hideLoading()
                         mUserView?.showUserList(it.apply { it!!.teamPrice = teamPrice })
                     }, {
-                        Log.v(TAG, "getUserDatailList $it")
+                        LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"getUserDatailList $it")
                         mUserView?.hideLoading()
                         mUserView?.showError(it)
                     })

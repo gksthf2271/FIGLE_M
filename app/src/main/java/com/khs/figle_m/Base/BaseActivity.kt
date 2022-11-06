@@ -1,8 +1,8 @@
 package com.khs.figle_m.Base
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.khs.figle_m.Utils.LogUtil
 
 abstract class BaseActivity: AppCompatActivity() {
     private val TAG:String = javaClass.simpleName
@@ -16,17 +16,17 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (!isRestartApp) {
-            Log.v(TAG, "onStart(...)")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStart(...)")
             initPresenter()
         } else {
-            Log.v(TAG, "RestartApp!")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"RestartApp!")
         }
     }
 
     override fun onRestart() {
         super.onRestart()
         isRestartApp = true
-        Log.v(TAG,"onRestart(...) : $isRestartApp")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onRestart(...) : $isRestartApp")
     }
 
     abstract fun initPresenter()

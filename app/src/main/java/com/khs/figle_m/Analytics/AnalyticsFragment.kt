@@ -13,6 +13,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_analytics.*
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
@@ -24,7 +25,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     lateinit var mAccessId: String
 
     override fun initPresenter() {
-        Log.v(TAG,"initPresenter(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
         mAnalyticsPresenter = AnalyticsPresenter()
         mAnalyticsPresenter.takeView(this)
     }
@@ -99,19 +100,19 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         avi_loading.backroundColorVisible(true)
         avi_loading.show(true)
     }
 
     override fun hideLoading(isError: Boolean) {
-        Log.v(TAG,"hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         avi_loading.visibility = View.GONE
         avi_loading.hide()
     }
     override fun showPlayerMap(playerMap: Map<Int, List<PlayerDTO>>) {
-        Log.v(TAG,"showPlayerList, playerList size : ${playerMap.values.size}")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showPlayerList, playerList size : ${playerMap.values.size}")
         mAnalyticsPresenter.loadPlayerInfoList(playerMap)
     }
 
@@ -126,27 +127,25 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
                 ROW_TYPE.MATCH_RATING,
                 playerInfoList.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
                     .subList(0, 10)
-                , {
-                    Log.v(TAG, "ItemClick, AVG Rating TOP 10 ${it}")
-                })
+            ) {
+                LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, AVG Rating TOP 10 $it")
+            }
 
         recycler_view_goal.adapter = AnalyticsRecyclerViewAdapter(
             context!!,
             ROW_TYPE.GOAL,
             playerInfoList.sortedByDescending { it.totalData.totalGoal }.subList(0, 5)
-            ,{
-                Log.v(TAG, "ItemClick, Total Goal TOP 5 ${it}")
-            }
-        )
+        ) {
+            LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, Total Goal TOP 5 $it")
+        }
 
         recycler_view_assist.adapter = AnalyticsRecyclerViewAdapter(
             context!!,
             ROW_TYPE.ASSIST,
             playerInfoList.sortedByDescending { it.totalData.totalAssist }.subList(0, 5)
-            ,{
-                Log.v(TAG, "ItemClick, Total Assist TOP 5 ${it}")
-            }
-        )
+        ) {
+            LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, Total Assist TOP 5 $it")
+        }
     }
 
     override fun showMatchDetail(matchDetailList: List<MatchDetailResponse>) {

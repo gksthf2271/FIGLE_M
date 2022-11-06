@@ -8,7 +8,7 @@ object LogUtil {
     val TAG_NETWORK = "FIGLE_NETWORK"
     val TAG_SEARCH = "FIGLE_SEARCH"
     val TAG_RANK = "FIGLE_MEMBER"
-    val TAG_TRADE = "FIGLE_DUTCH_PAY"
+    val TAG_TRADE = "FIGLE_TRADE"
     val TAG_DEFAULT = "FIGLE"
 
 

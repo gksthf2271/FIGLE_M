@@ -21,6 +21,7 @@ import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
 import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogTopView
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.NetworkUtils
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
 import kotlinx.android.synthetic.main.fragment_search_container.*
@@ -90,7 +91,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun onPause() {
         super.onPause()
-        Log.v(TAG,"onPause(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onPause(...)")
     }
 
     override fun initPresenter() {
@@ -196,7 +197,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
-        var playerListDTO =
+        val playerListDTO =
             mPlayerImgMap.get(accessId) ?: PlayerListDTO("", listOf()) as PlayerListDTO
 
         var playerList:ArrayList<PlayerDTO>
@@ -214,7 +215,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     override fun showError(error: Int) {
-        Log.v(TAG,"showError(...) $error")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showError(...) $error")
         dismiss()
         (activity as MainActivity).showErrorPopup(error)
     }
@@ -247,7 +248,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
             CrawlingUtils().getPlayerImg(player, {
                 callback(it)
             }, {
-                Log.v(TAG, "updatePlayer(...) : $it")
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"updatePlayer(...) : $it")
                 showError(it)
             })
         }

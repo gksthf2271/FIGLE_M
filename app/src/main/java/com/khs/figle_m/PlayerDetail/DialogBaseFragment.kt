@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.khs.figle_m.MainActivity
+import com.khs.figle_m.Utils.LogUtil
 
 abstract class DialogBaseFragment : DialogFragment() {
     private val TAG: String = javaClass.simpleName
@@ -18,29 +19,29 @@ abstract class DialogBaseFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         isRestartApp = false
-        Log.v(TAG, "onCreateView(...) : $isRestartApp")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onCreateView(...) : $isRestartApp")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onStart() {
         super.onStart()
         if (!isRestartApp) {
-            Log.v(TAG, "onStart(...)")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStart(...)")
             initPresenter()
         } else {
-            Log.v(TAG, "RestartApp!")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"RestartApp!")
         }
     }
 
     override fun onStop() {
         super.onStop()
-        Log.v(TAG,"onStop(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onStop(...)")
         isRestartApp = true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.v(TAG,"onDestroyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroyView(...)")
         isRestartApp = false
     }
 

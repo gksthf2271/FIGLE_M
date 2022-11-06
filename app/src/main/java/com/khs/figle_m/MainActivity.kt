@@ -20,6 +20,7 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onStart() {
         super.onStart()
-        Log.v(TAG,"is Restart app? $isRestartApp")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"is Restart app? $isRestartApp")
         if (!isRestartApp) {
             mInitPresenter.takeView(this)
             mInitPresenter.getSeasonIdList(this)
@@ -73,7 +74,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG,"onDestory(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestory(...)")
         mInitPresenter.dropView()
     }
 
@@ -102,9 +103,8 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun handleMessage(msg: Message): Boolean {
         when(msg.what) {
             MSG_DISCONNECTED_NETWORK -> {
-                Log.v(TAG,"received MSG_DISCONNECTED NETWORK!")
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"received MSG_DISCONNECTED NETWORK!")
                 if (mPopupWindow != null && mPopupWindow!!.isShowing) {
-                    Log.v(TAG,"dismiss!")
                     mPopupWindow!!.dismiss()
                 }
                 finish()
@@ -118,7 +118,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     }
 
     override fun showNetworkError() {
-        Log.v(TAG,"showNetworkError(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkError(...)")
         txt_disconnected_network.visibility = View.VISIBLE
 //        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
     }
@@ -132,28 +132,28 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         avi_loading.visibility = View.VISIBLE
         fragment_container.visibility = View.GONE
         avi_loading.show(true)
     }
 
     override fun hideLoading() {
-        Log.v(TAG,"hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         avi_loading.hide()
         avi_loading.visibility = View.GONE
         fragment_container.visibility = View.VISIBLE
     }
 
     override fun showMainActivity(responseBody: ResponseBody) {
-        Log.v(TAG,"showMainActivity(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showMainActivity(...)")
         val fm: FragmentManager = this.supportFragmentManager
         val homeFragment: HomeFragment = HomeFragment.getInstance()
         FragmentUtils().loadFragment(homeFragment, R.id.fragment_container,fm)
     }
 
     override fun showError(error: Int) {
-        Log.v(TAG,"showError : $error")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showError : $error")
         showErrorPopup(error)
     }
 
@@ -187,7 +187,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     }
 
     fun showErrorPopup(error: Int, isFinish:Boolean) {
-        Log.v(TAG,"showErrorPopup(...) :$error , isDestroyed : $isDestroyed")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showErrorPopup(...) :$error , isDestroyed : $isDestroyed")
         if (!this.window.isActive || isDestroyed) return
         when (error) {
             DataManager().ERROR_NETWORK_DISCONNECTED -> {
@@ -227,7 +227,7 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     private fun showNetworkErrorPopup() {
         if (mPopupWindow != null && mPopupWindow!!.isShowing) return
         if (!this.window.isActive || this.isFinishing || isDestroyed) return
-        Log.v(TAG,"showNetworkErrorPopup(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkErrorPopup(...)")
         CoroutineScope(Dispatchers.Main).launch {
             val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
             val popupWindow = PopupWindow(

@@ -17,6 +17,7 @@ import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchListAdapter
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_search_list.view.*
 import kotlin.properties.Delegates
 
@@ -50,7 +51,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     fun initView(context: Context) {
-        Log.v(TAG, "initView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initView(...)")
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.cview_search_list, this)
 
@@ -60,7 +61,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     fun setSearchUserInfo(searchUserInfo: UserResponse) {
-        Log.v(TAG, "setSearchUserInfo : $searchUserInfo")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"setSearchUserInfo : $searchUserInfo")
         mSearchUserInfo = searchUserInfo
     }
 
@@ -69,7 +70,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         matchIdList: ArrayList<String>,
         itemClick: (MatchDetailResponse) -> Unit
     ) {
-        Log.v(TAG, "updateView matchIdList size : ${matchIdList.size}")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"updateView matchIdList size : ${matchIdList.size}")
         mMatchIdList = matchIdList
         if (matchIdList.isEmpty()) {
             showEmptyView()
@@ -81,7 +82,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         mMatchType = matchType
         layout_recyclerview.adapter =
             SearchListAdapter(context!!, mSearchUserInfo.accessId, mMatchList) { matchDetailResponse ->
-                Log.v(TAG, "ItemClick! ${matchDetailResponse.matchInfo}")
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"ItemClick! ${matchDetailResponse.matchInfo}")
                 itemClick(matchDetailResponse)
             }
         if (mMatchIdList.size > DataManager().SEARCH_PAGE_SIZE) {
@@ -95,7 +96,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
     fun loadMatch(matchType: Int, startIndex : Int, endIndex: Int) {
         for (index in startIndex .. endIndex) {
-            Log.v(TAG,"loadMatch : $index")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"loadMatch : $index")
             mSearchListPresenter.let {
                 mSearchListPresenter.getMatchDetailList(
                 matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList[index]
@@ -111,16 +112,16 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
             if (childCount < 7) return;
             var range = mMatchIdList.size - childCount
             if (!recyclerView.canScrollVertically(1)) {
-                if (DEBUG) Log.v(TAG,"TEST, mMatchIdList : ${mMatchIdList.size}, childCount : ${recyclerView.adapter.let{recyclerView.adapter!!.itemCount}}")
-                if (DEBUG) Log.v(TAG, "TEST, range : $range")
+                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, mMatchIdList : ${mMatchIdList.size}, childCount : ${recyclerView.adapter.let{recyclerView.adapter!!.itemCount}}")
+                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, range : $range")
 
                 if (range > 0) {
                     showLoading()
                     if (DataManager().SEARCH_PAGE_SIZE > range) {
-                        if (DEBUG) Log.v(TAG, "TEST1 scrolled(...) childCount : $childCount , range : $range")
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST1 scrolled(...) childCount : $childCount , range : $range")
                         loadMatch(mMatchType, childCount, childCount + range - 1)
                     } else {
-                        if (DEBUG) Log.v(TAG, "TEST2 scrolled(...) childCount : $childCount , range : $range")
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST2 scrolled(...) childCount : $childCount , range : $range")
                         loadMatch(mMatchType, childCount, childCount + DataManager().SEARCH_PAGE_SIZE - 1)
                     }
                 }
@@ -129,13 +130,13 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     private fun showEmptyView() {
-        Log.v(TAG, "showEmptyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showEmptyView(...)")
         layout_recyclerview.visibility = View.GONE
         txt_emptyView.visibility = View.VISIBLE
     }
 
     private fun hideEmptyView() {
-        Log.v(TAG, "hideEmptyView(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideEmptyView(...)")
         layout_recyclerview.visibility = View.VISIBLE
         txt_emptyView.visibility = View.GONE
     }
@@ -158,12 +159,12 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     override fun showGameList(searchResponse: MatchDetailResponse?) {
         searchResponse ?: return
         if (searchResponse.matchInfo.size <= 1) return
-        Log.v(TAG, "showOfficialGameList : ${searchResponse!!.matchId}")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showOfficialGameList : ${searchResponse!!.matchId}")
         synchronized("Lock") {
             mMatchList.add(searchResponse!!)
             mMatchList.sortByDescending { it.matchDate }
         }
-        if (DEBUG) Log.v(TAG, "mMatchList size : ${mMatchList.size} , mMatchIdList size : ${mMatchIdList.size}")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"mMatchList size : ${mMatchList.size} , mMatchIdList size : ${mMatchIdList.size}")
         layout_recyclerview.adapter?.notifyDataSetChanged()
         Handler().postDelayed({
             hideLoading(false)

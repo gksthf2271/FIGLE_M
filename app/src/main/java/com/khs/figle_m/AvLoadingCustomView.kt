@@ -2,10 +2,10 @@ package com.khs.figle_m
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.khs.figle_m.Utils.LogUtil
 import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.cview_loading_view.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun initView(context: Context) {
-        Log.v(TAG,"initView")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initView")
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflater.inflate(R.layout.cview_loading_view, this)
     }
@@ -39,7 +39,7 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun show(isStart: Boolean) {
-        if(DEBUG) Log.v(TAG,"show LoadingView")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToShow()
         }
@@ -55,20 +55,20 @@ class AvLoadingCustomView: ConstraintLayout {
     }
 
     fun hide(){
-        if(DEBUG) Log.v(TAG,"hide LoadingView")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"hide LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
             view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToHide()
         }
     }
 
     fun setProgressMax(max:Int) {
-        Log.v(TAG,"setProgressMax : $max")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"setProgressMax : $max")
         mMax = max
         progress_horizontal.max = mMax
     }
 
     fun updateProgress(progress: Int) {
-        if(DEBUG) Log.v(TAG,"progress : $progress")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"progress : $progress")
         CoroutineScope(Dispatchers.Main).launch {
             loading_view.visibility = View.INVISIBLE
             progress_horizontal.visibility = View.VISIBLE

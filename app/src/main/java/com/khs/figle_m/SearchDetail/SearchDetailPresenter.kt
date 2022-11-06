@@ -1,8 +1,10 @@
 package com.khs.figle_m.SearchDetail
 
 import android.util.Log
+import com.khs.figle_m.DB.PlayerDao
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.SeasonEnum
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -12,7 +14,7 @@ import org.jsoup.Jsoup
 
 class SearchDetailPresenter: SearchDetailContract.Presenter {
     val TAG:String = javaClass.simpleName
-    val DEBUG:Boolean = false
+    val DEBUG:Boolean = true
     var  mDetailListView: SearchDetailContract.View? = null
 
     val ERROR_EMPTY = "EMPTY"
@@ -30,12 +32,12 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         runBlocking {
             launch {
                 getPlayerImage(playerDTO, {
-                    if (DEBUG) Log.v(TAG, "SearchPresenter getMatchDetailList: $it")
+                    LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"SearchPresenter getMatchDetailList: $it")
                     playerDTO.imageUrl = it
                     mDetailListView ?: return@getPlayerImage
                     mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
                 }, {
-                    Log.v(TAG, "Result : getMatchDetailList response : $it")
+                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"Result : getMatchDetailList response : $it")
                     mDetailListView ?: return@getPlayerImage
                     playerDTO.imageUrl = it.toString()
                     if (it == 0) {
@@ -45,6 +47,22 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     }
                     mDetailListView!!.hideLoading()
                 })
+//                getPlayerImageWithSpid(playerDTO, {
+//                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"SearchPresenter getMatchDetailList: $it")
+//                    playerDTO.imageUrl = it
+//                    mDetailListView ?: return@getPlayerImageWithSpid
+//                    mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+//                }, {
+//                    LogUtil.vLog(LogUtil.TAG_UI, TAG,"Result : getMatchDetailList response : $it")
+//                    mDetailListView ?: return@getPlayerImageWithSpid
+//                    playerDTO.imageUrl = it.toString()
+//                    if (it == 0) {
+//                        mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+//                    } else {
+//                        mDetailListView!!.showError(it)
+//                    }
+//                    mDetailListView!!.hideLoading()
+//                })
             }
         }
 
@@ -61,12 +79,12 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     {
                         mDetailListView ?: return@loadRankerPlayerAverData
                         mDetailListView!!.hideLoading()
-                        Log.v(TAG,"getRankerPlayerList success!")
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getRankerPlayerList success!")
                         mDetailListView!!.showPlayerDetailDialogFragment(playerDTO,it)
                     },{
                         mDetailListView ?: return@loadRankerPlayerAverData
                         mDetailListView!!.hideLoading()
-                        Log.v(TAG,"getRankerPlayerList failed!")
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getRankerPlayerList failed!")
                         mDetailListView!!.showPlayerDetailDialogFragment(playerDTO, emptyList())
                     })
             }
@@ -82,6 +100,18 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         return JSONArray().put(jsonObject).toString()
     }
 
+    private fun getPlayerImageWithSpid(playerDTO: PlayerDTO,
+                                       onSuccess: ((String) -> Unit),
+                                       onFailed: (Int) -> Unit) {
+        val spId = playerDTO.spId
+        LogUtil.dLog(LogUtil.TAG_SEARCH, TAG, "KHS > TEST, spId : ${playerDTO.spId} / imageUrl : ${playerDTO.imageUrl} / subImgUrl : ${playerDTO.subImageUrl}")
+        DataManager.getInstance().loadPlayerImage(spId, {
+            onSuccess(it.toString())
+        }, {
+            onFailed(0)
+        })
+    }
+
     private fun getPlayerImage(
         playerDTO: PlayerDTO,
         onSuccess: ((String) -> Unit),
@@ -89,9 +119,8 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     ) {
         var seasonId = playerDTO.spId.toString().substring(0, 3)
         var seasonName: String? = null
-        if (seasonId.equals("224")) {
-            Log.v(TAG,"TEST, 224 : $playerDTO")
-            //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
+        if (seasonId == "224") {
+            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"TEST, 224 : $playerDTO")
             playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
             seasonId = "234"
         }
@@ -100,7 +129,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                 seasonName = item.className
         }
 
-        Log.v(TAG,"test, seasonName : $seasonName")
+        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"test, seasonName : $seasonName")
         if (seasonName == null) {
             return
         }
@@ -108,11 +137,11 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         try {
             DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
                 val doc = Jsoup.parseBodyFragment(it.string())
-                if(DEBUG) Log.v(TAG, "TEST ----------- \n $doc")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST ----------- \n $doc")
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
                 if (parentBody == null) {
-                    Log.e(TAG, "ERROR ----------- \n $doc")
+                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"ERROR ----------- \n $doc")
                     onFailed(0)
                     return@loadPlayerInfo
                 }
@@ -125,13 +154,13 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                         .getElementsByClass("content data_detail").first()
                         .getElementsByClass("wrap").first()
                         .getElementsByClass("content_header").first()
-                        .getElementsByClass("thumb $seasonName").first()
+                        .getElementsByClass("thumb $seasonName  _${seasonName.toUpperCase()}").first()
                         .getElementsByClass("img").first()
                         .childNodes().first()
                         .attributes().get("src")
                     onSuccess(imageUrl!!)
-                } catch (e : IndexOutOfBoundsException) {
-                    Log.e(TAG,"IndexOutOfBoundsException $e")
+                } catch (e : Exception) {
+                    LogUtil.eLog(LogUtil.TAG_NETWORK, TAG,"exception $e")
                     onFailed(0)
                 }
             }, {

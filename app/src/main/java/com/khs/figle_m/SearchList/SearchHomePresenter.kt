@@ -2,6 +2,7 @@ package com.khs.figle_m.SearchList
 
 import android.util.Log
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -57,11 +58,11 @@ class SearchHomePresenter: SearchContract.Presenter {
             launch {
                 DataManager.getInstance().loadUserHighRank(accessId,
                     {
-                        Log.v(TAG, "getUserHighRank Success! $it")
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getUserHighRank Success! $it")
 //                        mSearchListView?.hideLoading(false)
                         mSearchListView?.showHighRank(it)
                     }, {
-                        Log.v(TAG, "getUserHighRank Failed! $it")
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getUserHighRank Failed! $it")
                         mSearchListView?.showError(it)
                     })
             }

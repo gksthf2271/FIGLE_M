@@ -11,6 +11,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_detail_top_view.view.*
 
 class SearchDetailDialogTopView @JvmOverloads constructor(
@@ -62,7 +63,7 @@ class SearchDetailDialogTopView @JvmOverloads constructor(
         }
 
         if (matchInfo.size <= 1) {
-            Log.v(TAG, "경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"경기 계정이 단일 계정으로 이상 데이터! $matchInfo")
             return
         }
 
@@ -154,7 +155,7 @@ class SearchDetailDialogTopView @JvmOverloads constructor(
     }
 
     fun updatePlayerInfo(playerInfo: Pair<PlayerDTO, Boolean>) {
-        Log.v(TAG,"player : $playerInfo")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"player : $playerInfo")
         mRootLayout.background = resources.getDrawable(R.color.empty_background,null)
         player_info_view.visibility = View.VISIBLE
         group_playerInfo.visibility = View.VISIBLE
@@ -165,8 +166,8 @@ class SearchDetailDialogTopView @JvmOverloads constructor(
     }
 
     fun setupData(matchInfo: MatchInfoDTO, isLeft:Boolean) {
-        var assistList = arrayListOf<Int>()
-        var blockList = arrayListOf<Int>()
+        val assistList = arrayListOf<Int>()
+        val blockList = arrayListOf<Int>()
         for (player in matchInfo.player) {
                 assistList.add(player.status.assist)
                 blockList.add(player.status.block)

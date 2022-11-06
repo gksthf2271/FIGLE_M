@@ -25,6 +25,7 @@ import com.khs.figle_m.Ranking.RankingActivity
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
@@ -72,7 +73,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         when (msg.what) {
             MSG_SHOW_USER_LIST -> {
                 mUserResponse = msg.obj as (UserResponse)
-                Log.v(TAG, "MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
 
                 mUserResponse.accessId ?: return false
                 fragmentManager ?: return false
@@ -115,7 +116,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     @SuppressLint("SetTextI18n")
     override fun showUserList(userResponse: UserResponse?) {
         if (userResponse == null) {
-            Log.d(TAG, "userResponse is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"userResponse is null")
             return
         }
         val msg_show_user_list:Message = Message()
@@ -125,15 +126,15 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
     }
 
     override fun hideLoading() {
-        Log.v(TAG,"hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
     }
 
     override fun showError(error: Int) {
-        Log.v(TAG,"showError(...) : $error")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showError(...) : $error")
         (activity as MainActivity).showErrorPopup(error)
     }
 
@@ -181,7 +182,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         mEditView.addTextChangedListener(textWatcher)
 
 //        btn_search.setOnClickListener(View.OnClickListener {
-//            Log.v(TAG,"clickSearchBtn")
+//            LogUtil.vLog(LogUtil.TAG_UI, TAG,"clickSearchBtn")
 //            search(mEditView.text.toString())
 //        })
     }
@@ -227,7 +228,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.v(TAG,"TEST, onActivityResult(...) requestCode : ${requestCode} , resultCode : $resultCode , data : $data")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onActivityResult(...) requestCode : ${requestCode} , resultCode : $resultCode , data : $data")
         when(requestCode) {
             RESULT_REQUEST_CODE -> {
                 if (resultCode == Activity.RESULT_OK) {

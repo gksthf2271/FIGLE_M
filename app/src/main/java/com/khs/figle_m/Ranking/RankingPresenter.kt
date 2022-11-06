@@ -3,6 +3,7 @@ package com.khs.figle_m.Ranking
 import android.content.Context
 import android.util.Log
 import com.khs.figle_m.Utils.CrawlingUtils
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -17,12 +18,12 @@ class RankingPresenter : RankingContract.Presenter{
             runBlocking {
                 launch {
                     loadRankingByCrawling(page, {
-                        if (DEBUG) Log.v(TAG, "getRankingList Success! $it")
+                        LogUtil.dLog(LogUtil.TAG_RANK, TAG,"getRankingList Success! $it")
                         mRankingView?.hideLoading()
                         mRankingView?.showRanking(it)
 
                     }, {
-                        Log.v(TAG, "getRankingList Failed! $it")
+                        LogUtil.vLog(LogUtil.TAG_RANK, TAG,"getRankingList Failed! $it")
                         mRankingView?.hideLoading()
                         mRankingView?.showError(it)
                     })

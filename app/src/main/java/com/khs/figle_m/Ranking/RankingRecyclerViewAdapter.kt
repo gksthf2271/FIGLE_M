@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.LogUtil
 
 class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<Ranker>, val itemClick: (Ranker) -> Unit) :
     RecyclerView.Adapter<RankingRecyclerViewAdapter.ViewHolder>() {
@@ -36,16 +37,16 @@ class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
+        LogUtil.dLog(LogUtil.TAG_UI, TAG,"onBindViewHolder, position : $position")
         holder.bind(mRankerList!!.get(position))
     }
 
     fun getFirstRanker(): Ranker? {
         if (mRankerList == null || mRankerList.isEmpty()) {
-            Log.v(TAG,"mRankerList is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"mRankerList is null")
             return null
         }
-        return mRankerList!!.get(0)
+        return mRankerList[0]
     }
 
     inner class ViewHolder(itemView: View, itemClick: (Ranker) -> Unit) :

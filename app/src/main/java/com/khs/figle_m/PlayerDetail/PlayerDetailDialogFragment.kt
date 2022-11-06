@@ -24,10 +24,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailContract
-import com.khs.figle_m.Utils.DisplayUtils
-import com.khs.figle_m.Utils.NetworkUtils
-import com.khs.figle_m.Utils.PositionEnum
-import com.khs.figle_m.Utils.SeasonEnum
+import com.khs.figle_m.Utils.*
 import kotlinx.android.synthetic.main.fragment_player_detail.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -126,7 +123,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                 seasonName = item.className
         }
         if (seasonName == null) {
-            Log.d(TAG, "seasonName is null")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonName is null")
             return
         }
 
@@ -136,7 +133,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
 //                    updatePlayerImage(playerDetailInfo!!, it)
 //
 //                }, {
-//                    Log.v(TAG,"load Failed : $it")
+//                    LogUtil.vLog(LogUtil.TAG_UI, TAG,"load Failed : $it")
 //                    img_player.setImageResource(R.drawable.ic_launcher_foreground)
 //                })
 
@@ -212,6 +209,13 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     private fun updatePlayerImage(url: String) {
         val imgView = view!!.findViewById<ImageView>(R.id.img_player)
         imgView ?: return
+
+        if (url == "0") {
+            Glide.with(context!!)
+                .load(R.drawable.person_icon)
+                .into(imgView)
+            return
+        }
         Glide.with(context!!)
             .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
@@ -223,7 +227,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                     target: Target<Drawable>,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "onLoadFailed(...) GlideException!!! " + e!!)
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onLoadFailed(...) GlideException!!! " + e!!)
                     return false
                 }
 
@@ -234,7 +238,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                     dataSource: DataSource,
                     isFirstResource: Boolean
                 ): Boolean {
-                    Log.d(TAG, "onResourceReady(...) $url")
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onResourceReady(...) $url")
                     return false
                 }
             })
@@ -249,11 +253,11 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                 //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                 if ("224".equals(seasonId)) seasonId = "234"
                 val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                Log.v(TAG,"seasonEntity : ${seasonEntity.className}")
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonEntity : ${seasonEntity.className}")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg
                     CoroutineScope(Dispatchers.Main).launch {
-                        if(DEBUG) Log.v(TAG,"TEST, saesonUrl : ${url}")
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, saesonUrl : ${url}")
                         Glide.with(context)
                             .load(url)
                             .listener(object : RequestListener<Drawable> {
@@ -263,7 +267,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                                     target: Target<Drawable>,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onLoadFailed(...) GlideException!!! " + e!!)
                                     img_player_icon.visibility = View.GONE
                                     return false
                                 }
@@ -276,7 +280,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     img_player_icon.visibility = View.VISIBLE
-                                    Log.d(TAG, "Season, onResourceReady(...) $url")
+                                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onResourceReady(...) $url")
                                     return false
                                 }
                             })

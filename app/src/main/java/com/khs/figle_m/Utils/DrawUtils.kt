@@ -23,7 +23,7 @@ open class DrawUtils () {
     val DEBUG = BuildConfig.DEBUG
 
     fun drawPlayerImage(playerimg: ImageView, url: String) {
-        Log.v(TAG,"updatePlayerImage(...) uri : ${url}")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"updatePlayerImage(...) uri : $url")
         Glide.with(playerimg.getContext())
             .load(Uri.parse(url))
             .placeholder(R.drawable.person_icon)
@@ -61,11 +61,11 @@ open class DrawUtils () {
                 //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                 if ("224".equals(seasonId)) seasonId = "234"
                 val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
-                if(!DEBUG) Log.v(TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
+                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg
                     CoroutineScope(Dispatchers.Main).launch {
-                        if(DEBUG) Log.v(TAG,"TEST, saesonUrl : ${url}")
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, saesonUrl : ${url}")
                         Glide.with(context)
                             .load(url)
                             .listener(object : RequestListener<Drawable> {
@@ -75,7 +75,7 @@ open class DrawUtils () {
                                     target: Target<Drawable>,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    if(DEBUG) Log.d(TAG, "Season, onLoadFailed(...) GlideException!!! " + e!!)
+                                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onLoadFailed(...) GlideException!!! " + e!!)
                                     targetView.visibility = View.GONE
                                     return false
                                 }
@@ -88,7 +88,7 @@ open class DrawUtils () {
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     targetView.visibility = View.VISIBLE
-                                    if(DEBUG) Log.d(TAG, "Season, onResourceReady(...) $url")
+                                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onResourceReady(...) $url")
                                     return false
                                 }
                             })

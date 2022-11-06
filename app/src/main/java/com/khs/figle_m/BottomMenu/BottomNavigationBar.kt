@@ -2,10 +2,10 @@ package com.khs.figle_m.BottomMenu
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.R
+import com.khs.figle_m.Utils.LogUtil
 
 class BottomNavigationBar(context: Context?, attrs: AttributeSet?) :
     ConstraintLayout(context, attrs) {
@@ -16,7 +16,7 @@ class BottomNavigationBar(context: Context?, attrs: AttributeSet?) :
     }
 
     fun initView() {
-        Log.v(TAG, "initView")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"initView")
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.cview_loading_view, this)
     }

@@ -11,6 +11,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_searchlist.*
 
 
@@ -67,7 +68,6 @@ class SearchListFragment : BaseFragment() {
     fun initView() {
         btn_back.visibility = View.VISIBLE
         btn_back.setOnClickListener {
-            Log.v(TAG, "btn_back Clicked")
             fragmentManager.let {
                 fragmentManager!!.popBackStack()
             }

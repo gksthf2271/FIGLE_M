@@ -10,6 +10,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.TradeResponse
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.item_trade_buy.view.*
 
 class TradeRecyclerViewAdapter(context: Context, tradeList:List<TradeResponse>, val itemClick: (TradeResponse) -> Unit) :
@@ -76,7 +77,6 @@ RecyclerView.Adapter<TradeViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: TradeViewHolder, position: Int) {
-        if(DEBUG) Log.v(TAG, "onBindViewHolder, position : $position")
         mPlayerList?.let {
             holder.bind(it[position])
         }

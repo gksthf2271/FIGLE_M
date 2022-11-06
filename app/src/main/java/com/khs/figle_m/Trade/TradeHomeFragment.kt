@@ -12,6 +12,7 @@ import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.RankingRecyclerViewAdapter
 import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.SearchList.SearchDecoration
+import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_ranking.*
 import kotlinx.android.synthetic.main.fragment_trade.*
 import kotlinx.coroutines.CoroutineScope
@@ -68,7 +69,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     }
 
     override fun showLoading() {
-        Log.v(TAG,"showLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
             avi_loading.let{
                 avi_loading.visibility = View.VISIBLE
@@ -78,7 +79,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     }
 
     override fun hideLoading() {
-        Log.v(TAG, "hideLoading(...)")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
             avi_loading.let {
                 avi_loading.visibility = View.GONE
@@ -88,7 +89,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     }
 
     override fun showTradeInfo(tradeInfoList: List<TradeResponse>) {
-        Log.v(TAG,"TEST, TradeInfoList : $tradeInfoList")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, TradeInfoList : $tradeInfoList")
         mTradePresenter.let {
             mTradePresenter!!.getTradePlayerImageUrl(tradeInfoList)
         }
@@ -96,7 +97,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
 
     override fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
         CoroutineScope(Dispatchers.Main).launch {
-            Log.v(TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
             recycler_view.addItemDecoration(SearchDecoration(10))
             recycler_view.setLayoutManager(LinearLayoutManager(context))
             var sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }

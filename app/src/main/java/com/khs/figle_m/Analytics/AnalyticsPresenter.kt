@@ -6,6 +6,7 @@ import com.khs.figle_m.Response.DTO.MatchInfoDTO
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.CrawlingUtils
+import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -108,7 +109,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     }
 
     override fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>) {
-        Log.v(TAG,"requestSize : ${playerInfoList.size}")
+        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"requestSize : ${playerInfoList.size}")
         var responseQ = PriorityQueue<String>()
         CoroutineScope(Dispatchers.Default).launch {
             for (item in playerInfoList) {

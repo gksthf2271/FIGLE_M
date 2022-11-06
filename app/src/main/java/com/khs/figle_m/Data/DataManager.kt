@@ -1,7 +1,6 @@
 package com.khs.figle_m.Data
 
 import android.content.Context
-import android.util.Log
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.TradeResponse
@@ -9,6 +8,7 @@ import com.khs.figle_m.Response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.Trade.TradeHomeFragment
 import com.khs.figle_m.Utils.DateUtils
+import com.khs.figle_m.Utils.LogUtil
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -18,7 +18,7 @@ import java.net.UnknownHostException
 
 class DataManager{
     val TAG: String = javaClass.simpleName
-    val DEBUG: Boolean = false
+    val DEBUG: Boolean = true
 
     var mContext: Context? = null
 
@@ -134,7 +134,7 @@ class DataManager{
                     call: Call<UserResponse>,
                     response: Response<UserResponse>
                 ) {
-                    Log.v(TAG, "loadUserData response(...) ${response.code()}")
+                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadUserData response(...) ${response.code()}")
                     if (response != null) {
                         if (response.code() == SUCCESS_CODE) {
                             onSuccess(response!!.body())
@@ -175,8 +175,8 @@ class DataManager{
                     call: Call<MatchDetailResponse>,
                     response: Response<MatchDetailResponse>
                 ) {
-//                    Log.v(TAG, "loadMatchDetail response(...) ${response.code()}")
-                    if (DEBUG) Log.v(TAG, "response(...) ${response!!.body().toString()}")
+//                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadMatchDetail response(...) ${response.code()}")
+                    LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"response(...) ${response!!.body().toString()}")
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
                     } else {
@@ -212,7 +212,7 @@ class DataManager{
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    Log.v(TAG, "loadMatchId onResponse(...) ::: ${response.code()}")
+                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadMatchId onResponse(...) ::: ${response.code()}")
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body())
                     } else {
@@ -241,7 +241,7 @@ class DataManager{
                     call: Call<List<UserHighRankResponse>>,
                     response: Response<List<UserHighRankResponse>>
                 ) {
-                    if (DEBUG) Log.v(TAG, "loadUserHighRank response(...) ${response.code()}")
+                    LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadUserHighRank response(...) ${response.code()}")
                     if (response != null) {
                         if (response.code() == SUCCESS_CODE) {
                             onSuccess(response!!.body()!!)
@@ -260,7 +260,6 @@ class DataManager{
     ) {
         val call = SearchUser.getServiceImage()
             .requestPlayerImage(authorization = mAuthorizationKey, spid = spid)
-//        Log.v(TAG, "loadPlayerImage call : ${call.request()}")
         onSuccess(call.request().url())
     }
 
@@ -276,7 +275,7 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (DEBUG) Log.v(TAG, "loadSeasonIdList response(...) ${response.code()}")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadSeasonIdList response(...) ${response.code()}")
                 if (response != null) {
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
@@ -300,7 +299,7 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (DEBUG) Log.v(TAG, "loadPlayerName response(...) ${response.code()}")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadPlayerName response(...) ${response.code()}")
                 if (response != null) {
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
@@ -318,14 +317,14 @@ class DataManager{
         onSuccess: (List<RankerPlayerDTO>) -> Unit,
         onFailed: (Int) -> Unit
     ) {
-        if (DEBUG) Log.v(TAG, "TEST, players : ${players}")
+        LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST, players : ${players}")
         val call = SearchUser.getApiService()
             .requestRankerPlayerAverList(
                 authorization = mAuthorizationKey,
                 matchType = matchType,
                 players = players
             )
-        if (DEBUG) Log.v(TAG, "TEST, call : ${call.request()}")
+        LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST, call : ${call.request()}")
 
         call.enqueue(object : Callback<List<RankerPlayerDTO>> {
             override fun onFailure(call: Call<List<RankerPlayerDTO>>, t: Throwable) {
@@ -339,7 +338,7 @@ class DataManager{
                 call: Call<List<RankerPlayerDTO>>,
                 response: Response<List<RankerPlayerDTO>>
             ) {
-                if (DEBUG) Log.v(TAG, "loadRankerPlayerAverData response(...) ${response.code()}")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadRankerPlayerAverData response(...) ${response.code()}")
                 if (response != null) {
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
@@ -360,7 +359,7 @@ class DataManager{
         val call = SearchUser.getCrawlingService()
             .requestPlayerInfo(spId = spid, strong = strong)
 
-        if (DEBUG) Log.v(TAG, "TEST, Call : ${call.request()}")
+        LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST, Call : ${call.request()}")
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -385,7 +384,7 @@ class DataManager{
         val call = SearchUser.getCrawlingService()
             .requestRaking(page = page)
 
-        /*if (DEBUG) */Log.v(TAG, "TEST, Call : ${call.request()}")
+        LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"TEST, Call : ${call.request()}")
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -416,11 +415,11 @@ class DataManager{
             offset = offset,
             limit = limit
         )
-        if (DEBUG) Log.v(TAG,"loadTradeInfo : ${call.request()}")
+        LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadTradeInfo : ${call.request()}")
 
         call.enqueue(object : Callback<List<TradeResponse>> {
             override fun onFailure(call: Call<List<TradeResponse>>, t: Throwable) {
-                Log.d(TAG,"onFailure(...) : $t")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"onFailure(...) : $t")
                 if (t is UnknownHostException) {
                     onFailed(makeErrorException(t))
                     return
@@ -428,7 +427,7 @@ class DataManager{
             }
 
             override fun onResponse(call: Call<List<TradeResponse>>, response: Response<List<TradeResponse>>) {
-                Log.v(TAG,"loadTradeInfo(...)")
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadTradeInfo(...)")
                 if (response.body() == null) {
                     onFailed(tradeType.ordinal)
                     return
