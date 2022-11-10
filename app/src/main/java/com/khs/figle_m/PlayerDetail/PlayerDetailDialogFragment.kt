@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
@@ -155,9 +155,9 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         val playerDB = PlayerDataBase.getInstance(context!!)
         playerDB.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val player = playerDB!!.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
+                val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
                 CoroutineScope(Dispatchers.Main).launch {
-                    txt_player_name.text = player.playerName
+                    txt_player_name.text = player?.playerName ?: ""
                 }
             }
         }

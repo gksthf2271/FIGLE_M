@@ -2,10 +2,10 @@ package com.khs.figle_m.SearchDetail.SecondView
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
@@ -79,9 +79,10 @@ class PlayerInfoView @JvmOverloads constructor(
         val playerDB = PlayerDataBase.getInstance(context)
         playerDB?.let { playerDataBase ->
             CoroutineScope(Dispatchers.IO).launch {
-                val player = playerDataBase.playerDao().getPlayer(player.spId.toString())
+                val player : PlayerEntity? = playerDataBase.playerDao().getPlayer(player.spId.toString())
                 CoroutineScope(Dispatchers.Main).launch {
-                    txt_name.text = player.playerName
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"player : ${player?.playerName}")
+                    txt_name.text = player?.playerName ?: ""
                 }
             }
         }

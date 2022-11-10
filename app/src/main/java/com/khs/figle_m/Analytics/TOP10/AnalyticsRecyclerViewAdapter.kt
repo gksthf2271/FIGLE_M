@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DrawUtils
@@ -79,7 +80,7 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                 val playerDB = PlayerDataBase.getInstance(context)
                 playerDB.let {
                     CoroutineScope(Dispatchers.IO).launch {
-                        val player = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                        val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(item.spId.toString())
                         player ?: return@launch
                         CoroutineScope(Dispatchers.Main).launch {
                             this@apply.text = player.playerName

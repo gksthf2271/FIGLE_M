@@ -10,7 +10,7 @@ interface PlayerDao : BaseDAO<PlayerEntity>{
 
 //    "SELECT * FROM AD WHERE Canceled = :mIsCancelled AND Type = :mType AND Status = :mStatus"
     @Query("SELECT * FROM Player WHERE playerId = :playerId")
-    fun getPlayer(playerId:String): PlayerEntity
+    fun getPlayer(playerId:String): PlayerEntity?
 
     @Query("DELETE from player")
     fun deleteAll()

@@ -3,7 +3,6 @@ package com.khs.figle_m.SearchDetail
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
@@ -71,7 +71,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
             val playerDB = PlayerDataBase.getInstance(context)
             playerDB?.let { playerDataBase ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    val player = playerDataBase.playerDao().getPlayer(item.spId.toString())
+                    val player : PlayerEntity? = playerDataBase.playerDao().getPlayer(item.spId.toString())
                     player ?: return@launch
                     CoroutineScope(Dispatchers.Main).launch {
                         mPlayerName.text = player.playerName

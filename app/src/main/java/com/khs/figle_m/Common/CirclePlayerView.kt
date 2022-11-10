@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum
@@ -43,7 +44,7 @@ class CirclePlayerView @JvmOverloads constructor(
         val playerDB = PlayerDataBase.getInstance(context)
         playerDB.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val player = playerDB!!.playerDao().getPlayer(spId)
+                val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(spId)
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
                     txt_player_name.text = player.playerName
