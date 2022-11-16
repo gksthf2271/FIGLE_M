@@ -3,6 +3,7 @@ package com.khs.figle_m.Analytics
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 
 interface AnalyticsContract : BaseView {
@@ -14,6 +15,8 @@ interface AnalyticsContract : BaseView {
         fun showPlayerMap(playerMap: Map<Int, List<PlayerDTO>>)
         fun showPlayerInfoList(playerInfoList: List<AnalyticsPlayer>)
         fun showPlayerImage(playerInfoList: List<AnalyticsPlayer>)
+
+        fun showPlayerDetailDialogFragment(playerDTO: PlayerDTO, rankerPlayerDTOList: List<RankerPlayerDTO>)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -21,5 +24,6 @@ interface AnalyticsContract : BaseView {
         fun loadPlayerList(accessId: String, matchDetailList: List<MatchDetailResponse>)
         fun loadPlayerInfoList(playerMap: Map<Int, List<PlayerDTO>>)
         fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>)
+        fun loadRankerPlayerList(matchType: Int, playerDTO: PlayerDTO)
     }
 }

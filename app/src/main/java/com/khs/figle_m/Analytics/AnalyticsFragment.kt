@@ -8,10 +8,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.BuildConfig
+import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
 import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_analytics.*
 import kotlinx.coroutines.CoroutineScope
@@ -125,6 +128,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
                     .subList(0, 10)
             ) {
                 LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, AVG Rating TOP 10 $it")
+                showPlayerDetailDialogFragmentWrap(it)
             }
 
         recycler_view_goal.adapter = AnalyticsRecyclerViewAdapter(
@@ -133,6 +137,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
             playerInfoList.sortedByDescending { it.totalData.totalGoal }.subList(0, 5)
         ) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, Total Goal TOP 5 $it")
+            showPlayerDetailDialogFragmentWrap(it)
         }
 
         recycler_view_assist.adapter = AnalyticsRecyclerViewAdapter(
@@ -141,6 +146,13 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
             playerInfoList.sortedByDescending { it.totalData.totalAssist }.subList(0, 5)
         ) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG, "ItemClick, Total Assist TOP 5 $it")
+            showPlayerDetailDialogFragmentWrap(it)
+        }
+    }
+
+    fun showPlayerDetailDialogFragmentWrap(analyticsPlayer: AnalyticsPlayer) {
+        if (analyticsPlayer.playerDataList.isNotEmpty()) {
+            mAnalyticsPresenter.loadRankerPlayerList(50, analyticsPlayer.playerDataList.first())
         }
     }
 
@@ -151,6 +163,40 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
 
     override fun showError(error: Int) {
         TODO("Not yet implemented")
+    }
+
+    override fun showPlayerDetailDialogFragment(
+        playerDTO: PlayerDTO,
+        rankerPlayerDTOList: List<RankerPlayerDTO>
+    ) {
+        updatePlayer(playerDTO) { imgUrl ->
+            val playerDetailFragment = PlayerDetailDialogFragment.getInstance()
+            val bundle = Bundle()
+            playerDTO.imageUrl = imgUrl
+            bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+            bundle.putParcelableArrayList(
+                PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO,
+                ArrayList(rankerPlayerDTOList)
+            )
+            playerDetailFragment.arguments = bundle
+            if (!playerDetailFragment.isAdded) {
+                playerDetailFragment.show(
+                    fragmentManager!!,
+                    PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
+                )
+            }
+        }
+    }
+
+    private fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            CrawlingUtils().getPlayerImg(player, {
+                callback(it)
+            }, {
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"updatePlayer(...) : $it")
+                showError(it)
+            })
+        }
     }
 
     enum class ROW_TYPE(val rowType:Int, val description:String){

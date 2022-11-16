@@ -229,11 +229,15 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         playerDTO: PlayerDTO,
         rankerPlayerDTOList: List<RankerPlayerDTO>
     ) {
-        updatePlayer(playerDTO, {
-            var playerDetailFragment = PlayerDetailDialogFragment.getInstance()
+        updatePlayer(playerDTO) { imgUrl ->
+            val playerDetailFragment = PlayerDetailDialogFragment.getInstance()
             val bundle = Bundle()
+            playerDTO.imageUrl = imgUrl
             bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
-            bundle.putParcelableArrayList(PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO, ArrayList(rankerPlayerDTOList))
+            bundle.putParcelableArrayList(
+                PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO,
+                ArrayList(rankerPlayerDTOList)
+            )
             playerDetailFragment.arguments = bundle
             if (!playerDetailFragment.isAdded) {
                 playerDetailFragment.show(
@@ -241,10 +245,10 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
                     PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
                 )
             }
-        })
+        }
     }
 
-    fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
+    private fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             CrawlingUtils().getPlayerImg(player, {
                 callback(it)

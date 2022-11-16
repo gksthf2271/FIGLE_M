@@ -10,6 +10,9 @@ import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 
 class AnalyticsPresenter : AnalyticsContract.Presenter{
@@ -21,7 +24,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     override fun loadMatchDetail(matchIdList: List<String>) {
         mAnalyticsView?.showLoading()
         mFailedResponseQ.clear()
-        var resultList = mutableListOf<MatchDetailResponse>()
+        val resultList = mutableListOf<MatchDetailResponse>()
         CoroutineScope(Dispatchers.Default).launch {
             for (matchId in matchIdList) {
                 DataManager.getInstance().loadMatchDetail(matchId, {
@@ -64,9 +67,9 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
     }
 
     override fun loadPlayerInfoList(playerMap: Map<Int, List<PlayerDTO>>) {
-        var playerInfoList = mutableListOf<AnalyticsPlayer>()
+        val playerInfoList = mutableListOf<AnalyticsPlayer>()
         for (key in playerMap.keys){
-            var playerInfo = AnalyticsPlayer()
+            val playerInfo = AnalyticsPlayer()
             for (playerDto in playerMap.get(key)!!.toList()){
                 playerInfo.totalData.totalShoot += playerDto.status.shoot
                 playerInfo.totalData.totalEffectiveShoot += playerDto.status.effectiveShoot
@@ -126,6 +129,34 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
             }
             mAnalyticsView!!.hideLoading(false)
         }
+    }
+
+    override fun loadRankerPlayerList(matchType: Int, playerDTO: PlayerDTO) {
+        mAnalyticsView?.showLoading()
+        runBlocking {
+            launch {
+                DataManager.getInstance().loadRankerPlayerAverData(matchType,
+                    getPlayerObject(playerDTO),
+                    {
+                        mAnalyticsView?.hideLoading(false)
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadRankerPlayerList success!")
+                        mAnalyticsView?.showPlayerDetailDialogFragment(playerDTO,it)
+                    },{
+                        mAnalyticsView?.hideLoading(true)
+                        LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadRankerPlayerList failed!")
+                        mAnalyticsView?.showPlayerDetailDialogFragment(playerDTO, emptyList())
+                    })
+            }
+        }
+    }
+
+    private fun getPlayerObject(playerDTO: PlayerDTO) : String {
+        val jsonObject = JSONObject().apply {
+            put("id", playerDTO.spId)
+            put("po", playerDTO.spPosition)
+        }
+
+        return JSONArray().put(jsonObject).toString()
     }
 
     override fun takeView(view: AnalyticsContract.View) {

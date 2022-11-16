@@ -104,20 +104,19 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     private fun initData() {
         var playerDetailInfo: PlayerDTO? = null
         var rankerPlayerInfo: List<RankerPlayerDTO>? = null
-        arguments.let {
-            playerDetailInfo = arguments!!.get(KEY_PLAYER_INFO) as PlayerDTO
-            rankerPlayerInfo = arguments!!.get(KEY_RANKER_PLAYER_INFO) as List<RankerPlayerDTO>
+        arguments?.let {
+            playerDetailInfo = it.get(KEY_PLAYER_INFO) as PlayerDTO
+            rankerPlayerInfo = it.get(KEY_RANKER_PLAYER_INFO) as List<RankerPlayerDTO>
         }
 
         playerDetailInfo ?: return
         mPlayerInfo = playerDetailInfo!!
 
-        if (rankerPlayerInfo !=null && !rankerPlayerInfo!!.isEmpty()) {
-            chart_ranker.setData(playerDetailInfo,rankerPlayerInfo!!.get(0))
+        if (rankerPlayerInfo != null && rankerPlayerInfo!!.isNotEmpty()) {
+            chart_ranker.setData(playerDetailInfo, rankerPlayerInfo!![0])
         }
 
-
-        updatePlayerImage(mPlayerInfo.imageUrl!!)
+        updatePlayerImage(mPlayerInfo.imageUrl ?: "0")
 
         updateIcon(context!!, playerDetailInfo!!)
 

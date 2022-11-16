@@ -76,6 +76,7 @@
     <color name="trade_blue_color">#B30073BA</color>
 
     <color name="analytics_wrapper">#80000000</color>
+    <color name="field_background">#191919</color>
 
     <color name="search_loading_color">#66000000</color>
 </resources>
