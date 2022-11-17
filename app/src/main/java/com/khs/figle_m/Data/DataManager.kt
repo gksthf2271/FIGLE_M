@@ -151,9 +151,9 @@ class DataManager{
     fun loadMatchDetailWrapper(matchId: String,
                                onSuccess: ((MatchDetailResponse) -> Unit),
                                onFailed: (String) -> Unit) {
-        loadMatchDetail(matchId, onSuccess, {
+        loadMatchDetail(matchId, onSuccess) { responseCode ->
             onFailed(matchId)
-        })
+        }
     }
 
     fun loadMatchDetail(
@@ -175,7 +175,6 @@ class DataManager{
                     call: Call<MatchDetailResponse>,
                     response: Response<MatchDetailResponse>
                 ) {
-//                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadMatchDetail response(...) ${response.code()}")
                     LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"response(...) ${response!!.body().toString()}")
                     if (response.code() == SUCCESS_CODE) {
                         onSuccess(response!!.body()!!)
