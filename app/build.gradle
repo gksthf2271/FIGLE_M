@@ -27,8 +27,8 @@ android {
         applicationId "com.khs.figle_m"
         minSdkVersion 24
         targetSdkVersion 32
-        versionCode 25
-        versionName "2.5"
+        versionCode 26
+        versionName "2.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
