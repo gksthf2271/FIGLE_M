@@ -2,23 +2,20 @@ package com.khs.figle_m.SearchDetail
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Button
 import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
+import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
-import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogTopView
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.DisplayUtils
 import com.khs.figle_m.Utils.LogUtil
@@ -43,11 +40,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     lateinit var mMatchDetail: MatchDetailResponse
     lateinit var mSearchAccessId: String
     lateinit var mOpposingUserId: String
-    lateinit var mSearchDetailPresenter: SearchDetailPresenter
-
-    lateinit var mTopView: SearchDetailDialogTopView
-    lateinit var mViewPager:ViewPager
-    lateinit var mBtnClose:Button
+    private var mSearchDetailPresenter: SearchDetailPresenter? = null
 
     var mIsCoachMode: Boolean = false
 
@@ -72,8 +65,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_search_container, container,true)
-        return v
+        return inflater.inflate(R.layout.fragment_search_container, container, true)
     }
 
     override fun onResume() {
@@ -100,18 +92,15 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        mSearchDetailPresenter!!.dropView()
+        mSearchDetailPresenter?.dropView()
     }
 
     override fun onStart() {
         super.onStart()
         if (isRestartApp) return
-        mSearchDetailPresenter!!.takeView(this)
+        mSearchDetailPresenter?.takeView(this)
         mPlayerImgMap = hashMapOf()
-        mTopView = view!!.findViewById(R.id.topView)
-        mViewPager = view!!.findViewById(R.id.viewPager)
-        mBtnClose = view!!.findViewById(R.id.btn_close)
-        mBtnClose.setOnClickListener {
+        btn_close.setOnClickListener {
             dismiss()
         }
         arguments.let{
@@ -130,12 +119,11 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     fun initView() {
-        mViewPager.adapter =
-            SearchDetailDialogAdapter(context!!, mMatchDetail, {
+        viewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail) {
                 group_topInfo.background = resources.getDrawable(R.color.fragment_background, null)
-                mTopView.updatePlayerInfo(it)
-            })
-        mViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                topView.updatePlayerInfo(it)
+            }
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -143,7 +131,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 when (position) {
                     0 -> {
-                        mTopView.updateUserView(mIsCoachMode, mSearchAccessId, mMatchDetail)
+                        topView.updateUserView(mIsCoachMode, mSearchAccessId, mMatchDetail)
                     }
                 }
             }
@@ -153,12 +141,12 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
         })
         initIndicator()
-        mViewPager.currentItem = 0
+        viewPager.currentItem = 0
     }
 
     fun initIndicator() {
         val dotsIndicator = view!!.findViewById<WormDotsIndicator>(R.id.dots_indicator)
-        dotsIndicator.setViewPager(mViewPager)
+        dotsIndicator.setViewPager(viewPager)
     }
 
     fun resizeDialog(){
@@ -190,9 +178,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         group_root.visibility = View.VISIBLE
     }
 
-    fun getPlayerImageUrlList(accessId:String, playerList: List<PlayerDTO>){
+    private fun getPlayerImageUrlList(accessId:String, playerList: List<PlayerDTO>){
         for (player in playerList) {
-            mSearchDetailPresenter.getPlayerImage(accessId, player, playerList.size)
+            mSearchDetailPresenter?.getPlayerImage(accessId, player, playerList.size)
         }
     }
 
@@ -222,7 +210,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     fun showPlayerDetailFragment(playerDTO: PlayerDTO) {
-        mSearchDetailPresenter.getRankerPlayerList(mMatchDetail.matchType, playerDTO)
+        mSearchDetailPresenter?.getRankerPlayerList(mMatchDetail.matchType, playerDTO)
     }
 
     override fun showPlayerDetailDialogFragment(

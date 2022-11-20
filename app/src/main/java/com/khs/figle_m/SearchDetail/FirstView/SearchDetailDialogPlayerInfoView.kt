@@ -51,13 +51,8 @@ class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
         var playerList = listOf<PlayerDTO>()
         val leftLayoutManager = LinearLayoutManager(context)
         mLeftRecyclerView.addItemDecoration(SearchDecoration(10))
-        mLeftRecyclerView.setLayoutManager(leftLayoutManager)
-        playerList = initPlayerList(
-            true,
-            (playerMap.get(searchUserAccessId) ?: PlayerListDTO(
-                "",
-                listOf()
-            ) as PlayerListDTO).playerList
+        mLeftRecyclerView.layoutManager = leftLayoutManager
+        playerList = initPlayerList(true, (playerMap[searchUserAccessId] ?: PlayerListDTO("", listOf()) as PlayerListDTO).playerList
         )
 //        playerList = initPlayerList(true, matchInfo)
         if (playerList.isEmpty() || playerList.size == 0) {
@@ -76,13 +71,10 @@ class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
         mRightRecyclerView.layoutManager = rightLayoutManager
 
         playerList = initPlayerList(
-            false, (playerMap.get(opposingUserAccessId) ?: PlayerListDTO(
-                "",
-                listOf()
-            ) as PlayerListDTO).playerList
-        )
+            false,
+            (playerMap[opposingUserAccessId] ?: PlayerListDTO("", listOf()) as PlayerListDTO).playerList)
 //        playerList = initPlayerList(false, matchInfo)
-        if (playerList.isEmpty() || playerList.size == 0) {
+        if (playerList.isEmpty() || playerList.isEmpty()) {
             group_right_error.visibility = View.VISIBLE
         } else {
             group_right_error.visibility = View.INVISIBLE
@@ -98,8 +90,8 @@ class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
     }
 
     fun initPlayerList(isLeftInfo: Boolean, matchInfo: MatchDetailResponse): List<PlayerDTO>{
-        var pair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId, matchInfo)
-        var playerList = mutableListOf<PlayerDTO>()
+        val pair = UserSortUtils().sortUserList(SearchDetailDialogFragment.getInstance().mSearchAccessId, matchInfo)
+        val playerList = mutableListOf<PlayerDTO>()
         when (isLeftInfo) {
             true -> {
                 playerList.addAll(pair.first.player)
@@ -118,7 +110,7 @@ class SearchDetailDialogPlayerInfoView @JvmOverloads constructor(
         return playerList
     }
 
-    fun initPlayerList(isLeftInfo: Boolean, listPlayer: List<PlayerDTO>): List<PlayerDTO> {
+    private fun initPlayerList(isLeftInfo: Boolean, listPlayer: List<PlayerDTO>): List<PlayerDTO> {
         var playerList:ArrayList<PlayerDTO> = ArrayList(listPlayer)
         when (isLeftInfo) {
             true -> {

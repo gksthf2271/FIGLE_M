@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.khs.figle_m.Analytics.Squad.SquadFieldView
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogGameResultView
@@ -32,15 +33,31 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
                 (view as SearchDetailDialogGameResultView).updateMatchInfo(mMatchDetailResponse)
             }
             1 -> {
+                view = SquadFieldView(mContext)
+                (view as SquadFieldView).updateMatchInfo(
+                    SearchDetailDialogFragment.getInstance().mSearchAccessId,
+                    SearchDetailDialogFragment.getInstance().getPlayerImgMap()) {
+                    mItemClick(it)
+                }
+            }
+            2 -> {
+                view = SquadFieldView(mContext)
+                (view as SquadFieldView).updateMatchInfo(
+                    SearchDetailDialogFragment.getInstance().mOpposingUserId,
+                    SearchDetailDialogFragment.getInstance().getPlayerImgMap()) {
+                    mItemClick(it)
+                }
+            }
+            3 -> {
                 view =
                     SearchDetailDialogPlayerInfoView(mContext)
-                view.updatePlayerInfo(
+                (view as SearchDetailDialogPlayerInfoView).updatePlayerInfo(
                     SearchDetailDialogFragment.getInstance().mSearchAccessId,
                     SearchDetailDialogFragment.getInstance().mOpposingUserId,
-                    SearchDetailDialogFragment.getInstance().getPlayerImgMap(),
-                    {
-                        mItemClick(it)
-                    })
+                    SearchDetailDialogFragment.getInstance().getPlayerImgMap()
+                ) {
+                    mItemClick(it)
+                }
             }
         }
         collection.addView(view)
@@ -48,7 +65,7 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
     }
 
     override fun getCount(): Int {
-        return 2
+        return 4
     }
 
     override fun isViewFromObject(arg0: View, arg1: Any): Boolean {

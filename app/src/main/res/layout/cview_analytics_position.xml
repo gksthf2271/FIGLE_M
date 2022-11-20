@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="60dp"
-    android:layout_height="70dp">
+    android:id="@+id/group_root"
+    android:layout_width="80dp"
+    android:layout_height="90dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,14 +12,13 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/layout_rounded_white"
         android:scaleType="fitXY"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/analytics_img_player"
+            android:id="@+id/img_player"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="fitXY"
@@ -31,19 +31,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/txt_rating"
+        android:id="@+id/txt_player_spGrade"
         android:layout_width="20dp"
         android:layout_height="12dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/rounded_player"
         android:gravity="center"
-        android:singleLine="true"
-        android:textColor="@color/search_text_color"
         android:textSize="10sp"
         android:textStyle="bold"
+        tools:text="10"
+        tools:background="@color/player_grade_bronze"
+        android:textColor="@color/search_text_color"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_position"
@@ -85,7 +83,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:text=""
         android:textColor="@color/search_text_color"
         android:textSize="8sp"
         android:textStyle="bold"
