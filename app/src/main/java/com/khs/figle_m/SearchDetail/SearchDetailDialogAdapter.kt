@@ -33,16 +33,30 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
                 (view as SearchDetailDialogGameResultView).updateMatchInfo(mMatchDetailResponse)
             }
             1 -> {
+                var userNickname = ""
+                if (mMatchDetailResponse.matchInfo[0].accessId == SearchDetailDialogFragment.getInstance().mSearchAccessId) {
+                    userNickname = mMatchDetailResponse.matchInfo[0].nickname
+                } else {
+                    userNickname = mMatchDetailResponse.matchInfo[1].nickname
+                }
                 view = SquadFieldView(mContext)
                 (view as SquadFieldView).updateMatchInfo(
+                    userNickname,
                     SearchDetailDialogFragment.getInstance().mSearchAccessId,
                     SearchDetailDialogFragment.getInstance().getPlayerImgMap()) {
                     mItemClick(it)
                 }
             }
             2 -> {
+                var userNickname = ""
+                if (mMatchDetailResponse.matchInfo[0].accessId == SearchDetailDialogFragment.getInstance().mOpposingUserId) {
+                    userNickname = mMatchDetailResponse.matchInfo[0].nickname
+                } else {
+                    userNickname = mMatchDetailResponse.matchInfo[1].nickname
+                }
                 view = SquadFieldView(mContext)
                 (view as SquadFieldView).updateMatchInfo(
+                    userNickname,
                     SearchDetailDialogFragment.getInstance().mOpposingUserId,
                     SearchDetailDialogFragment.getInstance().getPlayerImgMap()) {
                     mItemClick(it)

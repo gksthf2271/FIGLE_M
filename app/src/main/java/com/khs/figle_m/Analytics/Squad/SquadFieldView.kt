@@ -45,11 +45,12 @@ class SquadFieldView @JvmOverloads constructor(
         inflater.inflate(R.layout.cview_field, this)
     }
 
-    fun updateMatchInfo(userId: String,
+    fun updateMatchInfo(userNickname: String,
+                        userId: String,
                         playerMap: HashMap<String, PlayerListDTO>,
                         itemClick: (Pair<PlayerDTO, Boolean>) -> Unit) {
         playerMap[userId]?.let { playerList ->
-            txt_userName.text = "$userId 스쿼드"
+            txt_userName.text = "$userNickname 스쿼드"
             makeSquad(playerList.playerList, itemClick)
         }
     }
