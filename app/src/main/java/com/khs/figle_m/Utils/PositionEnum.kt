@@ -1,46 +1,48 @@
 package com.khs.figle_m.Utils
 
-
-enum class PositionEnum(val spposition:Int, val description:String) {
-    GK(0,"GK"),
-
-    SW(1,"SW"),
-    RWB(2,"RWB"),
-    RB(3,"RB"),
-    RCB(4,"RCB"),
-    CB(5,"CB"),
-    LCB(6,"LCB"),
-    LB(7,"LB"),
-    LWB(8,"LWB"),
+import com.khs.figle_m.R
 
 
+enum class PositionEnum(val spposition:Int, val description: String, val pointColor: Int) {
+    GK(0,"GK", R.color.gk_color),
 
-    RDM(9,"RDM"),
-    CDM(10,"CDM"),
-    LDM(11,"LDM"),
-
-    RM(12,"RM"),
-    RCM(13,"RCM"),
-    CM(14,"CM"),
-    LCM(15,"LCM"),
-    LM(16,"LM"),
-
-    RAM(17,"RAM"),
-    CAM(18,"CAM"),
-    LAM(19,"LAM"),
+    SW(1,"SW", R.color.defence_color),
+    RWB(2,"RWB", R.color.defence_color),
+    RB(3,"RB", R.color.defence_color),
+    RCB(4,"RCB", R.color.defence_color),
+    CB(5,"CB", R.color.defence_color),
+    LCB(6,"LCB", R.color.defence_color),
+    LB(7,"LB", R.color.defence_color),
+    LWB(8,"LWB", R.color.defence_color),
 
 
 
-    RF(20,"RF"),
-    CF(21,"CF"),
-    LF(22,"LF"),
-    RW(23,"RW"),
-    RS(24,"RS"),
-    ST(25,"ST"),
-    LS(26,"LS"),
-    LW(27,"LW"),
+    RDM(9,"RDM", R.color.midfielder_color),
+    CDM(10,"CDM", R.color.midfielder_color),
+    LDM(11,"LDM", R.color.midfielder_color),
 
-    SUB(28,"SUB")
+    RM(12,"RM", R.color.midfielder_color),
+    RCM(13,"RCM", R.color.midfielder_color),
+    CM(14,"CM", R.color.midfielder_color),
+    LCM(15,"LCM", R.color.midfielder_color),
+    LM(16,"LM", R.color.midfielder_color),
+
+    RAM(17,"RAM", R.color.midfielder_color),
+    CAM(18,"CAM", R.color.midfielder_color),
+    LAM(19,"LAM", R.color.midfielder_color),
+
+
+
+    RF(20,"RF", R.color.forward_color),
+    CF(21,"CF", R.color.forward_color),
+    LF(22,"LF", R.color.forward_color),
+    RW(23,"RW", R.color.forward_color),
+    RS(24,"RS", R.color.forward_color),
+    ST(25,"ST", R.color.forward_color),
+    LS(26,"LS", R.color.forward_color),
+    LW(27,"LW", R.color.forward_color),
+
+    SUB(28,"SUB", R.color.sub_color)
 }
 /*
 

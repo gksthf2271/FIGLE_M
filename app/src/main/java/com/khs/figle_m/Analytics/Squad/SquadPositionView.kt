@@ -1,6 +1,7 @@
 package com.khs.figle_m.Analytics.Squad
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -18,6 +20,7 @@ import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.R
 import com.khs.figle_m.Response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
+import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_analytics_position.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,11 +40,12 @@ class SquadPositionView : ConstraintLayout{
         inflater.inflate(R.layout.cview_analytics_position, this)
     }
 
-    fun updatePlayerInfo(playerDTO: PlayerDTO, positionStr: String, itemClick: (Pair<PlayerDTO, Boolean>) -> Unit) {
+    fun updatePlayerInfo(playerDTO: PlayerDTO, positionEnum: PositionEnum, itemClick: (Pair<PlayerDTO, Boolean>) -> Unit) {
         this.setOnClickListener { itemClick(
             Pair(playerDTO, true)
         ) }
-        txt_player_position.text = positionStr
+        txt_player_position.text = positionEnum.description
+        txt_player_position.setTextColor(ContextCompat.getColor(context, positionEnum.pointColor))
         updatePlayerName(playerDTO.spId)
         updatePlayerImage(playerDTO.imageUrl ?: "0")
         updatePlayerGrade(playerDTO.spGrade)

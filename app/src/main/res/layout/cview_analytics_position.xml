@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/group_root"
     android:layout_width="80dp"
-    android:layout_height="90dp">
+    android:layout_height="70dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/search_text_color"
-            android:textSize="6sp"
+            android:textSize="8sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

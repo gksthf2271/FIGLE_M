@@ -11,18 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/search_detail_dialog_background"
-        app:layout_constraintHeight_percent="0.03"
+        app:layout_constraintHeight_percent="0.05"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/txt_userName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:textColor="@color/search_text_color"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:paddingStart="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +34,7 @@
         android:layout_height="0dp"
         android:background="@drawable/field"
         android:paddingHorizontal="20dp"
-        app:layout_constraintHeight_percent="0.97"
+        app:layout_constraintHeight_percent="0.95"
         app:layout_constraintTop_toBottomOf="@id/group_userName">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -420,7 +419,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHeight_percent="0.13"
             app:layout_constraintTop_toBottomOf="@id/group_df">
 
             <com.khs.figle_m.Analytics.Squad.SquadPositionView
