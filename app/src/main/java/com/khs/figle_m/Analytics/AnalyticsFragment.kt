@@ -57,9 +57,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     fun initView() {
         txt_title.text = "최근 10경기 분석"
         btn_back.setOnClickListener {
-            activity.let {
-                activity!!.finish()
-            }
+            activity?.finish()
         }
         val rating_layoutManager = LinearLayoutManager(context)
         rating_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
@@ -79,11 +77,11 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
 
     fun initList() {
         var myList = arrayListOf<String>()
-        arguments.let {
-            myList = arguments!!.getStringArrayList(AnalyticsActivity().KEY_MY_DATA)!!
-            mAccessId = arguments!!.getString(AnalyticsActivity().KEY_ACCESS_ID)!!
+        arguments?.let {
+            myList = it.getStringArrayList(AnalyticsActivity().KEY_MY_DATA)!!
+            mAccessId = it.getString(AnalyticsActivity().KEY_ACCESS_ID)!!
         }
-        var lastIdx = 10;
+        var lastIdx = 10
         if (myList.size < 10) {
             lastIdx = myList.lastIndex
         }
@@ -104,9 +102,9 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     override fun hideLoading(isError: Boolean) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading.let {
-                avi_loading.visibility = View.GONE
-                avi_loading.hide()
+            avi_loading?.let {
+                it.visibility = View.GONE
+                it.hide()
             }
         }
     }

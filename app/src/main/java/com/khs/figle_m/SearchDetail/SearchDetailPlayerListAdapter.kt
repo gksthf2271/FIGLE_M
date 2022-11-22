@@ -139,17 +139,17 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
 
         private fun updateSeason(context: Context, item: PlayerDTO) {
             val seasonDB = PlayerDataBase.getInstance(context)
-            seasonDB.let {
+            seasonDB?.let {
                 CoroutineScope(Dispatchers.IO).launch {
                     var seasonId = item.spId.toString().substring(0,3)
                     //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                     if ("224" == seasonId) seasonId = "234"
-                    val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                    val seasonEntity = it.seasonDao().getSeason(seasonId)
                     LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                     seasonEntity.let {
-                        val url = seasonEntity.seasonImg
+                        val url = it.seasonImg
                         CoroutineScope(Dispatchers.Main).launch {
-                            LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, saesonUrl : ${url}")
+                            LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"TEST, seasonUrl : $url")
                             Glide.with(context)
                                 .load(url)
                                 .listener(object : RequestListener<Drawable> {

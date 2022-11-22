@@ -74,13 +74,13 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                 }
             }
 
-            positionSet.let { mItemView.txt_player_position.text = positionSet.toString() }
+            positionSet.let { mItemView.txt_player_position.text = it.toString() }
             showRatingView(context, item)
             mItemView.txt_player_name.apply {
                 val playerDB = PlayerDataBase.getInstance(context)
-                playerDB.let {
+                playerDB?.let {
                     CoroutineScope(Dispatchers.IO).launch {
-                        val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                        val player : PlayerEntity? = it.playerDao().getPlayer(item.spId.toString())
                         player ?: return@launch
                         CoroutineScope(Dispatchers.Main).launch {
                             this@apply.text = player.playerName

@@ -61,9 +61,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
                 playerMap[player.spId] = playerList
             }
         }
-        mAnalyticsView.let {
-            mAnalyticsView!!.showPlayerMap(playerMap)
-        }
+        mAnalyticsView?.showPlayerMap(playerMap)
     }
 
     override fun loadPlayerInfoList(playerMap: Map<Int, List<PlayerDTO>>) {
@@ -100,9 +98,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
             playerInfo.playerDataList = playerMap.get(key)!!
             playerInfoList.add(playerInfo)
         }
-        mAnalyticsView.let {
-            mAnalyticsView!!.showPlayerInfoList(playerInfoList)
-        }
+        mAnalyticsView?.showPlayerInfoList(playerInfoList)
     }
 
     override fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>) {
@@ -116,18 +112,14 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
                     item.imageResUrl = it
                     responseQ.add(it)
                     if (responseQ.size == playerInfoList.size)
-                        mAnalyticsView.let {
-                            mAnalyticsView!!.showPlayerImage(playerInfoList)
-                        }
+                        mAnalyticsView?.showPlayerImage(playerInfoList)
                 }, {
                     responseQ.add("")
                     if (responseQ.size == playerInfoList.size)
-                        mAnalyticsView.let {
-                            mAnalyticsView!!.showPlayerImage(playerInfoList)
-                        }
+                        mAnalyticsView?.showPlayerImage(playerInfoList)
                 })
             }
-            mAnalyticsView!!.hideLoading(false)
+            mAnalyticsView?.hideLoading(false)
         }
     }
 

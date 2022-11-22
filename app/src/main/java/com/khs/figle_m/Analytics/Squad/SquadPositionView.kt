@@ -121,11 +121,11 @@ class SquadPositionView : ConstraintLayout{
 
     private fun updateSeason(spId: Int) {
         val seasonDB = PlayerDataBase.getInstance(context)
-        seasonDB.let {
+        seasonDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 var seasonId = spId.toString().substring(0,3)
                 if ("224" == seasonId) seasonId = "234"
-                val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                val seasonEntity = it.seasonDao().getSeason(seasonId)
                 LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"updateSeason > seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg

@@ -35,7 +35,7 @@ class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val
 
     override fun getItemCount(): Int {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"getItemCount : ${mMatchInfoList?.size}")
-        return mMatchInfoList?.let { it.size } ?: 0
+        return mMatchInfoList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

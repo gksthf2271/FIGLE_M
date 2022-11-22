@@ -54,13 +54,13 @@ open class DrawUtils () {
 
     fun drawSeasonIcon(context: Context, targetView: ImageView, spId: String) {
         val seasonDB = PlayerDataBase.getInstance(context)
-        seasonDB.let {
+        seasonDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 if (spId.length < 3) return@launch
                 var seasonId = spId.substring(0,3)
                 //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
-                if ("224".equals(seasonId)) seasonId = "234"
-                val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                if ("224" == seasonId) seasonId = "234"
+                val seasonEntity = it.seasonDao().getSeason(seasonId)
                 LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg

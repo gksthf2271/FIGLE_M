@@ -29,7 +29,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun initPresenter() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
         mTradePresenter = TradePresenter()
-        mTradePresenter!!.takeView(this)
+        mTradePresenter?.takeView(this)
     }
 
     override fun onCreateView(
@@ -42,7 +42,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
 
     override fun onDestroy() {
         super.onDestroy()
-        mTradePresenter!!.dropView()
+        mTradePresenter?.dropView()
     }
 
     override fun onStart() {
@@ -64,16 +64,16 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         btn_back.setOnClickListener { activity!!.finish() }
     }
 
-    fun requestData(accessId: String) {
+    private fun requestData(accessId: String) {
         mTradePresenter!!.getTradeInfoList(accessId, 0, 20)
     }
 
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading.let{
-                avi_loading.visibility = View.VISIBLE
-                avi_loading.show(false)
+            avi_loading?.let{
+                it.visibility = View.VISIBLE
+                it.show(false)
             }
         }
     }
@@ -81,26 +81,24 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun hideLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading.let {
-                avi_loading.visibility = View.GONE
-                avi_loading.hide()
+            avi_loading?.let {
+                it.visibility = View.GONE
+                it.hide()
             }
         }
     }
 
     override fun showTradeInfo(tradeInfoList: List<TradeResponse>) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, TradeInfoList : $tradeInfoList")
-        mTradePresenter.let {
-            mTradePresenter!!.getTradePlayerImageUrl(tradeInfoList)
-        }
+        mTradePresenter?.getTradePlayerImageUrl(tradeInfoList)
     }
 
     override fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
         CoroutineScope(Dispatchers.Main).launch {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
             recycler_view.addItemDecoration(SearchDecoration(10))
-            recycler_view.setLayoutManager(LinearLayoutManager(context))
-            var sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
+            recycler_view.layoutManager = LinearLayoutManager(context)
+            val sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
             recycler_view.adapter = TradeRecyclerViewAdapter(context!!, sortedList){ tradeResponse ->
             }
         }

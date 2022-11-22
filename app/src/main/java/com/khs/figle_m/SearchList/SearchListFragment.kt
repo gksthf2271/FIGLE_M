@@ -68,9 +68,7 @@ class SearchListFragment : BaseFragment() {
     fun initView() {
         btn_back.visibility = View.VISIBLE
         btn_back.setOnClickListener {
-            fragmentManager.let {
-                fragmentManager!!.popBackStack()
-            }
+            fragmentManager?.popBackStack()
         }
     }
 

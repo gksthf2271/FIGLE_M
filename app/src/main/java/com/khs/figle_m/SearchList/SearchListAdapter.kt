@@ -80,7 +80,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 var myIndex = 0
                 val matchInfo = item.matchInfo
 
-                if (searchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
+                if (searchAccessId == matchInfo[0].accessId.toLowerCase()) {
                     opposingUserIndex = 1
                     myIndex = 0
                 } else {
@@ -119,7 +119,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 var opposingUserResult: String? = null
 
                 if (myMatchInfo.matchDetail.matchResult == null) {
-                    if ("승".equals(opposingUserMatchInfo.matchDetail.matchResult)) {
+                    if ("승" == opposingUserMatchInfo.matchDetail.matchResult) {
                         myMatchInfo.matchDetail.matchResult = "패"
                     } else {
                         myMatchInfo.matchDetail.matchResult = "승"
@@ -127,7 +127,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 }
 
                 if (opposingUserMatchInfo.matchDetail.matchResult == null) {
-                    if ("승".equals(myMatchInfo.matchDetail.matchResult)) {
+                    if ("승" == myMatchInfo.matchDetail.matchResult) {
                         opposingUserMatchInfo.matchDetail.matchResult = "패"
                     } else {
                         opposingUserMatchInfo.matchDetail.matchResult = "승"
@@ -159,16 +159,15 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 mTxtLeftResult.text = myResult
 //                mTxtRightResult.text = opposingUserResult
 
-                var drawable:Drawable
-                when (myMatchInfo.matchDetail!!.matchResult) {
+                val drawable:Drawable = when (myMatchInfo.matchDetail!!.matchResult) {
                     "승" -> {
-                        drawable = context.resources.getDrawable(R.drawable.rounded_win, null)
+                        context.resources.getDrawable(R.drawable.rounded_win, null)
                     }
                     "패" -> {
-                        drawable = context.resources.getDrawable(R.drawable.rounded_lose, null)
+                        context.resources.getDrawable(R.drawable.rounded_lose, null)
                     }
                     else -> {
-                        drawable = context.resources.getDrawable(R.drawable.rounded_draw, null)
+                        context.resources.getDrawable(R.drawable.rounded_draw, null)
                     }
                 }
                 mRootLayout.background = drawable

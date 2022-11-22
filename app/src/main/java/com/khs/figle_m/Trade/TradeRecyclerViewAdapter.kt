@@ -48,13 +48,13 @@ RecyclerView.Adapter<TradeViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return mPlayerList!!.get(position).tradeType
+        return mPlayerList!![position].tradeType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TradeViewHolder {
-        var viewHolder: RecyclerView.ViewHolder
+        val viewHolder: RecyclerView.ViewHolder
 
-        var resId : Int = ViewHolderMaker().getLayoutResId(viewType)
+        val resId : Int = ViewHolderMaker().getLayoutResId(viewType)
 
         val view: View =
             LayoutInflater.from(parent.context).inflate(resId, parent, false)
@@ -73,7 +73,7 @@ RecyclerView.Adapter<TradeViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return mPlayerList.let { mPlayerList!!.size }
+        return mPlayerList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: TradeViewHolder, position: Int) {

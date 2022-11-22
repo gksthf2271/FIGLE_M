@@ -149,7 +149,7 @@ class InitPresenter : InitContract.Presenter {
             val startTime = System.currentTimeMillis()
             val localPlayerList = playerDB!!.playerDao().getAll()
             if(playerList.size != localPlayerList.size) {
-                mInitContract.let { mInitContract!!.setProgressMax(stringList.size)}
+                mInitContract?.setProgressMax(stringList.size)
                 index = 0
                 LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"------------------ update Player DB ------------------")
                 playerDB?.playerDao().deleteAll()
@@ -159,10 +159,10 @@ class InitPresenter : InitContract.Presenter {
                     val value = stringList[++index]
                     LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"updatePlayerDB - index : $loIndex , key : $key , value : $value")
                     playerDB!!.playerDao().insert(PlayerEntity(null,key,value))
-                    mInitContract.let { mInitContract!!.updateProgress(index) }
+                    mInitContract?.updateProgress(index)
                     index++
                 }
-                mInitContract.let {mInitContract!!.updateProgress(stringList.size)}
+                mInitContract?.updateProgress(stringList.size)
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"------------------ EndTime : ${System.currentTimeMillis()-startTime} ------------------")
 
             } else {

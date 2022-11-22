@@ -152,7 +152,7 @@ class SearchHomeFragment : BaseFragment(),
         txt_MyNickName.text = mSearchUserInfo.nickname
         txt_Level.text = mSearchUserInfo.level
         mSearchUserInfo.teamPrice.let{
-            txt_team_price.text = mSearchUserInfo.teamPrice
+            txt_team_price.text = it
             txt_team_price.visibility = View.VISIBLE
         }
         mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)

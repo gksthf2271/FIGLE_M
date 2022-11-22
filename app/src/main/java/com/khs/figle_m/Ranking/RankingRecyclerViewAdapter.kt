@@ -33,7 +33,7 @@ class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<
     }
 
     override fun getItemCount(): Int {
-        return mRankerList.let { mRankerList!!.size }
+        return mRankerList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

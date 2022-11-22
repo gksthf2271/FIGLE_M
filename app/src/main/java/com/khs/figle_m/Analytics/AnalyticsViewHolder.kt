@@ -56,9 +56,9 @@ open class AnalyticsGradeViewHolder(itemView: View, itemClick: (AnalyticsPlayer)
         mItemView.txt_rating.text = (adapterPosition + 1).toString()
         mItemView.txt_player_name.apply {
             val playerDB = PlayerDataBase.getInstance(context)
-            playerDB.let {
+            playerDB?.let {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val player: PlayerEntity? = playerDB!!.playerDao().getPlayer(item.spId.toString())
+                    val player: PlayerEntity? = it.playerDao().getPlayer(item.spId.toString())
                     player ?: return@launch
                     CoroutineScope(Dispatchers.Main).launch {
                         this@apply.text = player.playerName

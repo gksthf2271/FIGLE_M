@@ -44,9 +44,7 @@ class SearchHomePresenter: SearchContract.Presenter {
     override fun getMatchAnalysisByMatchId(accessId: String, matchIdList: List<String>) {
         runBlocking {
             launch {
-                mSearchListView.let {
-                    mSearchListView!!.showAnalysisInfo(accessId, matchIdList)
-                }
+                mSearchListView?.showAnalysisInfo(accessId, matchIdList)
             }
         }
     }

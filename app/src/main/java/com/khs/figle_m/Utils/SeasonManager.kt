@@ -17,7 +17,7 @@ object SeasonManager {
                 val seasonClassName = seasonEntity.className
                 val seasonImgUrl = seasonEntity.seasonImg
                 seasonImgUrl?.let {
-                    var list = it.split("https://ssl.nexon.com/s2/game/fo4/obt/externalAssets/season/")
+                    val list = it.split("https://ssl.nexon.com/s2/game/fo4/obt/externalAssets/season/")
                     if (list.isNotEmpty() && list.size > 1) {
                         seasonClassId = list[1].replace(".png", "")
                     }

@@ -8,17 +8,17 @@ class UserPresenter : UserContract.Presenter {
     var mUserView: UserContract.View? = null
 
     override fun getUserDatailList(nickname: String, teamPrice: String) {
-        mUserView.let {
-            mUserView?.showLoading()
+        mUserView?.let { userView ->
+            userView.showLoading()
             Thread(Runnable {
                 DataManager.getInstance().loadUserData(nickname,
                     {
-                        mUserView?.hideLoading()
-                        mUserView?.showUserList(it.apply { it!!.teamPrice = teamPrice })
+                        userView.hideLoading()
+                        userView.showUserList(it.apply { it!!.teamPrice = teamPrice })
                     }, {
                         LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"getUserDatailList $it")
-                        mUserView?.hideLoading()
-                        mUserView?.showError(it)
+                        userView.hideLoading()
+                        userView.showError(it)
                     })
             }).start()
         }

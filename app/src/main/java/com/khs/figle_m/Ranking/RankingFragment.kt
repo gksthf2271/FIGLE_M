@@ -65,8 +65,8 @@ class RankingFragment : BaseFragment(){
 
     fun initList() {
         var rankingList = arrayListOf<Ranker>()
-        arguments.let {
-            rankingList = arguments!!.getParcelableArrayList(KEY_RANKING_LIST)!!
+        arguments?.let {
+            rankingList = it.getParcelableArrayList(KEY_RANKING_LIST)!!
         }
         val layoutManager = LinearLayoutManager(context)
         layout_recyclerview.addItemDecoration(SearchDecoration(10))

@@ -70,8 +70,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        context.let {
-            if (!NetworkUtils().checkNetworkStatus(context!!)) {
+        context?.let {
+            if (!NetworkUtils().checkNetworkStatus(it)) {
                 dismiss()
                 (activity as MainActivity).showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED, false)
                 return
@@ -103,10 +103,10 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         btn_close.setOnClickListener {
             dismiss()
         }
-        arguments.let{
-            mIsCoachMode = arguments!!.getBoolean(KEY_IS_COACH_MODE)!!
-            mMatchDetail = arguments!!.getParcelable(KEY_MATCH_DETAIL_INFO)!!
-            mSearchAccessId = arguments!!.getString(KEY_SEARCH_ACCESSID)!!
+        arguments?.let{
+            mIsCoachMode = it.getBoolean(KEY_IS_COACH_MODE)
+            mMatchDetail = it.getParcelable(KEY_MATCH_DETAIL_INFO)!!
+            mSearchAccessId = it.getString(KEY_SEARCH_ACCESSID)!!
             when (mSearchAccessId){
                 mMatchDetail.matchInfo[0].accessId -> mOpposingUserId = mMatchDetail.matchInfo[1].accessId
                 mMatchDetail.matchInfo[1].accessId -> mOpposingUserId = mMatchDetail.matchInfo[0].accessId

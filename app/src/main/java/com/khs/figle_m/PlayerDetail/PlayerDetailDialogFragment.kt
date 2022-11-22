@@ -152,9 +152,9 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         }
 
         val playerDB = PlayerDataBase.getInstance(context!!)
-        playerDB.let {
+        playerDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
+                val player : PlayerEntity? = it.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
                 CoroutineScope(Dispatchers.Main).launch {
                     txt_player_name.text = player?.playerName ?: ""
                 }
@@ -228,12 +228,12 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
 
     private fun updateIcon(context: Context, item:PlayerDTO) {
         val seasonDB = PlayerDataBase.getInstance(context)
-        seasonDB.let {
+        seasonDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 var seasonId = item.spId.toString().substring(0,3)
                 //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
-                if ("224".equals(seasonId)) seasonId = "234"
-                val seasonEntity = seasonDB!!.seasonDao().getSeason(seasonId)
+                if ("224" == seasonId) seasonId = "234"
+                val seasonEntity = it.seasonDao().getSeason(seasonId)
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"seasonEntity : ${seasonEntity.className}")
                 seasonEntity.let {
                     val url = seasonEntity.seasonImg

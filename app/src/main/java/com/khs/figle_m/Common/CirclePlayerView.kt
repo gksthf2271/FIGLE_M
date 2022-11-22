@@ -42,9 +42,9 @@ class CirclePlayerView @JvmOverloads constructor(
 
     fun updatePlayerName(spId: String){
         val playerDB = PlayerDataBase.getInstance(context)
-        playerDB.let {
+        playerDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
-                val player : PlayerEntity? = playerDB!!.playerDao().getPlayer(spId)
+                val player : PlayerEntity? = it.playerDao().getPlayer(spId)
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
                     txt_player_name.text = player.playerName
