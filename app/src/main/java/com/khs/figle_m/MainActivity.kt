@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -266,6 +267,18 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
                 System.exit(0)
             }
         }
+    }
+
+    fun firebaseCrashlyticsTest() {
+        val crashButton = Button(this)
+        crashButton.text = "Test Crash"
+        crashButton.setOnClickListener {
+            throw RuntimeException("Test Crash") // Force a crash
+        }
+
+        addContentView(crashButton, ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT))
     }
 
 
