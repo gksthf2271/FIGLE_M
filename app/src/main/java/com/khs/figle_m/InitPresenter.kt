@@ -46,24 +46,23 @@ class InitPresenter : InitContract.Presenter {
     override fun getPlayerNameList(context: Context) {
         mInitContract?.showLoading()
         runBlocking {
-            launch {
-                getPlayerNameList(
-                    {
-                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Success! ${it}")
-                        mInitContract?.showMainActivity(it)
-                        updatePlayerDB(context, it
-                        ) {
-                            LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "PlayerName save successful")
-                            CoroutineScope(Dispatchers.Main).launch {
-                                mInitContract?.hideLoading()
-                            }
+            getPlayerNameList(
+                {
+                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "getPlayerNameList Success! ${it}")
+                    mInitContract?.showMainActivity(it)
+                    updatePlayerDB(
+                        context, it
+                    ) {
+                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "PlayerName save successful")
+                        CoroutineScope(Dispatchers.Main).launch {
+                            mInitContract?.hideLoading()
                         }
-                    }, {
-                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Failed! ${it}")
-                        mInitContract?.hideLoading()
-                        mInitContract?.showError(it)
-                    })
-            }
+                    }
+                }, {
+                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "getPlayerNameList Failed! ${it}")
+                    mInitContract?.hideLoading()
+                    mInitContract?.showError(it)
+                })
         }
     }
 

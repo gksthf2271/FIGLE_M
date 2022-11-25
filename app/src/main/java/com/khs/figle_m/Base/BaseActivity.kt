@@ -1,6 +1,7 @@
 package com.khs.figle_m.Base
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import com.khs.figle_m.Utils.LogUtil
 
@@ -27,6 +28,11 @@ abstract class BaseActivity: AppCompatActivity() {
         super.onRestart()
         isRestartApp = true
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"onRestart(...) : $isRestartApp")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onSaveInstanceState(...) : $outState")
     }
 
     abstract fun initPresenter()

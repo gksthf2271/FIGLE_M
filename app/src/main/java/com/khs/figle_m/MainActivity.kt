@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.os.PersistableBundle
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
@@ -119,8 +120,8 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         return false
     }
 
-    fun getCurrentFragment(): Fragment {
-        return FragmentUtils().currentFragment(supportFragmentManager!!, R.id.fragment_container)!!
+    private fun getCurrentFragment(): Fragment {
+        return FragmentUtils().currentFragment(supportFragmentManager, R.id.fragment_container)!!
     }
 
     override fun showNetworkError() {
