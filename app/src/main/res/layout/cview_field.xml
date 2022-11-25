@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/field"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="15dp"
         app:layout_constraintHeight_percent="0.95"
         app:layout_constraintTop_toBottomOf="@id/group_userName">
 
@@ -316,7 +316,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/position_cb"
                 app:layout_constraintTop_toTopOf="parent"
@@ -329,9 +329,9 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/position_cb"
-                app:layout_constraintHorizontal_bias="0.15"
+                app:layout_constraintHorizontal_bias="0.8"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/position_cb"
+                app:layout_constraintRight_toLeftOf="@+id/position_lcb"
                 app:layout_constraintTop_toTopOf="@+id/position_cb"
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
@@ -358,7 +358,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
             <com.khs.figle_m.Analytics.Squad.SquadPositionView
@@ -380,8 +380,8 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/position_cb"
-                app:layout_constraintHorizontal_bias="0.85"
-                app:layout_constraintLeft_toRightOf="@+id/position_cb"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintLeft_toRightOf="@+id/position_rcb"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/position_cb"
                 app:layout_constraintVertical_bias="0.5"
@@ -393,7 +393,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.85"
+                app:layout_constraintHorizontal_bias="0.95"
                 app:layout_constraintLeft_toRightOf="@+id/position_cb"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -45,7 +45,7 @@ class SquadPositionView : ConstraintLayout{
             Pair(playerDTO, true)
         ) }
         txt_player_position.text = positionEnum.description
-        txt_player_position.setTextColor(ContextCompat.getColor(context, positionEnum.pointColor))
+        txt_player_position.setBackgroundColor(ContextCompat.getColor(context, positionEnum.pointColor))
         updatePlayerName(playerDTO.spId)
         updatePlayerImage(playerDTO.imageUrl ?: "0")
         updatePlayerGrade(playerDTO.spGrade)
