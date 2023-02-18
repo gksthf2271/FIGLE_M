@@ -47,8 +47,7 @@ class CrawlingUtils() {
             DataManager.getInstance().loadPlayerInfo(cSpId, spGrade, {
 
                 val doc = Jsoup.parseBodyFragment(it.string())
-                val parentBody = doc.body().getElementById("wrapper")
-                    .getElementById("middle")
+                val parentBody: Element? = doc.body().getElementById("wrapper")?.getElementById("middle")
                 if (parentBody == null) {
                     LogUtil.eLog(LogUtil.TAG_UI, TAG,"ERROR ----------- \n $doc")
                     onFailed(0)
