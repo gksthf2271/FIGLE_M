@@ -91,7 +91,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading.apply {
+            avi_loading?.apply {
                 visibility = View.VISIBLE
                 backroundColorVisible(true)
                 show(false)
