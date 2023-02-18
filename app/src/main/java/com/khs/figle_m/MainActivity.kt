@@ -92,16 +92,19 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (getCurrentFragment() is SearchHomeFragment) {
-                FragmentUtils().loadFragment(
-                    HomeFragment(),
-                    R.id.fragment_container,
-                    supportFragmentManager
-                )
-            } else if (getCurrentFragment() is HomeFragment) {
-                showFinishPopup()
-            } else {
-                supportFragmentManager.popBackStack()
+            val currentFragment = getCurrentFragment()
+            currentFragment ?: return super.onKeyDown(keyCode, event)
+
+            when (currentFragment) {
+                is SearchHomeFragment -> {
+                    FragmentUtils().loadFragment(HomeFragment(), R.id.fragment_container, supportFragmentManager)
+                }
+                is HomeFragment -> {
+                    showFinishPopup()
+                }
+                else -> {
+                    supportFragmentManager.popBackStack()
+                }
             }
             return false
         }
@@ -121,8 +124,8 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         return false
     }
 
-    private fun getCurrentFragment(): Fragment {
-        return FragmentUtils().currentFragment(supportFragmentManager, R.id.fragment_container)!!
+    private fun getCurrentFragment(): Fragment? {
+        return FragmentUtils().currentFragment(supportFragmentManager, R.id.fragment_container)
     }
 
     override fun showNetworkError() {
