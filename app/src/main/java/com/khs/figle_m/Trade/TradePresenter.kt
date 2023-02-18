@@ -17,28 +17,28 @@ class TradePresenter : TradeContract.Presenter{
         offset: Int?,
         limit: Int?) {
         if (mTradeView == null) return
-        mTradeView!!.showLoading()
-        var responseMap = mutableMapOf<String, List<TradeResponse>>()
+        mTradeView?.showLoading()
+        val responseMap = mutableMapOf<String, List<TradeResponse>>()
         for (item in TradeHomeFragment.TradeType.values()) {
             DataManager.getInstance().loadTradeInfo(accessId, item, offset, limit,
                 {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadTradeInfo response(...) : ${it.first().tradeType}")
-                    responseMap.put(it.first().tradeType.toString(), it)
+                    responseMap[it.first().tradeType.toString()] = it
                     if (responseMap.size == TradeHomeFragment.TradeType.values().size) {
-                        var responseList = mutableListOf<TradeResponse>()
+                        val responseList = mutableListOf<TradeResponse>()
                         responseList.run{
                             for (item in responseMap.values){
                                 responseList.addAll(responseList.size, item)
                             }
                         }
-                        mTradeView!!.showTradeInfo(responseList)
+                        mTradeView?.showTradeInfo(responseList)
                     }
                 },
                 {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"load failed : $it")
-                    responseMap.put(it.toString(), emptyList())
+                    responseMap[it.toString()] = emptyList()
                     if (responseMap.values.size >= 2){
-                        mTradeView!!.hideLoading()
+                        mTradeView?.hideLoading()
                     }
                 })
         }
