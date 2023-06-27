@@ -99,7 +99,7 @@ class DataManager{
     val ERROR_OTHERS = 999
 
     private val mAuthorizationKey: String =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFwcC1SYXRlLUxpbWl0IjoiNTAwOjEwIiwiYWNjb3VudF9pZCI6IjEyNDE1MjkyNjQiLCJhdXRoX2lkIjoiMiIsImV4cCI6MTY4MzE4MzQ0MSwiaWF0IjoxNjY3NjMxNDQxLCJuYmYiOjE2Njc2MzE0NDEsInNlcnZpY2VfaWQiOiI0MzAwMTE0ODEiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4ifQ.fSaIlCKts-yIgg_65oEX6k1z6D-EWnZGToShWrDIulU"
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFwcC1SYXRlLUxpbWl0IjoiNTAwOjEwIiwiYWNjb3VudF9pZCI6IjEyNDE1MjkyNjQiLCJhdXRoX2lkIjoiMiIsImV4cCI6MTcwMDkwNTU1OCwiaWF0IjoxNjg1MzUzNTU4LCJuYmYiOjE2ODUzNTM1NTgsInNlcnZpY2VfaWQiOiI0MzAwMTE0ODEiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4ifQ.AR2VG9_js3eRan4YQnACLd5g-avHcNkK42b_NFlGLKg"
 
     companion object {
         @Volatile
