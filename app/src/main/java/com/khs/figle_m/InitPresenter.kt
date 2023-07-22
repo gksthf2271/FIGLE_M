@@ -1,7 +1,6 @@
 package com.khs.figle_m
 
 import android.content.Context
-import android.util.Log
 import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.DB.SeasonEntity
@@ -28,19 +27,15 @@ class InitPresenter : InitContract.Presenter {
 
     override fun getSeasonIdList(context: Context) {
         mInitContract?.showLoading()
-        runBlocking {
-            launch {
-                DataManager.getInstance().loadSeasonIdList({
-                    LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Success! $it")
-                    updateSeasonDB(context,it) {
-                        LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "SeasonList save successful")
-                    }
-                }, {
-                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Failed! $it")
-                    mInitContract?.showError(it)
-                })
+        DataManager.getInstance().loadSeasonIdList({
+            LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Success! $it")
+            updateSeasonDB(context,it) {
+                LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "SeasonList save successful")
             }
-        }
+        }, {
+            LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Failed! $it")
+            mInitContract?.showError(it)
+        })
     }
 
     override fun getPlayerNameList(context: Context) {
@@ -59,14 +54,14 @@ class InitPresenter : InitContract.Presenter {
                         }
                     }
                 }, {
-                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "getPlayerNameList Failed! ${it}")
+                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "getPlayerNameList Failed! $it")
                     mInitContract?.hideLoading()
                     mInitContract?.showError(it)
                 })
         }
     }
 
-    fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (Int) -> Unit) {
+    private fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (Int) -> Unit) {
         DataManager.getInstance().loadPlayerName({
             LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Success! $it")
             onSuccess(it)
@@ -76,7 +71,7 @@ class InitPresenter : InitContract.Presenter {
         })
     }
 
-    fun updateSeasonDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
+    private fun updateSeasonDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"updateSeasonDB(...)")
         CoroutineScope(Dispatchers.IO).launch {
             var result: String = responseBody.string()
@@ -125,10 +120,10 @@ class InitPresenter : InitContract.Presenter {
         }
     }
 
-    fun updatePlayerDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
+    private fun updatePlayerDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"updatePlayerDB(...)")
         CoroutineScope(Dispatchers.IO).launch {
-            var result: String = responseBody.string()
+            val result: String = responseBody.string()
             val stringList: List<String> =
                 result.removeSurrounding("[", "]").replace("\"", "").replace("id:", "")
                     .replace("name:", "").replace("\n", "").replace(" ", "").replace("{", "")
@@ -137,7 +132,7 @@ class InitPresenter : InitContract.Presenter {
             val playerDB = PlayerDataBase.getInstance(context)
             LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"stringList size : ${stringList.size}")
             val playerList : ArrayList<PlayerEntity> = arrayListOf()
-            for (item in 0..stringList.size - 1 step 2) {
+            for (item in stringList.indices step 2) {
                 val loIndex = index
                 val key = stringList[index]
                 val value = stringList[++index]
@@ -152,7 +147,7 @@ class InitPresenter : InitContract.Presenter {
                 index = 0
                 LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"------------------ update Player DB ------------------")
                 playerDB?.playerDao().deleteAll()
-                for (item in 0..stringList.size - 1 step 2) {
+                for (item in stringList.indices step 2) {
                     val loIndex = index
                     val key = stringList[index]
                     val value = stringList[++index]

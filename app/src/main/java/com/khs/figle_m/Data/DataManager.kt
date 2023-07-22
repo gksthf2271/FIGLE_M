@@ -299,9 +299,9 @@ class DataManager{
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadPlayerName response(...) ${response.code()}")
-                if (response != null) {
+                response.body()?.let { responseBody ->
                     if (response.code() == SUCCESS_CODE) {
-                        onSuccess(response!!.body()!!)
+                        onSuccess(responseBody)
                     } else {
                         onFailed(response.code())
                     }

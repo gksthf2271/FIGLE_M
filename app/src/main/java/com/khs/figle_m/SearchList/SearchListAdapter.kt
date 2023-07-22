@@ -15,13 +15,13 @@ import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.DateUtils
 import com.khs.figle_m.Utils.LogUtil
 
-class SearchListAdapter(context: Context, searchAccessId: String, matchList: MutableList<MatchDetailResponse>, val itemClick: (MatchDetailResponse) -> Unit) :
+class SearchListAdapter(context: Context, searchAccessId: String, matchList: ArrayList<MatchDetailResponse>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
     private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
-    val mSearchAccessId: String
-    val mContext: Context
-    val mMatchList: List<MatchDetailResponse>
+    private val mSearchAccessId: String
+    private val mContext: Context
+    private val mMatchList: ArrayList<MatchDetailResponse>
 
     init {
         mContext = context
@@ -174,5 +174,10 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Mut
                 itemView.setOnClickListener { itemClick(item) }
             }
         }
+    }
+
+    fun updateList(matchDetailResponse: MatchDetailResponse) {
+        mMatchList.add(matchDetailResponse)
+        notifyItemInserted(mMatchList.lastIndex)
     }
 }

@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.os.PersistableBundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -21,7 +19,6 @@ import com.khs.figle_m.Base.BaseActivity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.SearchList.SearchListFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.SeasonManager
@@ -29,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 
 
@@ -39,7 +37,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     private var mPopupWindow: PopupWindow? = null
 
     private val MSG_DISCONNECTED_NETWORK = 0
-    private val mHandler:Handler = Handler(this)
 
     companion object {
         @Volatile
@@ -65,10 +62,25 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"is Restart app? $isRestartApp")
         if (!isRestartApp) {
             mInitPresenter.takeView(this)
-            mInitPresenter.getSeasonIdList(this)
-            mInitPresenter.getPlayerNameList(this)
-            CoroutineScope(Dispatchers.Default).launch {
-                SeasonManager.updateSeason(this@MainActivity)
+            val updateJob = CoroutineScope(Dispatchers.Default).launch {
+                val seasonDataUpdateJob = launch {
+                    mInitPresenter.getSeasonIdList(this@MainActivity)
+                }
+                val playerNameUpdateJob = launch {
+                    mInitPresenter.getPlayerNameList(this@MainActivity)
+                }
+                val seasonUpdateJob = launch {
+                    SeasonManager.updateSeason(this@MainActivity)
+                }
+
+                playerNameUpdateJob.join()
+                seasonDataUpdateJob.join()
+                seasonUpdateJob.join()
+            }
+            runBlocking {
+                updateJob.join()
+                LogUtil.vLog(LogUtil.TAG_UI, TAG,"시즌 업데이트 종료!")
+                showMainActivity(null)
             }
         }
         DataManager.getInstance().init(this)
@@ -131,7 +143,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     override fun showNetworkError() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkError(...)")
         txt_disconnected_network.visibility = View.VISIBLE
-//        mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
     }
 
     override fun setProgressMax(max: Int) {
@@ -156,11 +167,13 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         fragment_container.visibility = View.VISIBLE
     }
 
-    override fun showMainActivity(responseBody: ResponseBody) {
-        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showMainActivity(...)")
-        val fm: FragmentManager = this.supportFragmentManager
-        val homeFragment: HomeFragment = HomeFragment.getInstance()
-        FragmentUtils().loadFragment(homeFragment, R.id.fragment_container,fm)
+    override fun showMainActivity(responseBody: ResponseBody?) {
+        CoroutineScope(Dispatchers.Main).launch {
+            LogUtil.vLog(LogUtil.TAG_UI, TAG, "showMainActivity(...)")
+            val fm: FragmentManager = this@MainActivity.supportFragmentManager
+            val homeFragment: HomeFragment = HomeFragment.getInstance()
+            FragmentUtils().loadFragment(homeFragment, R.id.fragment_container, fm)
+        }
     }
 
     override fun showError(error: Int) {
@@ -202,7 +215,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         if (!this.window.isActive || isDestroyed) return
         when (error) {
             DataManager().ERROR_NETWORK_DISCONNECTED -> {
-//                if (isFinish) mHandler.sendEmptyMessageDelayed(MSG_DISCONNECTED_NETWORK, 3000)
                 showNetworkErrorPopup()
             }
             DataManager().ERROR_NOT_FOUND,

@@ -19,6 +19,10 @@ import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchListAdapter
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_search_list.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 class SearchListView : ConstraintLayout, SearchContract.SearchListView{
@@ -35,7 +39,6 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     val TAG = javaClass.simpleName
     lateinit var mSearchUserInfo: UserResponse
     var mMatchIdList = arrayListOf<String>()
-    var mMatchList = arrayListOf<MatchDetailResponse>()
     var mMatchType by Delegates.notNull<Int>()
     lateinit var mSearchListPresenter: SearchListPresenter
 
@@ -57,7 +60,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
         val layoutManager = LinearLayoutManager(context)
         layout_recyclerview.addItemDecoration(SearchDecoration(10))
-        layout_recyclerview.setLayoutManager(layoutManager)
+        layout_recyclerview.layoutManager = layoutManager
     }
 
     fun setSearchUserInfo(searchUserInfo: UserResponse) {
@@ -80,8 +83,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         }
 
         mMatchType = matchType
-        layout_recyclerview.adapter =
-            SearchListAdapter(context!!, mSearchUserInfo.accessId, mMatchList) { matchDetailResponse ->
+        layout_recyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.accessId, arrayListOf()) { matchDetailResponse ->
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"ItemClick! ${matchDetailResponse.matchInfo}")
                 itemClick(matchDetailResponse)
             }
@@ -97,10 +99,8 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     fun loadMatch(matchType: Int, startIndex : Int, endIndex: Int) {
         for (index in startIndex .. endIndex) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"loadMatch : $index")
-            mSearchListPresenter.let {
-                mSearchListPresenter.getMatchDetailList(
-                matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList[index]
-                )
+            if (this::mSearchListPresenter.isInitialized) {
+                mSearchListPresenter.getMatchDetailList(matchType == DataManager.matchType.normalMatch.ordinal, mMatchIdList[index])
             }
         }
     }
@@ -157,18 +157,15 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     }
 
     override fun showGameList(searchResponse: MatchDetailResponse?) {
-        searchResponse ?: return
-        if (searchResponse.matchInfo.size <= 1) return
-        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showOfficialGameList : ${searchResponse!!.matchId}")
-        synchronized("Lock") {
-            mMatchList.add(searchResponse!!)
-            mMatchList.sortByDescending { it.matchDate }
+        searchResponse?.let { matchDetailResponse ->
+            if (matchDetailResponse.matchInfo.size <= 1) return
+            LogUtil.vLog(LogUtil.TAG_UI, TAG,"showOfficialGameList : ${matchDetailResponse.matchId}")
+            (layout_recyclerview.adapter as SearchListAdapter).updateList(matchDetailResponse)
         }
-        LogUtil.dLog(LogUtil.TAG_UI, TAG,"mMatchList size : ${mMatchList.size} , mMatchIdList size : ${mMatchIdList.size}")
-        layout_recyclerview.adapter?.notifyDataSetChanged()
-        Handler().postDelayed({
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(500)
             hideLoading(false)
-        }, 500)
+        }
     }
 
     override fun showError(error: Int) {

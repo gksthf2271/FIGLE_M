@@ -160,7 +160,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showError(error: Int) {
-        TODO("Not yet implemented")
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showError(...) : $error")
     }
 
     override fun showPlayerDetailDialogFragment(

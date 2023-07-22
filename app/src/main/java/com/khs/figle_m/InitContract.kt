@@ -10,7 +10,7 @@ interface InitContract : BaseView {
     interface View : BaseView {
         fun showLoading()
         fun hideLoading()
-        fun showMainActivity(responseBody: ResponseBody)
+        fun showMainActivity(responseBody: ResponseBody?)
         fun updateProgress(progress: Int)
         fun setProgressMax(max: Int)
 
