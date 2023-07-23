@@ -52,13 +52,11 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.wang.avi.AVLoadingIndicatorView
+        <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/loading_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            style="@style/AVLoadingIndicatorView.Small"
-            app:indicatorName="BallSpinFadeLoaderIndicator"
             app:indicatorColor="@color/search_text_color"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

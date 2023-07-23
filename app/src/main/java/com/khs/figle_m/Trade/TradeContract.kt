@@ -2,7 +2,7 @@ package com.khs.figle_m.Trade
 
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
-import com.khs.figle_m.Response.TradeResponse
+import com.khs.data.nexon_api.response.TradeResponse
 
 
 //accessid  string		Y	128	유저 고유 식별자

@@ -1,7 +1,7 @@
 package com.khs.figle_m.Analytics
 
 import android.os.Parcelable
-import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

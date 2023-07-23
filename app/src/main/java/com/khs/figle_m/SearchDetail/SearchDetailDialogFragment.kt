@@ -7,30 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.viewpager.widget.ViewPager
+import com.khs.data.nexon_api.response.CustomDTO.PlayerListDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.PlayerDetail.DialogBaseFragment
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.DisplayUtils
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.NetworkUtils
-import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-import kotlinx.android.synthetic.main.fragment_search_container.*
-import kotlinx.android.synthetic.main.fragment_searchlist.avi_loading
+import com.khs.figle_m.databinding.FragmentSearchContainerBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchDetailDialogFragment : DialogBaseFragment(),
     SearchDetailContract.View {
-    val TAG = javaClass.simpleName
-
+    private val TAG = javaClass.simpleName
+    private lateinit var mBinding : FragmentSearchContainerBinding
     val KEY_MATCH_DETAIL_INFO = "KEY_MATCH_DETAIL_INFO"
     val KEY_SEARCH_ACCESSID = "KEY_SEARCH_ACCESSID"
     val KEY_IS_COACH_MODE = "KEY_IS_COACH_MODE"
@@ -65,7 +63,8 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search_container, container, true)
+        mBinding = FragmentSearchContainerBinding.inflate(inflater, container, true)
+        return mBinding.root
     }
 
     override fun onResume() {
@@ -100,12 +99,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         if (isRestartApp) return
         mSearchDetailPresenter?.takeView(this)
         mPlayerImgMap = hashMapOf()
-        btn_close.setOnClickListener {
-            dismiss()
-        }
         arguments?.let{
             mIsCoachMode = it.getBoolean(KEY_IS_COACH_MODE)
-            mMatchDetail = it.getParcelable(KEY_MATCH_DETAIL_INFO)!!
+            mMatchDetail = it.getSerializable(KEY_MATCH_DETAIL_INFO) as MatchDetailResponse
             mSearchAccessId = it.getString(KEY_SEARCH_ACCESSID)!!
             when (mSearchAccessId){
                 mMatchDetail.matchInfo[0].accessId -> mOpposingUserId = mMatchDetail.matchInfo[1].accessId
@@ -119,63 +115,74 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     }
 
     fun initView() {
-        viewPager.adapter = SearchDetailDialogAdapter(context!!, mMatchDetail) {
-                group_topInfo.background = resources.getDrawable(R.color.fragment_background, null)
+        mBinding.apply {
+            mBinding.btnClose.setOnClickListener {
+                dismiss()
+            }
+            viewPager.adapter = SearchDetailDialogAdapter(requireContext(), mMatchDetail) {
+                groupTopInfo.background = context?.getDrawable(R.color.fragment_background)
                 topView.updatePlayerInfo(it)
             }
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
-            override fun onPageScrollStateChanged(state: Int) {
-            }
+                override fun onPageScrollStateChanged(state: Int) {
+                }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                when (position) {
-                    0 -> {
-                        topView.updateUserView(mIsCoachMode, mSearchAccessId, mMatchDetail)
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    when (position) {
+                        0 -> {
+                            topView.updateUserView(mIsCoachMode, mSearchAccessId, mMatchDetail)
+                        }
                     }
                 }
+                override fun onPageSelected(position: Int) {
+
+                }
+
+            })
+            initIndicator()
+            viewPager.currentItem = 0
+        }
+    }
+
+    private fun initIndicator() {
+        mBinding.dotsIndicator.attachTo(mBinding.viewPager)
+    }
+
+    private fun resizeDialog(){
+        requireContext().let { context ->
+            val size = DisplayUtils().getDisplaySize(context)
+            val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+            val deviceWidth = size.x
+            val deviceHeight = size.y
+            params?.apply {
+                width = (deviceWidth * 0.95).toInt()
+                height = (deviceHeight * 0.95).toInt()
+                dialog?.window?.attributes = this as WindowManager.LayoutParams
             }
-            override fun onPageSelected(position: Int) {
-
-            }
-
-        })
-        initIndicator()
-        viewPager.currentItem = 0
+        }
     }
 
-    fun initIndicator() {
-        val dotsIndicator = view!!.findViewById<WormDotsIndicator>(R.id.dots_indicator)
-        dotsIndicator.setViewPager(viewPager)
-    }
-
-    fun resizeDialog(){
-        context ?: return
-        val size = DisplayUtils().getDisplaySize(context!!)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceeHeight = size.y
-        params?.width = (deviceWidth * 0.95).toInt()
-        params?.height = (deviceeHeight * 0.95).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-    }
-
-    fun setBackgroundColorDialog() {
+    private fun setBackgroundColorDialog() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
     override fun showLoading() {
-        avi_loading.visibility = View.VISIBLE
-        btn_close.visibility = View.GONE
-        group_root.visibility = View.GONE
-        avi_loading.show(false)
+        mBinding.apply {
+            aviLoading.visibility = View.VISIBLE
+            btnClose.visibility = View.GONE
+            groupRoot.visibility = View.GONE
+            aviLoading.show(false)
+        }
     }
 
     override fun hideLoading() {
-        avi_loading.hide()
-        avi_loading.visibility = View.GONE
-        btn_close.visibility = View.VISIBLE
-        group_root.visibility = View.VISIBLE
+        mBinding.apply {
+            aviLoading.hide()
+            aviLoading.visibility = View.GONE
+            btnClose.visibility = View.VISIBLE
+            groupRoot.visibility = View.VISIBLE
+        }
     }
 
     private fun getPlayerImageUrlList(accessId:String, playerList: List<PlayerDTO>){
@@ -219,24 +226,24 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
     ) {
         updatePlayer(playerDTO) { imgUrl ->
             val playerDetailFragment = PlayerDetailDialogFragment.getInstance()
-            val bundle = Bundle()
-            playerDTO.imageUrl = imgUrl
-            bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
-            bundle.putParcelableArrayList(
-                PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO,
-                ArrayList(rankerPlayerDTOList)
-            )
+            val bundle = Bundle().apply {
+                playerDTO.imageUrl = imgUrl
+                putSerializable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+                putSerializable(
+                    PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO,
+                    ArrayList(rankerPlayerDTOList)
+                )
+            }
             playerDetailFragment.arguments = bundle
             if (!playerDetailFragment.isAdded) {
-                playerDetailFragment.show(
-                    fragmentManager!!,
-                    PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
-                )
+                fragmentManager?.let {
+                    playerDetailFragment.show(it, PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG)
+                }
             }
         }
     }
 
-    private fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
+    private fun updatePlayer(player: PlayerDTO, callback: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             CrawlingUtils().getPlayerImg(player, {
                 callback(it)
@@ -247,7 +254,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         }
     }
 
-    fun getPlayerImgMap(): HashMap<String,PlayerListDTO> {
+    fun getPlayerImgMap(): HashMap<String, PlayerListDTO> {
         return mPlayerImgMap
     }
 }

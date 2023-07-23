@@ -1,7 +1,7 @@
 package com.khs.figle_m.Response
 
 import android.os.Parcelable
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
+import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

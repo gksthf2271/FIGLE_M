@@ -1,15 +1,14 @@
 package com.khs.figle_m.Analytics
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Utils.LogUtil
 
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :

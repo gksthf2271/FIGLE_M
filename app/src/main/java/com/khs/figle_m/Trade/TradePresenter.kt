@@ -1,7 +1,7 @@
 package com.khs.figle_m.Trade
 
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.TradeResponse
+import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.coroutines.CoroutineScope

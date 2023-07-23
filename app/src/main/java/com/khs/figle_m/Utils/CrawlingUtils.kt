@@ -13,7 +13,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
-import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 

@@ -1,35 +1,16 @@
 package com.khs.figle_m.Analytics.Squad
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.opengl.Visibility
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.khs.figle_m.Base.BaseActivity
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.CustomDTO.PlayerListDTO
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.data.nexon_api.response.CustomDTO.PlayerListDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_field.view.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SquadFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

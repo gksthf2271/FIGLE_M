@@ -1,10 +1,10 @@
 package com.khs.figle_m.Utils
 
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 
-class UserSortUtils() {
-    open fun sortUserList(searchAccessId:String, matchInfo:MatchDetailResponse) : Pair<MatchInfoDTO, MatchInfoDTO> {
+object UserSortUtils {
+    fun sortUserList(searchAccessId:String, matchInfo: MatchDetailResponse) : Pair<MatchInfoDTO, MatchInfoDTO> {
         when (searchAccessId) {
             matchInfo.matchInfo[0].accessId -> {
                 return Pair(matchInfo.matchInfo[0], matchInfo.matchInfo[1])

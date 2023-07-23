@@ -16,10 +16,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.BuildConfig
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.coroutines.CoroutineScope
@@ -34,10 +34,8 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var viewHolder: RecyclerView.ViewHolder? = null
-        val view: View =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.cview_player_item_view, parent, false)
-        viewHolder = ViewHolder(view, itemClick)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.cview_player_item_view, parent, false)
+        viewHolder = ViewHolder(view)
         return viewHolder
     }
 
@@ -53,8 +51,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
         mMvpPlayer = mvpPlayer
     }
 
-    inner class ViewHolder(val mItemView: View, itemClick: (PlayerDTO) -> Unit) :
-        RecyclerView.ViewHolder(mItemView) {
+    inner class ViewHolder(val mItemView: View) : RecyclerView.ViewHolder(mItemView) {
         val TAG: String = javaClass.simpleName
 
         var mRootLayout: ConstraintLayout = mItemView.findViewById(R.id.group_player)
@@ -206,7 +203,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
         }
     }
 
-    fun updatePlayerImage(playerimg: ImageView, item:PlayerDTO, url: String, position: Int) {
+    fun updatePlayerImage(playerimg: ImageView, item: PlayerDTO, url: String, position: Int) {
         LogUtil.vLog(LogUtil.TAG_SEARCH, TAG,"updatePlayerImage(...) uri : $url")
         Glide.with(playerimg.context)
             .load(Uri.parse(url))

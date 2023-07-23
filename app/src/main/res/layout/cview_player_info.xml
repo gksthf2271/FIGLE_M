@@ -6,17 +6,17 @@
     xmlns:custom="http://schemas.android.com/tools"
     android:background="@color/fragment_background">
 
-    <com.gao.jiefly.abilitychartlibrary.AbilityChatView
-        android:id="@+id/chart_view"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        custom:lineWidth="0.2dp"
-        custom:textColor="#ffffff"
-        custom:textSize="1sp"
-        app:layout_constraintWidth_percent="0.65"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/group_playerInfo"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+<!--    <com.gao.jiefly.abilitychartlibrary.AbilityChatView-->
+<!--        android:id="@+id/chart_view"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        custom:lineWidth="0.2dp"-->
+<!--        custom:textColor="#ffffff"-->
+<!--        custom:textSize="1sp"-->
+<!--        app:layout_constraintWidth_percent="0.65"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toLeftOf="@id/group_playerInfo"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/group_playerInfo"

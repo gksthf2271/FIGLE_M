@@ -1,9 +1,9 @@
 package com.khs.figle_m
 
 import android.content.Context
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
-import com.khs.figle_m.DB.SeasonEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
+import com.khs.data.database.entity.SeasonEntity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.coroutines.CoroutineScope

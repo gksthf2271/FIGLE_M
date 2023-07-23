@@ -2,8 +2,8 @@ package com.khs.figle_m.Analytics
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum

@@ -16,13 +16,13 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailContract
 import com.khs.figle_m.Utils.*
 import kotlinx.android.synthetic.main.fragment_player_detail.*
@@ -226,7 +226,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
             .into(imgView)
     }
 
-    private fun updateIcon(context: Context, item:PlayerDTO) {
+    private fun updateIcon(context: Context, item: PlayerDTO) {
         val seasonDB = PlayerDataBase.getInstance(context)
         seasonDB?.let {
             CoroutineScope(Dispatchers.IO).launch {

@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.ContentLoadingProgressBar
 import com.khs.figle_m.Utils.LogUtil
-import com.wang.avi.AVLoadingIndicatorView
 import kotlinx.android.synthetic.main.cview_loading_view.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class AvLoadingCustomView: ConstraintLayout {
     fun show(isStart: Boolean) {
         LogUtil.dLog(LogUtil.TAG_UI, TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
-            view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToShow()
+            view.findViewById<ContentLoadingProgressBar>(R.id.loading_view).show()
         }
 
         if (isStart) {
@@ -57,7 +57,7 @@ class AvLoadingCustomView: ConstraintLayout {
     fun hide(){
         LogUtil.dLog(LogUtil.TAG_UI, TAG,"hide LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
-            view.findViewById<AVLoadingIndicatorView>(R.id.loading_view).smoothToHide()
+            view.findViewById<ContentLoadingProgressBar>(R.id.loading_view).hide()
         }
     }
 

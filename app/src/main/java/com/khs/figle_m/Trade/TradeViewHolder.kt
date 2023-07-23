@@ -2,38 +2,39 @@ package com.khs.figle_m.Trade
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Utils.StringUtils
-import kotlinx.android.synthetic.main.cview_trade_player.view.*
-import kotlinx.android.synthetic.main.item_trade_buy.view.*
-import kotlinx.android.synthetic.main.item_trade_sell.view.*
+import com.khs.figle_m.databinding.ItemTradeBuyBinding
 
-open abstract class TradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class TradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
    abstract fun bind(item: TradeResponse)
 }
+//
+//open class TradeSellViewHolder(private val listItemView: View) : TradeViewHolder(listItemView) {
+//   override fun bind(item: TradeResponse) {
+//      listItemView.sellTxtDate.text = item.tradeDate.replace("T","\n")
+//      val circlePlayerView = listItemView.sellLayoutTradePlayer.findViewWithTag<CirclePlayerView>("CirclePlayerView")
+//      circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
+//   }
+//}
 
-open class TradeSellViewHolder(itemView: View) : TradeViewHolder(itemView) {
+open class TradeBuyViewHolder(private val itemViewBinding: ViewBinding) : TradeViewHolder(itemViewBinding.root) {
    override fun bind(item: TradeResponse) {
-      itemView.sell_txt_date.text = item.tradeDate.replace("T","\n")
-      var circlePlayerView = itemView.sell_layout_trade_player.findViewWithTag<CirclePlayerView>("CirclePlayerView")
-      circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
-   }
-}
-
-open class TradeBuyViewHolder(itemView: View) : TradeViewHolder(itemView) {
-   override fun bind(item: TradeResponse) {
-      itemView.buy_txt_date.text = com.khs.figle_m.Utils.DateUtils().formatTimeString(item.tradeDateMs)
-      var circlePlayerView = itemView.buy_layout_trade_player.findViewWithTag<CirclePlayerView>("CirclePlayerView")
-      circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
-      itemView.txt_player_value.text = StringUtils().parseValue(item.value) + " BP"
-      if (item.tradeType == TradeHomeFragment.TradeType.sell.ordinal) {
-         itemView.trade_type.text = "SELL"
-         itemView.trade_type.setTextColor(itemView.context.getColor(R.color.trade_red_color))
-      } else {
-         itemView.trade_type.text = "BUY"
-         itemView.trade_type.setTextColor(itemView.context.getColor(R.color.trade_blue_color))
+      if (itemViewBinding is ItemTradeBuyBinding) {
+         itemViewBinding.buyTxtDate.text = com.khs.figle_m.Utils.DateUtils().formatTimeString(item.tradeDateMs)
+         val circlePlayerView = itemViewBinding.buyLayoutTradePlayer.findViewWithTag<CirclePlayerView>("CirclePlayerView")
+         circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
+         circlePlayerView.txtPlayerValue.text = StringUtils().parseValue(item.value) + " BP"
+         if (item.tradeType == TradeHomeFragment.TradeType.sell.ordinal) {
+            itemViewBinding.tradeType.text = "SELL"
+            itemViewBinding.tradeType.setTextColor(itemView.context.getColor(R.color.trade_red_color))
+         } else {
+            itemViewBinding.tradeType.text = "BUY"
+            itemViewBinding.tradeType.setTextColor(itemView.context.getColor(R.color.trade_blue_color))
+         }
       }
    }
 }

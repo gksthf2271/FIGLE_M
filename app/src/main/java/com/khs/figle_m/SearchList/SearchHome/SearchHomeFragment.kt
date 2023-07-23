@@ -3,7 +3,6 @@ package com.khs.figle_m.SearchList.SearchHome
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract

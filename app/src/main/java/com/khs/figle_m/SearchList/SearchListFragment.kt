@@ -1,22 +1,20 @@
 package com.khs.figle_m.SearchList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.R
-import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
-import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_searchlist.*
+import com.khs.figle_m.databinding.FragmentSearchlistBinding
 
 
 class SearchListFragment : BaseFragment() {
     val TAG: String = javaClass.simpleName
+    lateinit var mBinding : FragmentSearchlistBinding
     val DEBUG: Boolean = true
 
     val KEY_SEARCH_USER_INFO: String = "KEY_SEARCH_USER_INFO"
@@ -54,8 +52,8 @@ class SearchListFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_searchlist, container, false)
-        return v
+        mBinding = FragmentSearchlistBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onStart() {
@@ -66,13 +64,15 @@ class SearchListFragment : BaseFragment() {
     }
 
     fun initView() {
-        btn_back.visibility = View.VISIBLE
-        btn_back.setOnClickListener {
-            fragmentManager?.popBackStack()
+        mBinding.btnBack.apply {
+            visibility = View.VISIBLE
+            setOnClickListener {
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
     }
 
-    fun initMyInfoData() {
+    private fun initMyInfoData() {
         arguments?.let { bundle ->
             mSearchUserInfo = bundle.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
 //            mSearchList = bundle.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
@@ -80,24 +80,28 @@ class SearchListFragment : BaseFragment() {
             mMatchIdList = bundle.getStringArrayList(KEY_SEARCH_MATCH_ID) as ArrayList<String>
         }
 
-        when (mMatchtype) {
-            DataManager.matchType.normalMatch.ordinal -> {
-                txt_title.text = "1 ON 1 경기 조회"
-                txt_title.visibility = View.VISIBLE
-                mIsCoachMode = false
-            }
-            DataManager.matchType.coachMatch.ordinal -> {
-                txt_title.text = "감독모드 경기 조회"
-                txt_title.visibility = View.VISIBLE
-                mIsCoachMode = true
+        mBinding.txtTitle.apply {
+            when (mMatchtype) {
+                DataManager.matchType.normalMatch.ordinal -> {
+                    text = "1 ON 1 경기 조회"
+                    visibility = View.VISIBLE
+                    mIsCoachMode = false
+                }
+                DataManager.matchType.coachMatch.ordinal -> {
+                    text = "감독모드 경기 조회"
+                    visibility = View.VISIBLE
+                    mIsCoachMode = true
+                }
             }
         }
     }
 
     private fun initListData() {
-        view_searchList.setSearchUserInfo(mSearchUserInfo)
-        view_searchList.updateView(mMatchtype, mMatchIdList) { matchDetailResponse ->
-            showDetail(mSearchUserInfo.accessId, matchDetailResponse)
+        mBinding.viewSearchList.apply {
+            setSearchUserInfo(mSearchUserInfo)
+            updateView(mMatchtype, mMatchIdList) { matchDetailResponse ->
+                showDetail(mSearchUserInfo.accessId, matchDetailResponse)
+            }
         }
     }
 
@@ -105,15 +109,14 @@ class SearchListFragment : BaseFragment() {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
         mSelectedMatchInfo = matchDetailResponse
-        var isCoachMode = false
 
         bundle.putBoolean(searchDetailDialogFragment.KEY_IS_COACH_MODE, mIsCoachMode)
-        bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
+        bundle.putSerializable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
         bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
         searchDetailDialogFragment.arguments = bundle
         if (!searchDetailDialogFragment.isAdded) {
             searchDetailDialogFragment.show(
-                fragmentManager!!,
+                requireActivity().supportFragmentManager,
                 SearchDetailDialogFragment().TAG_MATCH_DETAIL_DIALOG
             )
         }

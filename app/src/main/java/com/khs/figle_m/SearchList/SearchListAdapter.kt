@@ -2,7 +2,6 @@ package com.khs.figle_m.SearchList
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Utils.DateUtils
 import com.khs.figle_m.Utils.LogUtil
 

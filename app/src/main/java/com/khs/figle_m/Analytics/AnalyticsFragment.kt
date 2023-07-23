@@ -6,24 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.PlayerDetail.PlayerDetailDialogFragment
-import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.Ranker
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Utils.CrawlingUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_analytics.*
+import com.khs.figle_m.databinding.FragmentAnalyticsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
-    val TAG:String = javaClass.simpleName
-    val DEBUG = BuildConfig.DEBUG
+    private val TAG:String = javaClass.simpleName
+    private val DEBUG = BuildConfig.DEBUG
+    private lateinit var mBinding : FragmentAnalyticsBinding
 
     lateinit var mAnalyticsPresenter: AnalyticsPresenter
     lateinit var mCurrentRank: Ranker
@@ -40,7 +40,8 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_analytics, container, false)
+        mBinding = FragmentAnalyticsBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onDestroy() {
@@ -55,24 +56,26 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     fun initView() {
-        txt_title.text = "최근 10경기 분석"
-        btn_back.setOnClickListener {
-            activity?.finish()
+        mBinding.apply {
+            txtTitle.text = "최근 10경기 분석"
+            btnBack.setOnClickListener {
+                activity?.finish()
+            }
+            val ratingLayoutManager = LinearLayoutManager(context)
+            ratingLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            recyclerView.layoutManager = ratingLayoutManager
+
+            val goaleLayoutManager = LinearLayoutManager(context)
+            goaleLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            recyclerViewGoal.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            recyclerViewGoal.layoutManager = goaleLayoutManager
+
+            val assistLayoutManager = LinearLayoutManager(context)
+            assistLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            recyclerViewAssist.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
+            recyclerViewAssist.layoutManager = assistLayoutManager
         }
-        val rating_layoutManager = LinearLayoutManager(context)
-        rating_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        recycler_view.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view.layoutManager = rating_layoutManager
-
-        val goale_layoutManager = LinearLayoutManager(context)
-        goale_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        recycler_view_goal.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view_goal.layoutManager = goale_layoutManager
-
-        val assist_layoutManager = LinearLayoutManager(context)
-        assist_layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        recycler_view_assist.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL))
-        recycler_view_assist.layoutManager = assist_layoutManager
    }
 
     fun initList() {
@@ -91,7 +94,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading?.apply {
+            mBinding.aviLoading.apply {
                 visibility = View.VISIBLE
                 backroundColorVisible(true)
                 show(false)
@@ -102,7 +105,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     override fun hideLoading(isError: Boolean) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading?.let {
+            mBinding.aviLoading.let {
                 it.visibility = View.GONE
                 it.hide()
             }
@@ -118,9 +121,8 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showPlayerImage(playerInfoList: List<AnalyticsPlayer>) {
-        recycler_view.adapter =
-            AnalyticsRecyclerViewAdapter(
-                context!!,
+        mBinding.recyclerView.adapter = AnalyticsRecyclerViewAdapter(
+                requireContext(),
                 ROW_TYPE.MATCH_RATING,
                 playerInfoList.sortedByDescending { it.totalData.totalSpRating / it.playerDataList.size }
                     .subList(0, 10)
@@ -129,8 +131,8 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
                 showPlayerDetailDialogFragmentWrap(it)
             }
 
-        recycler_view_goal.adapter = AnalyticsRecyclerViewAdapter(
-            context!!,
+        mBinding.recyclerViewGoal.adapter = AnalyticsRecyclerViewAdapter(
+            requireContext(),
             ROW_TYPE.GOAL,
             playerInfoList.sortedByDescending { it.totalData.totalGoal }.subList(0, 5)
         ) {
@@ -138,8 +140,8 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
             showPlayerDetailDialogFragmentWrap(it)
         }
 
-        recycler_view_assist.adapter = AnalyticsRecyclerViewAdapter(
-            context!!,
+        mBinding.recyclerViewAssist.adapter = AnalyticsRecyclerViewAdapter(
+            requireContext(),
             ROW_TYPE.ASSIST,
             playerInfoList.sortedByDescending { it.totalData.totalAssist }.subList(0, 5)
         ) {
@@ -148,7 +150,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         }
     }
 
-    fun showPlayerDetailDialogFragmentWrap(analyticsPlayer: AnalyticsPlayer) {
+    private fun showPlayerDetailDialogFragmentWrap(analyticsPlayer: AnalyticsPlayer) {
         if (analyticsPlayer.playerDataList.isNotEmpty()) {
             mAnalyticsPresenter.loadRankerPlayerList(50, analyticsPlayer.playerDataList.first())
         }
@@ -171,22 +173,22 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
             val playerDetailFragment = PlayerDetailDialogFragment.getInstance()
             val bundle = Bundle()
             playerDTO.imageUrl = imgUrl
-            bundle.putParcelable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
-            bundle.putParcelableArrayList(
+            bundle.putSerializable(PlayerDetailDialogFragment().KEY_PLAYER_INFO, playerDTO)
+            bundle.putSerializable(
                 PlayerDetailDialogFragment().KEY_RANKER_PLAYER_INFO,
                 ArrayList(rankerPlayerDTOList)
             )
             playerDetailFragment.arguments = bundle
             if (!playerDetailFragment.isAdded) {
                 playerDetailFragment.show(
-                    fragmentManager!!,
+                    requireActivity().supportFragmentManager,
                     PlayerDetailDialogFragment().TAG_PLAYER_DETAIL_DIALOG
                 )
             }
         }
     }
 
-    private fun updatePlayer(player:PlayerDTO, callback: (String) -> Unit) {
+    private fun updatePlayer(player: PlayerDTO, callback: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             CrawlingUtils().getPlayerImg(player, {
                 callback(it)

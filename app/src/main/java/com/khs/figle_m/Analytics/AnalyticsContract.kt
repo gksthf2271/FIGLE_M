@@ -2,9 +2,9 @@ package com.khs.figle_m.Analytics
 
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 
 interface AnalyticsContract : BaseView {
     interface View : BaseView{

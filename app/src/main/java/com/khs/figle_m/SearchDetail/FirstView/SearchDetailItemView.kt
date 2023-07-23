@@ -6,20 +6,15 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.R
+import com.khs.figle_m.databinding.CviewDetailInfoBinding
 
 class SearchDetailItemView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
+    private var mBinding : CviewDetailInfoBinding
     init {
-        initView(context)
-    }
-    fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_detail_info, this)
-    }
-
-    override fun onFinishInflate() {
-        super.onFinishInflate()
+        mBinding = CviewDetailInfoBinding.inflate(inflater, this, true)
     }
 
     fun setLeftText(text:String) {

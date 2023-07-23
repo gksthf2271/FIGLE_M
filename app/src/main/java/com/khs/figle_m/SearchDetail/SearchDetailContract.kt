@@ -2,8 +2,8 @@ package com.khs.figle_m.SearchDetail
 
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 
 interface SearchDetailContract :BaseView {
     interface View : BaseView{

@@ -8,8 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.mikephil.charting.data.PieEntry
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.MatchInfoDTO
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
 import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*

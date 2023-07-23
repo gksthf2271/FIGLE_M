@@ -1,8 +1,9 @@
 package com.khs.figle_m.Utils
 
 import android.content.Context
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.SeasonEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
+import com.khs.data.database.entity.SeasonEntity
 
 object SeasonManager {
     val gSeasonMap : HashMap<String, Season> = hashMapOf()

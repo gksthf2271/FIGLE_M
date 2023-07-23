@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.figle_m.BuildConfig
-import com.khs.figle_m.DB.PlayerDataBase
+import com.khs.data.database.PlayerDataBase
 import com.khs.figle_m.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.khs.figle_m.Analytics.Squad.SquadFieldView
-import com.khs.figle_m.Response.DTO.PlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogGameResultView
 import com.khs.figle_m.SearchDetail.FirstView.SearchDetailDialogPlayerInfoView
 

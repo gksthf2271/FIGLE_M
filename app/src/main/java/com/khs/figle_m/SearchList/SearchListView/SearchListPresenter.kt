@@ -1,8 +1,7 @@
 package com.khs.figle_m.SearchList.SearchListView
 
-import android.util.Log
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.Utils.DateUtils
 import com.khs.figle_m.Utils.LogUtil

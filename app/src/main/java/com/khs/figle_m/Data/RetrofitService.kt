@@ -1,9 +1,9 @@
 package com.khs.figle_m.Data
 
-import com.khs.figle_m.Response.DTO.RankerPlayerDTO
-import com.khs.figle_m.Response.MatchDetailResponse
-import com.khs.figle_m.Response.TradeResponse
-import com.khs.figle_m.Response.UserHighRankResponse
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.MatchDetailResponse
+import com.khs.data.nexon_api.response.TradeResponse
+import com.khs.data.nexon_api.response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call

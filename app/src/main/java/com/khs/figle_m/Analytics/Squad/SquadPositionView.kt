@@ -1,7 +1,6 @@
 package com.khs.figle_m.Analytics.Squad
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
@@ -15,10 +14,10 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.khs.figle_m.DB.PlayerDataBase
-import com.khs.figle_m.DB.PlayerEntity
+import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
 import kotlinx.android.synthetic.main.cview_analytics_position.view.*

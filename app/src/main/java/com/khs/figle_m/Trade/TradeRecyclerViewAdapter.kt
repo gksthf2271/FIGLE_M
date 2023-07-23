@@ -1,49 +1,28 @@
 package com.khs.figle_m.Trade
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
+import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.TradeResponse
-import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.item_trade_buy.view.*
+import com.khs.figle_m.databinding.ItemTradeBuyBinding
 
-class TradeRecyclerViewAdapter(context: Context, tradeList:List<TradeResponse>, val itemClick: (TradeResponse) -> Unit) :
+class TradeRecyclerViewAdapter(
+    private val context: Context,
+    private val mPlayerList: List<TradeResponse>,
+    val itemClick: (TradeResponse) -> Unit
+) :
 RecyclerView.Adapter<TradeViewHolder>() {
     private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
-    val mContext: Context
-    val mPlayerList: List<TradeResponse>?
 
-    init {
-        mContext = context
-        mPlayerList = tradeList
-    }
-
-    inner class ViewHolderMaker(){
-        fun getLayoutResId(type: Int) : Int{
-            var resId = 0
-//            if (TradeHomeFragment.TradeType.sell.ordinal == type){
-//                resId = R.layout.item_trade_sell
-//            } else {
-                resId = R.layout.item_trade_buy
-//            }
-            return resId
-        }
-
-        fun getViewHolder(type: Int, view:View) : TradeViewHolder{
-            var viewHolder : TradeViewHolder
-//            if (TradeHomeFragment.TradeType.sell.ordinal.equals(type)){
-//                viewHolder = TradeSellViewHolder(view)
-//            } else {
-                viewHolder = TradeBuyViewHolder(view)
-//            }
-            return viewHolder
+    inner class ViewHolderMaker{
+        fun getViewHolder(type: Int, viewBinding: ViewBinding) : TradeViewHolder{
+            return TradeBuyViewHolder(viewBinding)
         }
     }
 
@@ -51,24 +30,20 @@ RecyclerView.Adapter<TradeViewHolder>() {
         return mPlayerList!![position].tradeType
     }
 
+    /** TODO : 23.07.23
+     *  Android Extension 삭제 후 ViewBinding 으로 변환작업 필요...
+     *  RecyclerView Adapter 내 아이템들 어떻게 전환해야될지 고민해봐야됨.
+    **/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TradeViewHolder {
         val viewHolder: RecyclerView.ViewHolder
-
-        val resId : Int = ViewHolderMaker().getLayoutResId(viewType)
-
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(resId, parent, false)
-
-        val playerView = CirclePlayerView(mContext)
+        val inflater = LayoutInflater.from(parent.context)
+        val viewBinding: ItemTradeBuyBinding = ItemTradeBuyBinding.inflate(inflater, parent, false)
+        val playerView = CirclePlayerView(context)
         playerView.tag = playerView.TAG
         playerView.initView(R.layout.cview_trade_player)
 
-//        if(viewType == TradeHomeFragment.TradeType.sell.ordinal) {
-//            view.sell_layout_trade_player.addView(playerView)
-//        } else {
-            view.buy_layout_trade_player.addView(playerView)
-//        }
-        viewHolder = ViewHolderMaker().getViewHolder(viewType, view)
+        viewBinding.buyLayoutTradePlayer.addView(playerView)
+        viewHolder = ViewHolderMaker().getViewHolder(viewType, viewBinding)
         return viewHolder
     }
 

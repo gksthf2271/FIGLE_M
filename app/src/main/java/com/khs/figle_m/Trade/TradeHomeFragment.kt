@@ -1,16 +1,13 @@
 package com.khs.figle_m.Trade
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.R
-import com.khs.figle_m.Ranking.RankingRecyclerViewAdapter
-import com.khs.figle_m.Response.TradeResponse
+import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.android.synthetic.main.fragment_ranking.*

@@ -1,9 +1,7 @@
 package com.khs.figle_m.SearchList.SearchListView
 
 import android.content.Context
-import android.os.Handler
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.MatchDetailResponse
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchDecoration
