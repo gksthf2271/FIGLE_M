@@ -14,16 +14,18 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
-import kotlinx.android.synthetic.main.cview_ranker_chart.view.*
+import com.khs.figle_m.R
+import com.khs.figle_m.databinding.CviewRankerChartBinding
+import kotlin.math.roundToInt
 
 
 class RankerChartView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.simpleName
+    lateinit var mBinding : CviewRankerChartBinding
 
     init {
         initView(context)
@@ -31,7 +33,7 @@ class RankerChartView @JvmOverloads constructor(
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_ranker_chart, this)
+        mBinding = CviewRankerChartBinding.inflate(inflater, this, true)
     }
 
     fun setData(playerDTO: PlayerDTO?, rankerPlayerDTO: RankerPlayerDTO?) {
@@ -60,72 +62,74 @@ class RankerChartView @JvmOverloads constructor(
         playerEntries.add(Entry(8.00f, playerInfo.status.block.toFloat()))
 //        playerEntries.add(Entry(9.00f, playerInfo.status.dribble.toFloat()))
 
-        val rankerDataSet = LineDataSet(rankerEntries, "Ranker")
-        val playerDataSet = LineDataSet(playerEntries, "Player")
+        val rankerDataSet = LineDataSet(rankerEntries, "Ranker").apply {
+            lineWidth = 2f
+            circleRadius = 4f
+            setCircleColor(resources.getColor(R.color.chart_ranker_color,null))
+            fillColor = resources.getColor(R.color.chart_ranker_color_fill,null)
+            color = resources.getColor(R.color.chart_ranker_color,null)
+            setDrawCircleHole(true)
+            setDrawCircles(true)
+            setDrawHorizontalHighlightIndicator(false)
+            setDrawHighlightIndicators(false)
+            setDrawValues(true)
+            setDrawFilled(true)
+            valueTextSize = 11f
+            valueTextColor = Color.WHITE
+        }
 
-        rankerDataSet.lineWidth = 2f
-        rankerDataSet.circleRadius = 4f
-        rankerDataSet.setCircleColor(resources.getColor(R.color.chart_ranker_color,null))
-        rankerDataSet.fillColor = resources.getColor(R.color.chart_ranker_color_fill,null)
-        rankerDataSet.color = resources.getColor(R.color.chart_ranker_color,null)
-        rankerDataSet.setDrawCircleHole(true)
-        rankerDataSet.setDrawCircles(true)
-        rankerDataSet.setDrawHorizontalHighlightIndicator(false)
-        rankerDataSet.setDrawHighlightIndicators(false)
-        rankerDataSet.setDrawValues(true)
-        rankerDataSet.setDrawFilled(true)
-        rankerDataSet.setValueTextSize(11f)
-        rankerDataSet.setValueTextColor(Color.WHITE)
-
-        playerDataSet.lineWidth = 2f
-        playerDataSet.circleRadius = 4f
-        playerDataSet.setCircleColor(resources.getColor(R.color.chart_player_color,null))
-        playerDataSet.color = resources.getColor(R.color.chart_player_color,null)
-        playerDataSet.fillColor = resources.getColor(R.color.chart_player_color_fill,null)
-        playerDataSet.setDrawCircleHole(true)
-        playerDataSet.setDrawCircles(true)
-        playerDataSet.setDrawHorizontalHighlightIndicator(false)
-        playerDataSet.setDrawHighlightIndicators(false)
-        playerDataSet.setDrawValues(true)
-        playerDataSet.setDrawFilled(true)
-        playerDataSet.setValueTextSize(11f)
-        playerDataSet.setValueTextColor(Color.WHITE)
+        val playerDataSet = LineDataSet(playerEntries, "Player").apply {
+            lineWidth = 2f
+            circleRadius = 4f
+            setCircleColor(resources.getColor(R.color.chart_player_color,null))
+            color = resources.getColor(R.color.chart_player_color,null)
+            fillColor = resources.getColor(R.color.chart_player_color_fill,null)
+            setDrawCircleHole(true)
+            setDrawCircles(true)
+            setDrawHorizontalHighlightIndicator(false)
+            setDrawHighlightIndicators(false)
+            setDrawValues(true)
+            setDrawFilled(true)
+            valueTextSize = 11f
+            valueTextColor = Color.WHITE
+        }
 
         val lineData = LineData(rankerDataSet, playerDataSet)
         lineData.setValueTextColor(resources.getColor(R.color.search_text_color,null))
         lineData.setValueTextSize(9f)
         lineData.setDrawValues(false)   //값 표시 여부
-        chart.data = lineData
+        mBinding.chart.apply {
+            data = lineData
 
-        val xAxis = chart.getXAxis()
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM)
-        xAxis.setTextColor(Color.WHITE)
-        xAxis.enableGridDashedLine(8f, 24f, 0f)
-        xAxis.setValueFormatter(CustomVlaueFormatter(listOf<String>("","슈팅","유효슈팅","어시스트","골","패스시도","패스성공","태클","블락")))
-        xAxis.isEnabled = true
+            val xAxis = xAxis
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.textColor = Color.WHITE
+            xAxis.enableGridDashedLine(8f, 24f, 0f)
+            xAxis.valueFormatter = CustomVlaueFormatter(listOf<String>("","슈팅","유효슈팅","어시스트","골","패스시도","패스성공","태클","블락"))
+            xAxis.isEnabled = true
 
-        val yLAxis = chart.getAxisLeft()
-        yLAxis.setTextColor(Color.WHITE)
+            val yLAxis = axisLeft
+            yLAxis.textColor = Color.WHITE
 
-        val yRAxis = chart.getAxisRight()
-        yRAxis.setDrawAxisLine(false)
-        yRAxis.setDrawGridLines(false)
+            val yRAxis = axisRight
+            yRAxis.setDrawAxisLine(false)
+            yRAxis.setDrawGridLines(false)
 
-        val description = Description()
-        description.setText("")
+            val description = Description()
+            description.text = ""
 
-        val legend = chart.getLegend() //레전드 설정 (차트 밑에 색과 라벨을 나타내는 설정)
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM //하단 왼쪽에 설정
-        legend.setTextColor(ContextCompat.getColor(context, R.color.search_text_color)) // 레전드 컬러 설정
+            val legend = mBinding.chart.legend //레전드 설정 (차트 밑에 색과 라벨을 나타내는 설정)
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM //하단 왼쪽에 설정
+            legend.textColor = ContextCompat.getColor(context, R.color.search_text_color) // 레전드 컬러 설정
 
-
-        chart.setDoubleTapToZoomEnabled(false)
-        chart.setDrawGridBackground(false)
-        chart.setDescription(description)
-        chart.description.isEnabled = false
-        chart.animateY(1500, Easing.EaseInCubic)
-        chart.invalidate()
+            isDoubleTapToZoomEnabled = false
+            setDrawGridBackground(false)
+            setDescription(description)
+            description.isEnabled = false
+            animateY(1500, Easing.EaseInCubic)
+            invalidate()
+        }
     }
 
     inner class CustomVlaueFormatter : ValueFormatter {
@@ -146,7 +150,7 @@ class RankerChartView @JvmOverloads constructor(
         }
 
         override fun getFormattedValue(value: Float): String {
-            var index = Math.round(value)
+            val index = value.roundToInt()
 
             if (index < 0 || index >= mValueCount || index != value.toInt())
                 return ""
@@ -158,7 +162,7 @@ class RankerChartView @JvmOverloads constructor(
             return mValues
         }
 
-        fun setValues(values: List<String>) {
+        private fun setValues(values: List<String>) {
             this.mValues = values
             this.mValueCount = values.size
         }

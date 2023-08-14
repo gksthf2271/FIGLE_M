@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -17,7 +16,7 @@ import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.activity_ranking.*
+import com.khs.figle_m.databinding.ActivityRankingBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +24,7 @@ import kotlin.system.exitProcess
 
 class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
     val TAG: String = javaClass.simpleName
+    lateinit var mBinding: ActivityRankingBinding
     lateinit var mRankingPresenter: RankingPresenter
     private val mHandler:Handler = Handler(this)
     override fun initPresenter() {
@@ -47,7 +47,8 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ranking)
+        mBinding = ActivityRankingBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
     }
 
     override fun onStart() {
@@ -59,7 +60,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
     override fun onDestroy() {
         super.onDestroy()
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroy(...)")
-        mRankingPresenter!!.dropView()
+        mRankingPresenter.dropView()
     }
 
     override fun handleMessage(msg: Message): Boolean {
@@ -69,16 +70,16 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
 
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
-        avi_loading.visibility = View.VISIBLE
-        fragment_container.visibility = View.GONE
-        avi_loading.show(true)
+        mBinding.aviLoading.visibility = View.VISIBLE
+        mBinding.fragmentContainer.visibility = View.GONE
+        mBinding.aviLoading.show(true)
     }
 
     override fun hideLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
-        avi_loading.hide()
-        avi_loading.visibility = View.GONE
-        fragment_container.visibility = View.VISIBLE
+        mBinding.aviLoading.hide()
+        mBinding.aviLoading.visibility = View.GONE
+        mBinding.fragmentContainer.visibility = View.VISIBLE
     }
 
     override fun showRanking(rankerList : List<Ranker>) {

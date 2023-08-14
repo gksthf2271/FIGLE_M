@@ -16,15 +16,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.net.UnknownHostException
 
-class DataManager{
+object DataManager{
     val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
-
-    var mContext: Context? = null
-
-    fun init(context:Context?) {
-        mContext = context
-    }
 
 //    {
 //        "matchtype": 30,
@@ -100,20 +94,6 @@ class DataManager{
 
     private val mAuthorizationKey: String =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJYLUFwcC1SYXRlLUxpbWl0IjoiNTAwOjEwIiwiYWNjb3VudF9pZCI6IjEyNDE1MjkyNjQiLCJhdXRoX2lkIjoiMiIsImV4cCI6MTcwMDkwNTU1OCwiaWF0IjoxNjg1MzUzNTU4LCJuYmYiOjE2ODUzNTM1NTgsInNlcnZpY2VfaWQiOiI0MzAwMTE0ODEiLCJ0b2tlbl90eXBlIjoiQWNjZXNzVG9rZW4ifQ.AR2VG9_js3eRan4YQnACLd5g-avHcNkK42b_NFlGLKg"
-
-    companion object {
-        @Volatile
-        private var instance: DataManager? = null
-
-        @JvmStatic
-        fun getInstance(): DataManager =
-            instance ?: synchronized(this) {
-                instance
-                    ?: DataManager().also {
-                        instance = it
-                    }
-            }
-    }
 
     fun loadUserData(
         nickName: String,

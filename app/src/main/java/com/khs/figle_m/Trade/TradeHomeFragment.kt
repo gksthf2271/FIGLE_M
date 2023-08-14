@@ -5,23 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.khs.figle_m.Base.BaseFragment
-import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.TradeResponse
+import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_ranking.*
-import kotlinx.android.synthetic.main.fragment_trade.*
+import com.khs.figle_m.databinding.FragmentTradeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TradeHomeFragment : BaseFragment(), TradeContract.View {
     val TAG = javaClass.simpleName
+    lateinit var mTradeBinding : FragmentTradeBinding
     var mTradePresenter : TradePresenter? = null
     enum class TradeType(index:Int){
-        buy(0),
-        sell(1)
+        TYPE_BUY(0),
+        TYPE_SELL(1)
     }
     override fun initPresenter() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
@@ -34,7 +33,8 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_trade, container, false)
+        mTradeBinding = FragmentTradeBinding.inflate(inflater, container, false)
+        return mTradeBinding.root
     }
 
     override fun onDestroy() {
@@ -54,11 +54,11 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
 
     fun initView() {
         val layoutManager = LinearLayoutManager(context)
-        recycler_view.addItemDecoration(SearchDecoration(10))
-        recycler_view.setLayoutManager(layoutManager)
+        mTradeBinding.recyclerView.addItemDecoration(SearchDecoration(10))
+        mTradeBinding.recyclerView.layoutManager = layoutManager
 
-        txt_title.text = "최근 거래 내역"
-        btn_back.setOnClickListener { activity!!.finish() }
+        mTradeBinding.txtTitle.text = "최근 거래 내역"
+        mTradeBinding.btnBack.setOnClickListener { activity?.finish() }
     }
 
     private fun requestData(accessId: String) {
@@ -68,7 +68,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading?.let{
+            mTradeBinding.aviLoading.let{
                 it.visibility = View.VISIBLE
                 it.show(false)
             }
@@ -78,7 +78,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun hideLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
         CoroutineScope(Dispatchers.Main).launch {
-            avi_loading?.let {
+            mTradeBinding.aviLoading.let {
                 it.visibility = View.GONE
                 it.hide()
             }
@@ -93,10 +93,11 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     override fun showTradePlayerImageUrl(tradeInfoList: List<TradeResponse>) {
         CoroutineScope(Dispatchers.Main).launch {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, showTradePlayerImageUrl : $tradeInfoList")
-            recycler_view.addItemDecoration(SearchDecoration(10))
-            recycler_view.layoutManager = LinearLayoutManager(context)
-            val sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
-            recycler_view.adapter = TradeRecyclerViewAdapter(context!!, sortedList){ tradeResponse ->
+            mTradeBinding.recyclerView.apply {
+                addItemDecoration(SearchDecoration(10))
+                layoutManager = LinearLayoutManager(context)
+                val sortedList:List<TradeResponse> = tradeInfoList.sortedByDescending { it.tradeDateMs }
+                adapter = TradeRecyclerViewAdapter(context, sortedList){ _ -> }
             }
         }
     }

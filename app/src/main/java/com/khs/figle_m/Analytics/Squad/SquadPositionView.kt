@@ -16,35 +16,35 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
-import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.figle_m.R
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
-import kotlinx.android.synthetic.main.cview_analytics_position.view.*
+import com.khs.figle_m.databinding.CviewAnalyticsPositionBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SquadPositionView : ConstraintLayout{
+class SquadPositionView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG: String = javaClass.simpleName
-
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    lateinit var mBinding : CviewAnalyticsPositionBinding
+    init {
         initView(context)
     }
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_analytics_position, this)
+        mBinding = CviewAnalyticsPositionBinding.inflate(inflater, this, false)
     }
 
     fun updatePlayerInfo(playerDTO: PlayerDTO, positionEnum: PositionEnum, itemClick: (Pair<PlayerDTO, Boolean>) -> Unit) {
         this.setOnClickListener { itemClick(
             Pair(playerDTO, true)
         ) }
-        txt_player_position.text = positionEnum.description
-        txt_player_position.setBackgroundColor(ContextCompat.getColor(context, positionEnum.pointColor))
+        mBinding.txtPlayerPosition.text = positionEnum.description
+        mBinding.txtPlayerPosition.setBackgroundColor(ContextCompat.getColor(context, positionEnum.pointColor))
         updatePlayerName(playerDTO.spId)
         updatePlayerImage(playerDTO.imageUrl ?: "0")
         updatePlayerGrade(playerDTO.spGrade)
@@ -97,23 +97,23 @@ class SquadPositionView : ConstraintLayout{
                 val player : PlayerEntity? = playerDataBase.playerDao().getPlayer(spId.toString())
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
-                    txt_player_name.text = player.playerName
+                    mBinding.txtPlayerName.text = player.playerName
                 }
             }
         }
     }
 
     private fun updatePlayerGrade(spGrade : Int) {
-        txt_player_spGrade.text = spGrade.toString()
+        mBinding.txtPlayerSpGrade.text = spGrade.toString()
         when(spGrade) {
             in 0..3 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
             }
             in 4..7 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_silver)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
             }
             in 8..10 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_gold)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
             }
         }
     }
@@ -140,7 +140,7 @@ class SquadPositionView : ConstraintLayout{
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"updateSeason > Season, onLoadFailed(...) GlideException!!! " + e!!)
-                                    analytics_img_icon.visibility = View.GONE
+                                    mBinding.analyticsImgIcon.visibility = View.GONE
                                     return false
                                 }
 
@@ -151,12 +151,12 @@ class SquadPositionView : ConstraintLayout{
                                     dataSource: DataSource,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    analytics_img_icon.visibility = View.VISIBLE
+                                    mBinding.analyticsImgIcon.visibility = View.VISIBLE
                                     LogUtil.dLog(LogUtil.TAG_SEARCH, TAG,"updateSeason > Season, onResourceReady(...) $url")
                                     return false
                                 }
                             })
-                            .into(analytics_img_icon)
+                            .into(mBinding.analyticsImgIcon)
                     }
                 }
             }

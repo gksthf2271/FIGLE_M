@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.khs.data.nexon_api.response.UserHighRankResponse
 import com.khs.figle_m.Analytics.AnalyticsActivity
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.data.nexon_api.response.UserHighRankResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
@@ -22,8 +22,7 @@ import com.khs.figle_m.Trade.TradeActivity
 import com.khs.figle_m.Utils.DivisionEnum
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_searchlist.btn_back
-import kotlinx.android.synthetic.main.fragment_searchlist_ver2.*
+import com.khs.figle_m.databinding.FragmentSearchlistVer2Binding
 import okhttp3.ResponseBody
 
 
@@ -31,7 +30,7 @@ class SearchHomeFragment : BaseFragment(),
     SearchContract.View {
     val TAG: String = javaClass.simpleName
     val DEBUG: Boolean = true
-
+    lateinit var mBinding : FragmentSearchlistVer2Binding
     val KEY_SEARCH_USER_INFO: String = "SearchUserInfo"
 
     lateinit var mSearchHomePresenter: SearchHomePresenter
@@ -76,17 +75,15 @@ class SearchHomeFragment : BaseFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_searchlist_ver2, container, false)
-        return v
+        mBinding = FragmentSearchlistVer2Binding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onStart() {
         super.onStart()
         if (isRestartApp) return
-        if (mSearchHomePresenter == null) {
-            mSearchHomePresenter = SearchHomePresenter()
-        }
-        mSearchHomePresenter!!.takeView(this)
+        mSearchHomePresenter = mSearchHomePresenter ?: SearchHomePresenter()
+        mSearchHomePresenter.takeView(this)
         initView()
         initMyInfoData()
         initListData()
@@ -98,29 +95,31 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     fun initView() {
-        btn_back.setOnClickListener {
+        mBinding.btnBack.setOnClickListener {
             FragmentUtils().loadFragment(
                 HomeFragment.getInstance(),
                 R.id.fragment_container,
-                fragmentManager!!
+                parentFragmentManager
             )
         }
 
-        mOfficialView = MatchView(context!!)
-        mCoachView = MatchView(context!!)
+        context?.let { context ->
+            mOfficialView = MatchView(context)
+            mCoachView = MatchView(context)
 
-        mOfficialView.updateView(DataManager.matchType.normalMatch.matchType)
-        mCoachView.updateView(DataManager.matchType.coachMatch.matchType)
+            mOfficialView.updateView(DataManager.matchType.normalMatch.matchType)
+            mCoachView.updateView(DataManager.matchType.coachMatch.matchType)
 
-        viewPager_search.adapter =
-            CustomPagerAdapter(
-                context!!,
-                mOfficialView,
-                mCoachView
-            )
-        viewPager_search.currentItem = 0
+            mBinding.viewPagerSearch.adapter =
+                CustomPagerAdapter(
+                    context,
+                    mOfficialView,
+                    mCoachView
+                )
+            mBinding.viewPagerSearch.currentItem = 0
 
-        match_indicator.setViewPager(viewPager_search)
+            mBinding.matchIndicator.setViewPager(mBinding.viewPagerSearch)
+        }
     }
 
     private fun initRateView(accessId: String) {
@@ -128,34 +127,36 @@ class SearchHomeFragment : BaseFragment(),
     }
 
     private fun initRateView(accessId : String, officialModeList: List<String>, coachModeList: List<String>) {
-        val officialModeView = SearchHomeRateView(context!!)
-        val coachModeView = SearchHomeRateView(context!!)
+        context?.let { context ->
+            val officialModeView = SearchHomeRateView(context)
+            val coachModeView = SearchHomeRateView(context)
 
-        //승률 갯수 20개로 한정
-        officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
-        coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
+            //승률 갯수 20개로 한정
+            officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
+            coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
 
-        viewPager_team.adapter =
-            CustomPagerAdapter(
-                context!!,
-                officialModeView,
-                coachModeView
-            )
-        team_indicator.setViewPager(viewPager_team)
+            mBinding.viewPagerTeam.adapter =
+                CustomPagerAdapter(
+                    context,
+                    officialModeView,
+                    coachModeView
+                )
+            mBinding.teamIndicator.setViewPager(mBinding.viewPagerTeam)
+        }
     }
 
     private fun initMyInfoData() {
         arguments?.let { bundle ->
             mSearchUserInfo = bundle.getParcelable(KEY_SEARCH_USER_INFO)!!
         }
-        txt_MyNickName.text = mSearchUserInfo.nickname
-        txt_Level.text = mSearchUserInfo.level
+        mBinding.txtMyNickName.text = mSearchUserInfo.nickname
+        mBinding.txtLevel.text = mSearchUserInfo.level
         mSearchUserInfo.teamPrice.let{
-            txt_team_price.text = it
-            txt_team_price.visibility = View.VISIBLE
+            mBinding.txtTeamPrice.text = it
+            mBinding.txtTeamPrice.visibility = View.VISIBLE
         }
         mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
-        group_trade.setOnClickListener{
+        mBinding.groupTrade.setOnClickListener{
             val intent = Intent(context, TradeActivity::class.java)
             intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.accessId)
             startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
@@ -167,48 +168,52 @@ class SearchHomeFragment : BaseFragment(),
         mSearchHomePresenter.getMatchId(
             mSearchUserInfo.accessId,
             DataManager.matchType.normalMatch,
-            DataManager.getInstance().offset,
-            DataManager.getInstance().SEARCH_LIMIT
+            DataManager.offset,
+            DataManager.SEARCH_LIMIT
         )
 
         mSearchHomePresenter.getMatchId(
             mSearchUserInfo.accessId,
             DataManager.matchType.coachMatch,
-            DataManager.getInstance().offset,
-            DataManager.getInstance().SEARCH_LIMIT
+            DataManager.offset,
+            DataManager.SEARCH_LIMIT
         )
     }
 
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
-        avi_loading2.visibility = View.VISIBLE
-        group_content.visibility = View.GONE
+        mBinding.apply {
+            aviLoading2.visibility = View.VISIBLE
+            groupContent.visibility = View.GONE
 //        group_rate.visibility = View.GONE
-        viewPager_team.visibility = View.GONE
-        viewPager_search.visibility = View.GONE
-        txt_title.visibility = View.GONE
-        avi_loading2.show(false)
+            viewPagerTeam.visibility = View.GONE
+            viewPagerSearch.visibility = View.GONE
+            txtTitle.visibility = View.GONE
+            aviLoading2.show(false)
+        }
     }
 
     override fun hideLoading(isError: Boolean) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
-        avi_loading2.hide()
-        avi_loading2.visibility = View.GONE
-        group_content.visibility = View.VISIBLE
+        mBinding.apply {
+            aviLoading2.hide()
+            aviLoading2.visibility = View.GONE
+            groupContent.visibility = View.VISIBLE
 //            group_rate.visibility = View.VISIBLE
-        viewPager_team.visibility = View.VISIBLE
-        viewPager_search.visibility = View.VISIBLE
-        btn_back.visibility = View.VISIBLE
-        txt_title.visibility = View.VISIBLE
+            viewPagerTeam.visibility = View.VISIBLE
+            viewPagerSearch.visibility = View.VISIBLE
+            btnBack.visibility = View.VISIBLE
+            txtTitle.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("SetTextI18n")
     override fun showOfficialGameMatchIdList(userMatchIdResponse: ResponseBody?) {
         userMatchIdResponse ?: return
-        var result: String = userMatchIdResponse.string()
+        val result: String = userMatchIdResponse.string()
         mOfficialGameMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
-        if (result == null || result.isEmpty() || "[]".equals(result)) {
+        if (result.isEmpty() || "[]" == result) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"officialGmae is null")
             mOfficialView.showEmptyView()
             return
@@ -219,7 +224,7 @@ class SearchHomeFragment : BaseFragment(),
             showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
         initRateView(mSearchUserInfo.accessId)
-        group_sq.setOnClickListener {
+        mBinding.groupSq.setOnClickListener {
             mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.accessId, mOfficialGameMatchIdList)
         }
     }
@@ -227,10 +232,10 @@ class SearchHomeFragment : BaseFragment(),
     @SuppressLint("SetTextI18n")
     override fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?) {
         matchDetailResponse ?: return
-        var result: String = matchDetailResponse.string()
+        val result: String = matchDetailResponse.string()
         mCoachModeMatchIdList = result.removeSurrounding("[", "]").replace("\"", "").split(",")
 
-        if (result == null || result.isEmpty() || "[]".equals(result)) {
+        if (result.isEmpty() || "[]" == result) {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"coachList is null")
             mCoachView.showEmptyView()
             hideLoading(false)
@@ -253,7 +258,7 @@ class SearchHomeFragment : BaseFragment(),
         startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
     }
 
-    fun showSearchList(matchtype: DataManager.matchType, matchIdList: List<String>) {
+    private fun showSearchList(matchtype: DataManager.matchType, matchIdList: List<String>) {
         val fragment = SearchListFragment()
         val bundle = Bundle()
         bundle.putStringArrayList(SearchListFragment().KEY_SEARCH_MATCH_ID, ArrayList(matchIdList))
@@ -264,13 +269,13 @@ class SearchHomeFragment : BaseFragment(),
         FragmentUtils().loadFragment(
             fragment,
             R.id.fragment_container,
-            fragmentManager!!,
+            parentFragmentManager,
             true
         )
     }
 
     override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
-        if (userHighRankResponse.isEmpty() || userHighRankResponse.size == 0) {
+        if (userHighRankResponse.isEmpty() || userHighRankResponse.isEmpty()) {
             showError(SearchHomePresenter().ERROR_EMPTY)
             return
         }
@@ -285,13 +290,13 @@ class SearchHomeFragment : BaseFragment(),
         for (item in DivisionEnum.values()) {
             if (mNormalMatchResponse != null && item.divisionId.equals(mNormalMatchResponse!!.division)) {
                 mNormalDivision = item.divisionName
-                txt_High_Rank.text = mNormalDivision ?: "-"
-                txt_Achievement_Date.text =
+                mBinding.txtHighRank.text = mNormalDivision ?: "-"
+                mBinding.txtAchievementDate.text =
                     mNormalMatchResponse!!.achievementDate.replace("T", " / ")
             } else if (mCoachMatchResponse != null && item.divisionId.equals(mCoachMatchResponse!!.division)) {
                 mCoachDivision = item.divisionName
-                txt_CoachMode_High_Rank.text = mCoachDivision ?: "-"
-                txt_CoachMode_Achievement_Date.text =
+                mBinding.txtCoachModeHighRank.text = mCoachDivision ?: "-"
+                mBinding.txtCoachModeAchievementDate.text =
                     mCoachMatchResponse!!.achievementDate.replace("T", " / ")
             }
         }
@@ -299,20 +304,20 @@ class SearchHomeFragment : BaseFragment(),
 
     override fun showError(error: Int) {
         when (error) {
-            DataManager().ERROR_UNAUTHORIZED,
-            DataManager().ERROR_FORBIDDEN,
-            DataManager().ERROR_NOT_FOUND,
-            DataManager().ERROR_METHOD_NOT_ALLOWED,
-            DataManager().ERROR_REQUEST_ENTITY_TOO_LARGE,
-            DataManager().ERROR_TOO_MANY_REQUEST,
-            DataManager().ERROR_INTERNAL_SERVER_ERROR,
-            DataManager().ERROR_OTHERS,
-            DataManager().ERROR_BAD_REQUEST -> {
+            DataManager.ERROR_UNAUTHORIZED,
+            DataManager.ERROR_FORBIDDEN,
+            DataManager.ERROR_NOT_FOUND,
+            DataManager.ERROR_METHOD_NOT_ALLOWED,
+            DataManager.ERROR_REQUEST_ENTITY_TOO_LARGE,
+            DataManager.ERROR_TOO_MANY_REQUEST,
+            DataManager.ERROR_INTERNAL_SERVER_ERROR,
+            DataManager.ERROR_OTHERS,
+            DataManager.ERROR_BAD_REQUEST -> {
                 hideLoading(false)
                 mSearchHomePresenter.dropView()
             }
-            DataManager().ERROR_NETWORK_DISCONNECTED,
-            DataManager().ERROR_GATEWAY_TIMEOUT -> {
+            DataManager.ERROR_NETWORK_DISCONNECTED,
+            DataManager.ERROR_GATEWAY_TIMEOUT -> {
                 hideLoading(true)
                 mSearchHomePresenter.dropView()
                 (activity as MainActivity).showErrorPopup(error)

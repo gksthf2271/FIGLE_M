@@ -11,7 +11,7 @@ class UserPresenter : UserContract.Presenter {
         mUserView?.let { userView ->
             userView.showLoading()
             Thread(Runnable {
-                DataManager.getInstance().loadUserData(nickname,
+                DataManager.loadUserData(nickname,
                     {
                         userView.hideLoading()
                         userView.showUserList(it.apply { it!!.teamPrice = teamPrice })

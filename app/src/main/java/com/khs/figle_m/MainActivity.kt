@@ -22,7 +22,8 @@ import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.SeasonManager
-import kotlinx.android.synthetic.main.activity_main.*
+import com.khs.figle_m.databinding.ActivityMainBinding
+import com.khs.figle_m.databinding.ActivityMainFinishBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,10 +33,10 @@ import okhttp3.ResponseBody
 
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.simpleName
+    lateinit var mBinding: ActivityMainBinding
     val PREF_NAME = "playerNamePref"
     lateinit var mInitPresenter: InitPresenter
     private var mPopupWindow: PopupWindow? = null
-
     private val MSG_DISCONNECTED_NETWORK = 0
 
     companion object {
@@ -54,7 +55,8 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
     }
 
     override fun onStart() {
@@ -83,12 +85,11 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
                 showMainActivity(null)
             }
         }
-        DataManager.getInstance().init(this)
     }
 
     override fun onResume() {
         super.onResume()
-        txt_disconnected_network.visibility = View.INVISIBLE
+        mBinding.txtDisconnectedNetwork.visibility = View.INVISIBLE
     }
 
     override fun onDestroy() {
@@ -99,7 +100,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun onPause() {
         super.onPause()
-        DataManager.getInstance().init(null)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -142,29 +142,29 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
 
     override fun showNetworkError() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkError(...)")
-        txt_disconnected_network.visibility = View.VISIBLE
+        mBinding.txtDisconnectedNetwork.visibility = View.VISIBLE
     }
 
     override fun setProgressMax(max: Int) {
-        avi_loading.setProgressMax(max)
+        mBinding.aviLoading.setProgressMax(max)
     }
 
     override fun updateProgress(progress: Int) {
-        avi_loading.updateProgress(progress)
+        mBinding.aviLoading.updateProgress(progress)
     }
 
     override fun showLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
-        avi_loading.visibility = View.VISIBLE
-        fragment_container.visibility = View.GONE
-        avi_loading.show(true)
+        mBinding.aviLoading.visibility = View.VISIBLE
+        mBinding.fragmentContainer.visibility = View.GONE
+        mBinding.aviLoading.show(true)
     }
 
     override fun hideLoading() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
-        avi_loading.hide()
-        avi_loading.visibility = View.GONE
-        fragment_container.visibility = View.VISIBLE
+        mBinding.aviLoading.hide()
+        mBinding.aviLoading.visibility = View.GONE
+        mBinding.fragmentContainer.visibility = View.VISIBLE
     }
 
     override fun showMainActivity(responseBody: ResponseBody?) {
@@ -192,17 +192,19 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        mPopupWindow!!.setFocusable(true)
-        mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+        mPopupWindow?.let { popupWindow ->
+            popupWindow.isFocusable = true
+            popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
 
 
-        val cancel = popupView.findViewById(R.id.Cancel) as Button
-        cancel.setOnClickListener { mPopupWindow!!.dismiss() }
+            val cancel = popupView.findViewById(R.id.Cancel) as Button
+            cancel.setOnClickListener { popupWindow.dismiss() }
 
-        val ok = popupView.findViewById(R.id.Ok) as Button
-        ok.setOnClickListener {
-            mPopupWindow!!.dismiss()
-            finish()
+            val ok = popupView.findViewById(R.id.Ok) as Button
+            ok.setOnClickListener {
+                popupWindow.dismiss()
+                finish()
+            }
         }
     }
 
@@ -214,11 +216,11 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showErrorPopup(...) :$error , isDestroyed : $isDestroyed")
         if (!this.window.isActive || isDestroyed) return
         when (error) {
-            DataManager().ERROR_NETWORK_DISCONNECTED -> {
+            DataManager.ERROR_NETWORK_DISCONNECTED -> {
                 showNetworkErrorPopup()
             }
-            DataManager().ERROR_NOT_FOUND,
-            DataManager().ERROR_BAD_REQUEST -> {
+            DataManager.ERROR_NOT_FOUND,
+            DataManager.ERROR_BAD_REQUEST -> {
                 showBadRequestPopup()
             }
         }
@@ -227,23 +229,26 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     private fun showBadRequestPopup() {
         if (isDestroyed) return
         CoroutineScope(Dispatchers.Main).launch {
-            val popupView = layoutInflater.inflate(R.layout.activity_main_finish, null)
+            val popupBinding = ActivityMainFinishBinding.inflate(layoutInflater)
+            val popupView = popupBinding.root
             mPopupWindow = PopupWindow(
                 popupView,
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            mPopupWindow!!.setFocusable(true)
-            mPopupWindow!!.showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            mPopupWindow?.let { popupWindow ->
+                popupWindow.isFocusable = true
+                popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
 
-            val textView = popupView.findViewById<TextView>(R.id.txt_title)
-            textView.text = "구단주명을 확인해주세요."
+                val textView = popupView.findViewById<TextView>(R.id.txt_title)
+                textView.text = "구단주명을 확인해주세요."
 
-            val cancel = popupView.findViewById(R.id.Cancel) as Button
-            cancel.visibility = View.GONE
+                val cancel = popupView.findViewById(R.id.Cancel) as Button
+                cancel.visibility = View.GONE
 
-            val ok = popupView.findViewById(R.id.Ok) as Button
-            ok.setOnClickListener { mPopupWindow!!.dismiss() }
+                val ok = popupView.findViewById(R.id.Ok) as Button
+                ok.setOnClickListener { popupWindow.dismiss() }
+            }
         }
     }
 

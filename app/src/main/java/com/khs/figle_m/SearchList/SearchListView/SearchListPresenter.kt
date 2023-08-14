@@ -39,7 +39,7 @@ class SearchListPresenter : SearchContract.SearchListPresenter {
     }
 
     private fun getMatchDetail(matchId: String, onSuccess: ((MatchDetailResponse) -> Unit), onFailed: (Int) -> Unit) {
-        DataManager.getInstance().loadMatchDetail(matchId,
+        DataManager.loadMatchDetail(matchId,
             {
                 LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"getMatchDetail Success! ${it.matchId} + ${it.matchDate}")
                 onSuccess(it)

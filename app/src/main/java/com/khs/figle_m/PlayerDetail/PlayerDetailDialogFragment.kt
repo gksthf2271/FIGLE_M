@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -18,14 +17,17 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
+import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.figle_m.SearchDetail.SearchDetailContract
-import com.khs.figle_m.Utils.*
-import kotlinx.android.synthetic.main.fragment_player_detail.*
+import com.khs.figle_m.Utils.DisplayUtils
+import com.khs.figle_m.Utils.LogUtil
+import com.khs.figle_m.Utils.NetworkUtils
+import com.khs.figle_m.Utils.PositionEnum
+import com.khs.figle_m.databinding.FragmentPlayerDetailBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     val KEY_RANKER_PLAYER_INFO = "KEY_RANKER_PLAYER_INFO"
 
     lateinit var mPlayerInfo : PlayerDTO
+    lateinit var mBinding : FragmentPlayerDetailBinding
 
     companion object {
         @Volatile
@@ -63,30 +66,35 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_player_detail, container, false)
-        return v
+        mBinding = FragmentPlayerDetailBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onResume() {
         super.onResume()
-        if (!NetworkUtils().checkNetworkStatus(context!!)) {
-            dismiss()
-            (activity as MainActivity).showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED, false)
-            return
-        }
+        try {
+            if (!NetworkUtils().checkNetworkStatus(requireContext())) {
+                dismiss()
+                (activity as MainActivity).showErrorPopup(DataManager.ERROR_NETWORK_DISCONNECTED, false)
+                return
+            }
+        } catch (_: Exception) { }
         resizeDialog()
         setBackgroundColorDialog()
     }
 
     private fun resizeDialog(){
-        context ?: return
-        val size = DisplayUtils().getDisplaySize(context!!)
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        val deviceeHeight = size.y
-        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceeHeight * 0.9).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
+        try {
+            val size = DisplayUtils.getDisplaySize(requireContext())
+            val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+            val deviceWidth = size.x
+            val deviceHeight = size.y
+            params?.width = (deviceWidth * 0.9).toInt()
+            params?.height = (deviceHeight * 0.9).toInt()
+            dialog?.window?.attributes = params as WindowManager.LayoutParams
+        } catch (_: Exception) {
+
+        }
     }
 
     private fun setBackgroundColorDialog() {
@@ -96,7 +104,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     override fun onStart() {
         super.onStart()
         initData()
-        btn_back.setOnClickListener {
+        mBinding.btnBack.setOnClickListener {
             dismiss()
         }
     }
@@ -113,15 +121,18 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
         mPlayerInfo = playerDetailInfo!!
 
         if (rankerPlayerInfo != null && rankerPlayerInfo!!.isNotEmpty()) {
-            chart_ranker.setData(playerDetailInfo, rankerPlayerInfo!![0])
+            mBinding.chartRanker.setData(playerDetailInfo, rankerPlayerInfo!![0])
         }
 
         updatePlayerImage(mPlayerInfo.imageUrl ?: "0")
 
-        updateIcon(context!!, playerDetailInfo!!)
+        try {
+            updateIcon(requireContext(), playerDetailInfo!!)
+        } catch (_:Exception) {}
 
-        player_info_view1.setTitleList(listOf("슛","유효 슛","어시스트","득점"))
-        player_info_view1.setDataList(
+
+        mBinding.playerInfoView1.setTitleList(listOf("슛","유효 슛","어시스트","득점"))
+        mBinding.playerInfoView1.setDataList(
             listOf(
                 playerDetailInfo!!.status.shoot.toString(),
                 playerDetailInfo!!.status.effectiveShoot.toString(),
@@ -130,57 +141,59 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
             )
         )
 
-        player_info_view2.setTitleList(listOf("패스 시도","패스 성공","블락 성공","태클 성공"))
-        player_info_view2.setDataList(listOf(
+        mBinding.playerInfoView2.setTitleList(listOf("패스 시도","패스 성공","블락 성공","태클 성공"))
+        mBinding.playerInfoView2.setDataList(listOf(
             playerDetailInfo!!.status.passTry.toString(),
             playerDetailInfo!!.status.passSuccess.toString(),
             playerDetailInfo!!.status.block.toString(),
             playerDetailInfo!!.status.tackle.toString()
         ))
 
-        txt_player_spGrade.text = playerDetailInfo!!.spGrade.toString()
-        when(playerDetailInfo!!.spGrade) {
-            in 0..3 -> {
-                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_bronze)
+        mBinding.txtPlayerSpGrade.text = playerDetailInfo!!.spGrade.toString()
+        try {
+            when(playerDetailInfo!!.spGrade) {
+                in 0..3 -> {
+                    mBinding.txtPlayerSpGrade.background = requireContext().getDrawable(R.drawable.player_grade_bronze)
+                }
+                in 4..7 -> {
+                    mBinding.txtPlayerSpGrade.background = requireContext().getDrawable(R.drawable.player_grade_silver)
+                }
+                in 8..10 -> {
+                    mBinding.txtPlayerSpGrade.background = requireContext().getDrawable(R.drawable.player_grade_gold)
+                }
             }
-            in 4..7 -> {
-                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_silver)
-            }
-            in 8..10 -> {
-                txt_player_spGrade.background = context!!.getDrawable(R.drawable.player_grade_gold)
-            }
-        }
+        } catch(_:Exception) {}
 
-        val playerDB = PlayerDataBase.getInstance(context!!)
+        val playerDB = PlayerDataBase.getInstance(requireContext())
         playerDB?.let {
             CoroutineScope(Dispatchers.IO).launch {
                 val player : PlayerEntity? = it.playerDao().getPlayer(playerDetailInfo!!.spId.toString())
                 CoroutineScope(Dispatchers.Main).launch {
-                    txt_player_name.text = player?.playerName ?: ""
+                    mBinding.txtPlayerName.text = player?.playerName ?: ""
                 }
             }
         }
 
-        txt_player_rating.text = playerDetailInfo!!.status.spRating.toString()
+        mBinding.txtPlayerRating.text = playerDetailInfo!!.status.spRating.toString()
         for (positionItem in PositionEnum.values()) {
-            if (positionItem.spposition.equals(playerDetailInfo!!.spPosition)) {
-                txt_player_position.text = positionItem.description
+            if (positionItem.spposition == playerDetailInfo!!.spPosition) {
+                mBinding.txtPlayerPosition.text = positionItem.description
 
                 when(positionItem.spposition) {
                     0 -> {
-                        txt_player_position.setTextColor(resources.getColor(R.color.gk_color,null))
+                        mBinding.txtPlayerPosition.setTextColor(resources.getColor(R.color.gk_color,null))
                     }
                     in 1..8 -> {
-                        txt_player_position.setTextColor(resources.getColor(R.color.defence_color,null))
+                        mBinding.txtPlayerPosition.setTextColor(resources.getColor(R.color.defence_color,null))
                     }
                     in 9..19 -> {
-                        txt_player_position.setTextColor(resources.getColor(R.color.midfielder_color,null))
+                        mBinding.txtPlayerPosition.setTextColor(resources.getColor(R.color.midfielder_color,null))
                     }
                     in 20..27 -> {
-                        txt_player_position.setTextColor(resources.getColor(R.color.forward_color,null))
+                        mBinding.txtPlayerPosition.setTextColor(resources.getColor(R.color.forward_color,null))
                     }
                     else -> {
-                        txt_player_position.setTextColor(resources.getColor(R.color.sub_color,null))
+                        mBinding.txtPlayerPosition.setTextColor(resources.getColor(R.color.sub_color,null))
                     }
                 }
             }
@@ -188,42 +201,41 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
     }
 
     private fun updatePlayerImage(url: String) {
-        val imgView = view!!.findViewById<ImageView>(R.id.img_player)
-        imgView ?: return
+        try {
+            if (url == "0") {
+                Glide.with(requireContext())
+                    .load(R.drawable.person_icon)
+                    .into(mBinding.imgPlayer)
+                return
+            }
+            Glide.with(requireContext())
+                .load(Uri.parse(url))
+                .placeholder(R.drawable.person_icon)
+                .error(R.drawable.person_icon)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"onLoadFailed(...) GlideException!!! " + e!!)
+                        return false
+                    }
 
-        if (url == "0") {
-            Glide.with(context!!)
-                .load(R.drawable.person_icon)
-                .into(imgView)
-            return
-        }
-        Glide.with(context!!)
-            .load(Uri.parse(url))
-            .placeholder(R.drawable.person_icon)
-            .error(R.drawable.person_icon)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onLoadFailed(...) GlideException!!! " + e!!)
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"onResourceReady(...) $url")
-                    return false
-                }
-            })
-            .into(imgView)
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"onResourceReady(...) $url")
+                        return false
+                    }
+                })
+                .into(mBinding.imgPlayer)
+        } catch (_:Exception) { }
     }
 
     private fun updateIcon(context: Context, item: PlayerDTO) {
@@ -249,7 +261,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                                     isFirstResource: Boolean
                                 ): Boolean {
                                     LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onLoadFailed(...) GlideException!!! " + e!!)
-                                    img_player_icon.visibility = View.GONE
+                                    mBinding.imgPlayerIcon.visibility = View.GONE
                                     return false
                                 }
 
@@ -260,12 +272,12 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
                                     dataSource: DataSource,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    img_player_icon.visibility = View.VISIBLE
+                                    mBinding.imgPlayerIcon.visibility = View.VISIBLE
                                     LogUtil.dLog(LogUtil.TAG_UI, TAG,"Season, onResourceReady(...) $url")
                                     return false
                                 }
                             })
-                            .into(img_player_icon)
+                            .into(mBinding.imgPlayerIcon)
                     }
                 }
             }

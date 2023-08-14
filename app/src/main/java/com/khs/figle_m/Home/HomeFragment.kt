@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +25,11 @@ import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.khs.figle_m.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.simpleName
-
+    lateinit var mBinding: FragmentHomeBinding
     val MSG_SHOW_USER_LIST : Int = 0
     val MSG_SHOW_MATCH_DETAIL_LIST : Int = 1
     val MSG_SHOW_MATCH_ID_LIST : Int = 2
@@ -74,10 +73,6 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             MSG_SHOW_USER_LIST -> {
                 mUserResponse = msg.obj as (UserResponse)
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
-
-                mUserResponse.accessId ?: return false
-                fragmentManager ?: return false
-
                 val searchHomeFragment = SearchHomeFragment()
                 val bundle = Bundle()
                 bundle.putParcelable(
@@ -87,7 +82,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 searchHomeFragment.arguments = bundle
                 FragmentUtils().loadFragment(
                     searchHomeFragment,
-                    R.id.fragment_container, fragmentManager!!
+                    R.id.fragment_container, parentFragmentManager
                 )
                 return true
             }
@@ -119,10 +114,10 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"userResponse is null")
             return
         }
-        val msg_show_user_list:Message = Message()
-        msg_show_user_list.what = MSG_SHOW_USER_LIST
-        msg_show_user_list.obj = userResponse
-        mHandler.sendMessage(msg_show_user_list)
+        val msgUserList:Message = Message()
+        msgUserList.what = MSG_SHOW_USER_LIST
+        msgUserList.obj = userResponse
+        mHandler.sendMessage(msgUserList)
     }
 
     override fun showLoading() {
@@ -143,14 +138,14 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_home, container, false)
-        return v
+        mBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
     override fun onStart() {
         super.onStart()
         initView()
-        btn_ranking.setOnClickListener {
+        mBinding.btnRanking.setOnClickListener {
             val intent = Intent(context, RankingActivity::class.java)
             startActivityForResult(intent, RESULT_REQUEST_CODE)
         }
@@ -160,8 +155,9 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     lateinit var mCloseBtn : Button
     fun initView() {
         mUserPresenter.takeView(this)
-        mEditView = edit_search.findViewById<EditText>(R.id.edit_view)
-        mCloseBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
+        mBinding.editSearch.mBinding.editView
+        mEditView = mBinding.editSearch.mBinding.editView
+        mCloseBtn = mBinding.editSearch.mBinding.btnSearchReset
         mEditView.imeOptions = IME_ACTION_SEARCH
 
         mEditView.setOnEditorActionListener { view, actionId, keyEvent ->
@@ -211,12 +207,12 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         }
     }
 
-    fun search(searchString: String, teamPrice : String) {
+    private fun search(searchString: String, teamPrice : String) {
         mSearchString = searchString
         mUserPresenter.getUserDatailList(searchString, teamPrice)
     }
 
-    fun search(searchString: String) {
+    private fun search(searchString: String) {
         search(searchString, "")
     }
 

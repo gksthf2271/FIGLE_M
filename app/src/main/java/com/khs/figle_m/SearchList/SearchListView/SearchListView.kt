@@ -7,38 +7,35 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.R
-import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchListAdapter
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.cview_search_list.view.*
+import com.khs.figle_m.databinding.CviewSearchListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-class SearchListView : ConstraintLayout, SearchContract.SearchListView{
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
-        initView(context)
-    }
-    val DEBUG = BuildConfig.DEBUG
+class SearchListView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs), SearchContract.SearchListView{
     val TAG = javaClass.simpleName
+    lateinit var mBinding: CviewSearchListBinding
+    val DEBUG = BuildConfig.DEBUG
     lateinit var mSearchUserInfo: UserResponse
     var mMatchIdList = arrayListOf<String>()
     var mMatchType by Delegates.notNull<Int>()
     lateinit var mSearchListPresenter: SearchListPresenter
+
+    init {
+        initView(context)
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -54,11 +51,11 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
     fun initView(context: Context) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initView(...)")
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_search_list, this)
+        mBinding = CviewSearchListBinding.inflate(inflater, this, true)
 
         val layoutManager = LinearLayoutManager(context)
-        layout_recyclerview.addItemDecoration(SearchDecoration(10))
-        layout_recyclerview.layoutManager = layoutManager
+        mBinding.layoutRecyclerview.addItemDecoration(SearchDecoration(10))
+        mBinding.layoutRecyclerview.layoutManager = layoutManager
     }
 
     fun setSearchUserInfo(searchUserInfo: UserResponse) {
@@ -81,17 +78,17 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         }
 
         mMatchType = matchType
-        layout_recyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.accessId, arrayListOf()) { matchDetailResponse ->
+        mBinding.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.accessId, arrayListOf()) { matchDetailResponse ->
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"ItemClick! ${matchDetailResponse.matchInfo}")
                 itemClick(matchDetailResponse)
             }
-        if (mMatchIdList.size > DataManager().SEARCH_PAGE_SIZE) {
-            loadMatch(matchType, 0, DataManager().SEARCH_PAGE_SIZE - 1)
+        if (mMatchIdList.size > DataManager.SEARCH_PAGE_SIZE) {
+            loadMatch(matchType, 0, DataManager.SEARCH_PAGE_SIZE - 1)
         } else {
             loadMatch(matchType, 0, mMatchIdList.size - 1)
         }
 
-        layout_recyclerview.addOnScrollListener(mRecyclerViewScrollListener)
+        mBinding.layoutRecyclerview.addOnScrollListener(mRecyclerViewScrollListener)
     }
 
     fun loadMatch(matchType: Int, startIndex : Int, endIndex: Int) {
@@ -108,19 +105,19 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
             super.onScrolled(recyclerView, dx, dy)
             val childCount: Int = recyclerView.adapter.let { recyclerView.adapter!!.itemCount }
             if (childCount < 7) return;
-            var range = mMatchIdList.size - childCount
+            val range = mMatchIdList.size - childCount
             if (!recyclerView.canScrollVertically(1)) {
                 LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, mMatchIdList : ${mMatchIdList.size}, childCount : ${recyclerView.adapter.let{recyclerView.adapter!!.itemCount}}")
                 LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, range : $range")
 
                 if (range > 0) {
                     showLoading()
-                    if (DataManager().SEARCH_PAGE_SIZE > range) {
+                    if (DataManager.SEARCH_PAGE_SIZE > range) {
                         LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST1 scrolled(...) childCount : $childCount , range : $range")
                         loadMatch(mMatchType, childCount, childCount + range - 1)
                     } else {
                         LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST2 scrolled(...) childCount : $childCount , range : $range")
-                        loadMatch(mMatchType, childCount, childCount + DataManager().SEARCH_PAGE_SIZE - 1)
+                        loadMatch(mMatchType, childCount, childCount + DataManager.SEARCH_PAGE_SIZE - 1)
                     }
                 }
             }
@@ -129,36 +126,36 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
 
     private fun showEmptyView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showEmptyView(...)")
-        layout_recyclerview.visibility = View.GONE
-        txt_emptyView.visibility = View.VISIBLE
+        mBinding.layoutRecyclerview.visibility = View.GONE
+        mBinding.txtEmptyView.visibility = View.VISIBLE
     }
 
     private fun hideEmptyView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideEmptyView(...)")
-        layout_recyclerview.visibility = View.VISIBLE
-        txt_emptyView.visibility = View.GONE
+        mBinding.layoutRecyclerview.visibility = View.VISIBLE
+        mBinding.txtEmptyView.visibility = View.GONE
     }
 
     fun getViewChildCount(): Int {
-        return layout_recyclerview.childCount
+        return mBinding.layoutRecyclerview.childCount
     }
 
     override fun showLoading() {
-        if (!avi_loading.isShownLoadingView()) avi_loading.visibility = View.VISIBLE
-        avi_loading.backroundColorVisible(false)
-        avi_loading.show(false)
+        if (!mBinding.aviLoading.isShownLoadingView()) mBinding.aviLoading.visibility = View.VISIBLE
+        mBinding.aviLoading.backgroundColorVisible(false)
+        mBinding.aviLoading.show(false)
     }
 
     override fun hideLoading(isError: Boolean) {
-        avi_loading.hide()
-        if (avi_loading.isShownLoadingView()) avi_loading.visibility = View.GONE
+        mBinding.aviLoading.hide()
+        if (mBinding.aviLoading.isShownLoadingView()) mBinding.aviLoading.visibility = View.GONE
     }
 
     override fun showGameList(searchResponse: MatchDetailResponse?) {
         searchResponse?.let { matchDetailResponse ->
             if (matchDetailResponse.matchInfo.size <= 1) return
             LogUtil.vLog(LogUtil.TAG_UI, TAG,"showOfficialGameList : ${matchDetailResponse.matchId}")
-            (layout_recyclerview.adapter as SearchListAdapter).updateList(matchDetailResponse)
+            (mBinding.layoutRecyclerview.adapter as SearchListAdapter).updateList(matchDetailResponse)
         }
         CoroutineScope(Dispatchers.Main).launch {
             delay(500)

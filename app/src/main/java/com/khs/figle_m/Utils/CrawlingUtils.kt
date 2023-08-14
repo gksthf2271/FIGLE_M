@@ -44,7 +44,7 @@ class CrawlingUtils() {
             return
         }
         try {
-            DataManager.getInstance().loadPlayerInfo(cSpId, spGrade, {
+            DataManager.loadPlayerInfo(cSpId, spGrade, {
 
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody: Element? = doc.body().getElementById("wrapper")?.getElementById("middle")
@@ -108,7 +108,7 @@ class CrawlingUtils() {
         }
 
         try {
-            DataManager.getInstance().loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+            DataManager.loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")
@@ -144,7 +144,7 @@ class CrawlingUtils() {
 
     fun getRanking(page : Int, onSuccess: (List<Ranker>) -> Unit, onFailed: (Int) -> Unit) {
         try {
-            DataManager.getInstance().loadRaking(page, {
+            DataManager.loadRaking(page, {
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")

@@ -7,39 +7,27 @@ import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum
-import kotlinx.android.synthetic.main.item_analytics.view.*
+import com.khs.figle_m.databinding.ItemAnalyticsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-open abstract class AnalyticsViewHolder(itemView: View, itemClick: (AnalyticsPlayer) -> Unit) :
+abstract class AnalyticsViewHolder(itemView: View, itemClick: (AnalyticsPlayer) -> Unit) :
     RecyclerView.ViewHolder(itemView) {
     abstract fun bind(item: AnalyticsPlayer)
 }
 
-open class AnalyticsGradeViewHolder(itemView: View, itemClick: (AnalyticsPlayer) -> Unit) :
-    AnalyticsViewHolder(itemView, itemClick) {
-    var mItemView: View
-    var mPlayerDetailInfoView: PlayerDetailInfoView
-    var mItemCLick : (AnalyticsPlayer) -> Unit
-
-    init {
-        mItemView = itemView
-        mPlayerDetailInfoView = mItemView.player_info_view
-        mItemCLick = itemClick
-    }
+open class AnalyticsGradeViewHolder(private val mBinding: ItemAnalyticsBinding, private val mItemClick: (AnalyticsPlayer) -> Unit) :
+    AnalyticsViewHolder(mBinding.root, mItemClick) {
+    var mPlayerDetailInfoView: PlayerDetailInfoView = mBinding.playerInfoView
 
     override fun bind(item: AnalyticsPlayer) {
         resizeView()
-        var totalData = item.totalData
+        val totalData = item.totalData
 
-        DrawUtils().drawSeasonIcon(
-            mItemView.context,
-            mItemView.analytics_img_icon,
-            item.spId.toString()
-        )
-        DrawUtils().drawPlayerImage(mItemView.analytics_img_player, item.imageResUrl)
-        var positionSet = mutableSetOf<String>()
+        DrawUtils().drawSeasonIcon(mBinding.root.context, mBinding.analyticsImgIcon, item.spId.toString())
+        DrawUtils().drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
+        val positionSet = mutableSetOf<String>()
 
 
         for (playerDTO in item.playerDataList) {
@@ -50,11 +38,11 @@ open class AnalyticsGradeViewHolder(itemView: View, itemClick: (AnalyticsPlayer)
             }
         }
 
-        mItemView.txt_avgRating.text =
+        mBinding.txtAvgRating.text =
             String.format("%.2f", (item.totalData.totalSpRating / (item.playerDataList.size)))
-        positionSet.let { mItemView.txt_player_position.text = positionSet.toString() }
-        mItemView.txt_rating.text = (adapterPosition + 1).toString()
-        mItemView.txt_player_name.apply {
+        positionSet.let { mBinding.txtPlayerPosition.text = positionSet.toString() }
+        mBinding.txtRating.text = (adapterPosition + 1).toString()
+        mBinding.txtPlayerName.apply {
             val playerDB = PlayerDataBase.getInstance(context)
             playerDB?.let {
                 CoroutineScope(Dispatchers.IO).launch {
@@ -112,10 +100,11 @@ open class AnalyticsGradeViewHolder(itemView: View, itemClick: (AnalyticsPlayer)
                     )
                 )
             }
+            else -> {}
         }
     }
 
-    fun resizeView() {
+    private fun resizeView() {
         mPlayerDetailInfoView.setValueTextSize(25f)
         mPlayerDetailInfoView.setTitleTextSize(9f)
     }

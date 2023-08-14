@@ -6,22 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.mikephil.charting.data.PieEntry
-import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.R
-import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
+import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.cview_match_type_view.view.txt_title
-import kotlinx.android.synthetic.main.cview_search_home_pie_chart.view.*
+import com.khs.figle_m.databinding.CviewSearchHomePieChartBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.PriorityQueue
+import java.util.Queue
 
 class SearchHomeRateView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.simpleName
+    lateinit var mBinding : CviewSearchHomePieChartBinding
     lateinit var mMatchDetailList: ArrayList<MatchDetailResponse>
     lateinit var mFailedRequestQ : Queue<String>
 
@@ -31,53 +30,53 @@ class SearchHomeRateView @JvmOverloads constructor(
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_search_home_pie_chart, this)
+        mBinding = CviewSearchHomePieChartBinding.inflate(inflater, this, true)
     }
 
     fun updateView(accessId : String, matchType: DataManager.matchType, arrayList: List<String>) {
         mMatchDetailList = arrayListOf()
         mFailedRequestQ = PriorityQueue<String>()
-        if(!arrayList.isEmpty()) {
+        if(arrayList.isNotEmpty()) {
             showLoadingView()
             initRate(accessId, arrayList)
         }
 
         when (matchType.name) {
             DataManager.matchType.normalMatch.name -> {
-                txt_title.text = "1 ON 1"
+                mBinding.txtTitle.text = "1 ON 1"
             }
             DataManager.matchType.coachMatch.name -> {
-                txt_title.text = "감독모드"
+                mBinding.txtTitle.text = "감독모드"
             }
         }
     }
 
     private fun showLoadingView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoadingView(...)")
-        search_home_group_view.visibility = View.GONE
-        search_home_empty_view.visibility = View.VISIBLE
-        loading_view.visibility = View.VISIBLE
-        loading_view.show()
+        mBinding.searchHomeGroupView.visibility = View.GONE
+        mBinding.searchHomeEmptyView.visibility = View.VISIBLE
+        mBinding.loadingView.visibility = View.VISIBLE
+        mBinding.loadingView.show()
     }
 
     private fun hideLoadingView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoadingView(...)")
-        search_home_empty_view.visibility = View.GONE
-        search_home_group_view.visibility = View.VISIBLE
-        loading_view.visibility = View.GONE
-        loading_view.hide()
+        mBinding.searchHomeEmptyView.visibility = View.GONE
+        mBinding.searchHomeGroupView.visibility = View.VISIBLE
+        mBinding.loadingView.visibility = View.GONE
+        mBinding.loadingView.hide()
     }
 
     private fun initRate(accessId: String, arrayList: List<String>) {
         CoroutineScope(Dispatchers.IO).launch {
             mMatchDetailList.clear()
-            var searchSize = DataManager().SEARCH_PAGE_SIZE
-            if (arrayList.size < DataManager().SEARCH_PAGE_SIZE) {
+            var searchSize = DataManager.SEARCH_PAGE_SIZE
+            if (arrayList.size < DataManager.SEARCH_PAGE_SIZE) {
                 searchSize = arrayList.size
             }
-            for (index in 0 .. searchSize-1) {
+            for (index in 0 until searchSize) {
                 if (arrayList.size <= index) break
-                DataManager.getInstance().loadMatchDetailWrapper(arrayList.get(index)
+                DataManager.loadMatchDetailWrapper(arrayList.get(index)
                     ,{
                         mMatchDetailList.add(it)
                         LogUtil.vLog(LogUtil.TAG_UI, TAG,"${mMatchDetailList.size} Success Request : ${it.matchId}")
@@ -102,11 +101,10 @@ class SearchHomeRateView @JvmOverloads constructor(
         var lose = 0
 
         for (item in matchInfoList) {
-            var myInfo: MatchInfoDTO? = null
-            if (accessId == item.matchInfo[0].accessId) {
-                myInfo = item.matchInfo[0]
+            val myInfo = if (accessId == item.matchInfo[0].accessId) {
+                item.matchInfo[0]
             } else {
-                myInfo = item.matchInfo[1]
+                item.matchInfo[1]
             }
             myInfo.matchDetail.matchResult ?: continue
             when (myInfo.matchDetail.matchResult) {
@@ -121,6 +119,6 @@ class SearchHomeRateView @JvmOverloads constructor(
             PieEntry(draw.toFloat(), "무 : $draw", null, null),
             PieEntry(lose.toFloat(), "패 : $lose", null, null)
         )
-        pie_chart_view.setData(pieEntryList, win + draw + lose)
+        mBinding.pieChartView.setData(pieEntryList, win + draw + lose)
     }
 }

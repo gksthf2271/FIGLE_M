@@ -1,5 +1,6 @@
 package com.khs.figle_m.Ranking
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -21,13 +22,13 @@ import com.khs.figle_m.R
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.Utils.DisplayUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_ranking.*
+import com.khs.figle_m.databinding.FragmentRankingBinding
 
 class RankingFragment : BaseFragment(){
     val TAG:String = javaClass.simpleName
     val KEY_RANKING_LIST = "KEY_RANKING_LIST"
     val DEBUG = BuildConfig.DEBUG
-
+    lateinit var mBinding : FragmentRankingBinding
     lateinit var mCurrentRank: Ranker
 
     override fun initPresenter() {
@@ -53,8 +54,8 @@ class RankingFragment : BaseFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_ranking, container, false)
-        return v
+        mBinding = FragmentRankingBinding.inflate(inflater, container, false)
+        return mBinding.root
     }
 
 
@@ -63,70 +64,73 @@ class RankingFragment : BaseFragment(){
         initList()
     }
 
-    fun initList() {
+    private fun initList() {
         var rankingList = arrayListOf<Ranker>()
         arguments?.let {
             rankingList = it.getParcelableArrayList(KEY_RANKING_LIST)!!
         }
         val layoutManager = LinearLayoutManager(context)
-        layout_recyclerview.addItemDecoration(SearchDecoration(10))
-        layout_recyclerview.setLayoutManager(layoutManager)
-        layout_recyclerview.adapter = RankingRecyclerViewAdapter(context!!, rankingList) { ranker ->
-            updateTopView(ranker)
+        mBinding.layoutRecyclerview.apply {
+            addItemDecoration(SearchDecoration(10))
+            setLayoutManager(layoutManager)
+            adapter = RankingRecyclerViewAdapter(requireContext(), rankingList) { ranker ->
+                updateTopView(ranker)
+            }
+            updateTopView((adapter as RankingRecyclerViewAdapter).getFirstRanker())
         }
-        updateTopView((layout_recyclerview.adapter as RankingRecyclerViewAdapter).getFirstRanker())
-        img_search.setOnClickListener {
+        mBinding.imgSearch.setOnClickListener {
             LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onClick!!")
             var intent = Intent()
             intent.putExtra(HomeFragment().KEY_SEARCH, mCurrentRank.name)
             intent.putExtra(HomeFragment().KEY_SEARCH_TEAM_PRICE, mCurrentRank.price)
             LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, 0!!")
-            if (activity != null && activity is RankingActivity) {
+            if (activity is RankingActivity) {
                 LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, 1!!")
-                activity!!.setResult(Activity.RESULT_OK, intent)
-                activity!!.finish()
+                activity?.setResult(Activity.RESULT_OK, intent)
+                activity?.finish()
             }
         }
-        btn_close.setOnClickListener{
-            activity!!.finish()
+        mBinding.btnClose.setOnClickListener{
+            activity?.finish()
         }
     }
 
-    fun updateTopView(rank:Ranker?) {
-        context ?: return
+    @SuppressLint("SetTextI18n")
+    private fun updateTopView(rank:Ranker?) {
         rank ?: return
         mCurrentRank = rank
-        txt_ranking.text = DisplayUtils().updateTextSize(mCurrentRank.rank_no + " 위", " 위")
-        txt_rate.text = "상위 ${mCurrentRank.rank_percent} %"
-        txt_no1_id.text = rank.name
-        txt_no1_total_price.text = mCurrentRank.price
+        mBinding.txtRanking.text = DisplayUtils.updateTextSize(mCurrentRank.rank_no + " 위", " 위")
+        mBinding.txtRate.text = "상위 ${mCurrentRank.rank_percent} %"
+        mBinding.txtNo1Id.text = rank.name
+        mBinding.txtNo1TotalPrice.text = mCurrentRank.price
+        context?.let {
+            Glide.with(it)
+                .load(Uri.parse(mCurrentRank.rank_icon_url))
+                .placeholder(R.drawable.person_icon)
+                .error(R.drawable.person_icon)
+                .skipMemoryCache(false)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any,
+                        target: Target<Drawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
 
-        Glide.with(context!!)
-            .load(Uri.parse(mCurrentRank.rank_icon_url))
-            .placeholder(R.drawable.person_icon)
-            .error(R.drawable.person_icon)
-            .skipMemoryCache(false)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any,
-                    target: Target<Drawable>,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    model: Any,
-                    target: Target<Drawable>,
-                    dataSource: DataSource,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onResourceReady(...) url : ${rank.rank_icon_url}")
-                    return false
-                }
-            })
-            .into(img_no1_logo)
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        model: Any,
+                        target: Target<Drawable>,
+                        dataSource: DataSource,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, onResourceReady(...) url : ${rank.rank_icon_url}")
+                        return false
+                    }
+                })
+                .into(mBinding.imgNo1Logo)
+        }
     }
 }

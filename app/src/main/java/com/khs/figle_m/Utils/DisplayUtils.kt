@@ -8,10 +8,8 @@ import android.text.style.AbsoluteSizeSpan
 import android.view.WindowManager
 
 
-class DisplayUtils {
-    constructor()
-
-    open fun getDisplaySize(context: Context): Point {
+object DisplayUtils {
+    fun getDisplaySize(context: Context): Point {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
         val size = Point()
@@ -31,12 +29,11 @@ class DisplayUtils {
 //    ssb.setSpan(new UnderLineSpan(), 0, title.length()
 //    , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE); // UnderLine
 
-    open fun updateTextSize(fullStr: String, targetStr: String) : SpannableStringBuilder{
+    fun updateTextSize(fullStr: String, targetStr: String) : SpannableStringBuilder{
         val ssb = SpannableStringBuilder(fullStr)
         ssb.setSpan(
             AbsoluteSizeSpan (30), fullStr.length - targetStr.length, fullStr.length
             , Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         return ssb
     }
-
 }

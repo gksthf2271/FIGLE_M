@@ -96,7 +96,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         CoroutineScope(Dispatchers.Main).launch {
             mBinding.aviLoading.apply {
                 visibility = View.VISIBLE
-                backroundColorVisible(true)
+                backgroundColorVisible(true)
                 show(false)
             }
         }

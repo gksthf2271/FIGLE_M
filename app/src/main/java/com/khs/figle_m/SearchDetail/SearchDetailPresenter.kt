@@ -71,7 +71,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         mDetailListView!!.showLoading()
         runBlocking {
             launch {
-                DataManager.getInstance().loadRankerPlayerAverData(matchType,
+                DataManager.loadRankerPlayerAverData(matchType,
                     getPlayerObject(playerDTO),
                     {
                         mDetailListView ?: return@loadRankerPlayerAverData
@@ -102,7 +102,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                                        onFailed: (Int) -> Unit) {
         val spId = playerDTO.spId
         LogUtil.dLog(LogUtil.TAG_SEARCH, TAG, "KHS > TEST, spId : ${playerDTO.spId} / imageUrl : ${playerDTO.imageUrl} / subImgUrl : ${playerDTO.subImageUrl}")
-        DataManager.getInstance().loadPlayerImage(spId, {
+        DataManager.loadPlayerImage(spId, {
             onSuccess(it.toString())
         }, {
             onFailed(0)

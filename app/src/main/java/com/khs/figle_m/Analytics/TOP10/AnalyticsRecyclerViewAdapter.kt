@@ -12,58 +12,50 @@ import com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum
-import kotlinx.android.synthetic.main.item_analytics.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.khs.figle_m.databinding.ItemAnalyticsBinding
 
-class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE , playerList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
+class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE, val mPlayerInfoList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
     : RecyclerView.Adapter<AnalyticsRecyclerViewAdapter.ViewHolder>() {
     private val TAG: String = javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
     val mContext: Context
-    val mPlayerInfoList: List<AnalyticsPlayer>?
     val mRowType: AnalyticsFragment.ROW_TYPE
+    lateinit var mBinding : ItemAnalyticsBinding
 
     init {
         mContext = context
-        mPlayerInfoList = playerList
         mRowType = rowType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var viewHolder: RecyclerView.ViewHolder? = null
-        val view: View =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_analytics, parent, false)
-        viewHolder = ViewHolder(view, itemClick)
+        val inflater = LayoutInflater.from(parent.context)
+        mBinding = ItemAnalyticsBinding.inflate(inflater, parent, true)
+        viewHolder = ViewHolder(mBinding, itemClick)
         return viewHolder
     }
 
     override fun getItemCount(): Int {
-        return mPlayerInfoList!!.size
+        return mPlayerInfoList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mPlayerInfoList!!.get(position),mContext)
+        holder.bind(mPlayerInfoList[position],mContext)
     }
 
-    inner class ViewHolder(itemView: View, itemClick: (AnalyticsPlayer) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(val mBinding: ItemAnalyticsBinding, itemClick: (AnalyticsPlayer) -> Unit) : RecyclerView.ViewHolder(mBinding.root) {
         val TAG: String = javaClass.simpleName
-        var mItemView: View
-        var mPlayerDetailInfoView : PlayerDetailInfoView
-        init {
-            mItemView = itemView
-            mPlayerDetailInfoView = mItemView.player_info_view
-        }
+        var mPlayerDetailInfoView : PlayerDetailInfoView = mBinding.playerInfoView
 
         fun bind(item: AnalyticsPlayer, context: Context) {
             setTextSize()
 
-            DrawUtils().drawSeasonIcon(context, mItemView.analytics_img_icon, item.spId.toString())
-            DrawUtils().drawPlayerImage(mItemView.analytics_img_player, item.imageResUrl)
-            var positionSet = mutableSetOf<String>()
+            DrawUtils().drawSeasonIcon(context, mBinding.analyticsImgIcon, item.spId.toString())
+            DrawUtils().drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
+            val positionSet = mutableSetOf<String>()
 
 
             for (playerDTO in item.playerDataList) {
@@ -74,9 +66,9 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                 }
             }
 
-            positionSet.let { mItemView.txt_player_position.text = it.toString() }
+            positionSet.let { mBinding.txtPlayerPosition.text = it.toString() }
             showRatingView(context, item)
-            mItemView.txt_player_name.apply {
+            mBinding.txtPlayerName.apply {
                 val playerDB = PlayerDataBase.getInstance(context)
                 playerDB?.let {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -91,26 +83,30 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
 
             initInfoView(item)
 
-            mItemView.setOnClickListener() {
+            mBinding.root.setOnClickListener() {
                 itemClick(item)
             }
         }
 
-        fun showRatingView(context: Context, item : AnalyticsPlayer){
-            var index = mPlayerInfoList!!.indexOf(item) + 1
+        private fun showRatingView(context: Context, item : AnalyticsPlayer){
+            val index = mPlayerInfoList.indexOf(item) + 1
             if (index == 1) {
-                mItemView.txt_rating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
+                context.getDrawable(R.drawable.rounded_player_team_mvp).let {
+                    mBinding.txtRating.background = it
+                }
             } else {
-                mItemView.txt_rating.background = context.getDrawable(R.drawable.rounded_player)
+                context.getDrawable(R.drawable.rounded_player)?.let {
+                    mBinding.txtRating.background = it
+                }
             }
-            mItemView.txt_rating.text = mPlayerInfoList.let { (index).toString()}
+            mBinding.txtRating.text = mPlayerInfoList.let { (index).toString()}
         }
 
-        fun initInfoView(item : AnalyticsPlayer) {
-            var totalData = item.totalData
+        private fun initInfoView(item : AnalyticsPlayer) {
+            val totalData = item.totalData
             when(mRowType){
                 AnalyticsFragment.ROW_TYPE.ASSIST -> {
-                    mItemView.txt_avgRating.visibility = View.GONE
+                    mBinding.txtAvgRating.visibility = View.GONE
                     mPlayerDetailInfoView.setTitleList(listOf("도움", "패스 시도", "패스 성공 ", "평점"))
                     mPlayerDetailInfoView.setDataList(
                         listOf(
@@ -122,7 +118,7 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                     )
                 }
                 AnalyticsFragment.ROW_TYPE.GOAL -> {
-                    mItemView.txt_avgRating.visibility = View.GONE
+                    mBinding.txtAvgRating.visibility = View.GONE
                     mPlayerDetailInfoView.setTitleList(listOf("득점", "슛", "유효 슛", "평점"))
                     mPlayerDetailInfoView.setDataList(
                         listOf(
@@ -134,7 +130,7 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                     )
                 }
                 AnalyticsFragment.ROW_TYPE.MATCH_RATING -> {
-                    mItemView.txt_avgRating.text = String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
+                    mBinding.txtAvgRating.text = String.format("%.2f", (item.totalData.totalSpRating/(item.playerDataList.size)))
                     when (item.position) {
                         ParentPositionEnum.F -> {
                             mPlayerDetailInfoView.setTitleList(listOf("슛", "유효 슛", "도움", "득점"))
@@ -194,12 +190,13 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
                                 )
                             )
                         }
+                        else -> {}
                     }
                 }
             }
         }
 
-        fun setTextSize() {
+        private fun setTextSize() {
             mPlayerDetailInfoView.setValueTextSize(23f)
             mPlayerDetailInfoView.setTitleTextSize(9f)
         }

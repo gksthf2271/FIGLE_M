@@ -2,27 +2,26 @@ package com.khs.figle_m.SearchList.SearchHome
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.cview_match_type_view.view.*
+import com.khs.figle_m.databinding.CviewMatchTypeViewBinding
 
 class MatchView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
+    val TAG = javaClass.simpleName
+    lateinit var mBinding: CviewMatchTypeViewBinding
     init {
         initView(context)
     }
 
-    val TAG = javaClass.simpleName
-
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_match_type_view, this)
+        mBinding = CviewMatchTypeViewBinding.inflate(inflater, this, true)
     }
 
     fun updateView(matchType: Int) {
@@ -30,25 +29,25 @@ class MatchView @JvmOverloads constructor(
         hideEmptyView()
         when(matchType) {
             DataManager.matchType.normalMatch.matchType -> {
-                img_icon.setImageResource(R.drawable.analytics)
-                txt_title.text = "1 ON 1\n전적 검색"
+                mBinding.imgIcon.setImageResource(R.drawable.analytics)
+                mBinding.txtTitle.text = "1 ON 1\n전적 검색"
             }
             DataManager.matchType.coachMatch.matchType -> {
-                img_icon.setImageResource(R.drawable.strategy)
-                txt_title.text = "감독 모드\n전적 검색"
+                mBinding.imgIcon.setImageResource(R.drawable.strategy)
+                mBinding.txtTitle.text = "감독 모드\n전적 검색"
             }
         }
     }
 
     fun showEmptyView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showEmptyView(...)")
-        group_view.visibility = View.GONE
-        empty_view.visibility = View.VISIBLE
+        mBinding.groupView.visibility = View.GONE
+        mBinding.emptyView.visibility = View.VISIBLE
     }
 
     fun hideEmptyView() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideEmptyView(...)")
-        empty_view.visibility = View.GONE
-        group_view.visibility = View.VISIBLE
+        mBinding.emptyView.visibility = View.GONE
+        mBinding.groupView.visibility = View.VISIBLE
     }
 }

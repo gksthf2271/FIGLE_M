@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.figle_m.R
+import com.khs.figle_m.databinding.CviewSearchEditViewBinding
 
-class SearchEditView  : ConstraintLayout {
+class SearchEditView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.simpleName
-    var mView: View? = null
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    lateinit var mBinding : CviewSearchEditViewBinding
+    init {
         initView(context)
     }
 
-    fun initView(context: Context) {
+    private fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_search_edit_view, this)
+        mBinding = CviewSearchEditViewBinding.inflate(inflater, this, true)
     }
 }

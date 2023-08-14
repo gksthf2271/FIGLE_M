@@ -28,7 +28,7 @@ open class TradeBuyViewHolder(private val itemViewBinding: ViewBinding) : TradeV
          val circlePlayerView = itemViewBinding.buyLayoutTradePlayer.findViewWithTag<CirclePlayerView>("CirclePlayerView")
          circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
          circlePlayerView.txtPlayerValue.text = StringUtils().parseValue(item.value) + " BP"
-         if (item.tradeType == TradeHomeFragment.TradeType.sell.ordinal) {
+         if (item.tradeType == TradeHomeFragment.TradeType.TYPE_SELL.ordinal) {
             itemViewBinding.tradeType.text = "SELL"
             itemViewBinding.tradeType.setTextColor(itemView.context.getColor(R.color.trade_red_color))
          } else {

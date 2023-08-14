@@ -27,7 +27,7 @@ class InitPresenter : InitContract.Presenter {
 
     override fun getSeasonIdList(context: Context) {
         mInitContract?.showLoading()
-        DataManager.getInstance().loadSeasonIdList({
+        DataManager.loadSeasonIdList({
             LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getSeasonIdList Success! $it")
             updateSeasonDB(context,it) {
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG, "SeasonList save successful")
@@ -62,7 +62,7 @@ class InitPresenter : InitContract.Presenter {
     }
 
     private fun getPlayerNameList(onSuccess: (ResponseBody) -> Unit, onFailed: (Int) -> Unit) {
-        DataManager.getInstance().loadPlayerName({
+        DataManager.loadPlayerName({
             LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"getPlayerNameList Success! $it")
             onSuccess(it)
         }, {

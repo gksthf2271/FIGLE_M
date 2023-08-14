@@ -70,7 +70,7 @@ class RankingRecyclerViewAdapter(private val mContext: Context, rankerList:List<
         }
 
         fun bind(item: Ranker) {
-            mTxtRanking.text = DisplayUtils().updateTextSize(item.rank_no + " 위", " 위")
+            mTxtRanking.text = DisplayUtils.updateTextSize(item.rank_no + " 위", " 위")
             mTxtRankingPoint.text = item.rank_point + " 점"
             mTxtId.text = item.name
             mTxtTotalPrice.text = item.price

@@ -72,7 +72,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         context?.let {
             if (!NetworkUtils().checkNetworkStatus(it)) {
                 dismiss()
-                (activity as MainActivity).showErrorPopup(DataManager().ERROR_NETWORK_DISCONNECTED, false)
+                (activity as MainActivity).showErrorPopup(DataManager.ERROR_NETWORK_DISCONNECTED, false)
                 return
             }
         }
@@ -151,7 +151,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     private fun resizeDialog(){
         requireContext().let { context ->
-            val size = DisplayUtils().getDisplaySize(context)
+            val size = DisplayUtils.getDisplaySize(context)
             val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
             val deviceWidth = size.x
             val deviceHeight = size.y

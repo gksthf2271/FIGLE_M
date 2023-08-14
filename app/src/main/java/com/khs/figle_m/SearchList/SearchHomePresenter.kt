@@ -25,7 +25,7 @@ class SearchHomePresenter: SearchContract.Presenter {
     override fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit: Int) {
         mSearchListView?.showLoading()
         Thread(Runnable {
-            DataManager.getInstance().loadMatchId(accessId, matchType.matchType, offset, limit,
+            DataManager.loadMatchId(accessId, matchType.matchType, offset, limit,
                 {
                     when (matchType.name) {
                         DataManager.matchType.normalMatch.name -> {
@@ -54,7 +54,7 @@ class SearchHomePresenter: SearchContract.Presenter {
         mSearchListView?.showLoading()
         runBlocking {
             launch {
-                DataManager.getInstance().loadUserHighRank(accessId,
+                DataManager.loadUserHighRank(accessId,
                     {
                         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getUserHighRank Success! $it")
 //                        mSearchListView?.hideLoading(false)

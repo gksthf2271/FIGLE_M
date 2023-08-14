@@ -5,25 +5,24 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.CustomDTO.PlayerListDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.figle_m.Utils.LogUtil
 import com.khs.figle_m.Utils.PositionEnum
-import kotlinx.android.synthetic.main.cview_field.view.*
+import com.khs.figle_m.databinding.CviewFieldBinding
 
 class SquadFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ConstraintLayout(context, attrs) {
     val TAG: String = javaClass.simpleName
-
+    lateinit var mBinding : CviewFieldBinding
     init {
         initView(context)
     }
 
     fun initView(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(R.layout.cview_field, this)
+        mBinding = CviewFieldBinding.inflate(inflater, this, true)
     }
 
     fun updateMatchInfo(userNickname: String,
@@ -31,7 +30,7 @@ class SquadFieldView @JvmOverloads constructor(
                         playerMap: HashMap<String, PlayerListDTO>,
                         itemClick: (Pair<PlayerDTO, Boolean>) -> Unit) {
         playerMap[userId]?.let { playerList ->
-            txt_userName.text = "$userNickname 스쿼드"
+            mBinding.txtUserName.text = "$userNickname 스쿼드"
             makeSquad(playerList.playerList, itemClick)
         }
     }
@@ -41,172 +40,172 @@ class SquadFieldView @JvmOverloads constructor(
             LogUtil.dLog(LogUtil.TAG_SEARCH, TAG, "makeSquad > player : ${playerDTO.spId} / ${playerDTO.spGrade}")
             when(playerDTO.spPosition) {
                 PositionEnum.GK.spposition -> {
-                    position_gk.updatePlayerInfo(playerDTO, PositionEnum.GK) {
+                    mBinding.positionGk.updatePlayerInfo(playerDTO, PositionEnum.GK) {
                         itemClick(it)
                     }
-                    position_gk.visibility = View.VISIBLE
+                    mBinding.positionGk.visibility = View.VISIBLE
                 }
                 PositionEnum.SW.spposition -> {
-                    position_sw.updatePlayerInfo(playerDTO, PositionEnum.SW) {
+                    mBinding.positionSw.updatePlayerInfo(playerDTO, PositionEnum.SW) {
                         itemClick(it)
                     }
-                    position_sw.visibility = View.VISIBLE
+                    mBinding.positionSw.visibility = View.VISIBLE
                 }
                 PositionEnum.RWB.spposition -> {
-                    position_rwb.updatePlayerInfo(playerDTO, PositionEnum.RWB) {
+                    mBinding.positionRwb.updatePlayerInfo(playerDTO, PositionEnum.RWB) {
                         itemClick(it)
                     }
-                    position_rwb.visibility = View.VISIBLE
+                    mBinding.positionRwb.visibility = View.VISIBLE
                 }
                 PositionEnum.RB.spposition -> {
-                    position_rb.updatePlayerInfo(playerDTO, PositionEnum.RB) {
+                    mBinding.positionRb.updatePlayerInfo(playerDTO, PositionEnum.RB) {
                         itemClick(it)
                     }
-                    position_rb.visibility = View.VISIBLE
+                    mBinding.positionRb.visibility = View.VISIBLE
                 }
                 PositionEnum.RCB.spposition -> {
-                    position_rcb.updatePlayerInfo(playerDTO, PositionEnum.RCB) {
+                    mBinding.positionRcb.updatePlayerInfo(playerDTO, PositionEnum.RCB) {
                         itemClick(it)
                     }
-                    position_rcb.visibility = View.VISIBLE
+                    mBinding.positionRcb.visibility = View.VISIBLE
                 }
                 PositionEnum.CB.spposition -> {
-                    position_cb.updatePlayerInfo(playerDTO, PositionEnum.CB) {
+                    mBinding.positionCb.updatePlayerInfo(playerDTO, PositionEnum.CB) {
                         itemClick(it)
                     }
-                    position_cb.visibility = View.VISIBLE
+                    mBinding.positionCb.visibility = View.VISIBLE
                 }
                 PositionEnum.LCB.spposition -> {
-                    position_lcb.updatePlayerInfo(playerDTO, PositionEnum.LCB) {
+                    mBinding.positionLcb.updatePlayerInfo(playerDTO, PositionEnum.LCB) {
                         itemClick(it)
                     }
-                    position_lcb.visibility = View.VISIBLE
+                    mBinding.positionLcb.visibility = View.VISIBLE
                 }
                 PositionEnum.LB.spposition -> {
-                    position_lb.updatePlayerInfo(playerDTO, PositionEnum.LB) {
+                    mBinding.positionLb.updatePlayerInfo(playerDTO, PositionEnum.LB) {
                         itemClick(it)
                     }
-                    position_lb.visibility = View.VISIBLE
+                    mBinding.positionLb.visibility = View.VISIBLE
                 }
                 PositionEnum.LWB.spposition -> {
-                    position_lwb.updatePlayerInfo(playerDTO, PositionEnum.LWB) {
+                    mBinding.positionLwb.updatePlayerInfo(playerDTO, PositionEnum.LWB) {
                         itemClick(it)
                     }
-                    position_lwb.visibility = View.VISIBLE
+                    mBinding.positionLwb.visibility = View.VISIBLE
                 }
                 PositionEnum.RDM.spposition -> {
-                    position_rdm.updatePlayerInfo(playerDTO, PositionEnum.RDM) {
+                    mBinding.positionRdm.updatePlayerInfo(playerDTO, PositionEnum.RDM) {
                         itemClick(it)
                     }
-                    position_rdm.visibility = View.VISIBLE
+                    mBinding.positionRdm.visibility = View.VISIBLE
                 }
                 PositionEnum.CDM.spposition -> {
-                    position_cdm.updatePlayerInfo(playerDTO, PositionEnum.CDM) {
+                    mBinding.positionCdm.updatePlayerInfo(playerDTO, PositionEnum.CDM) {
                         itemClick(it)
                     }
-                    position_cdm.visibility = View.VISIBLE
+                    mBinding.positionCdm.visibility = View.VISIBLE
                 }
                 PositionEnum.LDM.spposition -> {
-                    position_ldm.updatePlayerInfo(playerDTO, PositionEnum.LDM) {
+                    mBinding.positionLdm.updatePlayerInfo(playerDTO, PositionEnum.LDM) {
                         itemClick(it)
                     }
-                    position_ldm.visibility = View.VISIBLE
+                    mBinding.positionLdm.visibility = View.VISIBLE
                 }
                 PositionEnum.RM.spposition -> {
-                    position_rm.updatePlayerInfo(playerDTO, PositionEnum.RM) {
+                    mBinding.positionRm.updatePlayerInfo(playerDTO, PositionEnum.RM) {
                         itemClick(it)
                     }
-                    position_rm.visibility = View.VISIBLE
+                    mBinding.positionRm.visibility = View.VISIBLE
                 }
                 PositionEnum.RCM.spposition -> {
-                    position_rcm.updatePlayerInfo(playerDTO, PositionEnum.RCM) {
+                    mBinding.positionRcm.updatePlayerInfo(playerDTO, PositionEnum.RCM) {
                         itemClick(it)
                     }
-                    position_rcm.visibility = View.VISIBLE
+                    mBinding.positionRcm.visibility = View.VISIBLE
                 }
                 PositionEnum.CM.spposition -> {
-                    position_cm.updatePlayerInfo(playerDTO, PositionEnum.CM) {
+                    mBinding.positionCm.updatePlayerInfo(playerDTO, PositionEnum.CM) {
                         itemClick(it)
                     }
-                    position_cm.visibility = View.VISIBLE
+                    mBinding.positionCm.visibility = View.VISIBLE
                 }
                 PositionEnum.LCM.spposition -> {
-                    position_lcm.updatePlayerInfo(playerDTO, PositionEnum.LCM) {
+                    mBinding.positionLcm.updatePlayerInfo(playerDTO, PositionEnum.LCM) {
                         itemClick(it)
                     }
-                    position_lcm.visibility = View.VISIBLE
+                    mBinding.positionLcm.visibility = View.VISIBLE
                 }
                 PositionEnum.LM.spposition -> {
-                    position_lm.updatePlayerInfo(playerDTO, PositionEnum.LM) {
+                    mBinding.positionLm.updatePlayerInfo(playerDTO, PositionEnum.LM) {
                         itemClick(it)
                     }
-                    position_lm.visibility = View.VISIBLE
+                    mBinding.positionLm.visibility = View.VISIBLE
                 }
                 PositionEnum.RAM.spposition -> {
-                    position_ram.updatePlayerInfo(playerDTO, PositionEnum.RAM) {
+                    mBinding.positionRam.updatePlayerInfo(playerDTO, PositionEnum.RAM) {
                         itemClick(it)
                     }
-                    position_ram.visibility = View.VISIBLE
+                    mBinding.positionRam.visibility = View.VISIBLE
                 }
                 PositionEnum.CAM.spposition -> {
-                    position_cam.updatePlayerInfo(playerDTO, PositionEnum.CAM) {
+                    mBinding.positionCam.updatePlayerInfo(playerDTO, PositionEnum.CAM) {
                         itemClick(it)
                     }
-                    position_cam.visibility = View.VISIBLE
+                    mBinding.positionCam.visibility = View.VISIBLE
                 }
                 PositionEnum.LAM.spposition -> {
-                    position_lam.updatePlayerInfo(playerDTO, PositionEnum.LAM) {
+                    mBinding.positionLam.updatePlayerInfo(playerDTO, PositionEnum.LAM) {
                         itemClick(it)
                     }
-                    position_lam.visibility = View.VISIBLE
+                    mBinding.positionLam.visibility = View.VISIBLE
                 }
                 PositionEnum.RF.spposition -> {
-                    position_rf.updatePlayerInfo(playerDTO, PositionEnum.RF) {
+                    mBinding.positionRf.updatePlayerInfo(playerDTO, PositionEnum.RF) {
                         itemClick(it)
                     }
-                    position_rf.visibility = View.VISIBLE
+                    mBinding.positionRf.visibility = View.VISIBLE
                 }
                 PositionEnum.CF.spposition -> {
-                    position_cf.updatePlayerInfo(playerDTO, PositionEnum.CF) {
+                    mBinding.positionCf.updatePlayerInfo(playerDTO, PositionEnum.CF) {
                         itemClick(it)
                     }
-                    position_cf.visibility = View.VISIBLE
+                    mBinding.positionCf.visibility = View.VISIBLE
                 }
                 PositionEnum.LF.spposition -> {
-                    position_lf.updatePlayerInfo(playerDTO, PositionEnum.LF) {
+                    mBinding.positionLf.updatePlayerInfo(playerDTO, PositionEnum.LF) {
                         itemClick(it)
                     }
-                    position_lf.visibility = View.VISIBLE
+                    mBinding.positionLf.visibility = View.VISIBLE
                 }
                 PositionEnum.RW.spposition -> {
-                    position_rw.updatePlayerInfo(playerDTO, PositionEnum.RW) {
+                    mBinding.positionRw.updatePlayerInfo(playerDTO, PositionEnum.RW) {
                         itemClick(it)
                     }
-                    position_rw.visibility = View.VISIBLE
+                    mBinding.positionRw.visibility = View.VISIBLE
                 }
                 PositionEnum.RS.spposition -> {
-                    position_rs.updatePlayerInfo(playerDTO, PositionEnum.RS) {
+                    mBinding.positionRs.updatePlayerInfo(playerDTO, PositionEnum.RS) {
                         itemClick(it)
                     }
-                    position_rs.visibility = View.VISIBLE
+                    mBinding.positionRs.visibility = View.VISIBLE
                 }
                 PositionEnum.ST.spposition -> {
-                    position_st.updatePlayerInfo(playerDTO, PositionEnum.ST) {
+                    mBinding.positionSt.updatePlayerInfo(playerDTO, PositionEnum.ST) {
                         itemClick(it)
                     }
-                    position_st.visibility = View.VISIBLE
+                    mBinding.positionSt.visibility = View.VISIBLE
                 }
                 PositionEnum.LS.spposition -> {
-                    position_ls.updatePlayerInfo(playerDTO, PositionEnum.LS) {
+                    mBinding.positionLs.updatePlayerInfo(playerDTO, PositionEnum.LS) {
                         itemClick(it)
                     }
-                    position_ls.visibility = View.VISIBLE
+                    mBinding.positionLs.visibility = View.VISIBLE
                 }
                 PositionEnum.LW.spposition -> {
-                    position_lw.updatePlayerInfo(playerDTO, PositionEnum.LW) {
+                    mBinding.positionLw.updatePlayerInfo(playerDTO, PositionEnum.LW) {
                         itemClick(it)
                     }
-                    position_lw.visibility = View.VISIBLE
+                    mBinding.positionLw.visibility = View.VISIBLE
                 }
                 else -> {
 

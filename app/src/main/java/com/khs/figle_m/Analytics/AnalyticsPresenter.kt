@@ -27,7 +27,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
         val resultList = mutableListOf<MatchDetailResponse>()
         CoroutineScope(Dispatchers.Default).launch {
             for (matchId in matchIdList) {
-                DataManager.getInstance().loadMatchDetail(matchId, {
+                DataManager.loadMatchDetail(matchId, {
                     resultList.add(it)
                     if (resultList.size + mFailedResponseQ.size == matchIdList.size) {
                         mAnalyticsView?.showMatchDetail(resultList)
@@ -127,7 +127,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
         mAnalyticsView?.showLoading()
         runBlocking {
             launch {
-                DataManager.getInstance().loadRankerPlayerAverData(matchType,
+                DataManager.loadRankerPlayerAverData(matchType,
                     getPlayerObject(playerDTO),
                     {
                         mAnalyticsView?.hideLoading(false)

@@ -120,7 +120,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                         }, {
                             LogUtil.vLog(LogUtil.TAG_UI, TAG,"Failed Loading...")
                         })
-//                        DataManager.getInstance().loadPlayerImage(item.spId, {
+//                        DataManager.loadPlayerImage(item.spId, {
 //                            mPlayerList.get(position).imageUrl = it.toString()
 //                            updatePlayerImage(mPlayerImg, item, it, position)
 //                        }, {

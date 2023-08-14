@@ -5,81 +5,78 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.ContentLoadingProgressBar
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.cview_loading_view.view.*
+import com.khs.figle_m.databinding.CviewLoadingViewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AvLoadingCustomView: ConstraintLayout {
+class AvLoadingCustomView @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null
+) : ConstraintLayout(context, attrs) {
     val TAG = javaClass.simpleName
+    lateinit var mBinding: CviewLoadingViewBinding
     val DEBUG: Boolean = false
-    lateinit var view: View
     var mMax: Int = 0
 
-    constructor(context: Context) : this(context, null)
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    init {
         initView(context)
     }
 
     fun initView(context: Context) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initView")
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        view = inflater.inflate(R.layout.cview_loading_view, this)
+        mBinding = CviewLoadingViewBinding.inflate(inflater, this, true)
     }
 
-    fun backroundColorVisible(isVisible : Boolean) {
+    fun backgroundColorVisible(isVisible : Boolean) {
         if (isVisible) {
-            root_view.background = context.getDrawable(R.color.loading_background)
+            mBinding.rootView.background = context.getDrawable(R.color.loading_background)
         } else {
-            root_view.background = context.getDrawable(R.color.search_loading_color)
+            mBinding.rootView.background = context.getDrawable(R.color.search_loading_color)
         }
     }
 
     fun show(isStart: Boolean) {
         LogUtil.dLog(LogUtil.TAG_UI, TAG,"show LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
-            view.findViewById<ContentLoadingProgressBar>(R.id.loading_view).show()
+            mBinding.loadingView.show()
         }
 
         if (isStart) {
-            txt_data_based_on_nexon.visibility = View.VISIBLE
+            mBinding.txtDataBasedOnNexon.visibility = View.VISIBLE
         } else {
             if (isShownLoadingView()) return
-            txt_data_based_on_nexon.visibility = View.INVISIBLE
-            txt_progress.visibility = View.INVISIBLE
-            progress_horizontal.visibility = View.INVISIBLE
+            mBinding.txtDataBasedOnNexon.visibility = View.INVISIBLE
+            mBinding.txtProgress.visibility = View.INVISIBLE
+            mBinding.progressHorizontal.visibility = View.INVISIBLE
         }
     }
 
     fun hide(){
         LogUtil.dLog(LogUtil.TAG_UI, TAG,"hide LoadingView")
         CoroutineScope(Dispatchers.Main).launch {
-            view.findViewById<ContentLoadingProgressBar>(R.id.loading_view).hide()
+            mBinding.loadingView.hide()
         }
     }
 
     fun setProgressMax(max:Int) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"setProgressMax : $max")
         mMax = max
-        progress_horizontal.max = mMax
+        mBinding.progressHorizontal.max = mMax
     }
 
     fun updateProgress(progress: Int) {
         LogUtil.dLog(LogUtil.TAG_UI, TAG,"progress : $progress")
         CoroutineScope(Dispatchers.Main).launch {
-            loading_view.visibility = View.INVISIBLE
-            progress_horizontal.visibility = View.VISIBLE
-            txt_progress.visibility = View.VISIBLE
-            progress_horizontal.progress = progress
+            mBinding.loadingView.visibility = View.INVISIBLE
+            mBinding.progressHorizontal.visibility = View.VISIBLE
+            mBinding.txtProgress.visibility = View.VISIBLE
+            mBinding.progressHorizontal.progress = progress
         }
     }
 
     fun isShownLoadingView() : Boolean{
-        return view.let {
-            loading_view.visibility == View.VISIBLE
-        }
+        return mBinding.loadingView.visibility == View.VISIBLE
     }
 }

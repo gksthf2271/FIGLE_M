@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.khs.figle_m.BuildConfig
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum
-import kotlinx.android.synthetic.main.cview_player_item_view.view.*
+import com.khs.figle_m.databinding.CviewCardBinding
+import com.khs.figle_m.databinding.CviewPlayerItemViewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,22 +23,23 @@ class CirclePlayerView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
     val TAG = this.javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
+    lateinit var mBinding : CviewPlayerItemViewBinding
 
     fun initView(layoutResId: Int){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        inflater.inflate(layoutResId, this)
+        mBinding = CviewPlayerItemViewBinding.inflate(inflater, this, true)
     }
 
     fun updateView(spId:String, spRating: Int, isMVP: Boolean, spGrade: Int, goalCount: Int, spPosition: Int, imageUrl: String?){
         updatePlayerName(spId)
-        DrawUtils().drawSeasonIcon(context, img_icon, spId)
+        DrawUtils().drawSeasonIcon(context, mBinding.imgIcon, spId)
         if(spRating >= 0) updateSpRateColor(spRating, isMVP)
         if(spGrade >= 0) updateGradeColor(spGrade)
         if(goalCount >= 0) addGoalIcon(goalCount)
         if(spPosition >= 0) updateSpPosition(spPosition)
 
-        if (imageUrl != null) DrawUtils().drawPlayerImage(img_player, imageUrl)
-        else DrawUtils().drawPlayerImage(img_player, "")
+        if (imageUrl != null) DrawUtils().drawPlayerImage(mBinding.imgPlayer, imageUrl)
+        else DrawUtils().drawPlayerImage(mBinding.imgPlayer, "")
     }
 
     fun updatePlayerName(spId: String){
@@ -47,15 +49,15 @@ class CirclePlayerView @JvmOverloads constructor(
                 val player : PlayerEntity? = it.playerDao().getPlayer(spId)
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
-                    txt_player_name.text = player.playerName
+                    mBinding.txtPlayerName.text = player.playerName
                 }
             }
         }
     }
 
     fun updateSpRateColor(spRating: Int, isMVP:Boolean) {
-        txt_rating.visibility = View.VISIBLE
-        txt_rating.text = spRating.toString()
+        mBinding.txtRating.visibility = View.VISIBLE
+        mBinding.txtRating.text = spRating.toString()
 //        if (mMvpPlayer == null) {
 //            if (spRating >= 8) {
 //                txt_rating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
@@ -64,56 +66,58 @@ class CirclePlayerView @JvmOverloads constructor(
 //            }
 //        } else {
             if (isMVP) {
-                txt_rating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
+                mBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
             } else {
-                txt_rating.background = context.getDrawable(R.drawable.rounded_player)
+                mBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player)
             }
 //        }
     }
 
     fun updateGradeColor(spGrade : Int) {
-        txt_player_spGrade.visibility = View.VISIBLE
-        txt_player_spGrade.text = spGrade.toString()
+        mBinding.txtPlayerSpGrade.visibility = View.VISIBLE
+        mBinding.txtPlayerSpGrade.text = spGrade.toString()
         when(spGrade) {
             in 0..3 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
             }
             in 4..7 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_silver)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
             }
             in 8..10 -> {
-                txt_player_spGrade.background = context.getDrawable(R.drawable.player_grade_gold)
+                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
             }
         }
     }
 
     fun addGoalIcon(goalCount: Int) {
-        layout_goal.visibility = View.VISIBLE
+        mBinding.layoutGoal.visibility = View.VISIBLE
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        layout_goal.removeAllViews()
+        mBinding.layoutGoal.removeAllViews()
         if (goalCount == 0) {
             return
         }
         for(i in 1..goalCount) {
-            val imageView: ImageView = inflater.inflate(R.layout.cview_card,layout_goal,false) as ImageView
-            imageView.scaleType= ImageView.ScaleType.FIT_XY
-            imageView.background = context.getDrawable(R.mipmap.icon_ball)
-
-            var layoutParams= ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-            layoutParams.leftMargin = i * 20
-            layoutParams.leftToLeft = ConstraintLayout.LayoutParams.PARENT_ID
-            imageView.layoutParams = layoutParams
-            imageView.layoutParams.height = 50
-            imageView.layoutParams.width = 50
-            layout_goal.addView(imageView)
+            val binding : CviewCardBinding = CviewCardBinding.inflate(inflater, mBinding.layoutGoal, false)
+            binding.imgCard.apply {
+                binding.imgCard.scaleType= ImageView.ScaleType.FIT_XY
+                background = context.getDrawable(R.mipmap.icon_ball)
+                layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
+                    leftMargin = i * 20
+                    leftToLeft = LayoutParams.PARENT_ID
+                }
+                layoutParams.height = 50
+                layoutParams.width = 50
+                mBinding.layoutGoal.addView(this)
+            }
         }
     }
 
-    fun updateSpPosition(spPosition:Int){
+    private fun updateSpPosition(spPosition:Int){
         for (positionItem in PositionEnum.values()) {
-            if (positionItem.spposition == spPosition)
-                txt_player_position.visibility = View.VISIBLE
-                txt_player_position.text = positionItem.description
+            if (positionItem.spposition == spPosition) {
+                mBinding.txtPlayerPosition.visibility = View.VISIBLE
+                mBinding.txtPlayerPosition.text = positionItem.description
+            }
         }
     }
 }
