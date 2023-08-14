@@ -27,7 +27,7 @@ open class TradeBuyViewHolder(private val itemViewBinding: ViewBinding) : TradeV
          itemViewBinding.buyTxtDate.text = com.khs.figle_m.Utils.DateUtils().formatTimeString(item.tradeDateMs)
          val circlePlayerView = itemViewBinding.buyLayoutTradePlayer.findViewWithTag<CirclePlayerView>("CirclePlayerView")
          circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
-         circlePlayerView.txtPlayerValue.text = StringUtils().parseValue(item.value) + " BP"
+         circlePlayerView.mTradePlayerBinding.txtPlayerValue.text = StringUtils().parseValue(item.value) + " BP"
          if (item.tradeType == TradeHomeFragment.TradeType.TYPE_SELL.ordinal) {
             itemViewBinding.tradeType.text = "SELL"
             itemViewBinding.tradeType.setTextColor(itemView.context.getColor(R.color.trade_red_color))

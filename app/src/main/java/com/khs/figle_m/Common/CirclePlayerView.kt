@@ -14,6 +14,7 @@ import com.khs.figle_m.Utils.DrawUtils
 import com.khs.figle_m.Utils.PositionEnum
 import com.khs.figle_m.databinding.CviewCardBinding
 import com.khs.figle_m.databinding.CviewPlayerItemViewBinding
+import com.khs.figle_m.databinding.CviewTradePlayerBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,23 +24,23 @@ class CirclePlayerView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
     val TAG = this.javaClass.simpleName
     val DEBUG = BuildConfig.DEBUG
-    lateinit var mBinding : CviewPlayerItemViewBinding
+    lateinit var mTradePlayerBinding : CviewTradePlayerBinding
 
-    fun initView(layoutResId: Int){
+    fun initView(){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        mBinding = CviewPlayerItemViewBinding.inflate(inflater, this, true)
+        mTradePlayerBinding = CviewTradePlayerBinding.inflate(inflater, this, true)
     }
 
     fun updateView(spId:String, spRating: Int, isMVP: Boolean, spGrade: Int, goalCount: Int, spPosition: Int, imageUrl: String?){
         updatePlayerName(spId)
-        DrawUtils().drawSeasonIcon(context, mBinding.imgIcon, spId)
+        DrawUtils().drawSeasonIcon(context, mTradePlayerBinding.imgIcon, spId)
         if(spRating >= 0) updateSpRateColor(spRating, isMVP)
         if(spGrade >= 0) updateGradeColor(spGrade)
         if(goalCount >= 0) addGoalIcon(goalCount)
         if(spPosition >= 0) updateSpPosition(spPosition)
 
-        if (imageUrl != null) DrawUtils().drawPlayerImage(mBinding.imgPlayer, imageUrl)
-        else DrawUtils().drawPlayerImage(mBinding.imgPlayer, "")
+        if (imageUrl != null) DrawUtils().drawPlayerImage(mTradePlayerBinding.imgPlayer, imageUrl)
+        else DrawUtils().drawPlayerImage(mTradePlayerBinding.imgPlayer, "")
     }
 
     fun updatePlayerName(spId: String){
@@ -49,15 +50,15 @@ class CirclePlayerView @JvmOverloads constructor(
                 val player : PlayerEntity? = it.playerDao().getPlayer(spId)
                 player ?: return@launch
                 CoroutineScope(Dispatchers.Main).launch {
-                    mBinding.txtPlayerName.text = player.playerName
+                    mTradePlayerBinding.txtPlayerName.text = player.playerName
                 }
             }
         }
     }
 
     fun updateSpRateColor(spRating: Int, isMVP:Boolean) {
-        mBinding.txtRating.visibility = View.VISIBLE
-        mBinding.txtRating.text = spRating.toString()
+        mTradePlayerBinding.txtRating.visibility = View.VISIBLE
+        mTradePlayerBinding.txtRating.setText(spRating.toString())
 //        if (mMvpPlayer == null) {
 //            if (spRating >= 8) {
 //                txt_rating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
@@ -66,38 +67,38 @@ class CirclePlayerView @JvmOverloads constructor(
 //            }
 //        } else {
             if (isMVP) {
-                mBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
+                mTradePlayerBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player_team_mvp)
             } else {
-                mBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player)
+                mTradePlayerBinding.txtRating.background = context.getDrawable(R.drawable.rounded_player)
             }
 //        }
     }
 
     fun updateGradeColor(spGrade : Int) {
-        mBinding.txtPlayerSpGrade.visibility = View.VISIBLE
-        mBinding.txtPlayerSpGrade.text = spGrade.toString()
+        mTradePlayerBinding.txtPlayerSpGrade.visibility = View.VISIBLE
+        mTradePlayerBinding.txtPlayerSpGrade.text = spGrade.toString()
         when(spGrade) {
             in 0..3 -> {
-                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
+                mTradePlayerBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_bronze)
             }
             in 4..7 -> {
-                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
+                mTradePlayerBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_silver)
             }
             in 8..10 -> {
-                mBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
+                mTradePlayerBinding.txtPlayerSpGrade.background = context.getDrawable(R.drawable.player_grade_gold)
             }
         }
     }
 
     fun addGoalIcon(goalCount: Int) {
-        mBinding.layoutGoal.visibility = View.VISIBLE
+        mTradePlayerBinding.layoutGoal.visibility = View.VISIBLE
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        mBinding.layoutGoal.removeAllViews()
+        mTradePlayerBinding.layoutGoal.removeAllViews()
         if (goalCount == 0) {
             return
         }
         for(i in 1..goalCount) {
-            val binding : CviewCardBinding = CviewCardBinding.inflate(inflater, mBinding.layoutGoal, false)
+            val binding : CviewCardBinding = CviewCardBinding.inflate(inflater, mTradePlayerBinding.layoutGoal, false)
             binding.imgCard.apply {
                 binding.imgCard.scaleType= ImageView.ScaleType.FIT_XY
                 background = context.getDrawable(R.mipmap.icon_ball)
@@ -107,7 +108,7 @@ class CirclePlayerView @JvmOverloads constructor(
                 }
                 layoutParams.height = 50
                 layoutParams.width = 50
-                mBinding.layoutGoal.addView(this)
+                mTradePlayerBinding.layoutGoal.addView(this)
             }
         }
     }
@@ -115,8 +116,8 @@ class CirclePlayerView @JvmOverloads constructor(
     private fun updateSpPosition(spPosition:Int){
         for (positionItem in PositionEnum.values()) {
             if (positionItem.spposition == spPosition) {
-                mBinding.txtPlayerPosition.visibility = View.VISIBLE
-                mBinding.txtPlayerPosition.text = positionItem.description
+                mTradePlayerBinding.txtPlayerPosition.visibility = View.VISIBLE
+                mTradePlayerBinding.txtPlayerPosition.text = positionItem.description
             }
         }
     }

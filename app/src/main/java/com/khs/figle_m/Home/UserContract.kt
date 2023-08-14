@@ -1,8 +1,8 @@
 package com.khs.figle_m.Home
 
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.Base.BasePresenter
 import com.khs.figle_m.Base.BaseView
-import com.khs.figle_m.Response.UserResponse
 
 interface UserContract : BaseView {
 

@@ -9,6 +9,7 @@ import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Common.CirclePlayerView
 import com.khs.figle_m.R
+import com.khs.figle_m.databinding.CviewTradePlayerBinding
 import com.khs.figle_m.databinding.ItemTradeBuyBinding
 
 class TradeRecyclerViewAdapter(
@@ -40,7 +41,7 @@ RecyclerView.Adapter<TradeViewHolder>() {
         val viewBinding: ItemTradeBuyBinding = ItemTradeBuyBinding.inflate(inflater, parent, false)
         val playerView = CirclePlayerView(context)
         playerView.tag = playerView.TAG
-        playerView.initView(R.layout.cview_trade_player)
+        playerView.initView()
 
         viewBinding.buyLayoutTradePlayer.addView(playerView)
         viewHolder = ViewHolderMaker().getViewHolder(viewType, viewBinding)

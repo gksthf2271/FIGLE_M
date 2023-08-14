@@ -146,13 +146,13 @@ class InitPresenter : InitContract.Presenter {
                 mInitContract?.setProgressMax(stringList.size)
                 index = 0
                 LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"------------------ update Player DB ------------------")
-                playerDB?.playerDao().deleteAll()
+                playerDB?.playerDao()?.deleteAll()
                 for (item in stringList.indices step 2) {
                     val loIndex = index
                     val key = stringList[index]
                     val value = stringList[++index]
                     LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"updatePlayerDB - index : $loIndex , key : $key , value : $value")
-                    playerDB!!.playerDao().insert(PlayerEntity(null,key,value))
+                    playerDB?.playerDao()?.insert(PlayerEntity(null,key,value))
                     mInitContract?.updateProgress(index)
                     index++
                 }

@@ -17,11 +17,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupWindow
 import android.widget.Toast
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.Ranking.RankingActivity
-import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
@@ -75,7 +75,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
                 val searchHomeFragment = SearchHomeFragment()
                 val bundle = Bundle()
-                bundle.putParcelable(
+                bundle.putSerializable(
                     SearchHomeFragment.getInstance().KEY_SEARCH_USER_INFO,
                     mUserResponse
                 )

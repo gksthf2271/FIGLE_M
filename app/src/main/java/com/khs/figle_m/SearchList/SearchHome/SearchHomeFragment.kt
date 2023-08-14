@@ -7,13 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.khs.data.nexon_api.response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.Analytics.AnalyticsActivity
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
 import com.khs.figle_m.Home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.Common.CustomPagerAdapter
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchHomePresenter
@@ -147,7 +147,7 @@ class SearchHomeFragment : BaseFragment(),
 
     private fun initMyInfoData() {
         arguments?.let { bundle ->
-            mSearchUserInfo = bundle.getParcelable(KEY_SEARCH_USER_INFO)!!
+            mSearchUserInfo = bundle.getSerializable(KEY_SEARCH_USER_INFO) as UserResponse
         }
         mBinding.txtMyNickName.text = mSearchUserInfo.nickname
         mBinding.txtLevel.text = mSearchUserInfo.level
@@ -263,7 +263,7 @@ class SearchHomeFragment : BaseFragment(),
         val bundle = Bundle()
         bundle.putStringArrayList(SearchListFragment().KEY_SEARCH_MATCH_ID, ArrayList(matchIdList))
         bundle.putInt(SearchListFragment().KEY_SEARCH_MATCH_TYPE, matchtype.ordinal)
-        bundle.putParcelable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)
+        bundle.putSerializable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)
 
         fragment.arguments = bundle
         FragmentUtils().loadFragment(

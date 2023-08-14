@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.khs.data.nexon_api.response.MatchDetailResponse
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.Base.BaseFragment
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.databinding.FragmentSearchlistBinding
 
@@ -74,7 +74,7 @@ class SearchListFragment : BaseFragment() {
 
     private fun initMyInfoData() {
         arguments?.let { bundle ->
-            mSearchUserInfo = bundle.getParcelable<UserResponse>(KEY_SEARCH_USER_INFO)!!
+            mSearchUserInfo = bundle.getSerializable(KEY_SEARCH_USER_INFO) as UserResponse
 //            mSearchList = bundle.getParcelableArrayList<MatchDetailResponse>(KEY_SEARCH_MATCH_INFO)!!
             mMatchtype = bundle.getInt(KEY_SEARCH_MATCH_TYPE)
             mMatchIdList = bundle.getStringArrayList(KEY_SEARCH_MATCH_ID) as ArrayList<String>

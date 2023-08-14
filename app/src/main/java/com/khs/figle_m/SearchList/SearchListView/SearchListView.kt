@@ -8,9 +8,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.data.nexon_api.response.MatchDetailResponse
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchContract
 import com.khs.figle_m.SearchList.SearchDecoration
 import com.khs.figle_m.SearchList.SearchListAdapter

@@ -1,11 +1,10 @@
 package com.khs.figle_m.Data
 
-import android.content.Context
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.data.nexon_api.response.UserHighRankResponse
-import com.khs.figle_m.Response.UserResponse
+import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.Trade.TradeHomeFragment
 import com.khs.figle_m.Utils.DateUtils
 import com.khs.figle_m.Utils.LogUtil
@@ -239,7 +238,7 @@ object DataManager{
     ) {
         val call = SearchUser.getServiceImage()
             .requestPlayerImage(authorization = mAuthorizationKey, spid = spid)
-        onSuccess(call.request().url())
+        onSuccess(call.request().url)
     }
 
     fun loadSeasonIdList(onSuccess: ((ResponseBody) -> Unit), onFailed: (Int) -> Unit) {

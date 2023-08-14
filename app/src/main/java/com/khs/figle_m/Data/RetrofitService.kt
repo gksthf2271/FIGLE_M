@@ -4,7 +4,7 @@ import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.data.nexon_api.response.UserHighRankResponse
-import com.khs.figle_m.Response.UserResponse
+import com.khs.data.nexon_api.response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
