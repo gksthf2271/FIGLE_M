@@ -17,7 +17,7 @@ import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
-class CrawlingUtils() {
+object CrawlingUtils {
     private val TAG = this.javaClass.simpleName
     private val DEBUG = BuildConfig.DEBUG
 

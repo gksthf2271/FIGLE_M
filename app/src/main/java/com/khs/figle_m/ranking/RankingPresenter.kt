@@ -32,7 +32,7 @@ class RankingPresenter : RankingContract.Presenter{
     }
 
     fun loadRankingByCrawling(page:Int, onSuccess:(List<Ranker>) -> Unit, onFailed:(Int) -> Unit) {
-        CrawlingUtils().getRanking(1,
+        CrawlingUtils.getRanking(1,
             {
                 onSuccess(it)
             },

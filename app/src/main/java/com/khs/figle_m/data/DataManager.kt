@@ -62,10 +62,10 @@ object DataManager{
         coachMatch(52)
     }
 
-    val offset: Int = 0
+    const val offset: Int = 0
 
-    val SEARCH_LIMIT: Int = 100
-    val SEARCH_PAGE_SIZE: Int = 20
+    const val SEARCH_LIMIT: Int = 100
+    const val SEARCH_PAGE_SIZE: Int = 20
 
     //    200	OK	성공
     //    301	Moved Permanently	HTTP 프로토콜로 호출

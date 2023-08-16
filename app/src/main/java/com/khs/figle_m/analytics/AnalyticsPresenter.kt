@@ -108,7 +108,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
             for (item in playerInfoList) {
                 val spId = item.spId
                 val grade = 1
-                CrawlingUtils().getPlayerImg(spId, grade, {
+                CrawlingUtils.getPlayerImg(spId, grade, {
                     item.imageResUrl = it
                     responseQ.add(it)
                     if (responseQ.size == playerInfoList.size)

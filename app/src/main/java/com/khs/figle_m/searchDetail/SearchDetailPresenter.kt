@@ -114,6 +114,6 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
         onSuccess: ((String) -> Unit),
         onFailed: (Int) -> Unit
     ) {
-        CrawlingUtils().getPlayerImg(playerDTO, onSuccess, onFailed)
+        CrawlingUtils.getPlayerImg(playerDTO, onSuccess, onFailed)
     }
 }

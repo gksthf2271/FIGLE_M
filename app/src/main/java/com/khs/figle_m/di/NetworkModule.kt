@@ -24,8 +24,6 @@ object NetworkModule {
             val initialRequest = chain.request()
 
             val newUrl = initialRequest.url.newBuilder()
-//                .addQueryParameter("X-Naver-Client-Id", BuildConfig.NAVER_API_ID_KEY)
-//                .addQueryParameter("X-Naver-Client-Secret", BuildConfig.NAVER_API_SECRET_KEY)
                 .build()
 
             val newRequest = initialRequest.newBuilder()

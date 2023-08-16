@@ -115,7 +115,7 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
                 launch {
                     mPlayerList?.let {
                         val item = mPlayerList.get(position)
-                        CrawlingUtils().getPlayerImg(item,{
+                        CrawlingUtils.getPlayerImg(item,{
                             updatePlayerImage(mPlayerImg, item, it, position)
                         }, {
                             LogUtil.vLog(LogUtil.TAG_UI, TAG,"Failed Loading...")
@@ -221,16 +221,16 @@ class SearchDetailPlayerListAdapter(private val mContext: Context, var mPlayerLi
 //                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, item : $item")
 //                    mPlayerList.let {
 //                        if (mPlayerList!!.get(position).subImageUrl == null) {
-//                            CrawlingUtils().getPlayerImg(item, {
+//                            CrawlingUtils.getPlayerImg(item, {
 //                                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, reload position : $position, url : $it")
-//                                CrawlingUtils().updatePlayerImage(mContext, playerimg, it)
+//                                CrawlingUtils.updatePlayerImage(mContext, playerimg, it)
 //                                mPlayerList!!.get(position).subImageUrl = it
 //                            }, {
 //                                LogUtil.vLog(LogUtil.TAG_UI, TAG,"Failed Crawling! : $it")
 //                                mPlayerList!!.get(position).subImageUrl = it
 //                            })
 //                        } else {
-//                            CrawlingUtils().updatePlayerImage(mContext, playerimg, mPlayerList!!.get(position).subImageUrl!!)
+//                            CrawlingUtils.updatePlayerImage(mContext, playerimg, mPlayerList!!.get(position).subImageUrl!!)
 //                        }
 //                    }
                     return false

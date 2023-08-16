@@ -245,7 +245,7 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
 
     private fun updatePlayer(player: PlayerDTO, callback: (String) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            CrawlingUtils().getPlayerImg(player, {
+            CrawlingUtils.getPlayerImg(player, {
                 callback(it)
             }, {
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"updatePlayer(...) : $it")

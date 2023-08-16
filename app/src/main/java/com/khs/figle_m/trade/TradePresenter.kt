@@ -53,7 +53,7 @@ class TradePresenter : TradeContract.Presenter{
                 val spId = item.spid.toInt()
                 val grade = item.grade.toInt()
                 LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"requestCall : $spId, index : $index")
-                CrawlingUtils().getPlayerImg(spId, grade, {
+                CrawlingUtils.getPlayerImg(spId, grade, {
                     item.imageResUrl = it
                     requestMap.put(item.saleSn, item)
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"S, input RequestMap : ${requestMap.values.size}")
