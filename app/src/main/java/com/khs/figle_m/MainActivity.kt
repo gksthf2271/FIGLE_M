@@ -15,15 +15,16 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.khs.figle_m.Base.BaseActivity
-import com.khs.figle_m.Data.DataManager
-import com.khs.figle_m.Home.HomeFragment
-import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.Utils.FragmentUtils
-import com.khs.figle_m.Utils.LogUtil
-import com.khs.figle_m.Utils.SeasonManager
+import com.khs.figle_m.base.BaseActivity
+import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.home.HomeFragment
+import com.khs.figle_m.searchList.SearchHome.SearchHomeFragment
+import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.utils.SeasonManager
 import com.khs.figle_m.databinding.ActivityMainBinding
 import com.khs.figle_m.databinding.ActivityMainFinishBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
     val TAG: String = javaClass.simpleName
     lateinit var mBinding: ActivityMainBinding

@@ -12,8 +12,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NexonService {
-    //    https://api.nexon.co.kr/fifaonline4/v1.0/users?nickname=아무거나다잘함
-//    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
     @GET("v1.0/users")
     fun requestUser(
         @Header("Authorization") authorization: String,
@@ -28,7 +26,7 @@ interface NexonService {
     ): MatchDetailResponse
 
     @GET("v1.0/users/{accessid}/matches")
-    fun requestMatchId(
+    fun requestMatchIds(
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String,
         @Query("matchtype") matchtype: Int,
@@ -37,7 +35,7 @@ interface NexonService {
     ): ResponseBody
 
     @GET("v1.0/users/{accessid}/maxdivision")
-    fun requestUserHighRank(
+    fun requestHighRanker(
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String
     ): List<UserHighRankResponse>
@@ -85,7 +83,7 @@ interface NexonService {
 
     //    http://fifaonline4.nexon.com/datacenter/rank?n4pageno=3
     @GET("rank")
-    fun requestRaking(
+    fun requestRank(
         @Query("n4pageno") page: Int
     ): ResponseBody
 }

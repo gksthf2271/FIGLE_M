@@ -182,7 +182,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_player_top">
 
-        <com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
+        <com.khs.figle_m.playerDetail.PlayerDetailInfoView
             android:id="@+id/player_info_view1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -191,7 +191,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.khs.figle_m.PlayerDetail.PlayerDetailInfoView
+        <com.khs.figle_m.playerDetail.PlayerDetailInfoView
             android:id="@+id/player_info_view2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -223,7 +223,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <com.khs.figle_m.PlayerDetail.RankerChartView
+            <com.khs.figle_m.playerDetail.RankerChartView
                 android:id="@+id/chart_ranker"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

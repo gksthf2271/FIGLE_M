@@ -168,7 +168,7 @@
         android:background="@color/empty_background"
         android:visibility="gone">
 
-        <com.khs.figle_m.SearchDetail.SecondView.PlayerInfoView
+        <com.khs.figle_m.searchDetail.SecondView.PlayerInfoView
             android:id="@+id/player_info_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

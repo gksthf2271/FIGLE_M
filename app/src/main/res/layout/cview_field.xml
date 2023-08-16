@@ -45,7 +45,7 @@
             app:layout_constraintHeight_percent="0.25"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_ls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 app:layout_constraintVertical_bias="0.1"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_st"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 app:layout_constraintVertical_bias="0.1"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 app:layout_constraintVertical_bias="0.1"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 app:layout_constraintVertical_bias="0.6"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 app:layout_constraintVertical_bias="0.6"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                 tools:visibility="visible" />
 
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_cf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                 app:layout_constraintVertical_bias="0.95"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
             app:layout_constraintHeight_percent="0.37"
             app:layout_constraintTop_toBottomOf="@id/group_fw">
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                 app:layout_constraintVertical_bias="0.05"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_cam"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
                 app:layout_constraintVertical_bias="0.05"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_ram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                 app:layout_constraintVertical_bias="0.05"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                 app:layout_constraintVertical_bias="0.4"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lcm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_cm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rcm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -262,7 +262,7 @@
                 app:layout_constraintVertical_bias="0.4"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_ldm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,7 +275,7 @@
                 app:layout_constraintVertical_bias="0.95"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_cdm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -287,7 +287,7 @@
                 app:layout_constraintVertical_bias="0.95"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rdm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -310,7 +310,7 @@
             app:layout_constraintHeight_percent="0.23"
             app:layout_constraintTop_toBottomOf="@id/group_mf">
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lwb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -323,7 +323,7 @@
                 app:layout_constraintVertical_bias="0.05"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -336,7 +336,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_lcb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
                 app:layout_constraintVertical_bias="0.55"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -361,7 +361,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rcb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -374,7 +374,7 @@
                 app:layout_constraintVertical_bias="0.55"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -387,7 +387,7 @@
                 app:layout_constraintVertical_bias="0.5"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_rwb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -400,7 +400,7 @@
                 app:layout_constraintVertical_bias="0.05"
                 tools:visibility="visible" />
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_sw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -422,7 +422,7 @@
             app:layout_constraintHeight_percent="0.13"
             app:layout_constraintTop_toBottomOf="@id/group_df">
 
-            <com.khs.figle_m.Analytics.Squad.SquadPositionView
+            <com.khs.figle_m.analytics.Squad.SquadPositionView
                 android:id="@+id/position_gk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

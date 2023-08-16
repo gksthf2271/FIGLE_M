@@ -1,0 +1,133 @@
+package com.khs.figle_m.ranking
+
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.provider.Settings
+import android.view.Gravity
+import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
+import com.khs.figle_m.base.BaseActivity
+import com.khs.figle_m.MainActivity
+import com.khs.figle_m.R
+import com.khs.figle_m.utils.FragmentUtils
+import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.databinding.ActivityRankingBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlin.system.exitProcess
+
+@AndroidEntryPoint
+class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
+    val TAG: String = javaClass.simpleName
+    lateinit var mBinding: ActivityRankingBinding
+    lateinit var mRankingPresenter: RankingPresenter
+    private val mHandler:Handler = Handler(this)
+    override fun initPresenter() {
+        mRankingPresenter = RankingPresenter()
+    }
+
+    companion object {
+        @Volatile
+        private var instance: RankingActivity? = null
+
+        @JvmStatic
+        fun getInstance(): RankingActivity =
+            instance ?: synchronized(this) {
+                instance
+                    ?: RankingActivity().also {
+                        instance = it
+                    }
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = ActivityRankingBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mRankingPresenter.takeView(this)
+        mRankingPresenter.getRankingList(this, 1)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"onDestroy(...)")
+        mRankingPresenter.dropView()
+    }
+
+    override fun handleMessage(msg: Message): Boolean {
+        mHandler.removeMessages(msg.what)
+        return false
+    }
+
+    override fun showLoading() {
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showLoading(...)")
+        mBinding.aviLoading.visibility = View.VISIBLE
+        mBinding.fragmentContainer.visibility = View.GONE
+        mBinding.aviLoading.show(true)
+    }
+
+    override fun hideLoading() {
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"hideLoading(...)")
+        mBinding.aviLoading.hide()
+        mBinding.aviLoading.visibility = View.GONE
+        mBinding.fragmentContainer.visibility = View.VISIBLE
+    }
+
+    override fun showRanking(rankerList : List<Ranker>) {
+        val rankingFragment = RankingFragment.getInstance()
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(RankingFragment().KEY_RANKING_LIST,ArrayList(rankerList))
+        rankingFragment.arguments = bundle
+        FragmentUtils().loadFragment(rankingFragment, R.id.fragment_container ,supportFragmentManager)
+    }
+
+    override fun showNetworkError() {
+        if (!this.window.isActive || isDestroyed) return
+        LogUtil.vLog(LogUtil.TAG_UI, TAG,"showNetworkErrorPopup(...)")
+        CoroutineScope(Dispatchers.Main).launch {
+            val popupView = layoutInflater.inflate(R.layout.cview_network_error, null)
+            val popupWindow = PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                isFocusable = true
+                showAtLocation(popupView, Gravity.CENTER, 0, 0)
+            }
+
+            val textView = popupView.findViewById<TextView>(R.id.txt_title)
+            textView.text = "네트워크 상태를 확인해주세요."
+
+            val cancel = popupView.findViewById(R.id.btn_setting) as Button
+            cancel.setOnClickListener {
+                popupWindow.dismiss()
+                val intent = Intent(Settings.ACTION_SETTINGS)
+                startActivityForResult(intent, 0)
+            }
+
+            val ok = popupView.findViewById(R.id.btn_finish) as Button
+            ok.setOnClickListener {
+                popupWindow.dismiss()
+                finishAffinity()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
+                exitProcess(0)
+            }
+        }
+    }
+
+    override fun showError(error: Int) {
+
+    }
+}

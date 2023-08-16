@@ -40,7 +40,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.khs.figle_m.Home.SearchEditView
+        <com.khs.figle_m.home.SearchEditView
             android:id="@+id/edit_search"
             android:layout_width="300dp"
             android:layout_height="60dp"

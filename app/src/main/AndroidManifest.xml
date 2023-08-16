@@ -26,19 +26,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Ranking.RankingActivity"
+        <activity android:name=".ranking.RankingActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <activity android:name=".Analytics.AnalyticsActivity"
+        <activity android:name=".analytics.AnalyticsActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <activity android:name=".Analytics.SquadActivity"
+        <activity android:name=".analytics.SquadActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
-        <activity android:name=".Trade.TradeActivity"
+        <activity android:name=".trade.TradeActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 

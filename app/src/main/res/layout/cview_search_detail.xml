@@ -39,7 +39,7 @@
 <!--        app:layout_constraintRight_toRightOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="@+id/img_left_info" />-->
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item1"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -48,7 +48,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cview_item2"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item2"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -57,7 +57,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cview_item4"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item3"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -66,7 +66,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cview_item4"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemRedOrYellowCardView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemRedOrYellowCardView
         android:id="@+id/cview_item4"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -75,7 +75,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/img_left_info"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item5"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -84,7 +84,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/cview_item6"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item6"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -93,7 +93,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.khs.figle_m.SearchDetail.FirstView.SearchDetailItemView
+    <com.khs.figle_m.searchDetail.FirstView.SearchDetailItemView
         android:id="@+id/cview_item7"
         android:layout_width="match_parent"
         android:layout_height="60dp"

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.khs.figle_m.SearchList.Common.PieChartView
+        <com.khs.figle_m.searchList.Common.PieChartView
             android:id="@+id/pie_chart_view"
             android:layout_width="180dp"
             android:layout_height="180dp"

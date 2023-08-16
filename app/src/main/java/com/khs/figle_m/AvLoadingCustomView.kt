@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.khs.figle_m.Utils.LogUtil
+import com.khs.figle_m.utils.LogUtil
 import com.khs.figle_m.databinding.CviewLoadingViewBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

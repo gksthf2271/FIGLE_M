@@ -79,7 +79,7 @@ dependencies {
 
     // AndroidX
     implementation "androidx.core:core-ktx:${AndroidX.core}"
-    implementation "androidx.annotation:annotation:${AndroidX.annotations}"
+    implementation "androidx.annotation:annotation:${AndroidX.annotation_lib}"
     implementation "androidx.appcompat:appcompat:${AndroidX.appcompat}"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${AndroidX.constraint}"
@@ -91,7 +91,9 @@ dependencies {
 
     // Retrofit2
     implementation "com.squareup.retrofit2:retrofit:${Network.retrofit}"
+    implementation "com.squareup.retrofit2:converter-scalars:${Network.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${Network.gson}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${Network.okhttpLogging}"
 
     //WilliamChart
     implementation 'com.diogobernardino:williamchart:3.10.1'

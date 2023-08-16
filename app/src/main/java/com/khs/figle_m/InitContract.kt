@@ -1,8 +1,8 @@
 package com.khs.figle_m
 
 import android.content.Context
-import com.khs.figle_m.Base.BasePresenter
-import com.khs.figle_m.Base.BaseView
+import com.khs.figle_m.base.BasePresenter
+import com.khs.figle_m.base.BaseView
 import okhttp3.ResponseBody
 
 interface InitContract : BaseView {
