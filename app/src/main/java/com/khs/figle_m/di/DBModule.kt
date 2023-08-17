@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.khs.data.database.PlayerDao
 import com.khs.data.database.PlayerDataBase
+import com.khs.data.database.SeasonDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +26,6 @@ object DBModule {
 
     @Singleton
     @Provides
-    fun provideAlbumDao(playerDataBase: PlayerDataBase): PlayerDao = playerDataBase.playerDao()
+    fun providePlayerDao(playerDataBase: PlayerDataBase): PlayerDao = playerDataBase.playerDao()
+    fun provideSeasonDao(playerDataBase: PlayerDataBase): SeasonDao = playerDataBase.seasonDao()
 }
