@@ -10,10 +10,10 @@ interface SeasonDao : BaseDAO<SeasonEntity>{
     // Example)
     //    "SELECT * FROM AD WHERE Canceled = :mIsCancelled AND Type = :mType AND Status = :mStatus"
     @Query("SELECT * FROM Season")
-    suspend fun getAll(): Flow<List<SeasonEntity>>
+    suspend fun getAll(): List<SeasonEntity>
 
     @Query("SELECT * FROM Season WHERE seasonId = :seasonId")
-    suspend fun getSeason(seasonId:String): Flow<SeasonEntity>
+    suspend fun getSeason(seasonId:String): SeasonEntity
 
     @Query("DELETE from Season")
     suspend fun deleteAll()

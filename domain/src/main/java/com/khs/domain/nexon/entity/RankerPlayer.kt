@@ -1,4 +1,4 @@
-package com.khs.domain.entity
+package com.khs.domain.nexon.entity
 
 data class RankerPlayer(
     val spId: Int,

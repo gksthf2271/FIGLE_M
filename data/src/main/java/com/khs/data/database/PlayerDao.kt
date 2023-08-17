@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface PlayerDao : BaseDAO<PlayerEntity>{
     @Query("SELECT * FROM Player")
-    suspend fun getAll(): Flow<List<PlayerEntity>>
+    suspend fun getAll(): List<PlayerEntity>
 
 //    "SELECT * FROM AD WHERE Canceled = :mIsCancelled AND Type = :mType AND Status = :mStatus"
     @Query("SELECT * FROM Player WHERE playerId = :playerId")
-    suspend fun getPlayer(playerId:String): Flow<PlayerEntity?>
+    suspend fun getPlayer(playerId:String): PlayerEntity?
 
     @Query("DELETE from player")
     suspend fun deleteAll()

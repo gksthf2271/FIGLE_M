@@ -27,5 +27,7 @@ object DBModule {
     @Singleton
     @Provides
     fun providePlayerDao(playerDataBase: PlayerDataBase): PlayerDao = playerDataBase.playerDao()
+    @Singleton
+    @Provides
     fun provideSeasonDao(playerDataBase: PlayerDataBase): SeasonDao = playerDataBase.seasonDao()
 }

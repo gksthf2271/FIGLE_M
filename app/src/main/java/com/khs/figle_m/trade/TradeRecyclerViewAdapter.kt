@@ -29,10 +29,6 @@ RecyclerView.Adapter<TradeViewHolder>() {
         return mPlayerList!![position].tradeType
     }
 
-    /** TODO : 23.07.23
-     *  Android Extension 삭제 후 ViewBinding 으로 변환작업 필요...
-     *  RecyclerView Adapter 내 아이템들 어떻게 전환해야될지 고민해봐야됨.
-    **/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TradeViewHolder {
         val viewHolder: RecyclerView.ViewHolder
         val inflater = LayoutInflater.from(parent.context)

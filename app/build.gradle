@@ -82,6 +82,7 @@ dependencies {
     implementation "androidx.annotation:annotation:${AndroidX.annotation_lib}"
     implementation "androidx.appcompat:appcompat:${AndroidX.appcompat}"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${AndroidX.lifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${AndroidX.constraint}"
     implementation "androidx.recyclerview:recyclerview:${AndroidX.recyclerview}"
 

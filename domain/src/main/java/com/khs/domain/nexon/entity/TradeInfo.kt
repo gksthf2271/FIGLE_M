@@ -1,4 +1,4 @@
-package com.khs.domain.entity
+package com.khs.domain.nexon.entity
 
 //    데이터	         유형	         설명
 //    tradeDate	    String	    거래일자 (ex. 2019-05-13T18:03:10) 구매(buy)일	경우	구매 등록 시점 , 판매(sell)일	경우	판매 완료 시점

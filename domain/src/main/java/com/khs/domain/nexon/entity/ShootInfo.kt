@@ -1,4 +1,4 @@
-package com.khs.domain.entity
+package com.khs.domain.nexon.entity
 
 data class ShootInfo(
     val shootTotal: Int,

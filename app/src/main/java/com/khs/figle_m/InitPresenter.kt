@@ -74,7 +74,7 @@ class InitPresenter : InitContract.Presenter {
     private fun updateSeasonDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"updateSeasonDB(...)")
         CoroutineScope(Dispatchers.IO).launch {
-            var result: String = responseBody.string()
+            val result: String = responseBody.string()
             val stringList: List<String> =
                 result.removeSurrounding("[", "]").replace("\"", "").replace("seasonId:", "")
                     .replace("className:", "").replace("seasonImg:","").replace("\n", "")
@@ -101,7 +101,7 @@ class InitPresenter : InitContract.Presenter {
                 index = 0
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"------------------ update Player DB, Season Table  ------------------")
                 seasonDB!!.seasonDao().deleteAll()
-                for (item in 0..stringList.size - 1 step 3) {
+                for (item in stringList.indices step 3) {
                     val loIndex = index
                     val seasonId = stringList[index]
                     val className = stringList[++index]
