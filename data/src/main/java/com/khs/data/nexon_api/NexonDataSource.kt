@@ -24,13 +24,16 @@ import javax.inject.Inject
 
 class NexonDataSource@Inject constructor(
     private val apiKey: String,
-    private val nexonService: NexonService) {
+    private val nexonAPIService: NexonAPIService,
+    private val nexonCDNService: NexonCDNService,
+    private val nexonStaticService: NexonStaticService,
+    private val nexonDataCenterService: NexonDataCenterService) {
 
     suspend fun searchUser(nickname: String): Flow<CommonResult<User>> =
-        asFlowResult { nexonService.requestUser(authorization = apiKey, nickname = nickname).asUser() }
+        asFlowResult { nexonAPIService.requestUser(authorization = apiKey, nickname = nickname).asUser() }
 
     suspend fun getMatchDetail(matchId: String): Flow<CommonResult<Match>> =
-        asFlowResult { nexonService.requestMatchDetail(authorization = apiKey, matchid = matchId).asMatch() }
+        asFlowResult { nexonAPIService.requestMatchDetail(authorization = apiKey, matchid = matchId).asMatch() }
 
     suspend fun getMatchIds(
         accessId: String,
@@ -38,13 +41,13 @@ class NexonDataSource@Inject constructor(
         offset: Int?,
         limit: Int?
     ): Flow<CommonResult<List<String>>> = asFlowResult {
-        nexonService.requestMatchIds(authorization = apiKey, accessid = accessId, matchtype = matchType, offset = offset, limit = limit).asMatchIds()
+        nexonAPIService.requestMatchIds(authorization = apiKey, accessid = accessId, matchtype = matchType, offset = offset, limit = limit).asMatchIds()
     }
 
     suspend fun getHighRankUser(
         accessId: String
     ) : Flow<CommonResult<List<HighRankUser>>> = asFlowResult {
-        nexonService.requestHighRanker(authorization = apiKey, accessid = accessId).asHighRanker()
+        nexonAPIService.requestHighRanker(authorization = apiKey, accessid = accessId).asHighRanker()
     }
 
     suspend fun getTradeInfo(
@@ -53,38 +56,38 @@ class NexonDataSource@Inject constructor(
         offset: Int?,
         limit: Int?
     ) : Flow<CommonResult<List<TradeInfo>>> = asFlowResult {
-        nexonService.requestTradeInfo(authorization = apiKey, accessid = accessId, tradeType = tradeType, offset = offset, limit = limit).asTradeInfo()
+        nexonAPIService.requestTradeInfo(authorization = apiKey, accessid = accessId, tradeType = tradeType, offset = offset, limit = limit).asTradeInfo()
     }
 
     suspend fun getPlayerImg(
         spId: Int
     ) : Flow<CommonResult<ByteArray>> = asFlowResult {
-        nexonService.requestPlayerImage(authorization = apiKey, spid = spId).asImageByteArray()
+        nexonCDNService.requestPlayerImage(authorization = apiKey, spid = spId).asImageByteArray()
     }
 
     suspend fun getRankerPlayerAverList(
         matchType: Int,
         players: String
     ) : Flow<CommonResult<List<RankerPlayer>>> = asFlowResult {
-        nexonService.requestRankerPlayerAverList(authorization = apiKey, matchType = matchType, players = players).asRankerPlayers()
+        nexonAPIService.requestRankerPlayerAverList(authorization = apiKey, matchType = matchType, players = players).asRankerPlayers()
     }
 
     suspend fun getPlayerInfo(
         spId: Int,
         n1Strong: Int
     ) : Flow<CommonResult<ResponseBody>> = asFlowResult {
-        nexonService.requestPlayerInfo(spId = spId, strong = n1Strong)
+        nexonDataCenterService.requestPlayerInfo(spId = spId, strong = n1Strong)
     }
 
     suspend fun getRank(
         page : Int
     ) : Flow<CommonResult<ResponseBody>> = asFlowResult {
-        nexonService.requestRank(page = page)
+        nexonDataCenterService.requestRank(page = page)
     }
 
     suspend fun getPlayerName() : Flow<CommonResult<List<Player>>> =
-        asFlowResult { nexonService.requestPlayerName(authorization = apiKey).asPlayerList() }
+        asFlowResult { nexonStaticService.requestPlayerName(authorization = apiKey).asPlayerList() }
 
     suspend fun getSeasonIds() : Flow<CommonResult<List<Season>>> =
-        asFlowResult { nexonService.requestSeasonIdList(authorization = apiKey).asSeasonList() }
+        asFlowResult { nexonStaticService.requestSeasonIdList(authorization = apiKey).asSeasonList() }
 }

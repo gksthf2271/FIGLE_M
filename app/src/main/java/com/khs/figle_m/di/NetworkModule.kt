@@ -1,8 +1,9 @@
 package com.khs.figle_m.di
 
-import com.khs.data.BuildConfig
-import com.khs.data.nexon_api.NexonDataSource
-import com.khs.data.nexon_api.NexonService
+import com.khs.data.nexon_api.NexonAPIService
+import com.khs.data.nexon_api.NexonCDNService
+import com.khs.data.nexon_api.NexonDataCenterService
+import com.khs.data.nexon_api.NexonStaticService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,8 +57,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    @NexonAPIRetrofit
+    fun provideNexonAPIRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
+            .baseUrl("https://api.nexon.co.kr/fifaonline4/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -65,13 +68,57 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNexonService(retrofit: Retrofit): NexonService {
-        return retrofit.create(NexonService::class.java)
+    @NexonCDNRetrofit
+    fun provideNexonCDNRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://fo4.dn.nexoncdn.co.kr/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     @Provides
     @Singleton
-    fun provideNexonDataSource(retrofit: Retrofit): NexonDataSource {
-        return NexonDataSource(BuildConfig.NEXON_API_KEY, provideNexonService(retrofit))
+    @NexonStaticRetrofit
+    fun provideNexonStaticRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://static.api.nexon.co.kr/fifaonline4/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @NexonDataCenterRetrofit
+    fun provideNexonDataCenterRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("http://fifaonline4.nexon.com/DataCenter/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+    @Provides
+    @Singleton
+    fun nexonAPIService(@NexonAPIRetrofit retrofit: Retrofit): NexonAPIService {
+        return retrofit.create(NexonAPIService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun nexonCDNService(@NexonCDNRetrofit retrofit: Retrofit): NexonCDNService {
+        return retrofit.create(NexonCDNService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun nexonStaticService(@NexonStaticRetrofit retrofit: Retrofit): NexonStaticService {
+        return retrofit.create(NexonStaticService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun nexonDataCenterService(@NexonDataCenterRetrofit retrofit: Retrofit): NexonDataCenterService {
+        return retrofit.create(NexonDataCenterService::class.java)
     }
 }
