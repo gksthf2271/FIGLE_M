@@ -1,5 +1,7 @@
 package com.khs.domain.nexon
 
+import com.khs.domain.database.entity.Player
+import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.HighRankUser
 import com.khs.domain.nexon.entity.Match
@@ -50,7 +52,7 @@ interface NexonAPIGateway {
         page : Int
     ) : Flow<CommonResult<ResponseBody>>
 
-    suspend fun getPlayerName() : Flow<CommonResult<ResponseBody>>
+    suspend fun getPlayerNameList() : Flow<CommonResult<List<Player>>>
 
-    suspend fun getSeasonIds() : Flow<CommonResult<ResponseBody>>
+    suspend fun getSeasonList() : Flow<CommonResult<List<Season>>>
 }

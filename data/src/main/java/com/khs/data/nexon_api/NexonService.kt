@@ -1,6 +1,8 @@
 package com.khs.data.nexon_api
 
+import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
+import com.khs.data.nexon_api.response.DTO.SeasonDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.data.nexon_api.response.UserHighRankResponse
@@ -58,12 +60,12 @@ interface NexonService {
     @GET("latest/spid.json")
     suspend fun requestPlayerName(
         @Header("Authorization") authorization: String
-    ): ResponseBody
+    ): List<PlayerNameDTO>
 
     @GET("latest/seasonid.json")
     suspend fun requestSeasonIdList(
         @Header("Authorization") authorization: String
-    ): ResponseBody
+    ): List<SeasonDTO>
 
     @GET("v1.0/rankers/status")
     suspend fun requestRankerPlayerAverList(

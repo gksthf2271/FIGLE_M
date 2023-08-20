@@ -5,11 +5,14 @@ import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.DTO.PassDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerStatDTO
+import com.khs.data.nexon_api.response.DTO.SeasonDTO
 import com.khs.data.nexon_api.response.DTO.ShootDTO
 import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
 import com.khs.data.nexon_api.response.DTO.StatusDTO
+import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.DefenceInfo
 import com.khs.domain.nexon.entity.HighRankUser
 import com.khs.domain.nexon.entity.Match
@@ -24,7 +27,6 @@ import com.khs.domain.nexon.entity.ShootInfo
 import com.khs.domain.nexon.entity.StatusInfo
 import com.khs.domain.nexon.entity.TradeInfo
 import com.khs.domain.nexon.entity.User
-import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 
 fun UserResponse.asUser(): User = User(
@@ -196,3 +198,15 @@ fun StatusDTO.asStatus() : StatusInfo = StatusInfo(
     tackle = tackle,
     spRating = spRating
 )
+
+fun List<SeasonDTO>.asSeasonList() : List<Season> {
+    return this.map {
+        Season(id = null, seasonId = it.seasonId.toLong(), className = it.className, seasonImg = it.seasonImg)
+    }
+}
+
+fun List<PlayerNameDTO>.asPlayerList() : List<com.khs.domain.database.entity.Player> {
+    return this.map {
+        com.khs.domain.database.entity.Player(id = null, playerId = it.playerId.toString(), playerName = it.playerName)
+    }
+}

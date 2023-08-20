@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
 
     fun updateSeasonDB() {
         viewModelScope.launch {
-            setupUseCase.getSeasonIds().collectLatest { result ->
+            setupUseCase.getSeasonList().collectLatest { result ->
                 when (result) {
                     is CommonResult.Loading -> {
 
@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
 
     fun updatePlayerDB() {
         viewModelScope.launch {
-            setupUseCase.getPlayerNames().collectLatest { result ->
+            setupUseCase.getPlayerNameList().collectLatest { result ->
                 when (result) {
                     is CommonResult.Loading -> {
 

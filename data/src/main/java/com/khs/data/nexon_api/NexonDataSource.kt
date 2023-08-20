@@ -4,15 +4,19 @@ import com.khs.data.nexon_api.response.asHighRanker
 import com.khs.data.nexon_api.response.asImageByteArray
 import com.khs.data.nexon_api.response.asMatch
 import com.khs.data.nexon_api.response.asMatchIds
+import com.khs.data.nexon_api.response.asPlayerList
 import com.khs.data.nexon_api.response.asRankerPlayers
+import com.khs.data.nexon_api.response.asSeasonList
 import com.khs.data.nexon_api.response.asTradeInfo
 import com.khs.data.nexon_api.response.asUser
+import com.khs.domain.database.entity.Player
+import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
-import com.khs.domain.nexon.entity.Match
-import com.khs.domain.nexon.entity.User
 import com.khs.domain.nexon.entity.HighRankUser
+import com.khs.domain.nexon.entity.Match
 import com.khs.domain.nexon.entity.RankerPlayer
 import com.khs.domain.nexon.entity.TradeInfo
+import com.khs.domain.nexon.entity.User
 import com.khs.domain.util.Utils.asFlowResult
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
@@ -78,9 +82,9 @@ class NexonDataSource@Inject constructor(
         nexonService.requestRank(page = page)
     }
 
-    suspend fun getPlayerName() : Flow<CommonResult<ResponseBody>> =
-        asFlowResult { nexonService.requestPlayerName(authorization = apiKey) }
+    suspend fun getPlayerName() : Flow<CommonResult<List<Player>>> =
+        asFlowResult { nexonService.requestPlayerName(authorization = apiKey).asPlayerList() }
 
-    suspend fun getSeasonIds() : Flow<CommonResult<ResponseBody>> =
-        asFlowResult { nexonService.requestSeasonIdList(authorization = apiKey) }
+    suspend fun getSeasonIds() : Flow<CommonResult<List<Season>>> =
+        asFlowResult { nexonService.requestSeasonIdList(authorization = apiKey).asSeasonList() }
 }

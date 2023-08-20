@@ -9,10 +9,10 @@ interface LocalGateway {
     suspend fun getAllSeason() : Flow<CommonResult<List<Season>>>
     suspend fun getSeason(seasonId: String) : Flow<CommonResult<Season>>
     suspend fun deleteAllSeason()
-    suspend fun updateSeasonDB(seasonList: List<String>)
+    suspend fun updateSeasonDB(seasonList: List<Season>)
 
     suspend fun getAllPlayer() : Flow<CommonResult<List<Player>>>
     suspend fun getPlayer(playerId: String) : Flow<CommonResult<Player?>>
     suspend fun deleteAllPlayer()
-    suspend fun updatePlayerDB(playerList : List<String>)
+    suspend fun updatePlayerDB(playerList : List<Player>)
 }

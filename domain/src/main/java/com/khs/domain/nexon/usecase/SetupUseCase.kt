@@ -1,20 +1,21 @@
 package com.khs.domain.nexon.usecase
 
+import com.khs.domain.database.entity.Player
+import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.NexonAPIGateway
 import kotlinx.coroutines.flow.Flow
-import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class SetupUseCase @Inject constructor(
     private val nexonAPIGateway: NexonAPIGateway
 ) {
 
-    suspend fun getSeasonIds(): Flow<CommonResult<ResponseBody>> {
-        return nexonAPIGateway.getSeasonIds()
+    suspend fun getSeasonList(): Flow<CommonResult<List<Season>>> {
+        return nexonAPIGateway.getSeasonList()
     }
 
-    suspend fun getPlayerNames(): Flow<CommonResult<ResponseBody>> {
-        return nexonAPIGateway.getPlayerName()
+    suspend fun getPlayerNameList(): Flow<CommonResult<List<Player>>> {
+        return nexonAPIGateway.getPlayerNameList()
     }
 }

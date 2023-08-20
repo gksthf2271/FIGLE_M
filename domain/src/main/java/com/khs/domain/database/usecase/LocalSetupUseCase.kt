@@ -16,7 +16,7 @@ class LocalSetupUseCase @Inject constructor(
 
     suspend fun getPlayerNames(): Flow<CommonResult<List<Player>>> = localGateway.getAllPlayer()
 
-    suspend fun updatePlayerDB(responseBody: ResponseBody) {}
+    suspend fun updatePlayerDB(playerList: List<Player>) {}
 
-    suspend fun updateSeasonDB(responseBody: ResponseBody) {}
+    suspend fun updateSeasonDB(seasonList: List<Season>) {}
 }
