@@ -1,6 +1,5 @@
 package com.khs.data.database
 
-import android.view.Display
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.database.entity.SeasonEntity
 import com.khs.domain.database.LocalGateway

@@ -6,7 +6,9 @@ import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.NexonAPIGateway
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SetupUseCase @Inject constructor(
     private val nexonAPIGateway: NexonAPIGateway
 ) {

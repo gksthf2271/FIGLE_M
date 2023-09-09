@@ -4,6 +4,7 @@ import com.khs.data.nexon_api.NexonAPIService
 import com.khs.data.nexon_api.NexonCDNService
 import com.khs.data.nexon_api.NexonDataCenterService
 import com.khs.data.nexon_api.NexonStaticService
+import com.khs.figle_m.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -120,5 +121,10 @@ object NetworkModule {
     @Singleton
     fun nexonDataCenterService(@NexonDataCenterRetrofit retrofit: Retrofit): NexonDataCenterService {
         return retrofit.create(NexonDataCenterService::class.java)
+    }
+
+    @Provides
+    fun apiKey() : String {
+        return BuildConfig.NEXON_API_KEY
     }
 }

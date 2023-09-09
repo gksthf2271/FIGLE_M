@@ -2,13 +2,13 @@ package com.khs.data.nexon_api
 
 import com.khs.domain.database.entity.Player
 import com.khs.domain.database.entity.Season
+import com.khs.domain.nexon.NexonAPIGateway
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.HighRankUser
 import com.khs.domain.nexon.entity.Match
 import com.khs.domain.nexon.entity.RankerPlayer
 import com.khs.domain.nexon.entity.TradeInfo
 import com.khs.domain.nexon.entity.User
-import com.khs.domain.nexon.NexonAPIGateway
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 import javax.inject.Inject
