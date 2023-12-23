@@ -155,17 +155,16 @@ object CrawlingUtils {
                 }
                 val rankerList = arrayListOf<Ranker>()
                 val bodyList = parentBody
-                    .getElementsByClass("datacenter").get(0)
-                    .getElementsByClass("wrap").get(0)
-                    .getElementsByClass("board_list datacenter_rank").get(0)
-                    .getElementsByClass("content datacenter_rank_list").get(0)
-                    .getElementsByClass("list_wrap").get(0)
-                    .getElementsByClass("tbody").get(0)
+                    .getElementsByClass("datacenter")[0]
+                    .getElementsByClass("wrap")[0]
+                    .getElementsByClass("board_list datacenter_rank")[0]
+                    .getElementsByClass("content datacenter_rank_list")[0]
+                    .getElementsByClass("list_wrap")[0]
+                    .getElementsByClass("tbody")[0]
                     .getElementsByClass("tr")
 
-                for (i in 0 .. bodyList.size-1){
-                    val item = searchBody(i, bodyList[i])
-                    if (item == null) continue
+                for (i in 0 until bodyList.size){
+                    val item = searchBody(i, bodyList[i]) ?: continue
                     rankerList.add(item)
                 }
 

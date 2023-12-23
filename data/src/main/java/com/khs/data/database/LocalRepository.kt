@@ -20,12 +20,6 @@ class LocalRepository @Inject constructor(
     override suspend fun getAllSeason() : Flow<CommonResult<List<Season>>> = asFlowResult { seasonDao.getAll().asSeasons() }
     override suspend fun getSeason(seasonId: String) : Flow<CommonResult<Season>> = asFlowResult { seasonDao.getSeason(seasonId).asSeason() }
     override suspend fun deleteAllSeason() = seasonDao.deleteAll()
-
-    /* TODO 23.08.17
-    - MVP -> MVVM 전환
-    - 앱 초기 DB 셋팅 로직 개선(선수 이름 json 파일 내재화)
-    - 넥슨 API 각 Usecase 별 구현
-    * */
     override suspend fun updateSeasonDB(seasonList: List<Season>) {
         val savedSeasonList = seasonDao.getAll()
         if(seasonList.size != savedSeasonList.size) {

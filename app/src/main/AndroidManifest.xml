@@ -15,8 +15,8 @@
         android:usesCleartextTraffic="true"
         android:screenOrientation="portrait">
 
-        <activity android:name="com.khs.figle_m.MainActivity"
-            android:screenOrientation="portrait"
+        <activity android:name="com.khs.figle_m.NewMainActivity"
+            android:screenOrientation="fullSensor"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true">
             <intent-filter>
@@ -27,19 +27,19 @@
         </activity>
 
         <activity android:name=".ranking.RankingActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity android:name=".analytics.AnalyticsActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity android:name=".analytics.SquadActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity android:name=".trade.TradeActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <meta-data

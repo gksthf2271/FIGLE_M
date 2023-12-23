@@ -86,7 +86,7 @@ class InitPresenter : InitContract.Presenter {
             val seasonDB = PlayerDataBase.getInstance(context)
             LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"seasonList size : ${stringList.size}")
             val seasonList : ArrayList<SeasonEntity> = arrayListOf()
-            for (item in 0..stringList.size - 1 step 3) {
+            for (item in stringList.indices step 3) {
                 val loIndex = index
                 val seasonId = stringList[index]
                 val className = stringList[++index]

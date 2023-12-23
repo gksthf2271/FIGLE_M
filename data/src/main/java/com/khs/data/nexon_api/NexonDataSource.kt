@@ -9,6 +9,7 @@ import com.khs.data.nexon_api.response.asRankerPlayers
 import com.khs.data.nexon_api.response.asSeasonList
 import com.khs.data.nexon_api.response.asTradeInfo
 import com.khs.data.nexon_api.response.asUser
+import com.khs.data.nexon_api.response.checkModified
 import com.khs.domain.database.entity.Player
 import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
@@ -86,7 +87,7 @@ class NexonDataSource@Inject constructor(
     }
 
     suspend fun getPlayerName() : Flow<CommonResult<List<Player>>> =
-        asFlowResult { nexonStaticService.requestPlayerName(authorization = apiKey).asPlayerList() }
+        asFlowResult { nexonStaticService.requestPlayerNameAsResponseBody(authorization = apiKey).checkModified().asPlayerList() }
 
     suspend fun getSeasonIds() : Flow<CommonResult<List<Season>>> =
         asFlowResult { nexonStaticService.requestSeasonIdList(authorization = apiKey).asSeasonList() }

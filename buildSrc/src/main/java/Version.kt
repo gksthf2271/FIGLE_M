@@ -26,7 +26,8 @@ object Google {
 }
 
 object AndroidX {
-    const val core = "1.9.0"
+    const val core = "1.12.0"
+    const val fragment_ktx = "1.6.1"
     const val annotation_lib = "1.5.0"
     const val appcompat = "1.4.1"
     const val compose = "1.3.2"

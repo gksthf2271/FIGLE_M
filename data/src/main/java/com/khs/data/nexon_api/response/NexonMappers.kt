@@ -1,10 +1,13 @@
 package com.khs.data.nexon_api.response
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.khs.data.nexon_api.response.DTO.DefenceDTO
 import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.DTO.PassDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerName
 import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerStatDTO
@@ -12,6 +15,7 @@ import com.khs.data.nexon_api.response.DTO.SeasonDTO
 import com.khs.data.nexon_api.response.DTO.ShootDTO
 import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
 import com.khs.data.nexon_api.response.DTO.StatusDTO
+import com.khs.domain.database.entity.PlayerData
 import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.DefenceInfo
 import com.khs.domain.nexon.entity.HighRankUser
@@ -27,7 +31,12 @@ import com.khs.domain.nexon.entity.ShootInfo
 import com.khs.domain.nexon.entity.StatusInfo
 import com.khs.domain.nexon.entity.TradeInfo
 import com.khs.domain.nexon.entity.User
+import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 fun UserResponse.asUser(): User = User(
     accessId = accessId,
@@ -205,8 +214,40 @@ fun List<SeasonDTO>.asSeasonList() : List<Season> {
     }
 }
 
-fun List<PlayerNameDTO>.asPlayerList() : List<com.khs.domain.database.entity.Player> {
-    return this.map {
+/* TODO 23.08.17
+    - MVP -> MVVM 전환
+    - 앱 초기 DB 셋팅 로직 개선(선수 이름 json 파일 내재화)
+      > response 헤더 값을 가지고 업데이트 시기 조정
+    - 넥슨 API 각 Usecase 별 구현
+    */
+fun Flow<Call<ResponseBody>>.checkModified() : PlayerData {
+    val resultCB = object : Callback<ResponseBody> {
+        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            val headers = response.headers()
+            //            age : 970
+//            content-length : 4577454
+//            last-modified : Mon, 04 Sep 2023 03:39:16 GMT
+            val jsonObject = JSONObject(response.body() as Map<*, *>)
+            val jsonString = jsonObject.toString()
+            val playerNameDTO = PlayerNameDTO(
+                dataVersion = headers["age"] ?: "",
+                contentsLength = headers["content-length"] ?: "",
+                lastModified = headers["last-modified"] ?: "",
+                playernames = Gson().fromJson(jsonString, TypeToken.getParameterized(List::class.java, PlayerName::class.java).type)
+            )
+        }
+
+        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            TODO("Not yet implemented")
+        }
+
+    }
+    enqueue(resultCB)
+    return listOf()
+}
+
+fun PlayerData.asPlayerList() : List<com.khs.domain.database.entity.Player> {
+    return this.playerList.map {
         com.khs.domain.database.entity.Player(id = null, playerId = it.playerId.toString(), playerName = it.playerName)
     }
 }

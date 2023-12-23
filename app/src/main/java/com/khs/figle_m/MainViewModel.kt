@@ -25,21 +25,19 @@ class MainViewModel @Inject constructor(
     private val _mainUIState = MutableStateFlow(MainUIState.Loading)
     val mainUIState: StateFlow<MainUIState> = _mainUIState
 
-    fun updateSeasonDB() {
-        viewModelScope.launch {
-            setupUseCase.getSeasonList().collectLatest { result ->
-                when (result) {
-                    is CommonResult.Loading -> {
-                        _mainUIState.value = MainUIState.Loading
-                    }
+    fun updateSeasonDB() = viewModelScope.launch {
+        setupUseCase.getSeasonList().collectLatest { result ->
+            when (result) {
+                is CommonResult.Loading -> {
+                    _mainUIState.value = MainUIState.Loading
+                }
 
-                    is CommonResult.Success -> {
-                        localSetupUseCase.updateSeasonDB(result.data)
-                    }
+                is CommonResult.Success -> {
+                    localSetupUseCase.updateSeasonDB(result.data)
+                }
 
-                    is CommonResult.Fail -> {
+                is CommonResult.Fail -> {
 //                        _mainUIState.value = MainUIState.Failed(errorCode = , errorMsg = )
-                    }
                 }
             }
         }

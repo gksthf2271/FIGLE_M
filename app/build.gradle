@@ -2,11 +2,12 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "org.jetbrains.kotlin.kapt"
-    id "dagger.hilt.android.plugin"
     id "maven-publish"
     id "com.google.gms.google-services"
     id "com.google.firebase.crashlytics"
     id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id "com.google.dagger.hilt.android"
 }
 
 android {
@@ -51,6 +52,10 @@ android {
         }
     }
 
+    buildTypes.each {
+        it.buildConfigField 'String', 'NEXON_API_KEY', NEXON_API_KEY
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
@@ -79,6 +84,7 @@ dependencies {
 
     // AndroidX
     implementation "androidx.core:core-ktx:${AndroidX.core}"
+    implementation "androidx.fragment:fragment-ktx:${AndroidX.fragment_ktx}"
     implementation "androidx.annotation:annotation:${AndroidX.annotation_lib}"
     implementation "androidx.appcompat:appcompat:${AndroidX.appcompat}"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"

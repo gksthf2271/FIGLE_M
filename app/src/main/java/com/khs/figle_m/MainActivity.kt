@@ -2,8 +2,6 @@ package com.khs.figle_m
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Message
 import android.provider.Settings
 import android.view.Gravity
 import android.view.KeyEvent
@@ -17,13 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.base.BaseActivity
 import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.databinding.ActivityMainBinding
+import com.khs.figle_m.databinding.ActivityMainFinishBinding
 import com.khs.figle_m.home.HomeFragment
 import com.khs.figle_m.searchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.utils.FragmentUtils
 import com.khs.figle_m.utils.LogUtil
 import com.khs.figle_m.utils.SeasonManager
-import com.khs.figle_m.databinding.ActivityMainBinding
-import com.khs.figle_m.databinding.ActivityMainFinishBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,27 +31,13 @@ import okhttp3.ResponseBody
 
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
+class MainActivity : BaseActivity(), InitContract.View{
     val TAG: String = javaClass.simpleName
     lateinit var mBinding: ActivityMainBinding
     val PREF_NAME = "playerNamePref"
     lateinit var mInitPresenter: InitPresenter
     private var mPopupWindow: PopupWindow? = null
     private val MSG_DISCONNECTED_NETWORK = 0
-
-    companion object {
-        @Volatile
-        private var instance: MainActivity? = null
-
-        @JvmStatic
-        fun getInstance(): MainActivity =
-            instance ?: synchronized(this) {
-                instance
-                    ?: MainActivity().also {
-                        instance = it
-                    }
-            }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,19 +107,6 @@ class MainActivity : BaseActivity(), InitContract.View, Handler.Callback{
             return false
         }
         return super.onKeyDown(keyCode, event)
-    }
-
-    override fun handleMessage(msg: Message): Boolean {
-        when(msg.what) {
-            MSG_DISCONNECTED_NETWORK -> {
-                LogUtil.vLog(LogUtil.TAG_UI, TAG,"received MSG_DISCONNECTED NETWORK!")
-                if (mPopupWindow != null && mPopupWindow!!.isShowing) {
-                    mPopupWindow!!.dismiss()
-                }
-                finish()
-            }
-        }
-        return false
     }
 
     private fun getCurrentFragment(): Fragment? {
