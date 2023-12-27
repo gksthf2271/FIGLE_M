@@ -97,11 +97,11 @@ class SearchListFragment : BaseFragment() {
     private fun initListData() {
         view_searchList.setSearchUserInfo(mSearchUserInfo)
         view_searchList.updateView(mMatchtype, mMatchIdList) { matchDetailResponse ->
-            showDetail(mSearchUserInfo.accessId, matchDetailResponse)
+            showDetail(mSearchUserInfo.ouid, matchDetailResponse)
         }
     }
 
-    private fun showDetail(accessId: String, matchDetailResponse: MatchDetailResponse) {
+    private fun showDetail(ouid: String, matchDetailResponse: MatchDetailResponse) {
         val searchDetailDialogFragment = SearchDetailDialogFragment.getInstance()
         val bundle = Bundle()
         mSelectedMatchInfo = matchDetailResponse
@@ -109,7 +109,7 @@ class SearchListFragment : BaseFragment() {
 
         bundle.putBoolean(searchDetailDialogFragment.KEY_IS_COACH_MODE, mIsCoachMode)
         bundle.putParcelable(searchDetailDialogFragment.KEY_MATCH_DETAIL_INFO, matchDetailResponse)
-        bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, accessId)
+        bundle.putString(searchDetailDialogFragment.KEY_SEARCH_ACCESSID, ouid)
         searchDetailDialogFragment.arguments = bundle
         if (!searchDetailDialogFragment.isAdded) {
             searchDetailDialogFragment.show(

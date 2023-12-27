@@ -6,6 +6,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlayerListDTO(
-    var accessId : String,
+    var ouid : String,
     var playerList : List<PlayerDTO>
 ) : Parcelable

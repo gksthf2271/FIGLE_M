@@ -17,21 +17,21 @@ object SearchUser {
 
     private val api =
         Retrofit.Builder()
-            .baseUrl("https://api.nexon.co.kr/fifaonline4/") // 도메인 주소
+            .baseUrl("https://open.api.nexon.com/fconline/") // 도메인 주소
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val cdn =
         Retrofit.Builder()
-            .baseUrl("https://fo4.dn.nexoncdn.co.kr/") // 도메인 주소
+            .baseUrl("https://fco.dn.nexoncdn.co.kr/") // 도메인 주소
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
     private val playerNameApi =
         Retrofit.Builder()
-            .baseUrl("https://static.api.nexon.co.kr/fifaonline4/") // 도메인 주소
+            .baseUrl("https://open.api.nexon.com/static/fconline/meta/") // 도메인 주소
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

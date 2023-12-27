@@ -83,7 +83,7 @@ class SearchListView : ConstraintLayout, SearchContract.SearchListView{
         }
 
         mMatchType = matchType
-        layout_recyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.accessId, arrayListOf()) { matchDetailResponse ->
+        layout_recyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.ouid, arrayListOf()) { matchDetailResponse ->
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"ItemClick! ${matchDetailResponse.matchInfo}")
                 itemClick(matchDetailResponse)
             }

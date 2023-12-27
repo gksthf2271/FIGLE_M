@@ -2,9 +2,11 @@ package com.khs.figle_m.Data
 
 import android.content.Context
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.figle_m.Response.DTO.SeasonIdDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
+import com.khs.figle_m.Response.UserIdResponse
 import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.Trade.TradeHomeFragment
 import com.khs.figle_m.Utils.DateUtils
@@ -115,13 +117,46 @@ class DataManager{
             }
     }
 
-    fun loadUserData(
-        nickName: String,
+    fun loadUserId(
+        nickname: String,
         onSuccess: (UserResponse?) -> Unit,
         onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
-            .requestUser(authorization = mAuthorizationKey, nickname = nickName)
+            .requestUserId(authorization = mAuthorizationKey, nickname = nickname)
+            .enqueue(object : Callback<UserIdResponse> {
+                override fun onFailure(call: Call<UserIdResponse>, t: Throwable) {
+                    if (t is UnknownHostException) {
+                        onFailed(makeErrorException(t))
+                        return
+                    }
+                }
+
+                override fun onResponse(
+                    call: Call<UserIdResponse>,
+                    response: Response<UserIdResponse>
+                ) {
+                    LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadUserId response(...) ${response.code()}")
+                    if (response != null) {
+                        if (response.code() == SUCCESS_CODE) {
+                            loadUserData(response!!.body()!!.ouid, onSuccess = onSuccess, onFailed = onFailed)
+                        } else {
+                            onFailed(response.code())
+                        }
+                    } else {
+                        onFailed(response.code())
+                    }
+                }
+            })
+    }
+
+    fun loadUserData(
+        ouId: String,
+        onSuccess: (UserResponse?) -> Unit,
+        onFailed: (Int) -> Unit
+    ) {
+        SearchUser.getApiService()
+            .requestUser(authorization = mAuthorizationKey, ouId = ouId)
             .enqueue(object : Callback<UserResponse> {
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     if (t is UnknownHostException) {
@@ -186,7 +221,7 @@ class DataManager{
     }
 
     fun loadMatchId(
-        accessid: String,
+        ouid: String,
         matchtype: Int,
         offset: Int?,
         limit: Int?,
@@ -195,7 +230,6 @@ class DataManager{
     ) {
         SearchUser.getApiService().requestMatchId(
             authorization = mAuthorizationKey,
-            accessid = accessid,
             matchtype = matchtype,
             offset = offset,
             limit = limit
@@ -222,12 +256,12 @@ class DataManager{
     }
 
     fun loadUserHighRank(
-        accessId: String,
+        ouid: String,
         onSuccess: (List<UserHighRankResponse>) -> Unit,
         onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
-            .requestUserHighRank(authorization = mAuthorizationKey, accessid = accessId)
+            .requestUserHighRank(authorization = mAuthorizationKey, ouid = ouid)
             .enqueue(object : Callback<List<UserHighRankResponse>> {
                 override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
                     if (t is UnknownHostException) {
@@ -262,18 +296,22 @@ class DataManager{
         onSuccess(call.request().url())
     }
 
-    fun loadSeasonIdList(onSuccess: ((ResponseBody) -> Unit), onFailed: (Int) -> Unit) {
+    fun loadSeasonIdList(onSuccess: ((List<SeasonIdDTO>) -> Unit), onFailed: (Int) -> Unit) {
         val call = SearchUser.getPlayerNameApiService()
             .requestSeasonIdList(authorization = mAuthorizationKey)
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+        call.enqueue(object : Callback<List<SeasonIdDTO>> {
+            override fun onFailure(call: Call<List<SeasonIdDTO>>, t: Throwable) {
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG, "loadSeasonIdList > failed")
                 if (t is UnknownHostException) {
                     onFailed(makeErrorException(t))
                     return
                 }
             }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(
+                call: Call<List<SeasonIdDTO>>,
+                response: Response<List<SeasonIdDTO>>
+            ) {
                 LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadSeasonIdList response(...) ${response.code()}")
                 if (response != null) {
                     if (response.code() == SUCCESS_CODE) {
@@ -291,6 +329,7 @@ class DataManager{
             .requestPlayerName(authorization = mAuthorizationKey)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                LogUtil.dLog(LogUtil.TAG_NETWORK, TAG, "loadPlayerName > failed")
                 if (t is UnknownHostException) {
                     onFailed(makeErrorException(t))
                     return
@@ -400,7 +439,7 @@ class DataManager{
     }
 
     fun loadTradeInfo(
-        accessId: String,
+        ouid: String,
         tradeType: TradeHomeFragment.TradeType,
         offset: Int?,
         limit: Int?,
@@ -409,7 +448,6 @@ class DataManager{
     ) {
         val call = SearchUser.getApiService().requestTradeInfo(
             authorization = mAuthorizationKey,
-            accessid = accessId,
             tradeType = tradeType.name,
             offset = offset,
             limit = limit

@@ -27,7 +27,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
 
     lateinit var mAnalyticsPresenter: AnalyticsPresenter
     lateinit var mCurrentRank: Ranker
-    lateinit var mAccessId: String
+    lateinit var mOuId: String
 
     override fun initPresenter() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
@@ -79,7 +79,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
         var myList = arrayListOf<String>()
         arguments?.let {
             myList = it.getStringArrayList(AnalyticsActivity().KEY_MY_DATA)!!
-            mAccessId = it.getString(AnalyticsActivity().KEY_ACCESS_ID)!!
+            mOuId = it.getString(AnalyticsActivity().KEY_ACCESS_ID)!!
         }
         var lastIdx = 10
         if (myList.size < 10) {
@@ -155,7 +155,7 @@ class AnalyticsFragment : BaseFragment(), AnalyticsContract.View{
     }
 
     override fun showMatchDetail(matchDetailList: List<MatchDetailResponse>) {
-        mAnalyticsPresenter.loadPlayerList(mAccessId, matchDetailList)
+        mAnalyticsPresenter.loadPlayerList(mOuId, matchDetailList)
 
     }
 

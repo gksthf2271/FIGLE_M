@@ -4,8 +4,13 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
+data class UserIdResponse(
+    val ouid: String
+) : Parcelable
+
+@Parcelize
 data class UserResponse(
-    val accessId: String,
+    val ouid: String,
     val nickname: String,
     val level: String,
     var teamPrice : String

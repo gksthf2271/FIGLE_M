@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class MatchInfoDTO(
-    val accessId: String,
+    val ouid: String,
     val nickname: String,
     val matchDetail: MatchDetailDTO,
     val shoot: ShootDTO,

@@ -5,7 +5,7 @@ import com.khs.figle_m.Base.BaseView
 import com.khs.figle_m.Response.TradeResponse
 
 
-//accessid  string		Y	128	유저 고유 식별자
+//ouid  string		Y	128	유저 고유 식별자
 //tradetype string		Y	10	거래 종류 (구입 : buy, 판매 : sell)
 //offset    integer	0	N	4	리스트에서 가져올 시작 위치
 //limit     integer	100	N	4	리스트에서 가져올 갯수(최대 100 개)
@@ -19,7 +19,7 @@ interface TradeContract : BaseView {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getTradeInfoList(accessId : String, offset : Int?, limit: Int?)
+        fun getTradeInfoList(ouid : String, offset : Int?, limit: Int?)
         fun getTradePlayerImageUrl(tradeInfoList: List<TradeResponse>)
     }
 }

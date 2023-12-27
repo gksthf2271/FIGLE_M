@@ -80,7 +80,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Arr
                 var myIndex = 0
                 val matchInfo = item.matchInfo
 
-                if (searchAccessId == matchInfo[0].accessId.toLowerCase()) {
+                if (searchAccessId == matchInfo[0].ouid.toLowerCase()) {
                     opposingUserIndex = 1
                     myIndex = 0
                 } else {

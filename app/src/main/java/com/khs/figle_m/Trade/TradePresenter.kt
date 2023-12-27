@@ -13,14 +13,14 @@ class TradePresenter : TradeContract.Presenter{
     val TAG = javaClass.simpleName
 
     override fun getTradeInfoList(
-        accessId : String,
+        ouid : String,
         offset: Int?,
         limit: Int?) {
         if (mTradeView == null) return
         mTradeView?.showLoading()
         val responseMap = mutableMapOf<String, List<TradeResponse>>()
         for (item in TradeHomeFragment.TradeType.values()) {
-            DataManager.getInstance().loadTradeInfo(accessId, item, offset, limit,
+            DataManager.getInstance().loadTradeInfo(ouid, item, offset, limit,
                 {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadTradeInfo response(...) : ${it.first().tradeType}")
                     responseMap[it.first().tradeType.toString()] = it

@@ -34,11 +34,11 @@ class AnalyticsActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         val myList = intent.getStringArrayListExtra(KEY_MY_DATA)
-        val accessId = intent.getStringExtra(KEY_ACCESS_ID)
+        val ouid = intent.getStringExtra(KEY_ACCESS_ID)
         val analyticsFragment = AnalyticsFragment()
         val bundle = Bundle()
         bundle.putStringArrayList(KEY_MY_DATA, myList)
-        bundle.putString(KEY_ACCESS_ID, accessId)
+        bundle.putString(KEY_ACCESS_ID, ouid)
         analyticsFragment.arguments = bundle
         FragmentUtils().loadFragment(
             analyticsFragment,

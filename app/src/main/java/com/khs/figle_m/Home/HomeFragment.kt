@@ -75,7 +75,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                 mUserResponse = msg.obj as (UserResponse)
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"MSG_SHOW_USER_LIST result ::: " + msg.obj.toString())
 
-                mUserResponse.accessId ?: return false
+                mUserResponse.ouid ?: return false
                 fragmentManager ?: return false
 
                 val searchHomeFragment = SearchHomeFragment()

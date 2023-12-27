@@ -1,9 +1,11 @@
 package com.khs.figle_m.Data
 
 import com.khs.figle_m.Response.DTO.RankerPlayerDTO
+import com.khs.figle_m.Response.DTO.SeasonIdDTO
 import com.khs.figle_m.Response.MatchDetailResponse
 import com.khs.figle_m.Response.TradeResponse
 import com.khs.figle_m.Response.UserHighRankResponse
+import com.khs.figle_m.Response.UserIdResponse
 import com.khs.figle_m.Response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -15,38 +17,41 @@ import retrofit2.http.Query
 interface RetrofitService {
 //    https://api.nexon.co.kr/fifaonline4/v1.0/users?nickname=아무거나다잘함
 //    @Headers("Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTI0MTUyOTI2NCIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU3NjkxNjU0MSwiZXhwIjoxNjM5OTg4NTQxLCJpYXQiOjE1NzY5MTY1NDF9.emF4Bd9O7zbC1giC4s3IrZ4S8Oax6-5IhDe3nZ0gCi4")
-    @GET("v1.0/users")
-    fun requestUser(
-        @Header("Authorization") authorization: String,
+    @GET("v1/id")
+    fun requestUserId(
+        @Header("x-nxopen-api-key") authorization: String,
         @Query("nickname") nickname: String
+    ): Call<UserIdResponse>
+
+    @GET("v1/user/basic")
+    fun requestUser(
+        @Header("x-nxopen-api-key") authorization: String,
+        @Query("ouid") ouId: String
     ): Call<UserResponse>
 
-
-    @GET("v1.0/matches/{matchid}")
+    @GET("v1/match-detail")
     fun requestMatchDetail(
-        @Header("Authorization") authorization: String,
-        @Path("matchid") matchid: String
+        @Header("x-nxopen-api-key") authorization: String,
+        @Query("matchid") matchid: String
     ): Call<MatchDetailResponse>
 
-    @GET("v1.0/users/{accessid}/matches")
+    @GET("v1/match")
     fun requestMatchId(
-        @Header("Authorization") authorization: String,
-        @Path("accessid") accessid: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Query("matchtype") matchtype: Int,
         @Query("offset") offset: Int?,
         @Query("limit") limit: Int?
     ): Call<ResponseBody>
 
-    @GET("v1.0/users/{accessid}/maxdivision")
+    @GET("v1/user/maxdivision")
     fun requestUserHighRank(
-        @Header("Authorization") authorization: String,
-        @Path("accessid") accessid: String
+        @Header("x-nxopen-api-key") authorization: String,
+        @Query("ouid") ouid: String
     ): Call<List<UserHighRankResponse>>
 
-    @GET("v1.0/users/{accessid}/markets")
+    @GET("v1/user/trade")
     fun requestTradeInfo(
-        @Header("Authorization") authorization: String,
-        @Path("accessid") accessid: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Query("tradeType") tradeType: String,
         @Query("offset") offset: Int?,
         @Query("limit") limit: Int?
@@ -54,23 +59,23 @@ interface RetrofitService {
 
     @GET("live/externalAssets/common/players/p{spid}.png")
     fun requestPlayerImage(
-        @Header("Authorization") authorization: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Path("spid") spid: Int
     ): Call<ResponseBody>
 
-    @GET("latest/spid.json")
+    @GET("spid.json")
     fun requestPlayerName(
-        @Header("Authorization") authorization: String
+        @Header("x-nxopen-api-key") authorization: String
     ): Call<ResponseBody>
 
-    @GET("latest/seasonid.json")
+    @GET("seasonid.json")
     fun requestSeasonIdList(
-        @Header("Authorization") authorization: String
-    ): Call<ResponseBody>
+        @Header("x-nxopen-api-key") authorization: String
+    ): Call<List<SeasonIdDTO>>
 
-    @GET("v1.0/rankers/status")
+    @GET("v1/ranker-stats")
     fun requestRankerPlayerAverList(
-        @Header("Authorization") authorization: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Query("matchtype") matchType: Int,
         @Query("players") players: String
     ): Call<List<RankerPlayerDTO>>

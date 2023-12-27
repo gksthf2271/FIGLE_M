@@ -280,7 +280,7 @@ class PlayerDetailDialogFragment: DialogBaseFragment(), SearchDetailContract.Vie
 
     }
 
-    override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
+    override fun showPlayerImage(ouid: String, playerDTO: PlayerDTO, size: Int) {
 
     }
 

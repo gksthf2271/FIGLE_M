@@ -61,8 +61,8 @@ open class DrawUtils () {
                 //Todo 224, 234 분리... 뭐가 맞는지 넥슨측확인 필요 // 답변완료 : 234가 맞음
                 if ("224" == seasonId) seasonId = "234"
                 val seasonEntity = it.seasonDao().getSeason(seasonId)
-                LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
-                seasonEntity.let {
+                seasonEntity.let { seasonEntity ->
+                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, seasonEntity, seasonId : ${seasonEntity.seasonId} , className : ${seasonEntity.className} , saesonUrl : ${seasonEntity.seasonImg}  ")
                     val url = seasonEntity.seasonImg
                     CoroutineScope(Dispatchers.Main).launch {
                         LogUtil.dLog(LogUtil.TAG_UI, TAG,"TEST, saesonUrl : ${url}")

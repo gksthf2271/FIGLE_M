@@ -34,7 +34,7 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
             }
             1 -> {
                 var userNickname = ""
-                if (mMatchDetailResponse.matchInfo[0].accessId == SearchDetailDialogFragment.getInstance().mSearchAccessId) {
+                if (mMatchDetailResponse.matchInfo[0].ouid == SearchDetailDialogFragment.getInstance().mSearchAccessId) {
                     userNickname = mMatchDetailResponse.matchInfo[0].nickname
                 } else {
                     userNickname = mMatchDetailResponse.matchInfo[1].nickname
@@ -49,7 +49,7 @@ class SearchDetailDialogAdapter() : PagerAdapter() {
             }
             2 -> {
                 var userNickname = ""
-                if (mMatchDetailResponse.matchInfo[0].accessId == SearchDetailDialogFragment.getInstance().mOpposingUserId) {
+                if (mMatchDetailResponse.matchInfo[0].ouid == SearchDetailDialogFragment.getInstance().mOpposingUserId) {
                     userNickname = mMatchDetailResponse.matchInfo[0].nickname
                 } else {
                     userNickname = mMatchDetailResponse.matchInfo[1].nickname

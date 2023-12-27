@@ -47,12 +47,12 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
 
     override fun onStart() {
         super.onStart()
-        var accessId = ""
+        var ouid = ""
         arguments.let {
-            accessId = it!!.getString(TradeActivity().KEY_ACCESS_ID, "")
+            ouid = it!!.getString(TradeActivity().KEY_ACCESS_ID, "")
         }
         initView()
-        requestData(accessId)
+        requestData(ouid)
     }
 
     fun initView() {
@@ -64,8 +64,8 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
         btn_back.setOnClickListener { activity!!.finish() }
     }
 
-    private fun requestData(accessId: String) {
-        mTradePresenter!!.getTradeInfoList(accessId, 0, 20)
+    private fun requestData(ouid: String) {
+        mTradePresenter!!.getTradeInfoList(ouid, 0, 20)
     }
 
     override fun showLoading() {

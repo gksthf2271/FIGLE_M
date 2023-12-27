@@ -124,17 +124,17 @@ class SearchHomeFragment : BaseFragment(),
         match_indicator.setViewPager(viewPager_search)
     }
 
-    private fun initRateView(accessId: String) {
-        initRateView(accessId, mOfficialGameMatchIdList, mCoachModeMatchIdList)
+    private fun initRateView(ouid: String) {
+        initRateView(ouid, mOfficialGameMatchIdList, mCoachModeMatchIdList)
     }
 
-    private fun initRateView(accessId : String, officialModeList: List<String>, coachModeList: List<String>) {
+    private fun initRateView(ouid : String, officialModeList: List<String>, coachModeList: List<String>) {
         val officialModeView = SearchHomeRateView(context!!)
         val coachModeView = SearchHomeRateView(context!!)
 
         //승률 갯수 20개로 한정
-        officialModeView.updateView(accessId, DataManager.matchType.normalMatch, officialModeList)
-        coachModeView.updateView(accessId, DataManager.matchType.coachMatch, coachModeList)
+        officialModeView.updateView(ouid, DataManager.matchType.normalMatch, officialModeList)
+        coachModeView.updateView(ouid, DataManager.matchType.coachMatch, coachModeList)
 
         viewPager_team.adapter =
             CustomPagerAdapter(
@@ -155,10 +155,10 @@ class SearchHomeFragment : BaseFragment(),
             txt_team_price.text = it
             txt_team_price.visibility = View.VISIBLE
         }
-        mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
+        mSearchHomePresenter.getUserHighRank(mSearchUserInfo.ouid)
         group_trade.setOnClickListener{
             val intent = Intent(context, TradeActivity::class.java)
-            intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.accessId)
+            intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.ouid)
             startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
         }
     }
@@ -166,14 +166,14 @@ class SearchHomeFragment : BaseFragment(),
     private fun initListData() {
 
         mSearchHomePresenter.getMatchId(
-            mSearchUserInfo.accessId,
+            mSearchUserInfo.ouid,
             DataManager.matchType.normalMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
         )
 
         mSearchHomePresenter.getMatchId(
-            mSearchUserInfo.accessId,
+            mSearchUserInfo.ouid,
             DataManager.matchType.coachMatch,
             DataManager.getInstance().offset,
             DataManager.getInstance().SEARCH_LIMIT
@@ -219,9 +219,9 @@ class SearchHomeFragment : BaseFragment(),
         mOfficialView.setOnClickListener {
             showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
-        initRateView(mSearchUserInfo.accessId)
+        initRateView(mSearchUserInfo.ouid)
         group_sq.setOnClickListener {
-            mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.accessId, mOfficialGameMatchIdList)
+            mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.ouid, mOfficialGameMatchIdList)
         }
     }
 
@@ -243,14 +243,14 @@ class SearchHomeFragment : BaseFragment(),
         mCoachView.setOnClickListener {
             showSearchList(DataManager.matchType.coachMatch, mCoachModeMatchIdList)
         }
-        initRateView(mSearchUserInfo.accessId)
+        initRateView(mSearchUserInfo.ouid)
     }
 
-    override fun showAnalysisInfo(accessId: String, matchIdList: List<String>) {
+    override fun showAnalysisInfo(ouid: String, matchIdList: List<String>) {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"showAnaysisInfo : $matchIdList")
         val intent = Intent(context, AnalyticsActivity::class.java)
         intent.putStringArrayListExtra(AnalyticsActivity().KEY_MY_DATA, ArrayList(matchIdList))
-        intent.putExtra(AnalyticsActivity().KEY_ACCESS_ID, accessId)
+        intent.putExtra(AnalyticsActivity().KEY_ACCESS_ID, ouid)
         startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
     }
 

@@ -21,7 +21,7 @@ interface AnalyticsContract : BaseView {
 
     interface Presenter : BasePresenter<View> {
         fun loadMatchDetail(matchIdList: List<String>)
-        fun loadPlayerList(accessId: String, matchDetailList: List<MatchDetailResponse>)
+        fun loadPlayerList(ouid: String, matchDetailList: List<MatchDetailResponse>)
         fun loadPlayerInfoList(playerMap: Map<Int, List<PlayerDTO>>)
         fun loadPlayerImageUrl(playerInfoList: List<AnalyticsPlayer>)
         fun loadRankerPlayerList(matchType: Int, playerDTO: PlayerDTO)

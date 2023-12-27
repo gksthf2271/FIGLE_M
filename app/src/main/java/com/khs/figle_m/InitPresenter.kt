@@ -5,6 +5,7 @@ import com.khs.figle_m.DB.PlayerDataBase
 import com.khs.figle_m.DB.PlayerEntity
 import com.khs.figle_m.DB.SeasonEntity
 import com.khs.figle_m.Data.DataManager
+import com.khs.figle_m.Response.DTO.SeasonIdDTO
 import com.khs.figle_m.Utils.LogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -71,28 +72,16 @@ class InitPresenter : InitContract.Presenter {
         })
     }
 
-    private fun updateSeasonDB(context: Context, responseBody: ResponseBody, onSuccess: () -> Unit) {
+    private fun updateSeasonDB(context: Context, seasonIdList: List<SeasonIdDTO>, onSuccess: () -> Unit) {
         LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"updateSeasonDB(...)")
         CoroutineScope(Dispatchers.IO).launch {
-            var result: String = responseBody.string()
-            val stringList: List<String> =
-                result.removeSurrounding("[", "]").replace("\"", "").replace("seasonId:", "")
-                    .replace("className:", "").replace("seasonImg:","").replace("\n", "")
-                    .replace(" ", "").replace("{", "")
-                    .replace("}", "").split(",")
             var index = 0
-
-
             val seasonDB = PlayerDataBase.getInstance(context)
-            LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"seasonList size : ${stringList.size}")
+            LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"seasonList size : ${seasonIdList.size}")
             val seasonList : ArrayList<SeasonEntity> = arrayListOf()
-            for (item in 0..stringList.size - 1 step 3) {
-                val loIndex = index
-                val seasonId = stringList[index]
-                val className = stringList[++index]
-                val seasonImg = stringList[++index]
-                LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
-                seasonList.add(SeasonEntity(null, seasonId.toLong(), className, seasonImg))
+            for (seasonId in seasonIdList) {
+                LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"seasonId : ${seasonId.seasonId} , className : ${seasonId.className} , seasonImg : ${seasonId.seasonImg}")
+                seasonList.add(SeasonEntity(null, seasonId.seasonId.toLong(), seasonId.className.toString(), seasonId.seasonImg))
                 index++
             }
             val startTime = System.currentTimeMillis()
@@ -101,13 +90,9 @@ class InitPresenter : InitContract.Presenter {
                 index = 0
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"------------------ update Player DB, Season Table  ------------------")
                 seasonDB!!.seasonDao().deleteAll()
-                for (item in 0..stringList.size - 1 step 3) {
-                    val loIndex = index
-                    val seasonId = stringList[index]
-                    val className = stringList[++index]
-                    val seasonImg = stringList[++index]
-                    LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
-                    seasonDB!!.seasonDao().insert(SeasonEntity(null, seasonId.toLong(), className, seasonImg))
+                for (seasonId in seasonIdList) {
+                    LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"seasonId : ${seasonId.seasonId} , className : ${seasonId.className} , seasonImg : ${seasonId.seasonImg}")
+                    seasonDB!!.seasonDao().insert(SeasonEntity(null, seasonId.seasonId.toLong(), seasonId.className.toString(), seasonId.seasonImg))
                     index++
                 }
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"------------------ EndTime : ${System.currentTimeMillis()-startTime} ------------------")

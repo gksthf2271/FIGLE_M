@@ -54,7 +54,7 @@ class SearchDetailDialogTopView @JvmOverloads constructor(
         val matchInfo = matchDetail.matchInfo!!
         var opposingUserIndex = 1
         var myIndex = 0
-        if (searchAccessId.equals(matchInfo[0].accessId.toLowerCase())) {
+        if (searchAccessId.equals(matchInfo[0].ouid.toLowerCase())) {
             opposingUserIndex = 1
             myIndex = 0
         } else {

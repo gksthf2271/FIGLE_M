@@ -108,12 +108,12 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
             mMatchDetail = it.getParcelable(KEY_MATCH_DETAIL_INFO)!!
             mSearchAccessId = it.getString(KEY_SEARCH_ACCESSID)!!
             when (mSearchAccessId){
-                mMatchDetail.matchInfo[0].accessId -> mOpposingUserId = mMatchDetail.matchInfo[1].accessId
-                mMatchDetail.matchInfo[1].accessId -> mOpposingUserId = mMatchDetail.matchInfo[0].accessId
+                mMatchDetail.matchInfo[0].ouid -> mOpposingUserId = mMatchDetail.matchInfo[1].ouid
+                mMatchDetail.matchInfo[1].ouid -> mOpposingUserId = mMatchDetail.matchInfo[0].ouid
             }
 
             for (matchInfo in mMatchDetail.matchInfo) {
-                getPlayerImageUrlList(matchInfo.accessId, matchInfo.player)
+                getPlayerImageUrlList(matchInfo.ouid, matchInfo.player)
             }
         }
     }
@@ -184,9 +184,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         }
     }
 
-    override fun showPlayerImage(accessId: String, playerDTO: PlayerDTO, size: Int) {
-        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > accessId : $accessId /  ${playerDTO.imageUrl}")
-        val playerListDTO : PlayerListDTO = mPlayerImgMap[accessId] ?: PlayerListDTO("", listOf())
+    override fun showPlayerImage(ouid: String, playerDTO: PlayerDTO, size: Int) {
+        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > ouid : $ouid /  ${playerDTO.imageUrl}")
+        val playerListDTO : PlayerListDTO = mPlayerImgMap[ouid] ?: PlayerListDTO("", listOf())
 
         var playerList:ArrayList<PlayerDTO>
         playerListDTO.let {
@@ -195,9 +195,9 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
         }
         playerListDTO.playerList = playerList
 
-        mPlayerImgMap[accessId] = playerListDTO
-        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > size : $size / mPlayerImgMap playerList size : ${(mPlayerImgMap[accessId] as PlayerListDTO).playerList.size}")
-        if (size == (mPlayerImgMap[accessId] as PlayerListDTO).playerList.size)  {
+        mPlayerImgMap[ouid] = playerListDTO
+        LogUtil.vLog(LogUtil.TAG_UI, TAG, "showPlayerImage > size : $size / mPlayerImgMap playerList size : ${(mPlayerImgMap[ouid] as PlayerListDTO).playerList.size}")
+        if (size == (mPlayerImgMap[ouid] as PlayerListDTO).playerList.size)  {
             hideLoading()
             initView()
         }

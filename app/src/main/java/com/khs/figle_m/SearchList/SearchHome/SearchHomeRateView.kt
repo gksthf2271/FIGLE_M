@@ -34,12 +34,12 @@ class SearchHomeRateView @JvmOverloads constructor(
         inflater.inflate(R.layout.cview_search_home_pie_chart, this)
     }
 
-    fun updateView(accessId : String, matchType: DataManager.matchType, arrayList: List<String>) {
+    fun updateView(ouid : String, matchType: DataManager.matchType, arrayList: List<String>) {
         mMatchDetailList = arrayListOf()
         mFailedRequestQ = PriorityQueue<String>()
         if(!arrayList.isEmpty()) {
             showLoadingView()
-            initRate(accessId, arrayList)
+            initRate(ouid, arrayList)
         }
 
         when (matchType.name) {
@@ -68,7 +68,7 @@ class SearchHomeRateView @JvmOverloads constructor(
         loading_view.hide()
     }
 
-    private fun initRate(accessId: String, arrayList: List<String>) {
+    private fun initRate(ouid: String, arrayList: List<String>) {
         CoroutineScope(Dispatchers.IO).launch {
             mMatchDetailList.clear()
             var searchSize = DataManager().SEARCH_PAGE_SIZE
@@ -84,7 +84,7 @@ class SearchHomeRateView @JvmOverloads constructor(
                         if (searchSize == mMatchDetailList.size + mFailedRequestQ.size) {
                             LogUtil.vLog(LogUtil.TAG_UI, TAG,"TEST, KHS : ${mMatchDetailList.size}, ${mFailedRequestQ.size}")
                             CoroutineScope(Dispatchers.Main).launch {
-                                updateView(accessId, mMatchDetailList)
+                                updateView(ouid, mMatchDetailList)
                                 hideLoadingView()
                             }
                         }
@@ -96,17 +96,21 @@ class SearchHomeRateView @JvmOverloads constructor(
         }
     }
 
-    private fun updateView(accessId: String, matchInfoList: List<MatchDetailResponse>) {
+    private fun updateView(ouid: String, matchInfoList: List<MatchDetailResponse>) {
         var win = 0
         var draw = 0
         var lose = 0
 
         for (item in matchInfoList) {
             var myInfo: MatchInfoDTO? = null
-            if (accessId == item.matchInfo[0].accessId) {
-                myInfo = item.matchInfo[0]
+            myInfo = if (item.matchInfo.size < 2) {
+                item.matchInfo.first()
             } else {
-                myInfo = item.matchInfo[1]
+                if (ouid == item.matchInfo[0].ouid) {
+                    item.matchInfo[0]
+                } else {
+                    item.matchInfo[1]
+                }
             }
             myInfo.matchDetail.matchResult ?: continue
             when (myInfo.matchDetail.matchResult) {

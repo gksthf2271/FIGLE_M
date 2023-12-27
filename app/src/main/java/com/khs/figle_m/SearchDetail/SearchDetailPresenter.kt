@@ -23,7 +23,7 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
     override fun takeView(view: SearchDetailContract.View) {
         mDetailListView = view
     }
-    override fun getPlayerImage(accessId: String, playerDTO: PlayerDTO, size:Int) {
+    override fun getPlayerImage(ouid: String, playerDTO: PlayerDTO, size:Int) {
         mDetailListView ?: return
         mDetailListView!!.showLoading()
         runBlocking {
@@ -32,13 +32,13 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
                     LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > getMatchDetailList: $it")
                     playerDTO.imageUrl = it
                     mDetailListView ?: return@getPlayerImage
-                    mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+                    mDetailListView!!.showPlayerImage(ouid, playerDTO, size)
                 }, {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > Result : getMatchDetailList response : $it")
                     mDetailListView ?: return@getPlayerImage
                     playerDTO.imageUrl = it.toString()
                     if (it == 0) {
-                        mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+                        mDetailListView!!.showPlayerImage(ouid, playerDTO, size)
                     } else {
                         mDetailListView!!.showError(it)
                     }
@@ -48,13 +48,13 @@ class SearchDetailPresenter: SearchDetailContract.Presenter {
 //                    LogUtil.dLog(LogUtil.TAG_UI, TAG,"SearchPresenter getMatchDetailList: $it")
 //                    playerDTO.imageUrl = it
 //                    mDetailListView ?: return@getPlayerImageWithSpid
-//                    mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+//                    mDetailListView!!.showPlayerImage(ouid, playerDTO, size)
 //                }, {
 //                    LogUtil.vLog(LogUtil.TAG_UI, TAG,"Result : getMatchDetailList response : $it")
 //                    mDetailListView ?: return@getPlayerImageWithSpid
 //                    playerDTO.imageUrl = it.toString()
 //                    if (it == 0) {
-//                        mDetailListView!!.showPlayerImage(accessId, playerDTO, size)
+//                        mDetailListView!!.showPlayerImage(ouid, playerDTO, size)
 //                    } else {
 //                        mDetailListView!!.showError(it)
 //                    }

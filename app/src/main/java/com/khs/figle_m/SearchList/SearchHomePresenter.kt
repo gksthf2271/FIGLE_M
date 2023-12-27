@@ -22,10 +22,10 @@ class SearchHomePresenter: SearchContract.Presenter {
         mSearchListView = null
     }
 
-    override fun getMatchId(accessId: String, matchType: DataManager.matchType, offset: Int, limit: Int) {
+    override fun getMatchId(ouid: String, matchType: DataManager.matchType, offset: Int, limit: Int) {
         mSearchListView?.showLoading()
         Thread(Runnable {
-            DataManager.getInstance().loadMatchId(accessId, matchType.matchType, offset, limit,
+            DataManager.getInstance().loadMatchId(ouid, matchType.matchType, offset, limit,
                 {
                     when (matchType.name) {
                         DataManager.matchType.normalMatch.name -> {
@@ -41,20 +41,20 @@ class SearchHomePresenter: SearchContract.Presenter {
         }).start()
     }
 
-    override fun getMatchAnalysisByMatchId(accessId: String, matchIdList: List<String>) {
+    override fun getMatchAnalysisByMatchId(ouid: String, matchIdList: List<String>) {
         runBlocking {
             launch {
-                mSearchListView?.showAnalysisInfo(accessId, matchIdList)
+                mSearchListView?.showAnalysisInfo(ouid, matchIdList)
             }
         }
     }
 
 
-    override fun getUserHighRank(accessId: String) {
+    override fun getUserHighRank(ouid: String) {
         mSearchListView?.showLoading()
         runBlocking {
             launch {
-                DataManager.getInstance().loadUserHighRank(accessId,
+                DataManager.getInstance().loadUserHighRank(ouid,
                     {
                         LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getUserHighRank Success! $it")
 //                        mSearchListView?.hideLoading(false)
