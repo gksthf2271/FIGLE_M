@@ -15,4 +15,5 @@
 .idea*
 */khs/figle_m/Data/DataManager.kt
 gradle.properties
-buildSrc/*
+*compileKotlin/cacheable/*
+*compileKotlin/caches-*
