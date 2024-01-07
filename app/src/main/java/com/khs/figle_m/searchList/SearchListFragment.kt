@@ -100,7 +100,7 @@ class SearchListFragment : BaseFragment() {
         mBinding.viewSearchList.apply {
             setSearchUserInfo(mSearchUserInfo)
             updateView(mMatchtype, mMatchIdList) { matchDetailResponse ->
-                showDetail(mSearchUserInfo.accessId, matchDetailResponse)
+                showDetail(mSearchUserInfo.ouid, matchDetailResponse)
             }
         }
     }

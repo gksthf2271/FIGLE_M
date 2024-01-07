@@ -31,7 +31,7 @@ class NexonDataSource@Inject constructor(
     private val nexonDataCenterService: NexonDataCenterService) {
 
     suspend fun searchUser(nickname: String): Flow<CommonResult<User>> =
-        asFlowResult { nexonAPIService.requestUser(authorization = apiKey, nickname = nickname).asUser() }
+        asFlowResult { nexonAPIService.requestUserOuid(authorization = apiKey, nickname = nickname).asUser() }
 
     suspend fun getMatchDetail(matchId: String): Flow<CommonResult<Match>> =
         asFlowResult { nexonAPIService.requestMatchDetail(authorization = apiKey, matchid = matchId).asMatch() }
@@ -42,13 +42,13 @@ class NexonDataSource@Inject constructor(
         offset: Int?,
         limit: Int?
     ): Flow<CommonResult<List<String>>> = asFlowResult {
-        nexonAPIService.requestMatchIds(authorization = apiKey, accessid = accessId, matchtype = matchType, offset = offset, limit = limit).asMatchIds()
+        nexonAPIService.requestMatchIds(authorization = apiKey, ouid = accessId, matchtype = matchType, offset = offset, limit = limit).asMatchIds()
     }
 
     suspend fun getHighRankUser(
         accessId: String
     ) : Flow<CommonResult<List<HighRankUser>>> = asFlowResult {
-        nexonAPIService.requestHighRanker(authorization = apiKey, accessid = accessId).asHighRanker()
+        nexonAPIService.requestCareerHigh(authorization = apiKey, ouid = accessId).asHighRanker()
     }
 
     suspend fun getTradeInfo(
@@ -63,7 +63,7 @@ class NexonDataSource@Inject constructor(
     suspend fun getPlayerImg(
         spId: Int
     ) : Flow<CommonResult<ByteArray>> = asFlowResult {
-        nexonCDNService.requestPlayerImage(authorization = apiKey, spid = spId).asImageByteArray()
+        nexonCDNService.requestPlayerImageBySpid(authorization = apiKey, spid = spId).asImageByteArray()
     }
 
     suspend fun getRankerPlayerAverList(

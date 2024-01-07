@@ -10,17 +10,17 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface NexonStaticService {
-    @GET("latest/spid.json")
+    @GET("static/fconline/meta/spid.json")
     suspend fun requestPlayerName(
         @Header("Authorization") authorization: String
     ): List<PlayerNameDTO>
 
-    @GET("latest/spid.json")
+    @GET("static/fconline/meta/spid.json")
     suspend fun requestPlayerNameAsResponseBody(
         @Header("Authorization") authorization: String
     ): Flow<Call<ResponseBody>>
 
-    @GET("latest/seasonid.json")
+    @GET("static/fconline/meta/seasonid.json")
     suspend fun requestSeasonIdList(
         @Header("Authorization") authorization: String
     ): List<SeasonDTO>

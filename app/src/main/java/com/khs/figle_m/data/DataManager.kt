@@ -3,7 +3,7 @@ package com.khs.figle_m.data
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
-import com.khs.data.nexon_api.response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserCareerHighResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.trade.TradeHomeFragment
 import com.khs.figle_m.utils.DateUtils
@@ -202,13 +202,13 @@ object DataManager{
 
     fun loadUserHighRank(
         accessId: String,
-        onSuccess: (List<UserHighRankResponse>) -> Unit,
+        onSuccess: (List<UserCareerHighResponse>) -> Unit,
         onFailed: (Int) -> Unit
     ) {
         SearchUser.getApiService()
             .requestHighRanker(authorization = mAuthorizationKey, accessid = accessId)
-            .enqueue(object : Callback<List<UserHighRankResponse>> {
-                override fun onFailure(call: Call<List<UserHighRankResponse>>, t: Throwable) {
+            .enqueue(object : Callback<List<UserCareerHighResponse>> {
+                override fun onFailure(call: Call<List<UserCareerHighResponse>>, t: Throwable) {
                     if (t is UnknownHostException) {
                         onFailed(makeErrorException(t))
                         return
@@ -216,8 +216,8 @@ object DataManager{
                 }
 
                 override fun onResponse(
-                    call: Call<List<UserHighRankResponse>>,
-                    response: Response<List<UserHighRankResponse>>
+                    call: Call<List<UserCareerHighResponse>>,
+                    response: Response<List<UserCareerHighResponse>>
                 ) {
                     LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"loadUserHighRank response(...) ${response.code()}")
                     if (response != null) {

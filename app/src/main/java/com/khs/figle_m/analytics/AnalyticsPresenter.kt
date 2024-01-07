@@ -47,7 +47,7 @@ class AnalyticsPresenter : AnalyticsContract.Presenter{
         for(match in matchDetailList) {
             var matchInfo : MatchInfoDTO? = null
             if (match.matchInfo.size != 2) continue
-            if (accessId.equals(match.matchInfo[0].accessId)) {
+            if (accessId.equals(match.matchInfo[0].ouid)) {
                 matchInfo = match.matchInfo[0]
             } else {
                 matchInfo = match.matchInfo[1]

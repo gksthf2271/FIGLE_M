@@ -3,7 +3,7 @@ package com.khs.figle_m.data
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
-import com.khs.data.nexon_api.response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserCareerHighResponse
 import com.khs.data.nexon_api.response.UserResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -41,7 +41,7 @@ interface RetrofitService {
     fun requestHighRanker(
         @Header("Authorization") authorization: String,
         @Path("accessid") accessid: String
-    ): Call<List<UserHighRankResponse>>
+    ): Call<List<UserCareerHighResponse>>
 
     @GET("v1.0/users/{accessid}/markets")
     fun requestTradeInfo(

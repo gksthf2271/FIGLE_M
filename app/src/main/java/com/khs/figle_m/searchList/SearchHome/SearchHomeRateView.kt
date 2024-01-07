@@ -101,7 +101,7 @@ class SearchHomeRateView @JvmOverloads constructor(
         var lose = 0
 
         for (item in matchInfoList) {
-            val myInfo = if (accessId == item.matchInfo[0].accessId) {
+            val myInfo = if (accessId == item.matchInfo[0].ouid) {
                 item.matchInfo[0]
             } else {
                 item.matchInfo[1]

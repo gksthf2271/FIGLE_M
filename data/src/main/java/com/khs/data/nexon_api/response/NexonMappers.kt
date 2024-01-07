@@ -1,14 +1,10 @@
 package com.khs.data.nexon_api.response
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.khs.data.nexon_api.response.DTO.DefenceDTO
 import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.DTO.PassDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.data.nexon_api.response.DTO.PlayerName
-import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerStatDTO
 import com.khs.data.nexon_api.response.DTO.SeasonDTO
@@ -33,13 +29,10 @@ import com.khs.domain.nexon.entity.TradeInfo
 import com.khs.domain.nexon.entity.User
 import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 fun UserResponse.asUser(): User = User(
-    accessId = accessId,
+    accessId = ouid,
     nickname = nickname,
     level = level,
     teamPrice = teamPrice,
@@ -57,7 +50,7 @@ fun MatchDetailResponse.asMatch(): Match = Match(
 fun ResponseBody.asMatchIds(): List<String> =
     string().removeSurrounding("[", "]").replace("\"", "").split(",")
 
-fun List<UserHighRankResponse>.asHighRanker() : List<HighRankUser> = map {
+fun List<UserCareerHighResponse>.asHighRanker() : List<HighRankUser> = map {
     HighRankUser(
         matchType = it.matchType,
         division = it.division,
@@ -104,7 +97,7 @@ fun RankerPlayerStatDTO.asRankerPlayerStat() : RankerPlayerStat = RankerPlayerSt
 )
 
 fun MatchInfoDTO.asMatchInfo(): MatchInfo = MatchInfo(
-    accessId = accessId,
+    accessId = ouid,
     nickname = nickname,
     matchDetailInfo = matchDetail.asMatchDetail(),
     shoot = shoot.asShootInfo(),
@@ -221,29 +214,29 @@ fun List<SeasonDTO>.asSeasonList() : List<Season> {
     - 넥슨 API 각 Usecase 별 구현
     */
 fun Flow<Call<ResponseBody>>.checkModified() : PlayerData {
-    val resultCB = object : Callback<ResponseBody> {
-        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-            val headers = response.headers()
-            //            age : 970
-//            content-length : 4577454
-//            last-modified : Mon, 04 Sep 2023 03:39:16 GMT
-            val jsonObject = JSONObject(response.body() as Map<*, *>)
-            val jsonString = jsonObject.toString()
-            val playerNameDTO = PlayerNameDTO(
-                dataVersion = headers["age"] ?: "",
-                contentsLength = headers["content-length"] ?: "",
-                lastModified = headers["last-modified"] ?: "",
-                playernames = Gson().fromJson(jsonString, TypeToken.getParameterized(List::class.java, PlayerName::class.java).type)
-            )
-        }
-
-        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-            TODO("Not yet implemented")
-        }
-
-    }
-    enqueue(resultCB)
-    return listOf()
+//    val resultCB = object : Callback<ResponseBody> {
+//        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//            val headers = response.headers()
+//            //            age : 970
+////            content-length : 4577454
+////            last-modified : Mon, 04 Sep 2023 03:39:16 GMT
+//            val jsonObject = JSONObject(response.body() as Map<*, *>)
+//            val jsonString = jsonObject.toString()
+//            val playerNameDTO = PlayerNameDTO(
+//                dataVersion = headers["age"] ?: "",
+//                contentsLength = headers["content-length"] ?: "",
+//                lastModified = headers["last-modified"] ?: "",
+//                playernames = Gson().fromJson(jsonString, TypeToken.getParameterized(List::class.java, PlayerName::class.java).type)
+//            )
+//        }
+//
+//        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//            TODO("Not yet implemented")
+//        }
+//
+//    }
+//    enqueue(resultCB)
+    return PlayerData()
 }
 
 fun PlayerData.asPlayerList() : List<com.khs.domain.database.entity.Player> {

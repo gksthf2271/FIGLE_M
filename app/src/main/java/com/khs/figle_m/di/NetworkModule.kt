@@ -72,7 +72,7 @@ object NetworkModule {
     @NexonCDNRetrofit
     fun provideNexonCDNRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://fo4.dn.nexoncdn.co.kr/")
+            .baseUrl("https://fco.dn.nexoncdn.co.kr/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -83,7 +83,7 @@ object NetworkModule {
     @NexonStaticRetrofit
     fun provideNexonStaticRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://static.api.nexon.co.kr/fifaonline4/")
+            .baseUrl("https://open.api.nexon.com/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -94,7 +94,7 @@ object NetworkModule {
     @NexonDataCenterRetrofit
     fun provideNexonDataCenterRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://fifaonline4.nexon.com/DataCenter/")
+            .baseUrl("https://fconline.nexon.com/datacenter/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

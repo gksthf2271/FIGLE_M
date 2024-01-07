@@ -14,7 +14,7 @@ interface NexonDataCenterService {
         @Query("n1Strong") strong: Int
     ): ResponseBody
 
-    //    http://fifaonline4.nexon.com/datacenter/rank?n4pageno=3
+    //  https://fconline.nexon.com/datacenter
     @GET("rank")
     suspend fun requestRank(
         @Query("n4pageno") page: Int

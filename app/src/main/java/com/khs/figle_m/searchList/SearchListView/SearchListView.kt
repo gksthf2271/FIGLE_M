@@ -78,7 +78,7 @@ class SearchListView @JvmOverloads constructor(
         }
 
         mMatchType = matchType
-        mBinding.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.accessId, arrayListOf()) { matchDetailResponse ->
+        mBinding.layoutRecyclerview.adapter = SearchListAdapter(context, mSearchUserInfo.ouid, arrayListOf()) { matchDetailResponse ->
                 LogUtil.vLog(LogUtil.TAG_UI, TAG,"ItemClick! ${matchDetailResponse.matchInfo}")
                 itemClick(matchDetailResponse)
             }

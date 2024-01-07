@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.khs.data.nexon_api.response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserCareerHighResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.analytics.AnalyticsActivity
 import com.khs.figle_m.base.BaseFragment
@@ -45,8 +45,8 @@ class SearchHomeFragment : BaseFragment(),
     var mCoachDivision: String = ""
     var mNormalDivision: String = ""
 
-    var mNormalMatchResponse: UserHighRankResponse? = null
-    var mCoachMatchResponse: UserHighRankResponse? = null
+    var mNormalMatchResponse: UserCareerHighResponse? = null
+    var mCoachMatchResponse: UserCareerHighResponse? = null
 
 
     val KEY_MATCH_DETAIL_LIST: String = "KEY_MATCH_DETAIL_LIST"
@@ -155,10 +155,10 @@ class SearchHomeFragment : BaseFragment(),
             mBinding.txtTeamPrice.text = it
             mBinding.txtTeamPrice.visibility = View.VISIBLE
         }
-        mSearchHomePresenter.getUserHighRank(mSearchUserInfo.accessId)
+        mSearchHomePresenter.getUserHighRank(mSearchUserInfo.ouid)
         mBinding.groupTrade.setOnClickListener{
             val intent = Intent(context, TradeActivity::class.java)
-            intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.accessId)
+            intent.putExtra(TradeActivity().KEY_ACCESS_ID, mSearchUserInfo.ouid)
             startActivityForResult(intent, HomeFragment().RESULT_REQUEST_CODE)
         }
     }
@@ -166,14 +166,14 @@ class SearchHomeFragment : BaseFragment(),
     private fun initListData() {
 
         mSearchHomePresenter.getMatchId(
-            mSearchUserInfo.accessId,
+            mSearchUserInfo.ouid,
             DataManager.matchType.normalMatch,
             DataManager.offset,
             DataManager.SEARCH_LIMIT
         )
 
         mSearchHomePresenter.getMatchId(
-            mSearchUserInfo.accessId,
+            mSearchUserInfo.ouid,
             DataManager.matchType.coachMatch,
             DataManager.offset,
             DataManager.SEARCH_LIMIT
@@ -223,9 +223,9 @@ class SearchHomeFragment : BaseFragment(),
         mOfficialView.setOnClickListener {
             showSearchList(DataManager.matchType.normalMatch, mOfficialGameMatchIdList)
         }
-        initRateView(mSearchUserInfo.accessId)
+        initRateView(mSearchUserInfo.ouid)
         mBinding.groupSq.setOnClickListener {
-            mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.accessId, mOfficialGameMatchIdList)
+            mSearchHomePresenter.getMatchAnalysisByMatchId(mSearchUserInfo.ouid, mOfficialGameMatchIdList)
         }
     }
 
@@ -247,7 +247,7 @@ class SearchHomeFragment : BaseFragment(),
         mCoachView.setOnClickListener {
             showSearchList(DataManager.matchType.coachMatch, mCoachModeMatchIdList)
         }
-        initRateView(mSearchUserInfo.accessId)
+        initRateView(mSearchUserInfo.ouid)
     }
 
     override fun showAnalysisInfo(accessId: String, matchIdList: List<String>) {
@@ -274,12 +274,12 @@ class SearchHomeFragment : BaseFragment(),
         )
     }
 
-    override fun showHighRank(userHighRankResponse: List<UserHighRankResponse>) {
-        if (userHighRankResponse.isEmpty() || userHighRankResponse.isEmpty()) {
+    override fun showHighRank(userCareerHighResponse: List<UserCareerHighResponse>) {
+        if (userCareerHighResponse.isEmpty() || userCareerHighResponse.isEmpty()) {
             showError(SearchHomePresenter().ERROR_EMPTY)
             return
         }
-        for (item in userHighRankResponse) {
+        for (item in userCareerHighResponse) {
             if (DataManager.matchType.normalMatch.matchType == item.matchType) {
                 mNormalMatchResponse = item
             } else if (DataManager.matchType.coachMatch.matchType == item.matchType) {

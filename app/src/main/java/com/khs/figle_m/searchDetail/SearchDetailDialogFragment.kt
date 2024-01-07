@@ -104,12 +104,12 @@ class SearchDetailDialogFragment : DialogBaseFragment(),
             mMatchDetail = it.getSerializable(KEY_MATCH_DETAIL_INFO) as MatchDetailResponse
             mSearchAccessId = it.getString(KEY_SEARCH_ACCESSID)!!
             when (mSearchAccessId){
-                mMatchDetail.matchInfo[0].accessId -> mOpposingUserId = mMatchDetail.matchInfo[1].accessId
-                mMatchDetail.matchInfo[1].accessId -> mOpposingUserId = mMatchDetail.matchInfo[0].accessId
+                mMatchDetail.matchInfo[0].ouid -> mOpposingUserId = mMatchDetail.matchInfo[1].ouid
+                mMatchDetail.matchInfo[1].ouid -> mOpposingUserId = mMatchDetail.matchInfo[0].ouid
             }
 
             for (matchInfo in mMatchDetail.matchInfo) {
-                getPlayerImageUrlList(matchInfo.accessId, matchInfo.player)
+                getPlayerImageUrlList(matchInfo.ouid, matchInfo.player)
             }
         }
     }

@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class UserResponse(
-    @SerializedName("accessId")
-    val accessId: String,
+    @SerializedName("ouid")
+    val ouid: String,
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("level")

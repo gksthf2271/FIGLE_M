@@ -3,8 +3,8 @@ package com.khs.data.nexon_api.response.DTO
 import com.google.gson.annotations.SerializedName
 
 data class MatchInfoDTO(
-    @SerializedName("accessId")
-    val accessId: String,
+    @SerializedName("ouid")
+    val ouid: String,
     @SerializedName("nickname")
     val nickname: String,
     @SerializedName("matchDetail")

@@ -4,7 +4,7 @@ import com.khs.figle_m.base.BasePresenter
 import com.khs.figle_m.base.BaseView
 import com.khs.figle_m.data.DataManager
 import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.data.nexon_api.response.UserHighRankResponse
+import com.khs.data.nexon_api.response.UserCareerHighResponse
 import okhttp3.ResponseBody
 
 interface SearchContract: BaseView {
@@ -13,7 +13,7 @@ interface SearchContract: BaseView {
         fun showLoading()
         fun hideLoading(isError: Boolean)
 
-        fun showHighRank(userHighRankResponse: List<UserHighRankResponse>)
+        fun showHighRank(userCareerHighResponse: List<UserCareerHighResponse>)
         fun showOfficialGameMatchIdList(matchDetailResponse: ResponseBody?)
         fun showCoachModeMatchIdList(matchDetailResponse: ResponseBody?)
         fun showAnalysisInfo(accessId: String, matchIdList: List<String>)
