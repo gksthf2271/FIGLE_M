@@ -13,7 +13,7 @@
 .externalNativeBuild
 .cxx
 .idea*
-*/khs/figle_m/Data/DataManager.kt
+*gradle.properties*
 gradle.properties
 *compileKotlin/cacheable/*
 *compileKotlin/caches-*
