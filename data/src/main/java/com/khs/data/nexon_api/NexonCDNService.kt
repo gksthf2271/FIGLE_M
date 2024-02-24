@@ -8,13 +8,13 @@ import retrofit2.http.Path
 interface NexonCDNService {
     @GET("live/externalAssets/common/players/p{spid}.png")
     suspend fun requestPlayerImageBySpid(
-        @Header("Authorization") authorization: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Path("spid") spid: Int
     ): ResponseBody
 
     @GET("live/externalAssets/common/players/p{pid}.png")
     suspend fun requestPlayerImageByPid(
-        @Header("Authorization") authorization: String,
+        @Header("x-nxopen-api-key") authorization: String,
         @Path("pid") pid: Int
     ): ResponseBody
 }

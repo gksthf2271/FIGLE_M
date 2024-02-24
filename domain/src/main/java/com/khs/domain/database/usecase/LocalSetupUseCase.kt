@@ -5,7 +5,6 @@ import com.khs.domain.database.entity.Player
 import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
 import kotlinx.coroutines.flow.Flow
-import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class LocalSetupUseCase @Inject constructor(
@@ -16,8 +15,7 @@ class LocalSetupUseCase @Inject constructor(
 
     suspend fun getPlayerNames(): Flow<CommonResult<List<Player>>> = localGateway.getAllPlayer()
 
-    suspend fun updatePlayerDB(playerList: List<Player>) {
-    }
+    suspend fun updatePlayerDB(playerList: List<Player>) = localGateway.updatePlayerDB(playerList)
 
-    suspend fun updateSeasonDB(seasonList: List<Season>) {}
+    suspend fun updateSeasonDB(seasonList: List<Season>) = localGateway.updateSeasonDB(seasonList)
 }

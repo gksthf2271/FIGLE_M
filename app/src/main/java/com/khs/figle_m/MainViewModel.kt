@@ -11,6 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +27,31 @@ class MainViewModel @Inject constructor(
     private val _mainUIState = MutableStateFlow(MainUIState.Loading)
     val mainUIState: StateFlow<MainUIState> = _mainUIState
 
+    fun updatePlayerAndSeasonDB() = viewModelScope.launch {
+        _mainUIState.value = MainUIState.Loading
+        setupUseCase.getPlayerNameList().zip(
+            setupUseCase.getSeasonList()
+        ) { playerResult, seasonResult ->
+            Pair(playerResult, seasonResult)
+        }.collectLatest { result ->
+            when (result) {
+                is CommonResult.Loading -> {
+                    _mainUIState.value = MainUIState.Loading
+                }
+
+                is CommonResult.Success -> {
+                    localSetupUseCase.updateSeasonDB(result.data)
+                }
+
+                is CommonResult.Fail -> {
+//                        _mainUIState.value = MainUIState.Failed(errorCode = , errorMsg = )
+                }
+            }
+        }
+    }
+
     fun updateSeasonDB() = viewModelScope.launch {
+        _mainUIState.value = MainUIState.Loading
         setupUseCase.getSeasonList().collectLatest { result ->
             when (result) {
                 is CommonResult.Loading -> {
@@ -43,26 +69,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun updatePlayerDB() {
-        viewModelScope.launch {
-            setupUseCase.getPlayerNameList().collectLatest { result ->
-                when (result) {
-                    is CommonResult.Loading -> {
+    fun updatePlayerDB() = viewModelScope.launch {
+        _mainUIState.value = MainUIState.Loading
+        setupUseCase.getPlayerNameList().collectLatest { result ->
+            when (result) {
+                is CommonResult.Loading -> {
 //                        _mainUIState.value = MainUIState.Loading
-                    }
+                }
 
-                    is CommonResult.Success -> {
-                        localSetupUseCase.updatePlayerDB(result.data)
-//                        _mainUIState.value = MainUIState.Loading
-                    }
+                is CommonResult.Success -> {
+                    localSetupUseCase.updatePlayerDB(result.data)
+                }
 
-                    is CommonResult.Fail -> {
+                is CommonResult.Fail -> {
 //                        _mainUIState.value = MainUIState.Failed(errorCode = , errorMsg = )
-                    }
                 }
             }
         }
     }
+
 
     sealed interface MainUIState {
         object Loading : MainUIState

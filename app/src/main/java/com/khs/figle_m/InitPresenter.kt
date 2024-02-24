@@ -92,7 +92,7 @@ class InitPresenter : InitContract.Presenter {
                 val className = stringList[++index]
                 val seasonImg = stringList[++index]
                 LogUtil.dLog(LogUtil.TAG_SETUP, TAG,"index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
-                seasonList.add(SeasonEntity(null, seasonId.toLong(), className, seasonImg))
+                seasonList.add(SeasonEntity(null, seasonId.toInt(), className, seasonImg))
                 index++
             }
             val startTime = System.currentTimeMillis()
@@ -107,7 +107,7 @@ class InitPresenter : InitContract.Presenter {
                     val className = stringList[++index]
                     val seasonImg = stringList[++index]
                     LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"index : $loIndex , seasonId : $seasonId , className : $className , seasonImg : $seasonImg")
-                    seasonDB!!.seasonDao().insert(SeasonEntity(null, seasonId.toLong(), className, seasonImg))
+                    seasonDB!!.seasonDao().insert(SeasonEntity(null, seasonId.toInt(), className, seasonImg))
                     index++
                 }
                 LogUtil.vLog(LogUtil.TAG_SETUP, TAG,"------------------ EndTime : ${System.currentTimeMillis()-startTime} ------------------")

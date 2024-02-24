@@ -1,12 +1,18 @@
 package com.khs.data.nexon_api.response.DTO
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
 data class SeasonDTO(
-    @SerializedName("seasonId")
-    val seasonId: Int,
-    @SerializedName("className")
-    val className: String,
-    @SerializedName("seasonImg")
-    val seasonImg: String
+    var dataVersion : String = "",
+    var lastModified : String = "",
+    var contentsLength : String = "",
+    val seasonList: List<SeasonModel>
+)
+
+@JsonClass(generateAdapter = true)
+data class SeasonModel(
+    @Json(name = "seasonId") val seasonId: Int,
+    @Json(name = "className") val className: String,
+    @Json(name = "seasonImg") val seasonImg: String
 )

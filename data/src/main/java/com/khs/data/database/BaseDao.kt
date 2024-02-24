@@ -9,6 +9,9 @@ interface BaseDAO<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(obj: T)
 
+    @Insert
+    fun insertList(obj: List<T>)
+
     @Delete
     fun delete(obj :T)
 

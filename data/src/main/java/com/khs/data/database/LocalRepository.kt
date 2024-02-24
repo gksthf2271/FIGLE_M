@@ -1,5 +1,6 @@
 package com.khs.data.database
 
+import android.util.Log
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.database.entity.SeasonEntity
 import com.khs.domain.database.LocalGateway
@@ -21,17 +22,17 @@ class LocalRepository @Inject constructor(
     override suspend fun getSeason(seasonId: String) : Flow<CommonResult<Season>> = asFlowResult { seasonDao.getSeason(seasonId).asSeason() }
     override suspend fun deleteAllSeason() = seasonDao.deleteAll()
     override suspend fun updateSeasonDB(seasonList: List<Season>) {
-        val savedSeasonList = seasonDao.getAll()
-        if(seasonList.size != savedSeasonList.size) {
-            val seasonEntityList: List<SeasonEntity> = seasonList.map { season ->
+        val deleteJob = CoroutineScope(Dispatchers.Default).launch {
+            seasonDao.deleteAll()
+        }
+        deleteJob.join()
+        val startTime = System.currentTimeMillis()
+        CoroutineScope(Dispatchers.Default).launch {
+            seasonList.map { season ->
                 SeasonEntity(id = null, seasonId = season.seasonId, seasonImg = season.seasonImg, className = season.className)
-            }
-            val deleteJob = CoroutineScope(Dispatchers.Default).launch {
-                seasonDao.deleteAll()
-            }
-            deleteJob.join()
-            seasonEntityList.forEach {
-                seasonDao.insert(it)
+            }.run {
+                seasonDao.insertList(this)
+                Log.d("KHS","Season DB input Completed! : ${seasonList.size} / ${System.currentTimeMillis()-startTime}ms")
             }
         }
     }
@@ -40,18 +41,19 @@ class LocalRepository @Inject constructor(
     override suspend fun getPlayer(playerId: String) : Flow<CommonResult<Player?>> = asFlowResult { playerDao.getPlayer(playerId)?.asPlayer() ?: Player(null, null, null)}
     override suspend fun deleteAllPlayer() = playerDao.deleteAll()
     override suspend fun updatePlayerDB(playerList: List<Player>) {
-        val savedPlayerList = playerDao.getAll()
-        if (playerList.size != savedPlayerList.size) {
-            val playerEntityList = playerList.map {
+        val deleteJob = CoroutineScope(Dispatchers.Default).launch {
+            playerDao.deleteAll()
+        }
+        deleteJob.join()
+        Log.d("KHS","Player DB delete Completed!")
+        val startTime = System.currentTimeMillis()
+        CoroutineScope(Dispatchers.Default).launch {
+            playerList.map {
                 PlayerEntity(id = null, playerId = it.playerId, playerName = it.playerName)
+            }.run {
+                playerDao.insertList(this)
             }
-            val deleteJob = CoroutineScope(Dispatchers.Default).launch {
-                playerDao.deleteAll()
-            }
-            deleteJob.join()
-            playerEntityList.forEach {
-                playerDao.insert(it)
-            }
+            Log.d("KHS","Player DB input Completed! : ${playerList.size} / ${System.currentTimeMillis()-startTime}ms")
         }
     }
 }

@@ -1,16 +1,17 @@
 package com.khs.data.nexon_api.response.DTO
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
 data class PlayerNameDTO(
     var dataVersion : String = "",
     var lastModified : String = "",
     var contentsLength : String = "",
-    var playernames : List<PlayerName>
+    var playernames : List<PlayerModel>
 )
 
-data class PlayerName(
-    @SerializedName("id")
-    val playerId: Long,
-    @SerializedName("name")
-    val playerName: String
+@JsonClass(generateAdapter = true)
+data class PlayerModel(
+    @Json(name = "id") val id: Long,
+    @Json(name = "name") val name: String
 )

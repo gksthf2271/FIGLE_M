@@ -52,7 +52,7 @@ interface NexonAPIGateway {
         page : Int
     ) : Flow<CommonResult<ResponseBody>>
 
-    suspend fun getPlayerNameList() : Flow<CommonResult<List<Player>>>
+    fun getPlayerNameList() : Flow<CommonResult<List<Player>>>
 
     suspend fun getSeasonList() : Flow<CommonResult<List<Season>>>
 }

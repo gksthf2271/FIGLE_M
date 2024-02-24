@@ -51,8 +51,12 @@ dependencies {
     // Networking
     implementation "com.squareup.retrofit2:retrofit:${Network.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${Network.retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${Network.retrofit}"
     implementation "com.squareup.retrofit2:converter-scalars:${Network.retrofit}"
     implementation "com.squareup.okhttp3:logging-interceptor:${Network.okhttpLogging}"
+
+    // Moshi
+    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
 
     // Room(DB)
     implementation "androidx.room:room-runtime:${AndroidX.room}"

@@ -1,16 +1,16 @@
 package com.khs.data.nexon_api
 
+import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
+import com.khs.data.nexon_api.response.DTO.SeasonDTO
 import com.khs.data.nexon_api.response.asHighRanker
 import com.khs.data.nexon_api.response.asImageByteArray
 import com.khs.data.nexon_api.response.asMatch
 import com.khs.data.nexon_api.response.asMatchIds
-import com.khs.data.nexon_api.response.asPlayerList
 import com.khs.data.nexon_api.response.asRankerPlayers
-import com.khs.data.nexon_api.response.asSeasonList
+import com.khs.data.nexon_api.response.asSeasonDTO
 import com.khs.data.nexon_api.response.asTradeInfo
 import com.khs.data.nexon_api.response.asUser
-import com.khs.data.nexon_api.response.checkModified
-import com.khs.domain.database.entity.Player
+import com.khs.data.nexon_api.response.asPlayerNameDTO
 import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.HighRankUser
@@ -86,9 +86,9 @@ class NexonDataSource@Inject constructor(
         nexonDataCenterService.requestRank(page = page)
     }
 
-    suspend fun getPlayerName() : Flow<CommonResult<List<Player>>> =
-        asFlowResult { nexonStaticService.requestPlayerNameAsResponseBody(authorization = apiKey).checkModified().asPlayerList() }
+    fun getPlayerName() : Flow<CommonResult<PlayerNameDTO>> =
+        nexonStaticService.downloadPlayerNames(authorization = apiKey).asPlayerNameDTO()
 
-    suspend fun getSeasonIds() : Flow<CommonResult<List<Season>>> =
-        asFlowResult { nexonStaticService.requestSeasonIdList(authorization = apiKey).asSeasonList() }
+    fun getSeasonIds() : Flow<CommonResult<SeasonDTO>> =
+        nexonStaticService.requestSeasonIdList(authorization = apiKey).asSeasonDTO()
 }

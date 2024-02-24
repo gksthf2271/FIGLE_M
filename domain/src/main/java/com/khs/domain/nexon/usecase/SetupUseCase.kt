@@ -17,7 +17,7 @@ class SetupUseCase @Inject constructor(
         return nexonAPIGateway.getSeasonList()
     }
 
-    suspend fun getPlayerNameList(): Flow<CommonResult<List<Player>>> {
+    fun getPlayerNameList(): Flow<CommonResult<List<Player>>> {
         return nexonAPIGateway.getPlayerNameList()
     }
 }

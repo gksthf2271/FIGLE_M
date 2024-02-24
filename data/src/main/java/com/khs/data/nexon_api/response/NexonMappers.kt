@@ -1,18 +1,22 @@
 package com.khs.data.nexon_api.response
 
+import android.util.Log
 import com.khs.data.nexon_api.response.DTO.DefenceDTO
 import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.DTO.PassDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.PlayerModel
+import com.khs.data.nexon_api.response.DTO.PlayerNameDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.DTO.RankerPlayerStatDTO
 import com.khs.data.nexon_api.response.DTO.SeasonDTO
+import com.khs.data.nexon_api.response.DTO.SeasonModel
 import com.khs.data.nexon_api.response.DTO.ShootDTO
 import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
 import com.khs.data.nexon_api.response.DTO.StatusDTO
-import com.khs.domain.database.entity.PlayerData
 import com.khs.domain.database.entity.Season
+import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.DefenceInfo
 import com.khs.domain.nexon.entity.HighRankUser
 import com.khs.domain.nexon.entity.Match
@@ -27,9 +31,14 @@ import com.khs.domain.nexon.entity.ShootInfo
 import com.khs.domain.nexon.entity.StatusInfo
 import com.khs.domain.nexon.entity.TradeInfo
 import com.khs.domain.nexon.entity.User
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 fun UserResponse.asUser(): User = User(
     accessId = ouid,
@@ -201,10 +210,31 @@ fun StatusDTO.asStatus() : StatusInfo = StatusInfo(
     spRating = spRating
 )
 
-fun List<SeasonDTO>.asSeasonList() : List<Season> {
-    return this.map {
-        Season(id = null, seasonId = it.seasonId.toLong(), className = it.className, seasonImg = it.seasonImg)
+fun Call<List<SeasonModel>>.asSeasonDTO() : Flow<CommonResult<SeasonDTO>> = callbackFlow {
+    val resultCB = object : Callback<List<SeasonModel>> {
+        override fun onResponse(call: Call<List<SeasonModel>>, response: Response<List<SeasonModel>>) {
+            val headers = response.headers()
+            Log.d("KHS", "season name response lastModified : ${headers["last-modified"]}")
+            Log.d("KHS", "season name response size     : ${headers["content-length"]}")
+
+            response.body()?.let { responseBody ->
+                val seasonDTO = SeasonDTO(
+                    dataVersion = headers["age"] ?: "",
+                    contentsLength = headers["content-length"] ?: "",
+                    lastModified = headers["last-modified"] ?: "",
+                    seasonList = responseBody
+                )
+                trySend(CommonResult.Success(seasonDTO))
+            }
+        }
+
+        override fun onFailure(call: Call<List<SeasonModel>>, t: Throwable) {
+            Log.d("KHS", "player name response failed : $t")
+            trySend(CommonResult.Fail.Exception(exception = t))
+        }
     }
+    enqueue(resultCB)
+    awaitClose()
 }
 
 /* TODO 23.08.17
@@ -213,34 +243,59 @@ fun List<SeasonDTO>.asSeasonList() : List<Season> {
       > response 헤더 값을 가지고 업데이트 시기 조정
     - 넥슨 API 각 Usecase 별 구현
     */
-fun Flow<Call<ResponseBody>>.checkModified() : PlayerData {
-//    val resultCB = object : Callback<ResponseBody> {
-//        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//            val headers = response.headers()
-//            //            age : 970
-////            content-length : 4577454
-////            last-modified : Mon, 04 Sep 2023 03:39:16 GMT
-//            val jsonObject = JSONObject(response.body() as Map<*, *>)
-//            val jsonString = jsonObject.toString()
-//            val playerNameDTO = PlayerNameDTO(
-//                dataVersion = headers["age"] ?: "",
-//                contentsLength = headers["content-length"] ?: "",
-//                lastModified = headers["last-modified"] ?: "",
-//                playernames = Gson().fromJson(jsonString, TypeToken.getParameterized(List::class.java, PlayerName::class.java).type)
-//            )
-//        }
-//
-//        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//            TODO("Not yet implemented")
-//        }
-//
-//    }
-//    enqueue(resultCB)
-    return PlayerData()
+fun Call<List<PlayerModel>>.asPlayerNameDTO() : Flow<CommonResult<PlayerNameDTO>> = callbackFlow {
+    val resultCB = object : Callback<List<PlayerModel>> {
+        override fun onResponse(call: Call<List<PlayerModel>>, response: Response<List<PlayerModel>>) {
+            val headers = response.headers()
+            Log.d("KHS", "player name response lastModified : ${headers["last-modified"]}")
+            Log.d("KHS", "player name response size     : ${headers["content-length"]}")
+
+            response.body()?.let { responseBody ->
+                val playerNameDTO = PlayerNameDTO(
+                    dataVersion = headers["age"] ?: "",
+                    contentsLength = headers["content-length"] ?: "",
+                    lastModified = headers["last-modified"] ?: "",
+                    playernames = responseBody
+                )
+                trySend(CommonResult.Success(playerNameDTO))
+            }
+        }
+
+        override fun onFailure(call: Call<List<PlayerModel>>, t: Throwable) {
+            Log.d("KHS", "player name response failed : $t")
+            trySend(CommonResult.Fail.Exception(exception = t))
+        }
+    }
+    enqueue(resultCB)
+    awaitClose()
 }
 
-fun PlayerData.asPlayerList() : List<com.khs.domain.database.entity.Player> {
-    return this.playerList.map {
-        com.khs.domain.database.entity.Player(id = null, playerId = it.playerId.toString(), playerName = it.playerName)
+fun Flow<CommonResult<PlayerNameDTO>>.asPlayerList(): Flow<CommonResult<List<com.khs.domain.database.entity.Player>>> {
+    return this.map { commonResult ->
+        when (commonResult) {
+            is CommonResult.Success -> {
+                CommonResult.Success(commonResult.data.playernames.map {
+                    com.khs.domain.database.entity.Player(id = null, playerId = it.id.toString(), playerName = it.name)
+                })
+            }
+            else -> {
+                CommonResult.Success(listOf())
+            }
+        }
+    }
+}
+
+fun Flow<CommonResult<SeasonDTO>>.checkSeasonModifier(): Flow<CommonResult<List<Season>>> {
+    return this.map { commonResult ->
+        when (commonResult) {
+            is CommonResult.Success -> {
+                CommonResult.Success(commonResult.data.seasonList.map {
+                    Season(id = null, seasonId = it.seasonId, className = it.className, seasonImg = it.seasonImg)
+                })
+            }
+            else -> {
+                CommonResult.Success(listOf())
+            }
+        }
     }
 }
