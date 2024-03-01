@@ -17,3 +17,5 @@
 gradle.properties
 *compileKotlin/cacheable/*
 *compileKotlin/caches-*
+buildSrc/build*
+gradle.properties
