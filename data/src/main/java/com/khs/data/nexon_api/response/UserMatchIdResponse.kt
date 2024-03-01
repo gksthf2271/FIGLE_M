@@ -1,8 +1,9 @@
 package com.khs.data.nexon_api.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class UserMatchIdResponse(
-    @SerializedName("accessIdList")
-    val accessIdList: List<String>
+    @Json(name = "accessIdList") val accessIdList: List<String>
 )

@@ -1,16 +1,13 @@
 package com.khs.data.nexon_api.response
 
-import com.google.gson.annotations.SerializedName
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
-import java.io.Serializable
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class MatchDetailResponse(
-    @SerializedName("matchId")
-    val matchId: String,
-    @SerializedName("matchDate")
-    var matchDate: String,
-    @SerializedName("matchType")
-    val matchType: Int,
-    @SerializedName("matchInfo")
-    val matchInfo: List<MatchInfoDTO>
-) : Serializable
+    @Json(name = "matchId") val matchId: String,
+    @Json(name = "matchDate") var matchDate: String,
+    @Json(name = "matchType") val matchType: Int,
+    @Json(name = "matchInfo") val matchInfo: List<MatchInfoDTO>
+)

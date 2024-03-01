@@ -15,7 +15,6 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
@@ -61,33 +60,38 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
+    }
+
+    @Provides
+    @Singleton
     @NexonAPIRetrofit
-    fun provideNexonAPIRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideNexonAPIRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.nexon.co.kr/fifaonline4/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 
     @Provides
     @Singleton
     @NexonCDNRetrofit
-    fun provideNexonCDNRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideNexonCDNRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://fco.dn.nexoncdn.co.kr/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 
     @Provides
     @Singleton
     @NexonStaticRetrofit
-    fun provideNexonStaticRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        val moshi = Moshi.Builder()
-            .addLast(KotlinJsonAdapterFactory())
-            .build()
+    fun provideNexonStaticRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://open.api.nexon.com/")
             .client(okHttpClient)
@@ -98,13 +102,14 @@ object NetworkModule {
     @Provides
     @Singleton
     @NexonDataCenterRetrofit
-    fun provideNexonDataCenterRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideNexonDataCenterRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://fconline.nexon.com/datacenter/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
+
     @Provides
     @Singleton
     fun nexonAPIService(@NexonAPIRetrofit retrofit: Retrofit): NexonAPIService {

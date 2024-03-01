@@ -1,12 +1,11 @@
 package com.khs.data.nexon_api.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class UserCareerHighResponse(
-    @SerializedName("matchType")
-    val matchType: Int,
-    @SerializedName("division")
-    val division: Int,
-    @SerializedName("achievementDate")
-    val achievementDate: String
+    @Json(name = "matchType") val matchType: Int,
+    @Json(name = "division") val division: Int,
+    @Json(name = "achievementDate") val achievementDate: String
 )

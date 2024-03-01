@@ -1,14 +1,12 @@
 package com.khs.data.nexon_api.response.DTO
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class DefenceDTO(
-    @SerializedName("blockTry")
-    val blockTry: Int,
-    @SerializedName("blockSuccess")
-    val blockSuccess: Int,
-    @SerializedName("tackleTry")
-    val tackleTry: Int,
-    @SerializedName("tackleSuccess")
-    val tackleSuccess: Int
+    @Json(name = "blockTry") val blockTry: Int,
+    @Json(name = "blockSuccess") val blockSuccess: Int,
+    @Json(name = "tackleTry") val tackleTry: Int,
+    @Json(name = "tackleSuccess") val tackleSuccess: Int
 )

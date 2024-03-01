@@ -1,26 +1,18 @@
 package com.khs.data.nexon_api.response.DTO
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class StatusDTO (
-    @SerializedName("shoot")
-    val shoot: Int,
-    @SerializedName("effectiveShoot")
-    val effectiveShoot: Int,
-    @SerializedName("assist")
-    val assist: Int,
-    @SerializedName("goal")
-    val goal: Int,
-    @SerializedName("dribble")
-    val dribble: Int,
-    @SerializedName("passTry")
-    val passTry: Int,
-    @SerializedName("passSuccess")
-    val passSuccess: Int,
-    @SerializedName("block")
-    val block: Int,
-    @SerializedName("tackle")
-    val tackle: Int,
-    @SerializedName("spRating")
-    val spRating: Float
+    @Json(name = "shoot") val shoot: Int,
+    @Json(name = "effectiveShoot") val effectiveShoot: Int,
+    @Json(name = "assist") val assist: Int,
+    @Json(name = "goal") val goal: Int,
+    @Json(name = "dribble") val dribble: Int,
+    @Json(name = "passTry") val passTry: Int,
+    @Json(name = "passSuccess") val passSuccess: Int,
+    @Json(name = "block") val block: Int,
+    @Json(name = "tackle") val tackle: Int,
+    @Json(name = "spRating") val spRating: Float
 )

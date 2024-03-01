@@ -1,38 +1,24 @@
 package com.khs.data.nexon_api.response.DTO
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ShootDTO (
-    @SerializedName("shootTotal")
-    val shootTotal: Int,
-    @SerializedName("effectiveShootTotal")
-    val effectiveShootTotal: String,
-    @SerializedName("shootOutScore")
-    val shootOutScore: Int,
-    @SerializedName("goalTotal")
-    val goalTotal: Int,
-    @SerializedName("goalTotalDisplay")
-    val goalTotalDisplay: Int,
-    @SerializedName("ownGoal")
-    val ownGoal: Int,
-    @SerializedName("shootHeading")
-    val shootHeading: Int,
-    @SerializedName("goalHeading")
-    val goalHeading: Int,
-    @SerializedName("shootFreekick")
-    val shootFreekick: Int,
-    @SerializedName("goalFreekick")
-    val goalFreekick: Int,
-    @SerializedName("shootInPenalty")
-    val shootInPenalty: Int,
-    @SerializedName("goalInPenalty")
-    val goalInPenalty: Int,
-    @SerializedName("shootOutPenalty")
-    val shootOutPenalty: Int,
-    @SerializedName("goalOutPenalty")
-    val goalOutPenalty: Int,
-    @SerializedName("shootPenaltyKick")
-    val shootPenaltyKick: Int,
-    @SerializedName("goalPenaltyKick")
-    val goalPenaltyKick: Int
+    @Json(name = "shootTotal") val shootTotal: Int,
+    @Json(name = "effectiveShootTotal") val effectiveShootTotal: String,
+    @Json(name = "shootOutScore") val shootOutScore: Int,
+    @Json(name = "goalTotal") val goalTotal: Int,
+    @Json(name = "goalTotalDisplay") val goalTotalDisplay: Int,
+    @Json(name = "ownGoal") val ownGoal: Int,
+    @Json(name = "shootHeading") val shootHeading: Int,
+    @Json(name = "goalHeading") val goalHeading: Int,
+    @Json(name = "shootFreekick") val shootFreekick: Int,
+    @Json(name = "goalFreekick") val goalFreekick: Int,
+    @Json(name = "shootInPenalty") val shootInPenalty: Int,
+    @Json(name = "goalInPenalty") val goalInPenalty: Int,
+    @Json(name = "shootOutPenalty") val shootOutPenalty: Int,
+    @Json(name = "goalOutPenalty") val goalOutPenalty: Int,
+    @Json(name = "shootPenaltyKick") val shootPenaltyKick: Int,
+    @Json(name = "goalPenaltyKick") val goalPenaltyKick: Int
 )
