@@ -1,8 +1,10 @@
 package com.khs.figle_m.di
 
-import com.khs.data.database.LocalRepository
+import com.khs.data.database.LocalRepositoryImpl
+import com.khs.data.datastore.DataStoreRepositoryImpl
 import com.khs.data.nexon_api.NexonAPIRepository
-import com.khs.domain.database.LocalGateway
+import com.khs.domain.database.LocalRepository
+import com.khs.domain.datastore.DataStoreRepository
 import com.khs.domain.nexon.NexonAPIGateway
 import dagger.Binds
 import dagger.Module
@@ -13,7 +15,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
-
     @Binds
     @Singleton
     abstract fun bindsNexonAPIRepository(
@@ -23,6 +24,12 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindsLocalRepository(
-        localRepository: LocalRepository
-    ) : LocalGateway
+        localRepository: LocalRepositoryImpl
+    ) : LocalRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsDataStoreRepository(
+        dataStoreRepository: DataStoreRepositoryImpl
+    ) : DataStoreRepository
 }

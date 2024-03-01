@@ -23,6 +23,7 @@ object BuildTools {
 object Google {
     const val hilt = "2.44"
     const val material = "1.6.0"
+    const val datastore = "1.0.0"
 }
 
 object AndroidX {
@@ -51,6 +52,7 @@ object Network {
     const val retrofit = "2.9.0"
     const val okhttpLogging = "4.9.3"
     const val gson = "2.9.0"
+    const val moshi = "1.12.0"
 }
 
 object Testing {

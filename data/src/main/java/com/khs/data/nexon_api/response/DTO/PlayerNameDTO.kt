@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 data class PlayerNameDTO(
     var dataVersion : String = "",
-    var lastModified : String = "",
+    var lastModified : Long = 0,
     var contentsLength : String = "",
     var playernames : List<PlayerModel>
 )

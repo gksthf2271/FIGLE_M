@@ -56,7 +56,10 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:${Network.okhttpLogging}"
 
     // Moshi
-    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
+    implementation "com.squareup.moshi:moshi-kotlin:${Network.moshi}"
+
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:${Google.datastore}"
 
     // Room(DB)
     implementation "androidx.room:room-runtime:${AndroidX.room}"

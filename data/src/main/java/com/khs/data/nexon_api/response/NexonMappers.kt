@@ -15,7 +15,9 @@ import com.khs.data.nexon_api.response.DTO.SeasonModel
 import com.khs.data.nexon_api.response.DTO.ShootDTO
 import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
 import com.khs.data.nexon_api.response.DTO.StatusDTO
+import com.khs.domain.database.entity.PlayerData
 import com.khs.domain.database.entity.Season
+import com.khs.domain.database.entity.SeasonData
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.DefenceInfo
 import com.khs.domain.nexon.entity.HighRankUser
@@ -39,6 +41,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 fun UserResponse.asUser(): User = User(
     accessId = ouid,
@@ -210,21 +214,34 @@ fun StatusDTO.asStatus() : StatusInfo = StatusInfo(
     spRating = spRating
 )
 
+fun String.dateToMs(): Long {
+    //"Thu, 22 Feb 2024 21:00:01 GMT"
+    val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
+    val date = dateFormat.parse(this)
+    return date.time
+}
+
 fun Call<List<SeasonModel>>.asSeasonDTO() : Flow<CommonResult<SeasonDTO>> = callbackFlow {
+    trySend(CommonResult.Loading)
     val resultCB = object : Callback<List<SeasonModel>> {
         override fun onResponse(call: Call<List<SeasonModel>>, response: Response<List<SeasonModel>>) {
             val headers = response.headers()
-            Log.d("KHS", "season name response lastModified : ${headers["last-modified"]}")
-            Log.d("KHS", "season name response size     : ${headers["content-length"]}")
-
-            response.body()?.let { responseBody ->
+            val responseBody = response.body()
+            if (response.isSuccessful && responseBody != null) {
                 val seasonDTO = SeasonDTO(
                     dataVersion = headers["age"] ?: "",
                     contentsLength = headers["content-length"] ?: "",
-                    lastModified = headers["last-modified"] ?: "",
+                    lastModified = headers["last-modified"]?.dateToMs() ?: 0,
                     seasonList = responseBody
                 )
                 trySend(CommonResult.Success(seasonDTO))
+            } else {
+                trySend(
+                    CommonResult.Fail.Error(
+                        resultCode = response.code(),
+                        errorMsg = response.errorBody().toString()
+                    )
+                )
             }
         }
 
@@ -244,20 +261,26 @@ fun Call<List<SeasonModel>>.asSeasonDTO() : Flow<CommonResult<SeasonDTO>> = call
     - 넥슨 API 각 Usecase 별 구현
     */
 fun Call<List<PlayerModel>>.asPlayerNameDTO() : Flow<CommonResult<PlayerNameDTO>> = callbackFlow {
+    trySend(CommonResult.Loading)
     val resultCB = object : Callback<List<PlayerModel>> {
         override fun onResponse(call: Call<List<PlayerModel>>, response: Response<List<PlayerModel>>) {
             val headers = response.headers()
-            Log.d("KHS", "player name response lastModified : ${headers["last-modified"]}")
-            Log.d("KHS", "player name response size     : ${headers["content-length"]}")
-
-            response.body()?.let { responseBody ->
+            val responseBody = response.body()
+            if (response.isSuccessful && responseBody != null) {
                 val playerNameDTO = PlayerNameDTO(
                     dataVersion = headers["age"] ?: "",
                     contentsLength = headers["content-length"] ?: "",
-                    lastModified = headers["last-modified"] ?: "",
+                    lastModified = headers["last-modified"]?.dateToMs() ?: 0,
                     playernames = responseBody
                 )
                 trySend(CommonResult.Success(playerNameDTO))
+            } else {
+                trySend(
+                    CommonResult.Fail.Error(
+                        resultCode = response.code(),
+                        errorMsg = response.errorBody().toString()
+                    )
+                )
             }
         }
 
@@ -270,31 +293,60 @@ fun Call<List<PlayerModel>>.asPlayerNameDTO() : Flow<CommonResult<PlayerNameDTO>
     awaitClose()
 }
 
-fun Flow<CommonResult<PlayerNameDTO>>.asPlayerList(): Flow<CommonResult<List<com.khs.domain.database.entity.Player>>> {
+fun Flow<CommonResult<PlayerNameDTO>>.asPlayerData(): Flow<CommonResult<PlayerData>> {
     return this.map { commonResult ->
         when (commonResult) {
             is CommonResult.Success -> {
-                CommonResult.Success(commonResult.data.playernames.map {
-                    com.khs.domain.database.entity.Player(id = null, playerId = it.id.toString(), playerName = it.name)
-                })
+                CommonResult.Success(
+                    PlayerData(
+                        dataVersion = commonResult.data.dataVersion,
+                        lastModified = commonResult.data.lastModified,
+                        contentsLength = commonResult.data.contentsLength.toInt(),
+                        playerList = commonResult.data.playernames.map {
+                            com.khs.domain.database.entity.Player(
+                                id = null,
+                                playerId = it.id.toString(),
+                                playerName = it.name
+                            )
+                        }
+                    )
+                )
+            }
+            is CommonResult.Fail -> {
+                commonResult
             }
             else -> {
-                CommonResult.Success(listOf())
+                CommonResult.Loading
             }
         }
     }
 }
 
-fun Flow<CommonResult<SeasonDTO>>.checkSeasonModifier(): Flow<CommonResult<List<Season>>> {
+fun Flow<CommonResult<SeasonDTO>>.asSeasonData(): Flow<CommonResult<SeasonData>> {
     return this.map { commonResult ->
         when (commonResult) {
             is CommonResult.Success -> {
-                CommonResult.Success(commonResult.data.seasonList.map {
-                    Season(id = null, seasonId = it.seasonId, className = it.className, seasonImg = it.seasonImg)
-                })
+                CommonResult.Success(
+                    SeasonData(
+                        dataVersion = commonResult.data.dataVersion,
+                        lastModified = commonResult.data.lastModified,
+                        contentsLength = commonResult.data.contentsLength.toInt(),
+                        seeasonList = commonResult.data.seasonList.map {
+                            Season(
+                                id = null,
+                                seasonId = it.seasonId,
+                                className = it.className,
+                                seasonImg = it.seasonImg
+                            )
+                        }
+                    )
+                )
+            }
+            is CommonResult.Fail -> {
+                commonResult
             }
             else -> {
-                CommonResult.Success(listOf())
+                CommonResult.Loading
             }
         }
     }

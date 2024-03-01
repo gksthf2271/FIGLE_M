@@ -5,7 +5,7 @@ import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
 import kotlinx.coroutines.flow.Flow
 
-interface LocalGateway {
+interface LocalRepository {
     suspend fun getAllSeason() : Flow<CommonResult<List<Season>>>
     suspend fun getSeason(seasonId: String) : Flow<CommonResult<Season>>
     suspend fun deleteAllSeason()

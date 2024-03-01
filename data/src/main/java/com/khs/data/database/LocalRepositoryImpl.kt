@@ -3,7 +3,7 @@ package com.khs.data.database
 import android.util.Log
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.database.entity.SeasonEntity
-import com.khs.domain.database.LocalGateway
+import com.khs.domain.database.LocalRepository
 import com.khs.domain.database.entity.Player
 import com.khs.domain.database.entity.Season
 import com.khs.domain.nexon.entity.CommonResult
@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LocalRepository @Inject constructor(
+class LocalRepositoryImpl @Inject constructor(
     private val seasonDao: SeasonDao,
     private val playerDao: PlayerDao
-) : LocalGateway {
+) : LocalRepository {
     override suspend fun getAllSeason() : Flow<CommonResult<List<Season>>> = asFlowResult { seasonDao.getAll().asSeasons() }
     override suspend fun getSeason(seasonId: String) : Flow<CommonResult<Season>> = asFlowResult { seasonDao.getSeason(seasonId).asSeason() }
     override suspend fun deleteAllSeason() = seasonDao.deleteAll()

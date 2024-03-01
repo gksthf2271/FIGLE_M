@@ -130,4 +130,7 @@ dependencies {
     //FireBase
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
+
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:${Google.datastore}"
 }

@@ -1,9 +1,9 @@
 package com.khs.data.nexon_api
 
-import com.khs.data.nexon_api.response.asPlayerList
-import com.khs.data.nexon_api.response.checkSeasonModifier
-import com.khs.domain.database.entity.Player
-import com.khs.domain.database.entity.Season
+import com.khs.data.nexon_api.response.asPlayerData
+import com.khs.data.nexon_api.response.asSeasonData
+import com.khs.domain.database.entity.PlayerData
+import com.khs.domain.database.entity.SeasonData
 import com.khs.domain.nexon.NexonAPIGateway
 import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.entity.HighRankUser
@@ -70,9 +70,9 @@ class NexonAPIRepository @Inject constructor(
     override suspend fun getRank(page: Int): Flow<CommonResult<ResponseBody>> =
         nexonDataSource.getRank(page = page)
 
-    override fun getPlayerNameList(): Flow<CommonResult<List<Player>>> =
-        nexonDataSource.getPlayerName().asPlayerList()
+    override suspend fun getPlayerNameList(): Flow<CommonResult<PlayerData>> =
+        nexonDataSource.getPlayerName().asPlayerData()
 
-    override suspend fun getSeasonList(): Flow<CommonResult<List<Season>>> =
-        nexonDataSource.getSeasonIds().checkSeasonModifier()
+    override suspend fun getSeasonList(): Flow<CommonResult<SeasonData>> =
+        nexonDataSource.getSeasonIds().asSeasonData()
 }
