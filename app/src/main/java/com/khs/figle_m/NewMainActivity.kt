@@ -1,53 +1,63 @@
 package com.khs.figle_m
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.khs.figle_m.databinding.ActivityMainBinding
-import com.khs.figle_m.home.HomeFragment
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import androidx.lifecycle.repeatOnLifecycle
+import com.khs.figle_m.core.NetworkMonitor
+import com.khs.figle_m.ui.FigleApp
+import com.khs.figle_m.ui.theme.FigleTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class NewMainActivity : AppCompatActivity() {
+class NewMainActivity : ComponentActivity() {
     private val TAG: String = javaClass.simpleName
-    lateinit var mBinding: ActivityMainBinding
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
+
     private val mMainViewModel: MainViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        mBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mBinding.root)
-        init()
-    }
 
-    private fun init() {
-        mMainViewModel.checkPlayerAndSeasonDB()
+        // Update the uiState
         lifecycleScope.launch {
-            mMainViewModel.mainUIState.collectLatest {
-                if (it is MainViewModel.MainUIState.Success) {
-                    showMainActivity()
-                }
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mMainViewModel.checkPlayerAndSeasonDB()
+                mMainViewModel.mainUIState
+                    .collectLatest {
+                        splashScreen.setKeepOnScreenCondition {
+                            when (it) {
+                                MainViewModel.MainUIState.Loading -> true
+                                is MainViewModel.MainUIState.Success -> false
+                                else -> {
+                                    false
+                                }
+                            }
+                        }
+                    }
+            }
+        }
+        enableEdgeToEdge()
 
+        setContent {
+            FigleTheme() {
+                FigleApp(
+                    networkMonitor = networkMonitor
+                )
             }
         }
     }
-
-    fun showMainActivity() {
-        CoroutineScope(Dispatchers.Main).launch {
-            LogUtil.vLog(LogUtil.TAG_UI, TAG, "showMainActivity(...)")
-            val fm: FragmentManager = this@NewMainActivity.supportFragmentManager
-            val homeFragment: HomeFragment = HomeFragment.getInstance()
-            FragmentUtils().loadFragment(homeFragment, R.id.fragment_container, fm)
-        }
-    }
 }
+
+private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)

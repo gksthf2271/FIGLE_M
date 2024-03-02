@@ -68,6 +68,14 @@ android {
     viewBinding {
         enabled = true
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.9"
+    }
 }
 
 dependencies {
@@ -81,16 +89,33 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:${Google.hilt}"
     kapt "com.google.dagger:hilt-compiler:${Google.hilt}"
+    implementation "androidx.hilt:hilt-navigation-compose:${Google.android_hilt}"
 
     // AndroidX
     implementation "androidx.core:core-ktx:${AndroidX.core}"
+    implementation "androidx.core:core-splashscreen:${AndroidX.splash}"
     implementation "androidx.fragment:fragment-ktx:${AndroidX.fragment_ktx}"
     implementation "androidx.annotation:annotation:${AndroidX.annotation_lib}"
     implementation "androidx.appcompat:appcompat:${AndroidX.appcompat}"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${AndroidX.lifecycle}"
     implementation "androidx.constraintlayout:constraintlayout:${AndroidX.constraint}"
     implementation "androidx.recyclerview:recyclerview:${AndroidX.recyclerview}"
+
+    // Compose
+    implementation platform(AndroidX.composeBom)
+    androidTestImplementation platform(AndroidX.composeBom)
+    implementation AndroidX.material3
+
+    implementation AndroidX.preview
+    debugImplementation AndroidX.tooling
+
+    implementation "androidx.navigation:navigation-compose:${AndroidX.navVersion}"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:${AndroidX.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${AndroidX.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:${AndroidX.lifecycle}"
+
 
     // Glide
     implementation "com.github.bumptech.glide:glide:${Glide.glide}"

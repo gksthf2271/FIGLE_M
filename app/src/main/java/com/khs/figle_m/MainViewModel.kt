@@ -19,8 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val setupUseCase: SetupUseCase,
-    private val rankUseCase: RankUseCase,
-    private val searchUseCase: SearchUseCase,
     private val localSetupUseCase: LocalSetupUseCase,
 ) : ViewModel() {
 

@@ -24,12 +24,12 @@ abstract class DataModule {
     @Binds
     @Singleton
     abstract fun bindsLocalRepository(
-        localRepository: LocalRepositoryImpl
-    ) : LocalRepository
+        localRepository: LocalRepository
+    ) : LocalRepositoryImpl
 
     @Binds
     @Singleton
     abstract fun bindsDataStoreRepository(
-        dataStoreRepository: DataStoreRepositoryImpl
-    ) : DataStoreRepository
+        dataStoreRepository: DataStoreRepository
+    ) : DataStoreRepositoryImpl
 }
