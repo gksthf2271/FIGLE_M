@@ -8,9 +8,9 @@ import com.khs.figle_m.ui.feature.search.navigation.searchScreen
 
 @Composable
 fun FigleNavHost(
+    modifier: Modifier = Modifier,
     appState: FigleAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean,
-    modifier: Modifier = Modifier,
     startDestination: String = searchNavigationRoute,
 ) {
     val navController = appState.navController
@@ -20,6 +20,9 @@ fun FigleNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        searchScreen()
+        searchScreen(
+            onShowDialog = {},
+            onShowSnackbar = onShowSnackbar
+        )
     }
 }

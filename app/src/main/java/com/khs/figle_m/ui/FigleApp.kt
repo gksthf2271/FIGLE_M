@@ -47,7 +47,7 @@ fun FigleApp(
     }
 
     Scaffold(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onBackground,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -66,6 +66,7 @@ fun FigleApp(
         ) {
             Column(Modifier.fillMaxSize()) {
                 FigleNavHost(
+                    modifier = Modifier.fillMaxSize(),
                     appState = appState,
                     onShowSnackbar = { message, action ->
                         snackbarHostState.showSnackbar(

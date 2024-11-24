@@ -15,13 +15,19 @@ fun NavController.navigateToSearch(navOptions: NavOptions? = null) {
     this.navigate(searchNavigationRoute, navOptions)
 }
 
-fun NavGraphBuilder.searchScreen() {
+fun NavGraphBuilder.searchScreen(
+    onShowDialog: (String) -> Unit,
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+) {
     composable(
         route = searchNavigationRoute,
         arguments = listOf(
             navArgument(playerId) { type = NavType.StringType },
         ),
     ) {
-        SearchScreen()
+        SearchScreen(
+            onShowDialog = onShowDialog,
+            onShowSnackbar = onShowSnackbar
+        )
     }
 }

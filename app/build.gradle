@@ -116,6 +116,7 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:${AndroidX.navVersion}"
     implementation "androidx.constraintlayout:constraintlayout-compose:$AndroidX.composeConstraintVersion"
+    implementation "androidx.constraintlayout:constraintlayout-core:$AndroidX.composeConstraintVersion"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:${AndroidX.lifecycle}"

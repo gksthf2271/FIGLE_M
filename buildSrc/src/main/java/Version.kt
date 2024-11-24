@@ -39,11 +39,11 @@ object AndroidX {
     const val lifecycleCompose = "2.5.1"
     const val pagingCompose = "1.0.0-alpha17"
     const val room = "2.6.1"
-    const val constraint = "2.2.0-alpha10"
+    const val constraint = "2.2.0"
     const val recyclerview = "1.3.0"
     const val lifecycle = "2.7.0"
     const val navVersion = "2.7.7"
-    const val composeConstraintVersion = "1.0.1"
+    const val composeConstraintVersion = "1.1.0"
 
     const val composeBom = "androidx.compose:compose-bom:2024.02.01"
     const val material3 = "androidx.compose.material3:material3"
