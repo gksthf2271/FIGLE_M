@@ -6,6 +6,8 @@ import com.khs.data.nexon_api.NexonAPIRepository
 import com.khs.domain.database.LocalRepository
 import com.khs.domain.datastore.DataStoreRepository
 import com.khs.domain.nexon.NexonAPIGateway
+import com.khs.figle_m.core.ConnectivityManagerNetworkMonitor
+import com.khs.figle_m.core.NetworkMonitor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,22 +16,27 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataModule {
+interface DataModule {
     @Binds
     @Singleton
-    abstract fun bindsNexonAPIRepository(
+    fun bindsNexonAPIRepository(
         nexonApiRepository: NexonAPIRepository
     ): NexonAPIGateway
 
     @Binds
     @Singleton
-    abstract fun bindsLocalRepository(
-        localRepository: LocalRepository
-    ) : LocalRepositoryImpl
+    fun bindsLocalRepository(
+        localRepository: LocalRepositoryImpl
+    ) : LocalRepository
 
     @Binds
     @Singleton
-    abstract fun bindsDataStoreRepository(
-        dataStoreRepository: DataStoreRepository
-    ) : DataStoreRepositoryImpl
+    fun bindsDataStoreRepository(
+        dataStoreRepository: DataStoreRepositoryImpl
+    ) : DataStoreRepository
+
+    @Binds
+    fun bindsNetworkMonitor(
+        networkMonitor: ConnectivityManagerNetworkMonitor,
+    ): NetworkMonitor
 }

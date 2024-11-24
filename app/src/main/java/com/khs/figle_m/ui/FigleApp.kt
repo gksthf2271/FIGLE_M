@@ -65,13 +65,16 @@ fun FigleApp(
                 ),
         ) {
             Column(Modifier.fillMaxSize()) {
-                FigleNavHost(appState = appState, onShowSnackbar = { message, action ->
-                    snackbarHostState.showSnackbar(
-                        message = message,
-                        actionLabel = action,
-                        duration = SnackbarDuration.Short,
-                    ) == SnackbarResult.ActionPerformed
-                })
+                FigleNavHost(
+                    appState = appState,
+                    onShowSnackbar = { message, action ->
+                        snackbarHostState.showSnackbar(
+                            message = message,
+                            actionLabel = action,
+                            duration = SnackbarDuration.Short,
+                        ) == SnackbarResult.ActionPerformed
+                    }
+                )
             }
         }
     }

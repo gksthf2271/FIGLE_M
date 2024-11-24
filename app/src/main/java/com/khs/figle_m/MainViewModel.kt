@@ -31,11 +31,7 @@ class MainViewModel @Inject constructor(
     fun checkPlayerAndSeasonDB() = viewModelScope.launch {
         localSetupUseCase.getPlayerDBUpdateTime()
             .zip(localSetupUseCase.getSeasonDBUpdateTime()) { playerUpdateTime, seasonUpdateTime ->
-                LogUtil.dLog(
-                    LogUtil.TAG_SETUP,
-                    "Main",
-                    "playerUpdateTime : $playerUpdateTime / seasonUpdateTime : $seasonUpdateTime"
-                )
+                LogUtil.dLog(LogUtil.TAG_SETUP, "Main", "playerUpdateTime : $playerUpdateTime / seasonUpdateTime : $seasonUpdateTime")
                 playerDBUpdateTime = playerUpdateTime
                 seasonDBUpdateTime = seasonUpdateTime
             }.collectLatest {

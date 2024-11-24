@@ -224,7 +224,7 @@ fun FigleTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = NiaTypography,
+            typography = FigleTypography,
             content = content,
         )
     }

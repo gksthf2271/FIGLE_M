@@ -20,6 +20,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NewMainActivity : ComponentActivity() {
     private val TAG: String = javaClass.simpleName
+
     @Inject
     lateinit var networkMonitor: NetworkMonitor
 

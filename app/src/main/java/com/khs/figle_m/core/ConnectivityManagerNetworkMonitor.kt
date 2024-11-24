@@ -58,12 +58,7 @@ class ConnectivityManagerNetworkMonitor @Inject constructor(
     }.conflate()
 
     @Suppress("DEPRECATION")
-    private fun ConnectivityManager.isCurrentlyConnected() = when {
-        VERSION.SDK_INT >= VERSION_CODES.M ->
-            activeNetwork
-                ?.let(::getNetworkCapabilities)
-                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-
-        else -> activeNetworkInfo?.isConnected
-    } ?: false
+    private fun ConnectivityManager.isCurrentlyConnected() = activeNetwork
+        ?.let(::getNetworkCapabilities)
+        ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
 }

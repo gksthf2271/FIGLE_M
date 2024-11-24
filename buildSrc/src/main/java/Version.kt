@@ -1,5 +1,5 @@
 object Jvm {
-    const val target = "11"
+    const val target = "17"
     const val inject = "1"
 }
 
@@ -17,11 +17,11 @@ object Kotlin {
 }
 
 object BuildTools {
-    const val gradle = "7.1.3"
+    const val gradle = "8.1.3"
 }
 
 object Google {
-    const val hilt = "2.44"
+    const val hilt = "2.48"
     const val android_hilt = "1.2.0"
     const val material = "1.6.0"
     const val datastore = "1.0.0"
@@ -38,15 +38,15 @@ object AndroidX {
     const val hiltNavigationCompose = "1.1.0-alpha01"
     const val lifecycleCompose = "2.5.1"
     const val pagingCompose = "1.0.0-alpha17"
-    const val room = "2.5.0"
+    const val room = "2.6.1"
     const val constraint = "2.2.0-alpha10"
     const val recyclerview = "1.3.0"
     const val lifecycle = "2.7.0"
     const val navVersion = "2.7.7"
+    const val composeConstraintVersion = "1.0.1"
 
     const val composeBom = "androidx.compose:compose-bom:2024.02.01"
     const val material3 = "androidx.compose.material3:material3"
-
     object Navigation {
         private const val navVersion = "2.7.7"
         const val navigation = "androidx.navigation:navigation-compose:$navVersion"

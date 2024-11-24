@@ -3,7 +3,6 @@ package com.khs.data.database
 import androidx.room.Dao
 import androidx.room.Query
 import com.khs.data.database.entity.PlayerEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlayerDao : BaseDAO<PlayerEntity>{
