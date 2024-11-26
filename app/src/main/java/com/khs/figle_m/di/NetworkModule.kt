@@ -42,7 +42,10 @@ object NetworkModule {
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.NONE
+            level = if (BuildConfig.DEBUG)
+                HttpLoggingInterceptor.Level.HEADERS
+            else
+                HttpLoggingInterceptor.Level.NONE
         }
     }
 
@@ -71,7 +74,7 @@ object NetworkModule {
     @NexonAPIRetrofit
     fun provideNexonAPIRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.nexon.co.kr/fifaonline4/")
+            .baseUrl("https://open.api.nexon.com/")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()

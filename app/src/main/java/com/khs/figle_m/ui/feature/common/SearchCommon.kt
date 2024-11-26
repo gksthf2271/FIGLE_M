@@ -59,8 +59,10 @@ fun FigleSearch(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val onSearchExplicitlyTriggered = {
-        keyboardController?.hide()
-        onSearchTriggered(searchQuery)
+        if (searchQuery.isNotEmpty()) {
+            keyboardController?.hide()
+            onSearchTriggered(searchQuery)
+        }
     }
     TextField(
         modifier = modifier

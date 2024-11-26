@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.khs.figle_m.R
 import com.khs.figle_m.ui.feature.common.FigleSearch
 import com.khs.figle_m.ui.feature.common.FigleTitleText
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchScreen(
@@ -33,7 +32,9 @@ fun SearchScreen(
             .fillMaxSize()
             .padding(horizontal = 20.dp),
         onShowDialog = onShowDialog,
-        onShowSnackbar = onShowSnackbar
+        onSearchTriggered = {
+            searchViewModel.search(it)
+        }
     )
 }
 
@@ -41,12 +42,11 @@ fun SearchScreen(
 fun SearchScreenDetail(
     modifier: Modifier,
     onShowDialog: (String) -> Unit,
-    onShowSnackbar: suspend (String, String?) -> Boolean,
+    onSearchTriggered:(String) -> Unit
 ) {
     var searchQuery by remember {
         mutableStateOf("")
     }
-    val scope = rememberCoroutineScope()
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -80,11 +80,7 @@ fun SearchScreenDetail(
                 onSearchQueryChanged = {
                     searchQuery = it
                 },
-                onSearchTriggered = {
-                    scope.launch {
-                        onShowSnackbar(it, null)
-                    }
-                }
+                onSearchTriggered = onSearchTriggered
             )
         }
     }

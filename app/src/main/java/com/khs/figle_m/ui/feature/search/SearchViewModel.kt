@@ -20,13 +20,14 @@ class SearchViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(SearchUIState.Loading)
     val uiState: StateFlow<SearchUIState> = _uiState
 
-    fun invoke(nickName: String) = viewModelScope.launch {
+    fun search(nickName: String) = viewModelScope.launch {
+        LogUtil.dLog(LogUtil.TAG_SEARCH, CLASS_TAG,"search > $nickName")
         searchUseCase
             .search(nickName)
             .collectLatest { result ->
                 when (result) {
                     is CommonResult.Success -> {
-                        LogUtil.dLog(LogUtil.TAG_SETUP, CLASS_TAG, "검색 결과 : ${result.data.accessId} / ${result.data.nickname}")
+                        LogUtil.dLog(LogUtil.TAG_SEARCH, CLASS_TAG, "검색 결과 : ${result.data.accessId} / ${result.data.nickname}")
                         _uiState.value = SearchUIState.Success(null)
                     }
                     is CommonResult.Fail.Error -> {
