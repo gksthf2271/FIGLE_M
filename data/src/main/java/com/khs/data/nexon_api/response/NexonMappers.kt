@@ -218,7 +218,7 @@ fun String.dateToMs(): Long {
     //"Thu, 22 Feb 2024 21:00:01 GMT"
     val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
     val date = dateFormat.parse(this)
-    return date.time
+    return date?.time ?: 0
 }
 
 fun Call<List<SeasonModel>>.asSeasonDTO() : Flow<CommonResult<SeasonDTO>> = callbackFlow {

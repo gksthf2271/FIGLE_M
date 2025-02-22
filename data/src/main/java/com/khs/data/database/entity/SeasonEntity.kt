@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
 @Entity(tableName = "Season")
 open class SeasonEntity(
     @PrimaryKey(autoGenerate = true)

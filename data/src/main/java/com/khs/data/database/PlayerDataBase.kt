@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.database.entity.SeasonEntity
 
-@Database(entities = [PlayerEntity::class, SeasonEntity::class], version = 3)
+@Database(entities = [PlayerEntity::class, SeasonEntity::class], version = 3, exportSchema = true)
 abstract class PlayerDataBase: RoomDatabase() {
     abstract fun playerDao(): PlayerDao
     abstract fun seasonDao(): SeasonDao
