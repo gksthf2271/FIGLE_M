@@ -3,7 +3,7 @@ package com.khs.figle_m.base
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

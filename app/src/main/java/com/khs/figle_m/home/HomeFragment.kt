@@ -23,8 +23,8 @@ import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
 import com.khs.figle_m.ranking.RankingActivity
 import com.khs.figle_m.searchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
@@ -80,7 +80,7 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
                     mUserResponse
                 )
                 searchHomeFragment.arguments = bundle
-                FragmentUtils().loadFragment(
+                FragmentUtils.loadFragment(
                     searchHomeFragment,
                     R.id.fragment_container, parentFragmentManager
                 )

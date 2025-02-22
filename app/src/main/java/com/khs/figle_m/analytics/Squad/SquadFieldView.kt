@@ -7,8 +7,8 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.data.nexon_api.response.CustomDTO.PlayerListDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.figle_m.utils.LogUtil
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.common.util.LogUtil
+import com.khs.figle_m.common.util.PositionEnum
 import com.khs.figle_m.databinding.CviewFieldBinding
 
 class SquadFieldView @JvmOverloads constructor(

@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.CviewMatchTypeViewBinding
 
 class MatchView @JvmOverloads constructor(

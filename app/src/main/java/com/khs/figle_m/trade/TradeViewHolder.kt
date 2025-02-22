@@ -4,9 +4,11 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.khs.data.nexon_api.response.TradeResponse
-import com.khs.figle_m.common.CirclePlayerView
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.StringUtils
+import com.khs.figle_m.common.CirclePlayerView
+import com.khs.figle_m.common.model.TradeType
+import com.khs.figle_m.common.util.DateUtils
+import com.khs.figle_m.common.util.StringUtils
 import com.khs.figle_m.databinding.ItemTradeBuyBinding
 
 abstract class TradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,11 +26,11 @@ abstract class TradeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
 open class TradeBuyViewHolder(private val itemViewBinding: ViewBinding) : TradeViewHolder(itemViewBinding.root) {
    override fun bind(item: TradeResponse) {
       if (itemViewBinding is ItemTradeBuyBinding) {
-         itemViewBinding.buyTxtDate.text = com.khs.figle_m.utils.DateUtils().formatTimeString(item.tradeDateMs)
+         itemViewBinding.buyTxtDate.text = DateUtils.formatTimeString(item.tradeDateMs)
          val circlePlayerView = itemViewBinding.buyLayoutTradePlayer.findViewWithTag<CirclePlayerView>("CirclePlayerView")
          circlePlayerView.updateView(item.spid.toString(), -1, false, item.grade.toInt(), -1, -1, item.imageResUrl)
-         circlePlayerView.mTradePlayerBinding.txtPlayerValue.text = StringUtils().parseValue(item.value) + " BP"
-         if (item.tradeType == TradeHomeFragment.TradeType.TYPE_SELL.ordinal) {
+         circlePlayerView.mTradePlayerBinding.txtPlayerValue.text = StringUtils.parseValue(item.value) + " BP"
+         if (item.tradeType == TradeType.TYPE_SELL.ordinal) {
             itemViewBinding.tradeType.text = "SELL"
             itemViewBinding.tradeType.setTextColor(itemView.context.getColor(R.color.trade_red_color))
          } else {

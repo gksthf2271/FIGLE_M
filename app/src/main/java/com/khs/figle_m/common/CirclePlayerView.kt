@@ -10,8 +10,8 @@ import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.common.util.DrawUtils
+import com.khs.figle_m.common.util.PositionEnum
 import com.khs.figle_m.databinding.CviewCardBinding
 import com.khs.figle_m.databinding.CviewTradePlayerBinding
 import kotlinx.coroutines.CoroutineScope
@@ -32,14 +32,14 @@ class CirclePlayerView @JvmOverloads constructor(
 
     fun updateView(spId:String, spRating: Int, isMVP: Boolean, spGrade: Int, goalCount: Int, spPosition: Int, imageUrl: String?){
         updatePlayerName(spId)
-        DrawUtils().drawSeasonIcon(context, mTradePlayerBinding.imgIcon, spId)
+        DrawUtils.drawSeasonIcon(context, mTradePlayerBinding.imgIcon, spId)
         if(spRating >= 0) updateSpRateColor(spRating, isMVP)
         if(spGrade >= 0) updateGradeColor(spGrade)
         if(goalCount >= 0) addGoalIcon(goalCount)
         if(spPosition >= 0) updateSpPosition(spPosition)
 
-        if (imageUrl != null) DrawUtils().drawPlayerImage(mTradePlayerBinding.imgPlayer, imageUrl)
-        else DrawUtils().drawPlayerImage(mTradePlayerBinding.imgPlayer, "")
+        if (imageUrl != null) DrawUtils.drawPlayerImage(mTradePlayerBinding.imgPlayer, imageUrl)
+        else DrawUtils.drawPlayerImage(mTradePlayerBinding.imgPlayer, "")
     }
 
     fun updatePlayerName(spId: String){
@@ -113,7 +113,7 @@ class CirclePlayerView @JvmOverloads constructor(
     }
 
     private fun updateSpPosition(spPosition:Int){
-        for (positionItem in PositionEnum.values()) {
+        for (positionItem in PositionEnum.entries) {
             if (positionItem.spposition == spPosition) {
                 mTradePlayerBinding.txtPlayerPosition.visibility = View.VISIBLE
                 mTradePlayerBinding.txtPlayerPosition.text = positionItem.description

@@ -18,8 +18,8 @@ import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.LogUtil
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.common.util.LogUtil
+import com.khs.figle_m.common.util.PositionEnum
 import com.khs.figle_m.databinding.CviewAnalyticsPositionBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

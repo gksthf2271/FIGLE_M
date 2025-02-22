@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.figle_m.base.BaseFragment
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.searchList.SearchDecoration
-import com.khs.figle_m.utils.LogUtil
 import com.khs.figle_m.databinding.FragmentTradeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,10 +18,7 @@ class TradeHomeFragment : BaseFragment(), TradeContract.View {
     val TAG = javaClass.simpleName
     lateinit var mTradeBinding : FragmentTradeBinding
     var mTradePresenter : TradePresenter? = null
-    enum class TradeType(index:Int){
-        TYPE_BUY(0),
-        TYPE_SELL(1)
-    }
+
     override fun initPresenter() {
         LogUtil.vLog(LogUtil.TAG_UI, TAG,"initPresenter(...)")
         mTradePresenter = TradePresenter()

@@ -1,9 +1,10 @@
 package com.khs.figle_m.trade
 
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.data.nexon_api.response.TradeResponse
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.model.TradeType
+import com.khs.figle_m.common.util.CrawlingUtils
+import com.khs.figle_m.common.util.LogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,12 +20,12 @@ class TradePresenter : TradeContract.Presenter{
         if (mTradeView == null) return
         mTradeView?.showLoading()
         val responseMap = mutableMapOf<String, List<TradeResponse>>()
-        for (item in TradeHomeFragment.TradeType.values()) {
+        for (item in TradeType.entries) {
             DataManager.loadTradeInfo(accessId, item, offset, limit,
                 {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"loadTradeInfo response(...) : ${it.first().tradeType}")
                     responseMap[it.first().tradeType.toString()] = it
-                    if (responseMap.size == TradeHomeFragment.TradeType.values().size) {
+                    if (responseMap.size == TradeType.entries.size) {
                         val responseList = mutableListOf<TradeResponse>()
                         responseList.run{
                             for (item in responseMap.values){

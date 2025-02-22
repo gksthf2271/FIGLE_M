@@ -1,7 +1,7 @@
 package com.khs.figle_m.searchList
 
-import com.khs.figle_m.data.DataManager
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

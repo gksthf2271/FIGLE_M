@@ -4,8 +4,8 @@ import android.content.Context
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
 import com.khs.data.database.entity.SeasonEntity
-import com.khs.figle_m.data.DataManager
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.LogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

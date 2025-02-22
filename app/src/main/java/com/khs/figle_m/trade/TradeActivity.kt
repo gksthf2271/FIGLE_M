@@ -3,8 +3,8 @@ package com.khs.figle_m.trade
 import android.os.Bundle
 import com.khs.figle_m.base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +37,7 @@ class TradeActivity : BaseActivity() {
         val bundle = Bundle()
         bundle.putString(KEY_ACCESS_ID, accessId)
         tradeFragment.arguments = bundle
-        FragmentUtils().loadFragment(
+        FragmentUtils.loadFragment(
             tradeFragment,
             R.id.fragment_container,
             supportFragmentManager

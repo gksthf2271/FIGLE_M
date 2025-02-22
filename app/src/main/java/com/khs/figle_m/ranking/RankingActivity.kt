@@ -14,8 +14,9 @@ import android.widget.TextView
 import com.khs.figle_m.base.BaseActivity
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.model.Ranker
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.ActivityRankingBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -89,7 +90,7 @@ class RankingActivity : BaseActivity(), RankingContract.View, Handler.Callback {
         val bundle = Bundle()
         bundle.putParcelableArrayList(RankingFragment().KEY_RANKING_LIST,ArrayList(rankerList))
         rankingFragment.arguments = bundle
-        FragmentUtils().loadFragment(rankingFragment, R.id.fragment_container ,supportFragmentManager)
+        FragmentUtils.loadFragment(rankingFragment, R.id.fragment_container ,supportFragmentManager)
     }
 
     override fun showNetworkError() {

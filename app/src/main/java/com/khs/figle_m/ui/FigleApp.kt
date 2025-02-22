@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.khs.figle_m.R
+import com.khs.figle_m.common.R as comR
 import com.khs.figle_m.core.NetworkMonitor
 
 @Composable
@@ -36,7 +36,7 @@ fun FigleApp(
 
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
 
-    val notConnectedMessage = stringResource(R.string.error_not_connected)
+    val notConnectedMessage = stringResource(comR.string.error_not_connected)
     LaunchedEffect(isOffline) {
         if (isOffline) {
             snackbarHostState.showSnackbar(

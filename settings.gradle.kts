@@ -24,3 +24,5 @@ rootProject.name="FIGLE_M"
 include(":app")
 include(":domain")
 include(":data")
+include(":feature:search")
+include(":common")

@@ -85,6 +85,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
+    implementation(project(":feature:search"))
     implementation(project(":domain"))
     implementation(project(":data"))
 
@@ -151,9 +153,6 @@ dependencies {
 
     // MPAndroidChart
     implementation(libs.mpandroidchart)
-
-    // Jsoup
-    implementation(libs.jsoup)
 
     implementation(libs.material)
 

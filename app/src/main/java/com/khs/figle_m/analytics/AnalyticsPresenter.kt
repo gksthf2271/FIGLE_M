@@ -1,12 +1,12 @@
 package com.khs.figle_m.analytics
 
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.LogUtil
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.common.util.CrawlingUtils
+import com.khs.figle_m.common.util.LogUtil
+import com.khs.figle_m.common.util.PositionEnum
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

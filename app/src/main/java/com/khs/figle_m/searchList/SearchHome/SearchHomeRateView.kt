@@ -7,8 +7,8 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.github.mikephil.charting.data.PieEntry
 import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.figle_m.data.DataManager
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.CviewSearchHomePieChartBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

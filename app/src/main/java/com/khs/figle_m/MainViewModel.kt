@@ -7,7 +7,7 @@ import com.khs.domain.nexon.entity.CommonResult
 import com.khs.domain.nexon.usecase.RankUseCase
 import com.khs.domain.nexon.usecase.SearchUseCase
 import com.khs.domain.nexon.usecase.SetupUseCase
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -9,7 +9,7 @@ import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 
 class AnalyticsAdapter (context: Context, matchInfoList: List<MatchInfoDTO>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<AnalyticsAdapter.ViewHolder>() {

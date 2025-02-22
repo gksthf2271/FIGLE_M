@@ -1,9 +1,9 @@
 package com.khs.figle_m.searchDetail
 
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.CrawlingUtils
+import com.khs.figle_m.common.util.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONArray

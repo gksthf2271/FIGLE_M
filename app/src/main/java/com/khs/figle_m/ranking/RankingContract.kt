@@ -3,6 +3,7 @@ package com.khs.figle_m.ranking
 import android.content.Context
 import com.khs.figle_m.base.BasePresenter
 import com.khs.figle_m.base.BaseView
+import com.khs.figle_m.common.model.Ranker
 
 interface RankingContract : BaseView {
     interface View : BaseView {

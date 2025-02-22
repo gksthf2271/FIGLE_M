@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FIGLE_M</string>
+
+    <string name="error_not_connected">⚠️ 네트워크 연결을 확인해주세요.</string>
+
+    <!-- Search Main -->
+    <string name="main_title">FIGLE</string>
+    <string name="main_search">Search</string>
+    <string name="main_search_clear">Clear</string>
+</resources>

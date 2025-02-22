@@ -4,8 +4,8 @@ import android.os.Bundle
 import com.khs.figle_m.analytics.Squad.SquadFragment
 import com.khs.figle_m.base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +29,7 @@ class SquadActivity : BaseActivity() {
         bundle.putStringArrayList(KEY_MY_DATA, myList)
         bundle.putString(KEY_ACCESS_ID, accessId)
         squa.arguments = bundle
-        FragmentUtils().loadFragment(
+        FragmentUtils.loadFragment(
             squa,
             R.id.fragment_container,
             supportFragmentManager

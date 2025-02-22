@@ -1,6 +1,6 @@
 package com.khs.figle_m.analytics.Squad
 
-import com.khs.figle_m.utils.FormationEnum
+import com.khs.figle_m.common.util.FormationEnum
 
 data class FormationData(var formationEnum: FormationEnum, var positionList: List<PlayerXY>)
 

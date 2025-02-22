@@ -14,14 +14,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.khs.figle_m.base.BaseActivity
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
+import com.khs.figle_m.common.util.SeasonManager
 import com.khs.figle_m.databinding.ActivityMainBinding
 import com.khs.figle_m.databinding.ActivityMainFinishBinding
 import com.khs.figle_m.home.HomeFragment
 import com.khs.figle_m.searchList.SearchHome.SearchHomeFragment
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
-import com.khs.figle_m.utils.SeasonManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -95,7 +95,7 @@ class MainActivity : BaseActivity(), InitContract.View{
 
             when (currentFragment) {
                 is SearchHomeFragment -> {
-                    FragmentUtils().loadFragment(HomeFragment(), R.id.fragment_container, supportFragmentManager)
+                    FragmentUtils.loadFragment(HomeFragment(), R.id.fragment_container, supportFragmentManager)
                 }
                 is HomeFragment -> {
                     showFinishPopup()
@@ -110,7 +110,7 @@ class MainActivity : BaseActivity(), InitContract.View{
     }
 
     private fun getCurrentFragment(): Fragment? {
-        return FragmentUtils().currentFragment(supportFragmentManager, R.id.fragment_container)
+        return FragmentUtils.currentFragment(supportFragmentManager, R.id.fragment_container)
     }
 
     override fun showNetworkError() {
@@ -145,7 +145,7 @@ class MainActivity : BaseActivity(), InitContract.View{
             LogUtil.vLog(LogUtil.TAG_UI, TAG, "showMainActivity(...)")
             val fm: FragmentManager = this@MainActivity.supportFragmentManager
             val homeFragment: HomeFragment = HomeFragment.getInstance()
-            FragmentUtils().loadFragment(homeFragment, R.id.fragment_container, fm)
+            FragmentUtils.loadFragment(homeFragment, R.id.fragment_container, fm)
         }
     }
 

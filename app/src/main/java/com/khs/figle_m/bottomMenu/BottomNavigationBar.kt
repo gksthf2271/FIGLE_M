@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.CviewLoadingViewBinding
 
 class BottomNavigationBar @JvmOverloads constructor(

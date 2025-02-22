@@ -11,10 +11,10 @@ import com.khs.data.nexon_api.response.DTO.RankerPlayerDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.base.BaseFragment
 import com.khs.figle_m.BuildConfig
+import com.khs.figle_m.common.model.Ranker
 import com.khs.figle_m.playerDetail.PlayerDetailDialogFragment
-import com.khs.figle_m.ranking.Ranker
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.CrawlingUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.FragmentAnalyticsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

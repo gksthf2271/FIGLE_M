@@ -19,9 +19,10 @@ import com.khs.figle_m.base.BaseFragment
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.home.HomeFragment
 import com.khs.figle_m.R
+import com.khs.figle_m.common.model.Ranker
 import com.khs.figle_m.searchList.SearchDecoration
-import com.khs.figle_m.utils.DisplayUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.DisplayUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.FragmentRankingBinding
 
 class RankingFragment : BaseFragment(){

@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.BuildConfig
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.figle_m.searchList.SearchContract
 import com.khs.figle_m.searchList.SearchDecoration
 import com.khs.figle_m.searchList.SearchListAdapter
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.databinding.CviewSearchListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

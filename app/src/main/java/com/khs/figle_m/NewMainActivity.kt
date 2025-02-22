@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.khs.figle_m.core.NetworkMonitor
 import com.khs.figle_m.ui.FigleApp
-import com.khs.figle_m.ui.theme.FigleTheme
+import com.khs.figle_m.common.theme.FigleTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -10,18 +10,18 @@ import com.khs.data.nexon_api.response.UserCareerHighResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.analytics.AnalyticsActivity
 import com.khs.figle_m.base.BaseFragment
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.figle_m.home.HomeFragment
 import com.khs.figle_m.MainActivity
 import com.khs.figle_m.R
+import com.khs.figle_m.common.util.DivisionEnum
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.searchList.Common.CustomPagerAdapter
 import com.khs.figle_m.searchList.SearchContract
 import com.khs.figle_m.searchList.SearchHomePresenter
 import com.khs.figle_m.searchList.SearchListFragment
 import com.khs.figle_m.trade.TradeActivity
-import com.khs.figle_m.utils.DivisionEnum
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
 import com.khs.figle_m.databinding.FragmentSearchlistVer2Binding
 import okhttp3.ResponseBody
 
@@ -96,7 +96,7 @@ class SearchHomeFragment : BaseFragment(),
 
     fun initView() {
         mBinding.btnBack.setOnClickListener {
-            FragmentUtils().loadFragment(
+            FragmentUtils.loadFragment(
                 HomeFragment.getInstance(),
                 R.id.fragment_container,
                 parentFragmentManager
@@ -266,7 +266,7 @@ class SearchHomeFragment : BaseFragment(),
         bundle.putSerializable(SearchListFragment().KEY_SEARCH_USER_INFO, mSearchUserInfo)
 
         fragment.arguments = bundle
-        FragmentUtils().loadFragment(
+        FragmentUtils.loadFragment(
             fragment,
             R.id.fragment_container,
             parentFragmentManager,

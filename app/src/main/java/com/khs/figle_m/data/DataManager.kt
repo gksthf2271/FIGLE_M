@@ -5,9 +5,10 @@ import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.TradeResponse
 import com.khs.data.nexon_api.response.UserCareerHighResponse
 import com.khs.data.nexon_api.response.UserResponse
+import com.khs.figle_m.common.model.TradeType
+import com.khs.figle_m.common.util.DateUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.trade.TradeHomeFragment
-import com.khs.figle_m.utils.DateUtils
-import com.khs.figle_m.utils.LogUtil
 import okhttp3.HttpUrl
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -380,7 +381,7 @@ object DataManager{
 
     fun loadTradeInfo(
         accessId: String,
-        tradeType: TradeHomeFragment.TradeType,
+        tradeType: TradeType,
         offset: Int?,
         limit: Int?,
         onSuccess: (List<TradeResponse>) -> Unit,
@@ -413,7 +414,7 @@ object DataManager{
                 onSuccess(response.body()!!.apply {
                     for (item in this){
                         item.tradeType = tradeType.ordinal
-                        item.tradeDateMs = DateUtils().getDate(item.tradeDate)
+                        item.tradeDateMs = DateUtils.getDate(item.tradeDate)
                     }
                 })
             }

@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.figle_m.searchDetail.SearchDetailDialogFragment
-import com.khs.figle_m.utils.LogUtil
-import com.khs.figle_m.utils.UserSortUtils
+import com.khs.figle_m.common.util.LogUtil
+import com.khs.figle_m.common.util.UserSortUtils
 import com.khs.figle_m.databinding.CviewSearchDetailBinding
 
 class SearchDetailDialogGameResultView @JvmOverloads constructor(

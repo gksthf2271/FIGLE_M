@@ -1,7 +1,7 @@
 package com.khs.figle_m.home
 
-import com.khs.figle_m.data.DataManager
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.LogUtil
 
 class UserPresenter : UserContract.Presenter {
     val TAG: String = javaClass.simpleName

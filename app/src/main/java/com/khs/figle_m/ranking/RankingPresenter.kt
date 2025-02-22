@@ -1,8 +1,9 @@
 package com.khs.figle_m.ranking
 
 import android.content.Context
-import com.khs.figle_m.utils.CrawlingUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.model.Ranker
+import com.khs.figle_m.common.util.CrawlingUtils
+import com.khs.figle_m.common.util.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

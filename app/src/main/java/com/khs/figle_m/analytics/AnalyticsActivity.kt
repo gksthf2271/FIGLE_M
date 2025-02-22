@@ -3,8 +3,8 @@ package com.khs.figle_m.analytics
 import android.os.Bundle
 import com.khs.figle_m.base.BaseActivity
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.FragmentUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.FragmentUtils
+import com.khs.figle_m.common.util.LogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +41,7 @@ class AnalyticsActivity : BaseActivity() {
         bundle.putStringArrayList(KEY_MY_DATA, myList)
         bundle.putString(KEY_ACCESS_ID, accessId)
         analyticsFragment.arguments = bundle
-        FragmentUtils().loadFragment(
+        FragmentUtils.loadFragment(
             analyticsFragment,
             R.id.fragment_container,
             supportFragmentManager

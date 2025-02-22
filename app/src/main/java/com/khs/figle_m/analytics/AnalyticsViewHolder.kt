@@ -4,9 +4,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
+import com.khs.figle_m.common.util.DrawUtils
+import com.khs.figle_m.common.util.PositionEnum
 import com.khs.figle_m.playerDetail.PlayerDetailInfoView
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
 import com.khs.figle_m.databinding.ItemAnalyticsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +25,8 @@ open class AnalyticsGradeViewHolder(private val mBinding: ItemAnalyticsBinding, 
         resizeView()
         val totalData = item.totalData
 
-        DrawUtils().drawSeasonIcon(mBinding.root.context, mBinding.analyticsImgIcon, item.spId.toString())
-        DrawUtils().drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
+        DrawUtils.drawSeasonIcon(mBinding.root.context, mBinding.analyticsImgIcon, item.spId.toString())
+        DrawUtils.drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
         val positionSet = mutableSetOf<String>()
 
 

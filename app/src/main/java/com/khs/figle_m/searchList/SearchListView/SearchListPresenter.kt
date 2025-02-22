@@ -1,10 +1,10 @@
 package com.khs.figle_m.searchList.SearchListView
 
-import com.khs.figle_m.data.DataManager
 import com.khs.data.nexon_api.response.MatchDetailResponse
+import com.khs.figle_m.common.data.DataManager
+import com.khs.figle_m.common.util.DateUtils
+import com.khs.figle_m.common.util.LogUtil
 import com.khs.figle_m.searchList.SearchContract
-import com.khs.figle_m.utils.DateUtils
-import com.khs.figle_m.utils.LogUtil
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -26,7 +26,7 @@ class SearchListPresenter : SearchContract.SearchListPresenter {
             launch {
                 getMatchDetail(matchId, {
                     LogUtil.dLog(LogUtil.TAG_NETWORK, TAG,"SearchPresenter getMatchDetailList: ${it.matchId}")
-                    it.matchDate = DateUtils().getDate(it.matchDate).toString()
+                    it.matchDate = DateUtils.getDate(it.matchDate).toString()
                     mSearchListView?.showGameList(it)
                 }, {
                     LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"Result : getMatchDetailList response : $it")

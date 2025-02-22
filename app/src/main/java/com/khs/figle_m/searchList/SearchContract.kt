@@ -2,7 +2,7 @@ package com.khs.figle_m.searchList
 
 import com.khs.figle_m.base.BasePresenter
 import com.khs.figle_m.base.BaseView
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.UserCareerHighResponse
 import okhttp3.ResponseBody

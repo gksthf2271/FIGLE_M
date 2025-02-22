@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
 import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.figle_m.utils.DateUtils
-import com.khs.figle_m.utils.LogUtil
+import com.khs.figle_m.common.util.DateUtils
+import com.khs.figle_m.common.util.LogUtil
 
 class SearchListAdapter(context: Context, searchAccessId: String, matchList: ArrayList<MatchDetailResponse>, val itemClick: (MatchDetailResponse) -> Unit) :
     RecyclerView.Adapter<SearchListAdapter.ViewHolder>() {
@@ -95,7 +95,7 @@ class SearchListAdapter(context: Context, searchAccessId: String, matchList: Arr
                 val opposingUserMatchInfo = matchInfo[opposingUserIndex]
                 var matchDate = item.matchDate
 
-                matchDate = DateUtils().formatTimeString(matchDate.toLong())
+                matchDate = DateUtils.formatTimeString(matchDate.toLong())
 
                 mTxtLeftNickName.text = myMatchInfo.nickname
                 mTxtRightNickName.text = opposingUserMatchInfo.nickname

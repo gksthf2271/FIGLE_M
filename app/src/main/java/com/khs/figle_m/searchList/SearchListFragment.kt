@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.base.BaseFragment
-import com.khs.figle_m.data.DataManager
+import com.khs.figle_m.common.data.DataManager
 import com.khs.figle_m.searchDetail.SearchDetailDialogFragment
 import com.khs.figle_m.databinding.FragmentSearchlistBinding
 

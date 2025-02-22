@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.khs.figle_m.BuildConfig
 import com.khs.data.database.PlayerDataBase
 import com.khs.data.database.entity.PlayerEntity
-import com.khs.figle_m.playerDetail.PlayerDetailInfoView
+import com.khs.figle_m.BuildConfig
 import com.khs.figle_m.R
-import com.khs.figle_m.utils.DrawUtils
-import com.khs.figle_m.utils.PositionEnum
+import com.khs.figle_m.common.util.DrawUtils
+import com.khs.figle_m.common.util.PositionEnum
+import com.khs.figle_m.databinding.ItemAnalyticsBinding
+import com.khs.figle_m.playerDetail.PlayerDetailInfoView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.khs.figle_m.databinding.ItemAnalyticsBinding
 
 class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.ROW_TYPE, val mPlayerInfoList : List<AnalyticsPlayer>, val itemClick : (AnalyticsPlayer) -> Unit)
     : RecyclerView.Adapter<AnalyticsRecyclerViewAdapter.ViewHolder>() {
@@ -53,8 +53,8 @@ class AnalyticsRecyclerViewAdapter(context: Context, rowType: AnalyticsFragment.
         fun bind(item: AnalyticsPlayer, context: Context) {
             setTextSize()
 
-            DrawUtils().drawSeasonIcon(context, mBinding.analyticsImgIcon, item.spId.toString())
-            DrawUtils().drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
+            DrawUtils.drawSeasonIcon(context, mBinding.analyticsImgIcon, item.spId.toString())
+            DrawUtils.drawPlayerImage(mBinding.analyticsImgPlayer, item.imageResUrl)
             val positionSet = mutableSetOf<String>()
 
 
