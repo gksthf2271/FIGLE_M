@@ -6,16 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH
-import android.widget.Button
-import android.widget.EditText
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.khs.figle_m.Base.BaseFragment
@@ -26,7 +19,6 @@ import com.khs.figle_m.Response.UserResponse
 import com.khs.figle_m.SearchList.SearchHome.SearchHomeFragment
 import com.khs.figle_m.Utils.FragmentUtils
 import com.khs.figle_m.Utils.LogUtil
-import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
     val TAG: String = javaClass.simpleName
@@ -65,8 +57,9 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
 
     override fun onResume() {
         super.onResume()
-        mEditView ?: return
-        mEditView.text = null
+        // Compose로 전환했으므로 EditText 초기화 불필요
+        // mEditView ?: return
+        // mEditView.text = null
     }
 
     override fun handleMessage(msg: Message): Boolean {
@@ -142,74 +135,101 @@ class HomeFragment : BaseFragment(), UserContract.View, Handler.Callback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v: View = inflater.inflate(R.layout.fragment_home, container, false)
-        return v
+    ): View {
+        // Compose를 사용한 새로운 구현
+        return androidx.compose.ui.platform.ComposeView(requireContext()).apply {
+            setContent {
+                com.khs.figle_m.ui.theme.FigleComposeTheme {
+                    com.khs.figle_m.ui.screens.HomeScreen(
+                        onSearch = { searchText ->
+                            if (searchText.isNotEmpty()) {
+                                search(searchText)
+                            } else {
+                                Toast.makeText(context, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        onRankingClick = {
+                            val intent = Intent(context, RankingActivity::class.java)
+                            startActivityForResult(intent, RESULT_REQUEST_CODE)
+                        }
+                    )
+                }
+            }
+        }
+
+        // 기존 XML 레이아웃 구현 (주석 처리)
+        // val v: View = inflater.inflate(R.layout.fragment_home, container, false)
+        // return v
     }
 
     override fun onStart() {
         super.onStart()
-        initView()
-        btn_ranking.setOnClickListener {
-            val intent = Intent(context, RankingActivity::class.java)
-            startActivityForResult(intent, RESULT_REQUEST_CODE)
-        }
-    }
-
-    lateinit var mEditView :EditText
-    lateinit var mCloseBtn : Button
-    fun initView() {
+        // Compose로 전환했으므로 initView() 호출 불필요
         mUserPresenter.takeView(this)
-        mEditView = edit_search.findViewById<EditText>(R.id.edit_view)
-        mCloseBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
-        mEditView.imeOptions = IME_ACTION_SEARCH
 
-        mEditView.setOnEditorActionListener { view, actionId, keyEvent ->
-            if (view.hasFocus() && actionId == EditorInfo.IME_ACTION_SEARCH) {
-                //TODO hideKeywordHistoryView()
-                val searchText = (view as EditText).text.toString()
-                if (searchText.isNullOrEmpty()) {
-                    Toast.makeText(context, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
-                    return@setOnEditorActionListener false
-                }
-                search(mEditView.text.toString())
-                view.clearFocus()
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-
-        mEditView.addTextChangedListener(textWatcher)
-
-//        btn_search.setOnClickListener(View.OnClickListener {
-//            LogUtil.vLog(LogUtil.TAG_UI, TAG,"clickSearchBtn")
-//            search(mEditView.text.toString())
-//        })
+        // 기존 View 기반 초기화 코드 (주석 처리)
+        // initView()
+        // btn_ranking.setOnClickListener {
+        //     val intent = Intent(context, RankingActivity::class.java)
+        //     startActivityForResult(intent, RESULT_REQUEST_CODE)
+        // }
     }
 
-    private val textWatcher = object: TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-        }
-
-        override fun beforeTextChanged(
-            s: CharSequence?,
-            start: Int,
-            count: Int,
-            after: Int
-        ) {
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s == null || "".equals(s) || (s != null && s.isEmpty())) {
-                mCloseBtn.visibility = View.INVISIBLE
-            } else {
-                mCloseBtn.visibility = View.VISIBLE
-                mCloseBtn.setOnClickListener {
-                    mEditView.text = null
-                }
-            }
-        }
-    }
+    // 기존 View 기반 코드들 (Compose 전환으로 더 이상 사용하지 않음)
+    // lateinit var mEditView :EditText
+    // lateinit var mCloseBtn : Button
+    // fun initView() {
+    //     mUserPresenter.takeView(this)
+    //     mEditView = edit_search.findViewById<EditText>(R.id.edit_view)
+    //     mCloseBtn = edit_search.findViewById<Button>(R.id.btn_search_reset)
+    //     mEditView.imeOptions = IME_ACTION_SEARCH
+    //
+    //     mEditView.setOnEditorActionListener { view, actionId, keyEvent ->
+    //         if (view.hasFocus() && actionId == EditorInfo.IME_ACTION_SEARCH) {
+    //             //TODO hideKeywordHistoryView()
+    //             val searchText = (view as EditText).text.toString()
+    //             if (searchText.isNullOrEmpty()) {
+    //                 Toast.makeText(context, "검색어를 입력해주세요", Toast.LENGTH_SHORT).show()
+    //                 return@setOnEditorActionListener false
+    //             }
+    //             search(mEditView.text.toString())
+    //             view.clearFocus()
+    //             return@setOnEditorActionListener true
+    //         }
+    //         return@setOnEditorActionListener false
+    //     }
+    //
+    //     mEditView.addTextChangedListener(textWatcher)
+    //
+    // //        btn_search.setOnClickListener(View.OnClickListener {
+    // //            LogUtil.vLog(LogUtil.TAG_UI, TAG,"clickSearchBtn")
+    // //            search(mEditView.text.toString())
+    // //        })
+    // }
+    //
+    // private val textWatcher = object: TextWatcher {
+    //     override fun afterTextChanged(s: Editable?) {
+    //     }
+    //
+    //     override fun beforeTextChanged(
+    //         s: CharSequence?,
+    //         start: Int,
+    //         count: Int,
+    //         after: Int
+    //     ) {
+    //     }
+    //
+    //     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+    //         if (s == null || "".equals(s) || (s != null && s.isEmpty())) {
+    //             mCloseBtn.visibility = View.INVISIBLE
+    //         } else {
+    //             mCloseBtn.visibility = View.VISIBLE
+    //             mCloseBtn.setOnClickListener {
+    //                 mEditView.text = null
+    //             }
+    //         }
+    //     }
+    // }
 
     fun search(searchString: String, teamPrice : String) {
         mSearchString = searchString
