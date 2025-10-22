@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_title">FIGLE</string>
+    <string name="home_search">검색</string>
+    <string name="home_search_clear">검색어 지우기</string>
+    <string name="home_search_hint">구단주 검색</string>
+</resources>

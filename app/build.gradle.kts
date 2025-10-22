@@ -87,6 +87,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":feature:search"))
+    implementation(project(":feature:home"))
     implementation(project(":domain"))
     implementation(project(":data"))
 
