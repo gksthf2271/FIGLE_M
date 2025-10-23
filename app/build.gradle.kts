@@ -89,6 +89,7 @@ dependencies {
     implementation(project(":feature:search"))
     implementation(project(":feature:home"))
     implementation(project(":feature:ranking"))
+    implementation(project(":feature:analytics"))
     implementation(project(":domain"))
     implementation(project(":data"))
 

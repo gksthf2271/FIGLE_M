@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analytics_title">최근 10경기 분석</string>
+    <string name="analytics_back">뒤로</string>
+    <string name="analytics_rating_top">평점 TOP 10</string>
+    <string name="analytics_goal_top">득점 TOP 5</string>
+    <string name="analytics_assist_top">도움 TOP 5</string>
+</resources>
