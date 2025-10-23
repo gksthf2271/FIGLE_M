@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="searchlist_title_official">1 ON 1 경기 조회</string>
+    <string name="searchlist_title_coach">감독모드 경기 조회</string>
+    <string name="searchlist_back">뒤로</string>
+    <string name="searchlist_win">승</string>
+    <string name="searchlist_lose">패</string>
+    <string name="searchlist_draw">무</string>
+    <string name="searchlist_forfeit_win">몰수승\n(%1$d : %2$d)</string>
+    <string name="searchlist_forfeit_lose">몰수패\n(%1$d : %2$d)</string>
+</resources>

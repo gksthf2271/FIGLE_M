@@ -9,6 +9,7 @@ import com.khs.figle_m.ui.feature.home.navigation.homeNavigationRoute
 import com.khs.figle_m.ui.feature.home.navigation.homeScreen
 import com.khs.figle_m.ui.feature.ranking.navigation.rankingScreen
 import com.khs.figle_m.ui.feature.analytics.navigation.analyticsScreen
+import com.khs.figle_m.ui.feature.searchlist.navigation.searchListScreen
 
 @Composable
 fun FigleNavHost(
@@ -51,6 +52,15 @@ fun FigleNavHost(
             },
             onPlayerClick = { analyticsPlayer ->
                 // TODO: Navigate to PlayerDetail screen
+            }
+        )
+
+        searchListScreen(
+            onBack = {
+                navController.popBackStack()
+            },
+            onMatchClick = { matchDetail ->
+                // TODO: Navigate to SearchDetail screen
             }
         )
 
