@@ -7,6 +7,7 @@ import com.khs.figle_m.ui.feature.search.navigation.searchNavigationRoute
 import com.khs.figle_m.ui.feature.search.navigation.searchScreen
 import com.khs.figle_m.ui.feature.home.navigation.homeNavigationRoute
 import com.khs.figle_m.ui.feature.home.navigation.homeScreen
+import com.khs.figle_m.ui.feature.ranking.navigation.rankingScreen
 
 @Composable
 fun FigleNavHost(
@@ -30,6 +31,17 @@ fun FigleNavHost(
                 // For now, we'll need to implement SearchHome in Compose first
                 // or use the existing Fragment navigation
             }
+        )
+
+        rankingScreen(
+            onClose = {
+                navController.popBackStack()
+            },
+            onNavigateToSearch = { name, price ->
+                // TODO: Navigate to SearchHome with name and price
+                // or call the search API directly
+            },
+            onShowError = onShowError
         )
 
         searchScreen(

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ranking_title">랭킹</string>
+    <string name="ranking_close">닫기</string>
+    <string name="ranking_search">검색</string>
+    <string name="ranking_position">위</string>
+    <string name="ranking_point">점</string>
+    <string name="ranking_percent">상위 %s %%</string>
+</resources>
