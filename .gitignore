@@ -96,7 +96,8 @@ gradle.properties
 kotlin-classes/
 
 # BuildSrc
-buildSrc/build*
+buildSrc/build/
+buildSrc/.gradle/
 
 # Mac
 .DS_Store
