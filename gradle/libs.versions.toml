@@ -44,6 +44,7 @@ moshi-kotlin = "1.12.0"
 glide-compose = "1.0.0-beta01"
 constraintlayout = "1.1.0"
 williamchart = "3.10.1"
+coil = "2.5.0"
 
 
 
@@ -93,6 +94,7 @@ moshi-adapter = { module = "com.squareup.moshi:moshi-adapters", version.ref = "m
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi-kotlin"}
 
 glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose"}
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil"}
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

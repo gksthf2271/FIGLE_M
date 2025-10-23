@@ -34,17 +34,23 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            storeFile = file("/Users/khs/Desktop/Project/Release/FIGLE_M/FIGLE_M.jks")
-            storePassword = "kimgks32!"
-            keyAlias = "FIGLE_M"
-            keyPassword = "kimgks32!"
-        }
-        getByName("debug") {
-            storeFile = file("/Users/khs/Desktop/Project/Release/FIGLE_M/FIGLE_M.jks")
-            storePassword = "kimgks32!"
-            keyAlias = "FIGLE_M"
-            keyPassword = "kimgks32!"
+        // Only configure signing if keystore file exists
+        val keystorePath = "/Users/khs/Desktop/Project/Release/FIGLE_M/FIGLE_M.jks"
+        val keystoreFile = file(keystorePath)
+
+        if (keystoreFile.exists()) {
+            create("release") {
+                storeFile = keystoreFile
+                storePassword = "kimgks32!"
+                keyAlias = "FIGLE_M"
+                keyPassword = "kimgks32!"
+            }
+            getByName("debug") {
+                storeFile = keystoreFile
+                storePassword = "kimgks32!"
+                keyAlias = "FIGLE_M"
+                keyPassword = "kimgks32!"
+            }
         }
     }
 
@@ -56,11 +62,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            // Only set signing config if it was created
+            signingConfigs.findByName("release")?.let {
+                signingConfig = it
+            }
         }
         debug {
             manifestPlaceholders["enableCrashReporting"] = "false"
-            signingConfig = signingConfigs.getByName("debug")
+            // Only set signing config if it was created
+            signingConfigs.findByName("debug")?.let {
+                signingConfig = it
+            }
         }
     }
 
