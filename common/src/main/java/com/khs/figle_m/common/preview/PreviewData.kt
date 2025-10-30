@@ -1,7 +1,13 @@
 package com.khs.figle_m.common.preview
 
+import com.khs.data.nexon_api.response.DTO.DefenceDTO
+import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
 import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
+import com.khs.data.nexon_api.response.DTO.PassDTO
 import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.data.nexon_api.response.DTO.ShootDTO
+import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
+import com.khs.data.nexon_api.response.DTO.StatusDTO
 import com.khs.data.nexon_api.response.MatchDetailResponse
 import com.khs.data.nexon_api.response.UserResponse
 import com.khs.figle_m.common.model.AnalyticsPlayer
@@ -211,17 +217,217 @@ object PreviewData {
 
     // ========== MatchDetailResponse Sample Data ==========
 
+    private fun createSamplePlayer(spId: Int, spPosition: Int, spGrade: Int, spRating: Float) = PlayerDTO(
+        spId = spId,
+        spPosition = spPosition,
+        spGrade = spGrade,
+        status = StatusDTO(
+            shoot = 5,
+            effectiveShoot = 3,
+            assist = 2,
+            goal = 1,
+            dribble = 10,
+            passTry = 30,
+            passSuccess = 25,
+            block = 2,
+            tackle = 3,
+            spRating = spRating
+        ),
+        imageUrl = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p$spId.png",
+        subImageUrl = null
+    )
+
     val sampleMatchDetail = MatchDetailResponse(
         matchId = "match-12345",
         matchDate = "1730000000000",
         matchType = 50,
         matchInfo = listOf(
-            MatchInfoDTO().apply {
-                // 필요한 필드 초기화
-            },
-            MatchInfoDTO().apply {
-                // 필요한 필드 초기화
-            }
+            // Winner team
+            MatchInfoDTO(
+                ouid = "winner-ouid-123",
+                nickname = "WinnerPlayer",
+                matchDetail = MatchDetailDTO(
+                    seasonId = 280,
+                    matchResult = "승",
+                    matchEndType = 1,
+                    systemPause = 0,
+                    foul = 5,
+                    injury = 1,
+                    redCards = 0,
+                    yellowCards = 2,
+                    dribble = 45,
+                    cornerKick = 6,
+                    possession = 55
+                ),
+                shoot = ShootDTO(
+                    shootTotal = 15,
+                    effectiveShootTotal = "10",
+                    shootOutScore = 0,
+                    goalTotal = 3,
+                    goalTotalDisplay = 3,
+                    ownGoal = 0,
+                    shootHeading = 2,
+                    goalHeading = 1,
+                    shootFreekick = 1,
+                    goalFreekick = 0,
+                    shootInPenalty = 10,
+                    goalInPenalty = 2,
+                    shootOutPenalty = 5,
+                    goalOutPenalty = 1,
+                    shootPenaltyKick = 0,
+                    goalPenaltyKick = 0
+                ),
+                shootDetail = listOf(
+                    ShootDetailDTO(
+                        goalTime = 15,
+                        x = 0.5,
+                        y = 0.3,
+                        type = 3,
+                        result = 3,
+                        assist = true,
+                        hitPost = false,
+                        inPenalty = true
+                    ),
+                    ShootDetailDTO(
+                        goalTime = 42,
+                        x = 0.6,
+                        y = 0.4,
+                        type = 3,
+                        result = 3,
+                        assist = false,
+                        hitPost = false,
+                        inPenalty = true
+                    ),
+                    ShootDetailDTO(
+                        goalTime = 78,
+                        x = 0.4,
+                        y = 0.5,
+                        type = 12,
+                        result = 3,
+                        assist = true,
+                        hitPost = false,
+                        inPenalty = false
+                    )
+                ),
+                pass = PassDTO(
+                    passTry = 450,
+                    passSuccess = 380,
+                    shortPassTry = 300,
+                    shortPassSuccess = 270,
+                    longPassTry = 100,
+                    longPassSuccess = 70,
+                    bouncingLobPassTry = 20,
+                    bouncingLobPassSuccess = 15,
+                    drivenGroundPassTry = 10,
+                    drivenGroundPassSuccess = 8,
+                    throughPassTry = 15,
+                    throughPassSuccess = 12,
+                    lobbedThroughPassTry = 5,
+                    lobbedThroughPassSuccess = 5
+                ),
+                defence = DefenceDTO(
+                    blockTry = 10,
+                    blockSuccess = 7,
+                    tackleTry = 15,
+                    tackleSuccess = 10
+                ),
+                player = listOf(
+                    createSamplePlayer(254080, 22, 8, 8.5f),
+                    createSamplePlayer(238414, 20, 7, 8.2f),
+                    createSamplePlayer(231747, 10, 7, 7.8f),
+                    createSamplePlayer(233488, 6, 6, 7.5f),
+                    createSamplePlayer(222509, 5, 6, 7.3f),
+                    createSamplePlayer(231678, 4, 5, 7.1f),
+                    createSamplePlayer(222509, 3, 5, 7.0f),
+                    createSamplePlayer(247263, 2, 6, 7.2f),
+                    createSamplePlayer(223340, 1, 7, 7.4f),
+                    createSamplePlayer(189511, 0, 8, 7.8f),
+                    createSamplePlayer(216393, 28, 5, 6.9f)
+                )
+            ),
+            // Loser team
+            MatchInfoDTO(
+                ouid = "loser-ouid-456",
+                nickname = "LoserPlayer",
+                matchDetail = MatchDetailDTO(
+                    seasonId = 280,
+                    matchResult = "패",
+                    matchEndType = 1,
+                    systemPause = 0,
+                    foul = 8,
+                    injury = 2,
+                    redCards = 1,
+                    yellowCards = 3,
+                    dribble = 38,
+                    cornerKick = 4,
+                    possession = 45
+                ),
+                shoot = ShootDTO(
+                    shootTotal = 10,
+                    effectiveShootTotal = "6",
+                    shootOutScore = 0,
+                    goalTotal = 1,
+                    goalTotalDisplay = 1,
+                    ownGoal = 0,
+                    shootHeading = 1,
+                    goalHeading = 0,
+                    shootFreekick = 2,
+                    goalFreekick = 1,
+                    shootInPenalty = 6,
+                    goalInPenalty = 0,
+                    shootOutPenalty = 4,
+                    goalOutPenalty = 1,
+                    shootPenaltyKick = 0,
+                    goalPenaltyKick = 0
+                ),
+                shootDetail = listOf(
+                    ShootDetailDTO(
+                        goalTime = 68,
+                        x = 0.7,
+                        y = 0.5,
+                        type = 20,
+                        result = 3,
+                        assist = false,
+                        hitPost = false,
+                        inPenalty = false
+                    )
+                ),
+                pass = PassDTO(
+                    passTry = 380,
+                    passSuccess = 310,
+                    shortPassTry = 260,
+                    shortPassSuccess = 230,
+                    longPassTry = 80,
+                    longPassSuccess = 50,
+                    bouncingLobPassTry = 15,
+                    bouncingLobPassSuccess = 10,
+                    drivenGroundPassTry = 10,
+                    drivenGroundPassSuccess = 7,
+                    throughPassTry = 10,
+                    throughPassSuccess = 8,
+                    lobbedThroughPassTry = 5,
+                    lobbedThroughPassSuccess = 5
+                ),
+                defence = DefenceDTO(
+                    blockTry = 12,
+                    blockSuccess = 8,
+                    tackleTry = 18,
+                    tackleSuccess = 11
+                ),
+                player = listOf(
+                    createSamplePlayer(234642, 22, 7, 7.2f),
+                    createSamplePlayer(184941, 20, 6, 6.9f),
+                    createSamplePlayer(229891, 10, 6, 6.8f),
+                    createSamplePlayer(188350, 6, 5, 6.5f),
+                    createSamplePlayer(201535, 5, 5, 6.4f),
+                    createSamplePlayer(225100, 4, 5, 6.3f),
+                    createSamplePlayer(209331, 3, 5, 6.2f),
+                    createSamplePlayer(226328, 2, 5, 6.5f),
+                    createSamplePlayer(183130, 1, 6, 6.7f),
+                    createSamplePlayer(177003, 0, 7, 7.0f),
+                    createSamplePlayer(206534, 28, 4, 6.0f)
+                )
+            )
         )
     )
 }
