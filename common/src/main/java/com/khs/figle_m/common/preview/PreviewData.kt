@@ -85,82 +85,128 @@ object PreviewData {
 
     val samplePlayer1 = AnalyticsPlayer(
         spId = 254080,
-        name = "손흥민",
-        spPosition = 22,
-        imageUrl = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p254080.png",
-        totalStatus = TotalStatus(
-            spRating = 8.5,
-            matchCount = 50,
-            assist = 15,
-            goal = 25,
-            validTackle = 45,
-            shootTotal = 150,
-            passSuccess = 420,
-            defending = 0,
-            dribble = 80,
-            intercept = 30,
-            attackPoint = 320.5,
-            defencePoint = 125.0
+        position = ParentPositionEnum.F,
+        totalData = TotalStatus(
+            totalShoot = 150,
+            totalEffectiveShoot = 120,
+            totalAssist = 15,
+            totalGoal = 25,
+            totalDribble = 80,
+            totalPassTry = 500,
+            totalPassSuccess = 420,
+            totalBlock = 10,
+            totalTackle = 45,
+            totalSpRating = 8.5f
         ),
-        parentPosition = ParentPositionEnum.F
+        imageResUrl = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p254080.png",
+        playerDataList = emptyList()
     )
 
     val samplePlayer2 = AnalyticsPlayer(
         spId = 238414,
-        name = "이강인",
-        spPosition = 20,
-        imageUrl = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p238414.png",
-        totalStatus = TotalStatus(
-            spRating = 8.2,
-            matchCount = 45,
-            assist = 20,
-            goal = 12,
-            validTackle = 40,
-            shootTotal = 100,
-            passSuccess = 380,
-            defending = 0,
-            dribble = 90,
-            intercept = 35,
-            attackPoint = 280.0,
-            defencePoint = 110.0
+        position = ParentPositionEnum.M,
+        totalData = TotalStatus(
+            totalShoot = 100,
+            totalEffectiveShoot = 80,
+            totalAssist = 20,
+            totalGoal = 12,
+            totalDribble = 90,
+            totalPassTry = 450,
+            totalPassSuccess = 380,
+            totalBlock = 8,
+            totalTackle = 40,
+            totalSpRating = 8.2f
         ),
-        parentPosition = ParentPositionEnum.M
+        imageResUrl = "https://fco.dn.nexoncdn.co.kr/live/externalAssets/common/players/p238414.png",
+        playerDataList = emptyList()
     )
 
     val sampleRatingTopPlayers = listOf(
         samplePlayer1,
         samplePlayer2,
-        samplePlayer1.copy(spId = 100001, name = "김민재", spRating = 8.0),
-        samplePlayer2.copy(spId = 100002, name = "황희찬", spRating = 7.9),
-        samplePlayer1.copy(spId = 100003, name = "황인범", spRating = 7.8),
-        samplePlayer2.copy(spId = 100004, name = "이재성", spRating = 7.7),
-        samplePlayer1.copy(spId = 100005, name = "조규성", spRating = 7.6),
-        samplePlayer2.copy(spId = 100006, name = "정우영", spRating = 7.5),
-        samplePlayer1.copy(spId = 100007, name = "백승호", spRating = 7.4),
-        samplePlayer2.copy(spId = 100008, name = "이승우", spRating = 7.3),
+        samplePlayer1.copy(
+            spId = 100001,
+            totalData = samplePlayer1.totalData.copy(totalSpRating = 8.0f)
+        ),
+        samplePlayer2.copy(
+            spId = 100002,
+            totalData = samplePlayer2.totalData.copy(totalSpRating = 7.9f)
+        ),
+        samplePlayer1.copy(
+            spId = 100003,
+            totalData = samplePlayer1.totalData.copy(totalSpRating = 7.8f)
+        ),
+        samplePlayer2.copy(
+            spId = 100004,
+            totalData = samplePlayer2.totalData.copy(totalSpRating = 7.7f)
+        ),
+        samplePlayer1.copy(
+            spId = 100005,
+            totalData = samplePlayer1.totalData.copy(totalSpRating = 7.6f)
+        ),
+        samplePlayer2.copy(
+            spId = 100006,
+            totalData = samplePlayer2.totalData.copy(totalSpRating = 7.5f)
+        ),
+        samplePlayer1.copy(
+            spId = 100007,
+            totalData = samplePlayer1.totalData.copy(totalSpRating = 7.4f)
+        ),
+        samplePlayer2.copy(
+            spId = 100008,
+            totalData = samplePlayer2.totalData.copy(totalSpRating = 7.3f)
+        ),
     )
 
     val sampleGoalTopPlayers = listOf(
-        samplePlayer1.copy(goal = 25),
-        samplePlayer2.copy(goal = 18),
-        samplePlayer1.copy(spId = 100101, name = "황희찬", goal = 15),
-        samplePlayer2.copy(spId = 100102, name = "조규성", goal = 12),
-        samplePlayer1.copy(spId = 100103, name = "황의조", goal = 10),
+        samplePlayer1.copy(
+            totalData = samplePlayer1.totalData.copy(totalGoal = 25)
+        ),
+        samplePlayer2.copy(
+            totalData = samplePlayer2.totalData.copy(totalGoal = 18)
+        ),
+        samplePlayer1.copy(
+            spId = 100101,
+            totalData = samplePlayer1.totalData.copy(totalGoal = 15)
+        ),
+        samplePlayer2.copy(
+            spId = 100102,
+            totalData = samplePlayer2.totalData.copy(totalGoal = 12)
+        ),
+        samplePlayer1.copy(
+            spId = 100103,
+            totalData = samplePlayer1.totalData.copy(totalGoal = 10)
+        ),
     )
 
     val sampleAssistTopPlayers = listOf(
-        samplePlayer2.copy(assist = 20),
-        samplePlayer1.copy(assist = 15),
-        samplePlayer2.copy(spId = 100201, name = "이승우", assist = 12),
-        samplePlayer1.copy(spId = 100202, name = "정우영", assist = 10),
-        samplePlayer2.copy(spId = 100203, name = "이재성", assist = 8),
+        samplePlayer2.copy(
+            totalData = samplePlayer2.totalData.copy(totalAssist = 20)
+        ),
+        samplePlayer1.copy(
+            totalData = samplePlayer1.totalData.copy(totalAssist = 15)
+        ),
+        samplePlayer2.copy(
+            spId = 100201,
+            totalData = samplePlayer2.totalData.copy(totalAssist = 12)
+        ),
+        samplePlayer1.copy(
+            spId = 100202,
+            totalData = samplePlayer1.totalData.copy(totalAssist = 10)
+        ),
+        samplePlayer2.copy(
+            spId = 100203,
+            totalData = samplePlayer2.totalData.copy(totalAssist = 8)
+        ),
     )
 
     // ========== UserResponse Sample Data ==========
 
     val sampleUserResponse = UserResponse(
         ouid = "test-ouid-12345",
-        nickname = "테스트유저"
+        nickname = "테스트유저",
+        level = "50",
+        teamPrice = "1,234,567,890"
     )
 
     // ========== MatchDetailResponse Sample Data ==========
