@@ -1,15 +1,15 @@
 package com.khs.figle_m.common.preview
 
-import com.khs.data.nexon_api.response.DTO.DefenceDTO
-import com.khs.data.nexon_api.response.DTO.MatchDetailDTO
-import com.khs.data.nexon_api.response.DTO.MatchInfoDTO
-import com.khs.data.nexon_api.response.DTO.PassDTO
-import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.data.nexon_api.response.DTO.ShootDTO
-import com.khs.data.nexon_api.response.DTO.ShootDetailDTO
-import com.khs.data.nexon_api.response.DTO.StatusDTO
-import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.data.nexon_api.response.UserResponse
+import com.khs.domain.nexon.entity.DefenceInfo
+import com.khs.domain.nexon.entity.Match
+import com.khs.domain.nexon.entity.MatchDetailInfo
+import com.khs.domain.nexon.entity.MatchInfo
+import com.khs.domain.nexon.entity.PassInfo
+import com.khs.domain.nexon.entity.Player
+import com.khs.domain.nexon.entity.ShootDetailInfo
+import com.khs.domain.nexon.entity.ShootInfo
+import com.khs.domain.nexon.entity.StatusInfo
+import com.khs.domain.nexon.entity.User
 import com.khs.figle_m.common.model.AnalyticsPlayer
 import com.khs.figle_m.common.model.ParentPositionEnum
 import com.khs.figle_m.common.model.Ranker
@@ -17,6 +17,7 @@ import com.khs.figle_m.common.model.TotalStatus
 
 /**
  * Preview 및 테스트용 샘플 데이터
+ * Clean Architecture를 준수하여 domain entity만 사용
  */
 object PreviewData {
 
@@ -206,22 +207,22 @@ object PreviewData {
         ),
     )
 
-    // ========== UserResponse Sample Data ==========
+    // ========== User Sample Data (Domain Entity) ==========
 
-    val sampleUserResponse = UserResponse(
-        ouid = "test-ouid-12345",
+    val sampleUser = User(
+        accessId = "test-ouid-12345",
         nickname = "테스트유저",
         level = "50",
         teamPrice = "1,234,567,890"
     )
 
-    // ========== MatchDetailResponse Sample Data ==========
+    // ========== Match Sample Data (Domain Entity) ==========
 
-    private fun createSamplePlayer(spId: Int, spPosition: Int, spGrade: Int, spRating: Float) = PlayerDTO(
+    private fun createSamplePlayer(spId: Int, spPosition: Int, spGrade: Int, spRating: Float) = Player(
         spId = spId,
         spPosition = spPosition,
         spGrade = spGrade,
-        status = StatusDTO(
+        status = StatusInfo(
             shoot = 5,
             effectiveShoot = 3,
             assist = 2,
@@ -237,16 +238,16 @@ object PreviewData {
         subImageUrl = null
     )
 
-    val sampleMatchDetail = MatchDetailResponse(
+    val sampleMatchDetail = Match(
         matchId = "match-12345",
         matchDate = "1730000000000",
         matchType = 50,
         matchInfo = listOf(
-            // Winner team
-            MatchInfoDTO(
-                ouid = "winner-ouid-123",
+            // Winner team (3-1)
+            MatchInfo(
+                accessId = "winner-ouid-123",
                 nickname = "WinnerPlayer",
-                matchDetail = MatchDetailDTO(
+                matchDetailInfo = MatchDetailInfo(
                     seasonId = 280,
                     matchResult = "승",
                     matchEndType = 1,
@@ -259,7 +260,7 @@ object PreviewData {
                     cornerKick = 6,
                     possession = 55
                 ),
-                shoot = ShootDTO(
+                shoot = ShootInfo(
                     shootTotal = 15,
                     effectiveShootTotal = "10",
                     shootOutScore = 0,
@@ -278,7 +279,7 @@ object PreviewData {
                     goalPenaltyKick = 0
                 ),
                 shootDetail = listOf(
-                    ShootDetailDTO(
+                    ShootDetailInfo(
                         goalTime = 15,
                         x = 0.5,
                         y = 0.3,
@@ -288,7 +289,7 @@ object PreviewData {
                         hitPost = false,
                         inPenalty = true
                     ),
-                    ShootDetailDTO(
+                    ShootDetailInfo(
                         goalTime = 42,
                         x = 0.6,
                         y = 0.4,
@@ -298,7 +299,7 @@ object PreviewData {
                         hitPost = false,
                         inPenalty = true
                     ),
-                    ShootDetailDTO(
+                    ShootDetailInfo(
                         goalTime = 78,
                         x = 0.4,
                         y = 0.5,
@@ -309,7 +310,7 @@ object PreviewData {
                         inPenalty = false
                     )
                 ),
-                pass = PassDTO(
+                pass = PassInfo(
                     passTry = 450,
                     passSuccess = 380,
                     shortPassTry = 300,
@@ -325,7 +326,7 @@ object PreviewData {
                     lobbedThroughPassTry = 5,
                     lobbedThroughPassSuccess = 5
                 ),
-                defence = DefenceDTO(
+                defence = DefenceInfo(
                     blockTry = 10,
                     blockSuccess = 7,
                     tackleTry = 15,
@@ -345,11 +346,11 @@ object PreviewData {
                     createSamplePlayer(216393, 28, 5, 6.9f)
                 )
             ),
-            // Loser team
-            MatchInfoDTO(
-                ouid = "loser-ouid-456",
+            // Loser team (1-3)
+            MatchInfo(
+                accessId = "loser-ouid-456",
                 nickname = "LoserPlayer",
-                matchDetail = MatchDetailDTO(
+                matchDetailInfo = MatchDetailInfo(
                     seasonId = 280,
                     matchResult = "패",
                     matchEndType = 1,
@@ -362,7 +363,7 @@ object PreviewData {
                     cornerKick = 4,
                     possession = 45
                 ),
-                shoot = ShootDTO(
+                shoot = ShootInfo(
                     shootTotal = 10,
                     effectiveShootTotal = "6",
                     shootOutScore = 0,
@@ -381,7 +382,7 @@ object PreviewData {
                     goalPenaltyKick = 0
                 ),
                 shootDetail = listOf(
-                    ShootDetailDTO(
+                    ShootDetailInfo(
                         goalTime = 68,
                         x = 0.7,
                         y = 0.5,
@@ -392,7 +393,7 @@ object PreviewData {
                         inPenalty = false
                     )
                 ),
-                pass = PassDTO(
+                pass = PassInfo(
                     passTry = 380,
                     passSuccess = 310,
                     shortPassTry = 260,
@@ -408,7 +409,7 @@ object PreviewData {
                     lobbedThroughPassTry = 5,
                     lobbedThroughPassSuccess = 5
                 ),
-                defence = DefenceDTO(
+                defence = DefenceInfo(
                     blockTry = 12,
                     blockSuccess = 8,
                     tackleTry = 18,
@@ -429,5 +430,27 @@ object PreviewData {
                 )
             )
         )
+    )
+
+    // Additional match samples for preview
+    val sampleMatchLose = sampleMatchDetail.copy(
+        matchId = "match-12346",
+        matchInfo = sampleMatchDetail.matchInfo.reversed().map { info ->
+            info.copy(
+                matchDetailInfo = info.matchDetailInfo.copy(
+                    matchResult = if (info.matchDetailInfo.matchResult == "승") "패" else "승"
+                )
+            )
+        }
+    )
+
+    val sampleMatchDraw = sampleMatchDetail.copy(
+        matchId = "match-12347",
+        matchInfo = sampleMatchDetail.matchInfo.map { info ->
+            info.copy(
+                matchDetailInfo = info.matchDetailInfo.copy(matchResult = "무"),
+                shoot = info.shoot.copy(goalTotal = 2, goalTotalDisplay = 2)
+            )
+        }
     )
 }

@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.data.nexon_api.response.UserResponse
+import com.khs.domain.nexon.entity.Match
+import com.khs.domain.nexon.entity.User
 import com.khs.figle_m.common.util.DateUtils
 import com.khs.figle_m.feature.searchlist.R
 import com.khs.figle_m.feature.searchlist.SearchListUIState
@@ -44,12 +44,12 @@ import com.khs.figle_m.feature.searchlist.SearchListViewModel
 
 @Composable
 fun SearchListScreen(
-    userInfo: UserResponse,
+    userInfo: User,
     matchIdList: List<String>,
     matchType: Int,
     searchListViewModel: SearchListViewModel = hiltViewModel(),
     onBack: () -> Unit,
-    onMatchClick: ((MatchDetailResponse) -> Unit)? = null
+    onMatchClick: ((Match) -> Unit)? = null
 ) {
     val uiState by searchListViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -92,11 +92,11 @@ fun SearchListScreen(
 
 @Composable
 private fun SearchListContent(
-    userInfo: UserResponse,
-    matchList: List<MatchDetailResponse>,
+    userInfo: User,
+    matchList: List<Match>,
     matchType: Int,
     onBack: () -> Unit,
-    onMatchClick: ((MatchDetailResponse) -> Unit)?
+    onMatchClick: ((Match) -> Unit)?
 ) {
     Column(
         modifier = Modifier
@@ -151,13 +151,13 @@ private fun SearchListContent(
 
 @Composable
 private fun MatchListItem(
-    userInfo: UserResponse,
-    match: MatchDetailResponse,
+    userInfo: User,
+    match: Match,
     onClick: () -> Unit
 ) {
     if (match.matchInfo.size < 2) return
 
-    val myIndex = if (userInfo.ouid.equals(match.matchInfo[0].ouid, ignoreCase = true)) 0 else 1
+    val myIndex = if (userInfo.accessId.equals(match.matchInfo[0].accessId, ignoreCase = true)) 0 else 1
     val opponentIndex = if (myIndex == 0) 1 else 0
 
     val myMatchInfo = match.matchInfo[myIndex]
@@ -178,7 +178,7 @@ private fun MatchListItem(
     val matchDate = DateUtils.formatTimeString(match.matchDate.toLong())
 
     // Determine result
-    val myResult = myMatchInfo.matchDetail.matchResult ?: if (opponentMatchInfo.matchDetail.matchResult == "승") "패" else "승"
+    val myResult = myMatchInfo.matchDetailInfo.matchResult ?: if (opponentMatchInfo.matchDetailInfo.matchResult == "승") "패" else "승"
     val (resultText, backgroundColor) = when (myResult) {
         "승" -> {
             val text = if (myMatchInfo.shoot.goalTotal == myMatchInfo.shoot.goalTotalDisplay) {
