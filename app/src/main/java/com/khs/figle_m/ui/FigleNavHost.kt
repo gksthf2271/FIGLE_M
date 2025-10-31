@@ -28,7 +28,7 @@ fun FigleNavHost(
     ) {
         homeScreen(
             onShowError = onShowError,
-            onNavigateToSearchHome = { userResponse ->
+            onNavigateToSearchHome = { user ->
                 // TODO: Navigate to SearchHome screen
                 // For now, we'll need to implement SearchHome in Compose first
                 // or use the existing Fragment navigation
@@ -59,7 +59,7 @@ fun FigleNavHost(
             onBack = {
                 navController.popBackStack()
             },
-            onMatchClick = { matchDetail ->
+            onMatchClick = { match ->
                 // TODO: Navigate to SearchDetail screen
             }
         )

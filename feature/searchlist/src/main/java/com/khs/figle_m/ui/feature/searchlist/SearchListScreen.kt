@@ -178,7 +178,7 @@ private fun MatchListItem(
     val matchDate = DateUtils.formatTimeString(match.matchDate.toLong())
 
     // Determine result
-    val myResult = myMatchInfo.matchDetailInfo.matchResult ?: if (opponentMatchInfo.matchDetailInfo.matchResult == "승") "패" else "승"
+    val myResult = myMatchInfo.matchDetailInfo.matchResult
     val (resultText, backgroundColor) = when (myResult) {
         "승" -> {
             val text = if (myMatchInfo.shoot.goalTotal == myMatchInfo.shoot.goalTotalDisplay) {
@@ -254,7 +254,7 @@ private fun MatchListItem(
                         color = Color.White
                     )
                     Text(
-                        text = myMatchInfo.nickname ?: "",
+                        text = myMatchInfo.nickname,
                         fontSize = 12.sp,
                         color = Color.White,
                         maxLines = 1
@@ -283,7 +283,7 @@ private fun MatchListItem(
                         color = Color.White
                     )
                     Text(
-                        text = opponentMatchInfo.nickname ?: "",
+                        text = opponentMatchInfo.nickname,
                         fontSize = 12.sp,
                         color = Color.White,
                         maxLines = 1
