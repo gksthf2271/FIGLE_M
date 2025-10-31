@@ -6,8 +6,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.data.nexon_api.response.UserResponse
+import com.khs.domain.nexon.entity.Match
+import com.khs.domain.nexon.entity.User
 import com.khs.figle_m.ui.feature.searchlist.SearchListScreen
 
 const val searchListNavigationRoute = "searchlist_route"
@@ -16,41 +16,40 @@ const val matchIdsArg = "matchIds"
 const val matchTypeArg = "matchType"
 
 fun NavController.navigateToSearchList(
-    userInfo: UserResponse,
+    userInfo: User,
     matchIds: List<String>,
     matchType: Int,
     navOptions: NavOptions? = null
 ) {
     val matchIdsString = matchIds.joinToString(",")
-    // For simplicity, we'll pass the ouid and nickname separately
-    this.navigate("$searchListNavigationRoute/${userInfo.ouid}/${userInfo.nickname}/$matchType/$matchIdsString", navOptions)
+    // For simplicity, we'll pass the accessId and nickname separately
+    this.navigate("$searchListNavigationRoute/${userInfo.accessId}/${userInfo.nickname}/$matchType/$matchIdsString", navOptions)
 }
 
 fun NavGraphBuilder.searchListScreen(
     onBack: () -> Unit,
-    onMatchClick: ((MatchDetailResponse) -> Unit)? = null
+    onMatchClick: ((Match) -> Unit)? = null
 ) {
     composable(
-        route = "$searchListNavigationRoute/{ouid}/{nickname}/{$matchTypeArg}/{$matchIdsArg}",
+        route = "$searchListNavigationRoute/{accessId}/{nickname}/{$matchTypeArg}/{$matchIdsArg}",
         arguments = listOf(
-            navArgument("ouid") { type = NavType.StringType },
+            navArgument("accessId") { type = NavType.StringType },
             navArgument("nickname") { type = NavType.StringType },
             navArgument(matchTypeArg) { type = NavType.IntType },
             navArgument(matchIdsArg) { type = NavType.StringType }
         )
     ) { backStackEntry ->
-        val ouid = backStackEntry.arguments?.getString("ouid") ?: ""
+        val accessId = backStackEntry.arguments?.getString("accessId") ?: ""
         val nickname = backStackEntry.arguments?.getString("nickname") ?: ""
         val matchType = backStackEntry.arguments?.getInt(matchTypeArg) ?: 50
         val matchIdsString = backStackEntry.arguments?.getString(matchIdsArg) ?: ""
         val matchIdList = matchIdsString.split(",").filter { it.isNotBlank() }
 
-        // Create minimal UserResponse
-        val userInfo = UserResponse(
-            ouid = ouid,
+        // Create minimal User
+        val userInfo = User(
+            accessId = accessId,
             nickname = nickname,
             level = "",
-            accessId = "",
             teamPrice = ""
         )
 

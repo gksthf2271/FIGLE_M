@@ -64,6 +64,6 @@ class HomeViewModel @Inject constructor(
 sealed interface HomeUIState {
     object Idle : HomeUIState
     object Loading : HomeUIState
-    data class Success(val userResponse: com.khs.data.nexon_api.response.UserResponse) : HomeUIState
+    data class Success(val user: com.khs.domain.nexon.entity.User) : HomeUIState
     data class Failed(val errorCode: Int, val errorMsg: String? = "") : HomeUIState
 }

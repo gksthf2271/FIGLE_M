@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.khs.data.nexon_api.response.UserResponse
+import com.khs.domain.nexon.entity.User
 import com.khs.figle_m.ui.feature.home.HomeScreen
 
 const val homeNavigationRoute = "home_route"
@@ -15,7 +15,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.homeScreen(
     onShowError: (Int) -> Unit,
-    onNavigateToSearchHome: (UserResponse) -> Unit
+    onNavigateToSearchHome: (User) -> Unit
 ) {
     composable(
         route = homeNavigationRoute

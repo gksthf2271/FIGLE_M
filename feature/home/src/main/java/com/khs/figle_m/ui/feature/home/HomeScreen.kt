@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.khs.data.nexon_api.response.UserResponse
+import com.khs.domain.nexon.entity.User
 import com.khs.figle_m.feature.home.HomeUIState
 import com.khs.figle_m.feature.home.HomeViewModel
 import com.khs.figle_m.feature.home.R
@@ -35,7 +35,7 @@ import com.khs.figle_m.common.ui.component.FigleTitleText
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     onShowError: (Int) -> Unit,
-    onNavigateToSearchHome: (UserResponse) -> Unit
+    onNavigateToSearchHome: (User) -> Unit
 ) {
     val uiState by homeViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -44,7 +44,7 @@ fun HomeScreen(
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is HomeUIState.Success -> {
-                onNavigateToSearchHome(state.userResponse)
+                onNavigateToSearchHome(state.user)
                 homeViewModel.resetState()
             }
             is HomeUIState.Failed -> {
