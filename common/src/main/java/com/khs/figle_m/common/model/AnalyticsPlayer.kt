@@ -2,6 +2,7 @@ package com.khs.figle_m.common.model
 
 import android.os.Parcelable
 import com.khs.domain.nexon.entity.Player
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -9,9 +10,11 @@ data class AnalyticsPlayer(
     var spId : Int = 0,
     var position : ParentPositionEnum = ParentPositionEnum.NONE,
     var totalData : TotalStatus = TotalStatus(),
-    var imageResUrl : String = "",
+    var imageResUrl : String = ""
+) : Parcelable {
+    @IgnoredOnParcel
     var playerDataList: List<Player> = emptyList()
-) : Parcelable
+}
 
 @Parcelize
 data class TotalStatus(
