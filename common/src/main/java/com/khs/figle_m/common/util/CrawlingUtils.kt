@@ -9,7 +9,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.domain.nexon.entity.Player
 import com.khs.figle_m.common.R
 import com.khs.figle_m.common.data.DataManager
 import com.khs.figle_m.common.model.Ranker
@@ -19,8 +19,8 @@ import org.jsoup.nodes.Element
 object CrawlingUtils {
     private val TAG = this.javaClass.simpleName
 
-    fun getPlayerImg(playerDTO: PlayerDTO, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
-        getPlayerImg(playerDTO.spId, playerDTO.spGrade, onSuccess, onFailed)
+    fun getPlayerImg(player: Player, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
+        getPlayerImg(player.spId, player.spGrade, onSuccess, onFailed)
     }
 
     fun getPlayerImg(spId: Int, spGrade:Int, onSuccess: (String) -> Unit, onFailed: (Int) -> Unit) {
@@ -83,15 +83,16 @@ object CrawlingUtils {
     }
 
     fun getPlayerImage(
-        playerDTO: PlayerDTO,
+        player: Player,
         onSuccess: ((String) -> Unit),
         onFailed: (Int) -> Unit
     ) {
-        var seasonId = playerDTO.spId.toString().substring(0, 3)
+        var seasonId = player.spId.toString().substring(0, 3)
         var seasonName: String? = null
+        var cSpId = player.spId
         if (seasonId == "224") {
-            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > 224 : $playerDTO")
-            playerDTO.spId = playerDTO.spId.toString().replaceRange(0 .. 2, "234").toInt()
+            LogUtil.vLog(LogUtil.TAG_NETWORK, TAG,"getPlayerImage > 224 : $player")
+            cSpId = player.spId.toString().replaceRange(0 .. 2, "234").toInt()
             seasonId = "234"
         }
         for (item in SeasonManager.loadSeason()) {
@@ -106,7 +107,7 @@ object CrawlingUtils {
         }
 
         try {
-            DataManager.loadPlayerInfo(playerDTO.spId, playerDTO.spGrade, {
+            DataManager.loadPlayerInfo(cSpId, player.spGrade, {
                 val doc = Jsoup.parseBodyFragment(it.string())
                 val parentBody = doc.body().getElementById("wrapper")
                     .getElementById("middle")

@@ -1,7 +1,7 @@
 package com.khs.figle_m.common.model
 
 import android.os.Parcelable
-import com.khs.data.nexon_api.response.DTO.PlayerDTO
+import com.khs.domain.nexon.entity.Player
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -10,7 +10,7 @@ data class AnalyticsPlayer(
     var position : ParentPositionEnum = ParentPositionEnum.NONE,
     var totalData : TotalStatus = TotalStatus(),
     var imageResUrl : String = "",
-    var playerDataList: List<PlayerDTO> = emptyList()
+    var playerDataList: List<Player> = emptyList()
 ) : Parcelable
 
 @Parcelize

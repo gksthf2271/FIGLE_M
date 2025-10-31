@@ -2,9 +2,10 @@ package com.khs.figle_m.feature.analytics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.khs.data.nexon_api.response.DTO.PlayerDTO
-import com.khs.data.nexon_api.response.MatchDetailResponse
-import com.khs.figle_m.common.data.DataManager
+import com.khs.domain.nexon.NexonAPIGateway
+import com.khs.domain.nexon.entity.CommonResult
+import com.khs.domain.nexon.entity.Match
+import com.khs.domain.nexon.entity.Player
 import com.khs.figle_m.common.model.AnalyticsPlayer
 import com.khs.figle_m.common.model.ParentPositionEnum
 import com.khs.figle_m.common.util.CrawlingUtils
@@ -18,7 +19,9 @@ import java.util.PriorityQueue
 import javax.inject.Inject
 
 @HiltViewModel
-class AnalyticsViewModel @Inject constructor() : ViewModel() {
+class AnalyticsViewModel @Inject constructor(
+    private val nexonAPIGateway: NexonAPIGateway
+) : ViewModel() {
     private val CLASS_TAG = "AnalyticsViewModel"
 
     private val _uiState: MutableStateFlow<AnalyticsUIState> = MutableStateFlow(AnalyticsUIState.Loading)
@@ -29,31 +32,39 @@ class AnalyticsViewModel @Inject constructor() : ViewModel() {
         _uiState.value = AnalyticsUIState.Loading
 
         // Load match details
-        val resultList = mutableListOf<MatchDetailResponse>()
+        val resultList = mutableListOf<Match>()
         val failedQueue = PriorityQueue<String>()
 
         for (matchId in matchIdList) {
-            DataManager.loadMatchDetail(matchId, {
-                resultList.add(it)
-                if (resultList.size + failedQueue.size == matchIdList.size) {
-                    processMatchDetails(accessId, resultList)
+            nexonAPIGateway.getMatchDetail(matchId).collect { result ->
+                when (result) {
+                    is CommonResult.Success -> {
+                        resultList.add(result.data)
+                        if (resultList.size + failedQueue.size == matchIdList.size) {
+                            processMatchDetails(accessId, resultList)
+                        }
+                    }
+                    is CommonResult.Fail -> {
+                        failedQueue.add(matchId)
+                        if (resultList.size + failedQueue.size == matchIdList.size) {
+                            processMatchDetails(accessId, resultList)
+                        }
+                    }
+                    is CommonResult.Loading -> {
+                        // Ignore
+                    }
                 }
-            }, {
-                failedQueue.add(it.toString())
-                if (resultList.size + failedQueue.size == matchIdList.size) {
-                    processMatchDetails(accessId, resultList)
-                }
-            })
+            }
         }
     }
 
-    private fun processMatchDetails(accessId: String, matchDetailList: List<MatchDetailResponse>) = viewModelScope.launch {
-        val playerMap = hashMapOf<Int, ArrayList<PlayerDTO>>()
+    private fun processMatchDetails(accessId: String, matchDetailList: List<Match>) = viewModelScope.launch {
+        val playerMap = hashMapOf<Int, ArrayList<Player>>()
 
         for (match in matchDetailList) {
             if (match.matchInfo.size != 2) continue
 
-            val matchInfo = if (accessId == match.matchInfo[0].ouid) {
+            val matchInfo = if (accessId == match.matchInfo[0].accessId) {
                 match.matchInfo[0]
             } else {
                 match.matchInfo[1]
